@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Барвиха Лаунж — Меню</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { background: #0a0a0a; color: #f5f5f5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 300; letter-spacing: 0.02em; -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; padding-bottom: 100px; }
+  :root {
+    --gold: #c9a961;
+    --gold-light: #e6c789;
+    --gold-dark: #8a7340;
+    --black: #0a0a0a;
+    --black-soft: #141414;
+    --black-card: #1a1a1a;
+    --border: rgba(201, 169, 97, 0.2);
+    --text-dim: #888;
+  }
+  header {
+    padding: 40px 24px 24px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 50;
+  }
+  .logo {
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .brand {
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .tagline {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+  .categories {
+    display: flex;
+    gap: 8px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: sticky;
+    top: 130px;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 40;
+  }
+  .categories::-webkit-scrollbar { display: none; }
+  .cat-btn {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+  .cat-btn.active {
+    background: var(--gold);
+    color: var(--black);
+    border-color: var(--gold);
+  }
+  .cat-btn:hover:not(.active) { color: var(--gold); border-color: var(--gold); }
+  main { padding: 24px; max-width: 1200px; margin: 0 auto; }
+  .section-title {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 32px 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-title::before, .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+    box-shadow: 0 20px 40px -20px rgba(201, 169, 97, 0.3);
+  }
+  .card-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, #1f1f1f 0%, #0f0f0f 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .card:hover .card-image img { transform: scale(1.05); }
+  .card-image .placeholder {
+    font-size: 48px;
+    color: var(--gold-dark);
+    opacity: 0.4;
+  }
+  .card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 10px;
+    background: rgba(0,0,0,0.7);
+    color: var(--gold);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid var(--gold);
+  }
+  .card-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card-title {
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .card-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .price {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .price-currency { font-size: 13px; margin-left: 2px; }
+  .add-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 18px;
+    font-family: inherit;
+  }
+  .add-btn:hover, .add-btn:active {
+    background: var(--gold);
+    color: var(--black);
+    transform: scale(1.1);
+  }
+  /* MODAL */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+  .modal {
+    background: var(--black-card);
+    border: 1px solid var(--gold);
+    max-width: 520px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 4px;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) transparent;
+  }
+  .modal::-webkit-scrollbar { width: 4px; }
+  .modal::-webkit-scrollbar-thumb { background: var(--gold); }
+  .modal-backdrop.open .modal { transform: scale(1); }
+  .modal-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, #1f1f1f, #0a0a0a);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-image img { width: 100%; height: 100%; object-fit: cover; }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-family: inherit;
+    z-index: 10;
+  }
+  .modal-body { padding: 28px; }
+  .modal-title {
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: #fff;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .modal-weight {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .modal-desc {
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .modal-section-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ingredients-list {
+    list-style: none;
+    margin-bottom: 24px;
+  }
+  .ingredients-list li {
+    padding: 8px 0;
+    font-size: 13px;
+    color: #ccc;
+    border-bottom: 1px solid rgba(201, 169, 97, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ingredients-list li::before {
+    content: '◆';
+    color: var(--gold);
+    font-size: 8px;
+  }
+  .nutrition {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .nutri-cell {
+    background: var(--black-soft);
+    border: 1px solid var(--border);
+    padding: 14px 8px;
+    text-align: center;
+    border-radius: 2px;
+  }
+  .nutri-val {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--gold);
+    display: block;
+  }
+  .nutri-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .modal-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .modal-price { font-size: 26px; color: var(--gold); font-weight: 500; }
+  .modal-add {
+    flex: 1;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px 24px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+  .modal-add:hover { background: var(--gold-light); transform: translateY(-2px); }
+  /* CART */
+  .cart-fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px 24px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(201, 169, 97, 0.4);
+    z-index: 60;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+  }
+  .cart-fab.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .cart-fab:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(201, 169, 97, 0.6); }
+  .cart-count {
+    background: var(--black);
+    color: var(--gold);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 12px;
+    min-width: 24px;
+    text-align: center;
+  }
+  /* CART PANEL */
+  .cart-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 440px;
+    height: 100vh;
+    background: var(--black-card);
+    border-left: 1px solid var(--gold);
+    z-index: 110;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+  }
+  .cart-panel.open { transform: translateX(0); }
+  .cart-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cart-title {
+    font-size: 16px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 400;
+  }
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+  }
+  .cart-empty {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 60px 20px;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
+  .cart-item {
+    display: flex;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .cart-item-img {
+    width: 64px;
+    height: 64px;
+    background: var(--black-soft);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
+  .cart-item-info { flex: 1; min-width: 0; }
+  .cart-item-name { font-size: 14px; color: #fff; margin-bottom: 4px; }
+  .cart-item-price { font-size: 13px; color: var(--gold); }
+  .qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    cursor: pointer;
+    border-radius: 50%;
+    font-family: inherit;
+    font-size: 14px;
+  }
+  .qty-val { font-size: 14px; min-width: 20px; text-align: center; color: #fff; }
+  .cart-foot {
+    padding: 20px 24px 28px;
+    border-top: 1px solid var(--gold);
+  }
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .cart-total .total-val { color: var(--gold); font-size: 20px; }
+  .order-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 18px;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .order-btn:hover { background: var(--gold-light); }
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--gold);
+    color: var(--black);
+    padding: 12px 24px;
+    border-radius: 2px;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    z-index: 200;
+    transition: transform 0.4s ease;
+    box-shadow: 0 10px 40px rgba(201, 169, 97, 0.4);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .card-body { padding: 14px; gap: 8px; }
+    .card-title { font-size: 14px; }
+    .card-desc { font-size: 11px; }
+    .price { font-size: 15px; }
+    .add-btn { width: 32px; height: 32px; font-size: 16px; }
+    header { padding: 24px 16px 16px; }
+    .brand { font-size: 22px; }
+    .categories { padding: 14px 16px; top: 105px; }
+    main { padding: 16px; }
+    .section-title { font-size: 16px; margin: 24px 0 14px; }
+    .modal-body { padding: 20px; }
+    .modal-title { font-size: 19px; }
+    .nutrition { gap: 6px; }
+    .nutri-val { font-size: 15px; }
+    .cart-fab { bottom: 16px; right: 16px; padding: 14px 20px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Barvikha Lounge</div>
+  <div class="brand">Барвиха</div>
+  <div class="tagline">Premium Hookah & Cuisine</div>
+</header>
+
+<nav class="categories" id="categories"></nav>
+
+<main id="main"></main>
+
+<button class="cart-fab" id="cartFab" onclick="toggleCart()">
+  <span>Корзина</span>
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<aside class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <div class="cart-title">Ваш заказ</div>
+    <button class="modal-close" onclick="toggleCart()" style="position: static;">×</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot" id="cartFoot" style="display:none;">
+    <div class="cart-total">
+      <span>Итого</span>
+      <span class="total-val" id="cartTotal">0 ₽</span>
+    </div>
+    <button class="order-btn" onclick="submitOrder()">Оформить заказ</button>
+  </div>
+</aside>
+
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+  <div class="modal" id="modal" onclick="event.stopPropagation()"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const menu = [
+  {
+    id: 'hk1',
+    category: 'Кальяны',
+    name: 'Барвиха Сигнатур',
+    desc: 'Авторская смесь табака с нотами манго, маракуйи и мяты на молоке.',
+    weight: '60 мин',
+    price: 2800,
+    badge: 'Hit',
+    ingredients: ['Премиум табак Darkside', 'Свежая маракуйя', 'Манго', 'Лёд', 'Молоко 3.2%'],
+    kbju: { kcal: 0, b: 0, j: 0, u: 0 }
+  },
+  {
+    id: 'hk2',
+    category: 'Кальяны',
+    name: 'Чёрное золото',
+    desc: 'Табак на основе чёрного винограда и инжира с лёгкой ноткой ванили.',
+    weight: '60 мин',
+    price: 3200,
+    ingredients: ['Табак Tangiers', 'Чёрный виноград', 'Инжир', 'Ваниль'],
+    kbju: { kcal: 0, b: 0, j: 0, u: 0 }
+  },
+  {
+    id: 'hk3',
+    category: 'Кальяны',
+    name: 'Классический',
+    desc: 'Двойное яблоко на классическом угле — выдержанный восточный вкус.',
+    weight: '50 мин',
+    price: 2200,
+    ingredients: ['Табак Al Fakher', 'Уголь кокосовый'],
+    kbju: { kcal: 0, b: 0, j: 0, u: 0 }
+  },
+  {
+    id: 'fd1',
+    category: 'Кухня',
+    name: 'Тартар из говядины',
+    desc: 'Рубленая мраморная говядина, перепелиный желток, каперсы, трюфельное масло.',
+    weight: '180 г',
+    price: 1490,
+    badge: 'Chef',
+    ingredients: ['Говядина мраморная', 'Перепелиное яйцо', 'Каперсы', 'Трюфельное масло', 'Лук-шалот', 'Дижонская горчица'],
+    kbju: { kcal: 285, b: 22, j: 19, u: 4 }
+  },
+  {
+    id: 'fd2',
+    category: 'Кухня',
+    name: 'Цезарь с креветками',
+    desc: 'Тигровые креветки, романо, пармезан, домашний соус, чесночные крутоны.',
+    weight: '240 г',
+    price: 1190,
+    ingredients: ['Креветки тигровые', 'Салат романо', 'Пармезан', 'Соус Цезарь', 'Крутоны', 'Чеснок'],
+    kbju: { kcal: 312, b: 24, j: 18, u: 9 }
+  },
+  {
+    id: 'fd3',
+    category: 'Кухня',
+    name: 'Стейк Рибай',
+    desc: 'Премиальный стейк из мраморной говядины с гарниром из овощей гриль.',
+    weight: '320 г',
+    price: 3490,
+    badge: 'Premium',
+    ingredients: ['Говядина Black Angus', 'Соль морская', 'Перец чёрный', 'Розмарин', 'Овощи гриль', 'Сливочное масло'],
+    kbju: { kcal: 520, b: 42, j: 38, u: 2 }
+  },
+  {
+    id: 'fd4',
+    category: 'Кухня',
+    name: 'Том ям с морепродуктами',
+    desc: 'Тайский суп на кокосовом молоке с креветками, кальмарами и мидиями.',
+    weight: '350 мл',
+    price: 890,
+    ingredients: ['Креветки', 'Кальмары', 'Мидии', 'Кокосовое молоко', 'Лемонграсс', 'Лайм', 'Перец чили'],
+    kbju: { kcal: 210, b: 16, j: 12, u: 8 }
+  },
+  {
+    id: 'dr1',
+    category: 'Напитки',
+    name: 'Чай Да Хун Пао',
+    desc: 'Элитный улун из китайской провинции Фуцзянь. Подаётся в чайнике 600 мл.',
+    weight: '600 мл',
+    price: 690,
+    ingredients: ['Чай Да Хун Пао', 'Вода родниковая'],
+    kbju: { kcal: 1, b: 0, j: 0, u: 0 }
+  },
+  {
+    id: 'dr2',
+    category: 'Напитки',
+    name: 'Свежевыжатый сок',
+    desc: 'Апельсин, грейпфрут, яблоко или морковь на выбор.',
+    weight: '300 мл',
+    price: 490,
+    ingredients: ['Фрукты свежие'],
+    kbju: { kcal: 135, b: 1, j: 0, u: 32 }
+  },
+  {
+    id: 'dr3',
+    category: 'Напитки',
+    name: 'Авторский лимонад',
+    desc: 'Малина, базилик и розмарин на основе игристой воды.',
+    weight: '500 мл',
+    price: 590,
+    ingredients: ['Малина', 'Базилик', 'Розмарин', 'Игристая вода', 'Сироп тростниковый', 'Лайм'],
+    kbju: { kcal: 95, b: 0, j: 0, u: 23 }
+  },
+  {
+    id: 'ds1',
+    category: 'Десерты',
+    name: 'Чизкейк Нью-Йорк',
+    desc: 'Классический чизкейк с ягодным соусом и свежей мятой.',
+    weight: '160 г',
+    price: 590,
+    ingredients: ['Сыр Филадельфия', 'Песочное тесто', 'Сливки', 'Ягодный соус', 'Мята'],
+    kbju: { kcal: 380, b: 7, j: 24, u: 32 }
+  },
+  {
+    id: 'ds2',
+    category: 'Десерты',
+    name: 'Тирамису',
+    desc: 'Классический итальянский десерт с маскарпоне и кофе амаретто.',
+    weight: '180 г',
+    price: 650,
+    badge: 'New',
+    ingredients: ['Маскарпоне', 'Савоярди', 'Кофе эспрессо', 'Амаретто', 'Какао', 'Желтки'],
+    kbju: { kcal: 420, b: 6, j: 28, u: 35 }
+  }
+];
+
+const cart = {};
+let activeCategory = 'Все';
+
+function getCategories() {
+  return ['Все', ...new Set(menu.map(i => i.category))];
+}
+
+function renderCategories() {
+  const nav = document.getElementById('categories');
+  nav.innerHTML = getCategories().map(c =>
+    `<button class="cat-btn ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setCategory(c) {
+  activeCategory = c;
+  renderCategories();
+  renderMenu();
+}
+
+function renderMenu() {
+  const main = document.getElementById('main');
+  const filtered = activeCategory === 'Все' ? menu : menu.filter(i => i.category === activeCategory);
+  const grouped = {};
+  filtered.forEach(i => {
+    if (!grouped[i.category]) grouped[i.category] = [];
+    grouped[i.category].push(i);
+  });
+  main.innerHTML = Object.entries(grouped).map(([cat, items]) => `
+    <h2 class="section-title">${cat}</h2>
+    <div class="grid">
+      ${items.map(item => `
+        <div class="card" onclick="openModal('${item.id}')">
+          <div class="card-image">
+            ${item.badge ? `<div class="card-badge">${item.badge}</div>` : ''}
+            <div class="placeholder">◈</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">${item.name}</div>
+            <div class="card-desc">${item.desc}</div>
+            <div class="card-foot">
+              <div class="price">${item.price.toLocaleString('ru-RU')}<span class="price-currency"> ₽</span></div>
+              <button class="add-btn" onclick="event.stopPropagation(); addToCart('${item.id}')">+</button>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function openModal(id) {
+  const item = menu.find(i => i.id === id);
+  if (!item) return;
+  const modal = document.getElementById('modal');
+  const hasKbju = item.kbju && (item.kbju.kcal || item.kbju.b || item.kbju.j || item.kbju.u);
+  modal.innerHTML = `
+    <div class="modal-image">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      ${item.badge ? `<div class="card-badge">${item.badge}</div>` : ''}
+      <div class="placeholder" style="font-size:64px;">◈</div>
+    </div>
+    <div class="modal-body">
+      <h2 class="modal-title">${item.name}</h2>
+      <div class="modal-weight">${item.weight}</div>
+      <p class="modal-desc">${item.desc}</p>
+      <div class="modal-section-label">Состав</div>
+      <ul class="ingredients-list">
+        ${item.ingredients.map(i => `<li>${i}</li>`).join('')}
+      </ul>
+      ${hasKbju ? `
+        <div class="modal-section-label">Пищевая ценность на порцию</div>
+        <div class="nutrition">
+          <div class="nutri-cell"><span class="nutri-val">${item.kbju.kcal}</span><div class="nutri-label">Ккал</div></div>
+          <div class="nutri-cell"><span class="nutri-val">${item.kbju.b}</span><div class="nutri-label">Белки</div></div>
+          <div class="nutri-cell"><span class="nutri-val">${item.kbju.j}</span><div class="nutri-label">Жиры</div></div>
+          <div class="nutri-cell"><span class="nutri-val">${item.kbju.u}</span><div class="nutri-label">Углеводы</div></div>
+        </div>
+      ` : ''}
+      <div class="modal-foot">
+        <div class="modal-price">${item.price.toLocaleString('ru-RU')} ₽</div>
+        <button class="modal-add" onclick="addToCart('${item.id}'); closeModal();">В корзину</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target.id !== 'modalBackdrop') return;
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  updateCart();
+  const item = menu.find(i => i.id === id);
+  showToast(`${item.name} добавлен`);
+}
+
+function changeQty(id, delta) {
+  cart[id] = (cart[id] || 0) + delta;
+  if (cart[id] <= 0) delete cart[id];
+  updateCart();
+  renderCart();
+}
+
+function updateCart() {
+  const count = Object.values(cart).reduce((a, b) => a + b, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartFab').classList.toggle('visible', count > 0);
+}
+
+function renderCart() {
+  const items = document.getElementById('cartItems');
+  const foot = document.getElementById('cartFoot');
+  const entries = Object.entries(cart);
+  if (entries.length === 0) {
+    items.innerHTML = '<div class="cart-empty">Корзина пуста</div>';
+    foot.style.display = 'none';
+    return;
+  }
+  let total = 0;
+  items.innerHTML = entries.map(([id, qty]) => {
+    const item = menu.find(i => i.id === id);
+    total += item.price * qty;
+    return `
+      <div class="cart-item">
+        <div class="cart-item-img"><div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--gold-dark);">◈</div></div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">${item.price.toLocaleString('ru-RU')} ₽</div>
+        </div>
+        <div class="qty">
+          <button class="qty-btn" onclick="changeQty('${id}', -1)">−</button>
+          <span class="qty-val">${qty}</span>
+          <button class="qty-btn" onclick="changeQty('${id}', 1)">+</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('cartTotal').textContent = total.toLocaleString('ru-RU') + ' ₽';
+  foot.style.display = 'block';
+}
+
+function toggleCart() {
+  const panel = document.getElementById('cartPanel');
+  const isOpen = panel.classList.toggle('open');
+  if (isOpen) renderCart();
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+
+function submitOrder() {
+  if (Object.keys(cart).length === 0) return;
+  showToast('Заказ принят. Официант подойдёт');
+  Object.keys(cart).forEach(k => delete cart[k]);
+  updateCart();
+  renderCart();
+  setTimeout(() => toggleCart(), 800);
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+renderCategories();
+renderMenu();
+</script>
+
+</body>
+</html>

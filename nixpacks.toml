@@ -1,0 +1,13 @@
+providers = ["node"]
+
+[variables]
+NIXPACKS_NODE_VERSION = "22"
+PNPM_VERSION = "10.33.4"
+
+[phases.install]
+dependsOn = ["setup"]
+cmds = ["pnpm install --frozen-lockfile"]
+
+[phases.build]
+dependsOn = ["install"]
+cmds = ["pnpm --filter @barviha/menu build"]

@@ -1,0 +1,9 @@
+[build]
+builder = "NIXPACKS"
+buildCommand = "pnpm install --frozen-lockfile && pnpm --filter @barviha/menu build"
+
+[deploy]
+startCommand = "pnpm --filter @barviha/menu start"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+healthcheckTimeout = 100

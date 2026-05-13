@@ -1,0 +1,15 @@
+{
+  "name": "@barviha/hub",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Barviha Hub — placeholder app. Will host the brand-chef admin / staff console.",
+  "scripts": {
+    "dev": "echo 'hub: placeholder — implement after menu MVP ships'",
+    "build": "echo 'hub: nothing to build yet'",
+    "lint": "echo 'hub: no lint targets'",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

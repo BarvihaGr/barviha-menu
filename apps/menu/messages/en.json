@@ -1,0 +1,88 @@
+{
+  "brand": {
+    "name": "Barvikha",
+    "tagline": "Premium Hookah & Lounge"
+  },
+  "common": {
+    "back": "Back",
+    "currency": "₽",
+    "add": "Add",
+    "added": "Added",
+    "weight": "Size",
+    "price": "Price",
+    "search": "Search the menu",
+    "all": "All",
+    "loading": "Loading…"
+  },
+  "nav": {
+    "callWaiter": "Call waiter",
+    "cart": "My table",
+    "menu": "Menu",
+    "hookahFlow": "Hookah"
+  },
+  "categories": {
+    "hookah": "Hookah",
+    "bar": "Bar",
+    "kitchen": "Kitchen",
+    "desserts": "Desserts"
+  },
+  "labels": {
+    "hit": "Hit",
+    "new": "New",
+    "chef_pick": "Chef's pick",
+    "premium": "Premium",
+    "spicy": "Spicy",
+    "vegan": "Vegan"
+  },
+  "filters": {
+    "title": "Filters",
+    "noAlcohol": "No alcohol",
+    "priceUnder1000": "Under 1000 ₽",
+    "spicy": "Spicy",
+    "vegan": "Vegan",
+    "reset": "Reset"
+  },
+  "item": {
+    "addToCart": "Add to my table",
+    "composition": "Ingredients",
+    "nutrition": "Nutrition facts per serving",
+    "kcal": "Kcal",
+    "protein": "Protein",
+    "fat": "Fat",
+    "carbs": "Carbs"
+  },
+  "cart": {
+    "title": "My table",
+    "empty": "Your table is empty. Pick something from the menu.",
+    "browse": "To menu",
+    "subtotal": "Total",
+    "submit": "Submit",
+    "submitDescription": "This calls the waiter. Confirm the order when they arrive.",
+    "callWaiter": "Call waiter",
+    "callKalyan": "Call hookah master",
+    "qty": "Qty",
+    "remove": "Remove",
+    "addNote": "Note…"
+  },
+  "hookah": {
+    "title": "Hookah",
+    "subtitle": "Pick a mood — our master will craft the perfect mix",
+    "moodTitle": "What's the mood?",
+    "hitsTitle": "Our hits",
+    "premiumTitle": "Premium hookah",
+    "callKalyan": "Call hookah master",
+    "callKalyanHint": "They'll come and tune the mix to your taste",
+    "viewIn3D": "View in 3D"
+  },
+  "toast": {
+    "addedToCart": "Added to your table",
+    "waiterCalled": "The waiter will be with you shortly",
+    "kalyanCalled": "The hookah master will be with you shortly",
+    "orderSubmitted": "Order passed to the waiter. They'll come to confirm."
+  },
+  "lang": {
+    "ru": "RU",
+    "en": "EN",
+    "switch": "Switch language"
+  }
+}
