@@ -15,7 +15,6 @@
     "loading": "Loading…"
   },
   "nav": {
-    "callWaiter": "Call waiter",
     "cart": "My table",
     "menu": "Menu",
     "hookahFlow": "Hookah"
@@ -66,16 +65,10 @@
     "subtitle": "Pick a mood — our master will craft the perfect mix",
     "moodTitle": "What's the mood?",
     "hitsTitle": "Our hits",
-    "premiumTitle": "Premium hookah",
-    "callKalyan": "Call hookah master",
-    "callKalyanHint": "They'll come and tune the mix to your taste",
-    "viewIn3D": "View in 3D"
+    "premiumTitle": "Premium hookah"
   },
   "toast": {
-    "addedToCart": "Added to your table",
-    "waiterCalled": "The waiter will be with you shortly",
-    "kalyanCalled": "The hookah master will be with you shortly",
-    "orderSubmitted": "Order passed to the waiter. They'll come to confirm."
+    "addedToCart": "Added to your table"
   },
   "lang": {
     "ru": "RU",
