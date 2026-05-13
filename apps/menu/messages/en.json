@@ -56,10 +56,7 @@
     "empty": "Your table is empty. Pick something from the menu.",
     "browse": "To menu",
     "subtotal": "Total",
-    "submit": "Submit",
-    "submitDescription": "This calls the waiter. Confirm the order when they arrive.",
-    "callWaiter": "Call waiter",
-    "callKalyan": "Call hookah master",
+    "submitDescription": "Show this screen to your waiter when they come by",
     "qty": "Qty",
     "remove": "Remove",
     "addNote": "Note…"

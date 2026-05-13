@@ -4,7 +4,6 @@ import { getClient } from '@barviha/db';
 import { LocationHeader } from '@/components/LocationHeader';
 import { Toaster } from '@/components/Toaster';
 import { FloatingCartButton } from '@/components/FloatingCartButton';
-import { CallWaiterButton } from '@/components/CallWaiterButton';
 
 export default async function LocationLayout({
   children,
@@ -30,7 +29,6 @@ export default async function LocationLayout({
       <main className="flex-1 mx-auto w-full max-w-[1200px] px-4 sm:px-6 py-6 pb-32">
         {children}
       </main>
-      <CallWaiterButton variant="floating" />
       <FloatingCartButton locationSlug={location.slug} />
       <Toaster />
     </div>

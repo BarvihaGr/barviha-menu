@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { getClient } from '@barviha/db';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -5,7 +6,7 @@ import { ChevronLeft } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { pickItemComposition, pickItemDescription, pickItemName } from '@/lib/i18n-helpers';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, parseIngredients } from '@/lib/utils';
 import { Badge } from '@/components/Badge';
 import { AddToCartButton } from '@/components/AddToCartButton';
 
@@ -26,7 +27,7 @@ export default async function ItemDetailPage({
   const name = pickItemName(item, locale as Locale);
   const description = pickItemDescription(item, locale as Locale);
   const composition = pickItemComposition(item, locale as Locale);
-  const ingredients = composition ? composition.split(',').map((s) => s.trim()).filter(Boolean) : [];
+  const ingredients = parseIngredients(composition);
 
   return (
     <div className="flex flex-col gap-6 max-w-3xl mx-auto">
@@ -39,7 +40,23 @@ export default async function ItemDetailPage({
       </Link>
 
       <div className="overflow-hidden rounded-sm border border-[color:var(--border)] bg-card">
-        <div className="relative aspect-[16/10] flex items-center justify-center bg-gradient-to-br from-[#222] to-[#0c0c0c]">
+        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#222] to-[#0c0c0c]">
+          {item.photo ? (
+            <Image
+              src={item.photo}
+              alt={name}
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+              className="object-cover"
+              style={{ filter: 'brightness(0.85) saturate(0.9)' }}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-7xl text-gold-dark opacity-30">
+              ◈
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
           {item.labels.length > 0 && (
             <div className="absolute left-4 top-4 flex flex-col gap-1.5 z-10">
               {item.labels.map((l) => (
@@ -47,7 +64,6 @@ export default async function ItemDetailPage({
               ))}
             </div>
           )}
-          <span className="text-7xl text-gold-dark opacity-30">◈</span>
         </div>
 
         <div className="flex flex-col gap-6 p-6 sm:p-8">
@@ -66,20 +82,24 @@ export default async function ItemDetailPage({
 
           {ingredients.length > 0 && (
             <div>
-              <div className="text-[10px] uppercase tracking-[0.3em] text-gold border-b border-[color:var(--border)] pb-2 mb-3">
+              <div className="text-[10px] uppercase tracking-[0.3em] text-gold border-b border-[color:var(--border)] pb-2 mb-4">
                 {t('composition')}
               </div>
-              <ul className="flex flex-col gap-0">
+              <div className="flex flex-wrap gap-2">
                 {ingredients.map((ing, idx) => (
-                  <li
+                  <span
                     key={idx}
-                    className="flex items-center gap-2 py-2 text-sm text-[#ccc] border-b border-[rgba(201,169,97,0.08)] last:border-b-0"
+                    className="inline-flex items-center gap-2 rounded-full border border-[color:var(--border)] bg-background/60 px-3.5 py-2 text-xs"
                   >
-                    <span className="text-gold text-[8px]">◆</span>
-                    {ing}
-                  </li>
+                    <span className="text-white/90">{ing.name}</span>
+                    {ing.amount && (
+                      <span className="text-gold/80 text-[11px] before:content-['·'] before:mr-1.5 before:text-gold/40">
+                        {ing.amount}
+                      </span>
+                    )}
+                  </span>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
 

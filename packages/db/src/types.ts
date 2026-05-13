@@ -117,6 +117,7 @@ export interface ResolvedMenuItem {
   labels: ItemLabel[];
   is_available: boolean;
   is_premium: boolean;
+  is_alcoholic: boolean;
   has_3d_model: boolean;
   spline_url: string | null;
   nutrition?: NutritionFacts;

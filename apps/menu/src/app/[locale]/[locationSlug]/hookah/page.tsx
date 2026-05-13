@@ -14,7 +14,6 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { HookahMoodCard } from '@/components/HookahMoodCard';
 import { ItemCard } from '@/components/ItemCard';
 import { HookahHologramCard } from '@/components/HookahHologramCard';
-import { CallWaiterButton } from '@/components/CallWaiterButton';
 
 export default async function HookahPage({
   params,
@@ -37,7 +36,7 @@ export default async function HookahPage({
 
   const hookahCategory = (await db.getCategoryBySlug('hookah'))!;
   const hookahs = items.filter((i) => i.category_id === hookahCategory.id);
-  const premium = hookahs.find((i) => i.has_3d_model) ?? hookahs[0];
+  const premium = hookahs.find((i) => i.is_premium) ?? hookahs[0];
   const hits = hookahs.filter((i) => i.id !== premium?.id);
 
   return (
@@ -72,7 +71,7 @@ export default async function HookahPage({
           name={pickItemName(premium, locale as Locale)}
           description={pickItemDescription(premium, locale as Locale)}
           price={premium.price}
-          splineUrl={premium.spline_url}
+          photo={premium.photo}
           locationSlug={locationSlug}
         />
       )}
@@ -112,13 +111,6 @@ export default async function HookahPage({
           </div>
         </section>
       )}
-
-      <section className="max-w-md mx-auto w-full">
-        <CallWaiterButton variant="large" label="kalyan" />
-        <p className="mt-3 text-center text-[10px] tracking-[0.2em] uppercase text-muted">
-          {t('callKalyanHint')}
-        </p>
-      </section>
     </div>
   );
 }

@@ -1,26 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { ItemLabel, ResolvedMenuItem } from '@barviha/db';
 import { cn } from '@/lib/utils';
-
-const ALCOHOL_KEYWORDS = [
-  'бурбон', 'джин', 'ром', 'водк', 'текил', 'виски', 'просекко', 'мартини', 'aperol', 'campari',
-  'beluga', 'bourbon', 'tequila', 'vodka', 'rum', 'whiskey', 'gin', 'prosecco', 'martini',
-  'кампари', 'апероль', 'cointreau', 'bacardi', 'tanqueray', 'olmeca', 'amaretto', 'kahlua',
-];
-
-function isAlcohol(item: ResolvedMenuItem): boolean {
-  const text = `${item.name} ${item.composition ?? ''}`.toLowerCase();
-  return ALCOHOL_KEYWORDS.some((k) => text.includes(k));
-}
 
 type FilterKey = 'noAlcohol' | 'priceUnder1000' | 'spicy' | 'vegan';
 
 export function applyFilters(items: ResolvedMenuItem[], active: Set<FilterKey>): ResolvedMenuItem[] {
   return items.filter((i) => {
-    if (active.has('noAlcohol') && isAlcohol(i)) return false;
+    if (active.has('noAlcohol') && i.is_alcoholic) return false;
     if (active.has('priceUnder1000') && i.price > 1000) return false;
     if (active.has('spicy') && !(i.labels as ItemLabel[]).includes('spicy')) return false;
     if (active.has('vegan') && !(i.labels as ItemLabel[]).includes('vegan')) return false;

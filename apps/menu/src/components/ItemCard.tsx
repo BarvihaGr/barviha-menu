@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
@@ -26,7 +27,22 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
         href={`/${locationSlug}/item/${item.id}`}
         className="group block h-full overflow-hidden rounded-sm border border-[color:var(--border)] bg-card transition hover:-translate-y-1 hover:border-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
       >
-        <div className="relative aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-[#222] to-[#0c0c0c] overflow-hidden">
+        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#222] to-[#0c0c0c]">
+          {item.photo ? (
+            <Image
+              src={item.photo}
+              alt={name}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover transition duration-500 group-hover:scale-105"
+              style={{ filter: 'brightness(0.85) saturate(0.9)' }}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-6xl text-gold-dark opacity-30">
+              ◈
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 pointer-events-none" />
           {item.labels.length > 0 && (
             <div className="absolute left-3 top-3 flex flex-col gap-1.5 z-10">
               {item.labels.slice(0, 2).map((label) => (
@@ -34,9 +50,6 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
               ))}
             </div>
           )}
-          <span className="text-6xl text-gold-dark opacity-30 transition group-hover:opacity-50 group-hover:scale-110">
-            ◈
-          </span>
         </div>
         <div className="flex flex-col gap-3 p-4 sm:p-5">
           <h3 className="text-base sm:text-lg font-normal tracking-wide text-white leading-tight line-clamp-2">
