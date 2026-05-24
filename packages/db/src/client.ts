@@ -1,15 +1,15 @@
 /**
  * DB client facade. Currently returns mock data — swap to a real Supabase
  * client when env vars are configured (Stage 2 of the TZ).
- *
- * Keep the public surface stable so consumers don't change when we swap.
  */
 import {
+  LOCATION_PRICING,
+  MOCK_ALL_ITEMS,
   MOCK_CATEGORIES,
   MOCK_HOOKAH_MOODS,
-  MOCK_LOCATION,
-  MOCK_RESOLVED_ITEMS,
+  MOCK_LOCATIONS,
   MOCK_TABLES,
+  resolveMenuForLocation,
 } from './mock-data';
 import type { Category, HookahMood, Location, ResolvedMenuItem, Table } from './types';
 
@@ -23,23 +23,35 @@ export interface BarvihaClient {
   getTableByToken(token: string): Promise<Table | null>;
 }
 
+function getLocationById(id: string): Location | undefined {
+  return MOCK_LOCATIONS.find((l) => l.id === id);
+}
+
 class MockBarvihaClient implements BarvihaClient {
   async getLocationBySlug(slug: string): Promise<Location | null> {
-    return slug === MOCK_LOCATION.slug ? MOCK_LOCATION : null;
+    return MOCK_LOCATIONS.find((l) => l.slug === slug) ?? null;
   }
 
   async getCategoriesForLocation(locationId: string): Promise<Category[]> {
-    if (locationId !== MOCK_LOCATION.id) return [];
-    return MOCK_CATEGORIES;
+    const loc = getLocationById(locationId);
+    if (!loc) return [];
+    // Если у локации задан whitelist категорий (например, Рублёвка — только роллы)
+    const cfg = LOCATION_PRICING[loc.slug];
+    if (cfg?.allowedCategories) {
+      return MOCK_CATEGORIES.filter((c) => cfg.allowedCategories!.includes(c.id));
+    }
+    // Иначе — все категории, кроме «Роллы» (роллы только на whitelist-локациях)
+    return MOCK_CATEGORIES.filter((c) => c.id !== 'cat-rolls');
   }
 
   async getMenuItemsForLocation(locationId: string): Promise<ResolvedMenuItem[]> {
-    if (locationId !== MOCK_LOCATION.id) return [];
-    return MOCK_RESOLVED_ITEMS;
+    const loc = getLocationById(locationId);
+    if (!loc) return [];
+    return resolveMenuForLocation(loc.slug);
   }
 
   async getMenuItemById(itemId: string): Promise<ResolvedMenuItem | null> {
-    return MOCK_RESOLVED_ITEMS.find((i) => i.id === itemId) ?? null;
+    return MOCK_ALL_ITEMS.find((i) => i.id === itemId) ?? null;
   }
 
   async getCategoryBySlug(slug: string): Promise<Category | null> {

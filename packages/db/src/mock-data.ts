@@ -46,15 +46,56 @@ const PIC = {
   apples: '1571091718767-18b5b1457add',
 } as const;
 
-export const MOCK_LOCATION: Location = {
-  id: 'loc-mendeleevskaya',
-  slug: 'mendeleevskaya',
-  name: 'Менделеевская',
-  address: 'г. Москва, ул. Образцова, 4А',
-  features: ['lounge', 'karaoke', 'veranda'],
-  brand_color: '#c9a961',
-  created_at: '2026-01-01T00:00:00Z',
-};
+export const MOCK_LOCATIONS: Location[] = [
+  {
+    id: 'loc-mendeleevskaya',
+    slug: 'mendeleevskaya',
+    name: 'Менделеевская',
+    address: 'г. Москва, ул. Образцова, 4А',
+    features: ['lounge', 'karaoke', 'veranda'],
+    brand_color: '#C49262',
+    created_at: '2026-01-01T00:00:00Z',
+  },
+  {
+    id: 'loc-baumanskaya',
+    slug: 'baumanskaya',
+    name: 'Бауманская',
+    address: 'г. Москва, ул. Бакунинская, 8',
+    features: ['lounge'],
+    brand_color: '#C49262',
+    created_at: '2026-01-01T00:00:00Z',
+  },
+  {
+    id: 'loc-mitino',
+    slug: 'mitino',
+    name: 'Митино',
+    address: 'г. Москва, Пятницкое ш., 3',
+    features: ['lounge'],
+    brand_color: '#C49262',
+    created_at: '2026-01-01T00:00:00Z',
+  },
+  {
+    id: 'loc-krylatskoe',
+    slug: 'krylatskoe',
+    name: 'Крылатское',
+    address: 'г. Москва, Рублёвское ш., 52',
+    features: ['lounge', 'karaoke'],
+    brand_color: '#C49262',
+    created_at: '2026-01-01T00:00:00Z',
+  },
+  {
+    id: 'loc-rublyovka',
+    slug: 'rublyovka',
+    name: 'Рублёвка',
+    address: 'г. Москва, Рублёво-Успенское ш., 1-й км',
+    features: ['lounge', 'karaoke', 'vip_karaoke', 'veranda', 'terrace'],
+    brand_color: '#C49262',
+    created_at: '2026-01-01T00:00:00Z',
+  },
+];
+
+// Back-compat: код, который импортит MOCK_LOCATION, продолжит работать
+export const MOCK_LOCATION: Location = MOCK_LOCATIONS[0]!;
 
 export const MOCK_TABLES: Table[] = Array.from({ length: 12 }, (_, i) => ({
   id: `tbl-${i + 1}`,
@@ -67,7 +108,8 @@ export const MOCK_CATEGORIES: Category[] = [
   { id: 'cat-hookah', slug: 'hookah', name: 'Кальяны', parent_id: null, sort_order: 1 },
   { id: 'cat-bar', slug: 'bar', name: 'Бар', parent_id: null, sort_order: 2 },
   { id: 'cat-kitchen', slug: 'kitchen', name: 'Кухня', parent_id: null, sort_order: 3 },
-  { id: 'cat-desserts', slug: 'desserts', name: 'Десерты', parent_id: null, sort_order: 4 },
+  { id: 'cat-rolls', slug: 'rolls', name: 'Роллы', parent_id: null, sort_order: 4 },
+  { id: 'cat-desserts', slug: 'desserts', name: 'Десерты', parent_id: null, sort_order: 5 },
 ];
 
 export const MOCK_HOOKAH_MOODS: HookahMood[] = [
@@ -795,3 +837,217 @@ export const MOCK_RESOLVED_ITEMS: ResolvedMenuItem[] = [
     nutrition: { kcal: 707, protein: 12, fat: 38, carbs: 80 },
   },
 ];
+
+// ============================================================================
+// РОЛЛЫ — отдельная категория, эксклюзив для Рублёвки (там нет классической кухни)
+// ============================================================================
+const ROLL_PIC = (id: string): string =>
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1920&q=85`;
+
+export const MOCK_ROLLS: ResolvedMenuItem[] = [
+  {
+    id: 'itm-roll-philadelphia',
+    name: 'Филадельфия классик',
+    description: 'Лосось, сливочный сыр Филадельфия, свежий огурец, нори.',
+    photo: ROLL_PIC('1579871494447-9811cf80d66c'),
+    composition: 'Лосось, сыр Филадельфия, огурец, рис, нори',
+    category_id: 'cat-rolls',
+    price: 750,
+    weight: '230 г',
+    labels: ['hit'],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+    nutrition: { kcal: 380, protein: 14, fat: 18, carbs: 38 },
+  },
+  {
+    id: 'itm-roll-california',
+    name: 'Калифорния с крабом',
+    description: 'Краб, авокадо, огурец, обсыпан икрой тобико.',
+    photo: ROLL_PIC('1607301406259-dfb186e15de8'),
+    composition: 'Краб, авокадо, огурец, икра тобико, рис, нори',
+    category_id: 'cat-rolls',
+    price: 690,
+    weight: '210 г',
+    labels: [],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+    nutrition: { kcal: 320, protein: 11, fat: 12, carbs: 42 },
+  },
+  {
+    id: 'itm-roll-unagi-maki',
+    name: 'Унаги маки',
+    description: 'Угорь горячего копчения, огурец, унаги-соус, кунжут.',
+    photo: ROLL_PIC('1617196034796-73dfa7b1fd56'),
+    composition: 'Угорь, огурец, соус унаги, кунжут, рис, нори',
+    category_id: 'cat-rolls',
+    price: 850,
+    weight: '215 г',
+    labels: ['chef_pick'],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+    nutrition: { kcal: 410, protein: 16, fat: 14, carbs: 48 },
+  },
+  {
+    id: 'itm-roll-spicy-tuna',
+    name: 'Спайси тунец',
+    description: 'Свежий тунец, спайси-соус, перец чили, кинза.',
+    photo: ROLL_PIC('1611141647617-6cdbf7d4ee62'),
+    composition: 'Тунец, спайси-соус, чили, кинза, рис, нори',
+    category_id: 'cat-rolls',
+    price: 720,
+    weight: '220 г',
+    labels: ['spicy'],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+    nutrition: { kcal: 360, protein: 19, fat: 9, carbs: 44 },
+  },
+  {
+    id: 'itm-roll-salmon-tempura',
+    name: 'Лосось темпура',
+    description: 'Лосось в хрустящей темпуре, спайси-майо, обжарка.',
+    photo: ROLL_PIC('1546069901-ba9599a7e63c'),
+    composition: 'Лосось, темпура, спайси-майо, рис, нори',
+    category_id: 'cat-rolls',
+    price: 790,
+    weight: '240 г',
+    labels: ['hit'],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+    nutrition: { kcal: 480, protein: 17, fat: 22, carbs: 54 },
+  },
+  {
+    id: 'itm-roll-baked-salmon',
+    name: 'Запечённый с лососем',
+    description: 'Под сырной шапкой, запечён в духовке до золотистой корки.',
+    photo: ROLL_PIC('1559847844-5315695dadae'),
+    composition: 'Лосось, сыр, спайси-соус, рис, нори',
+    category_id: 'cat-rolls',
+    price: 690,
+    weight: '230 г',
+    labels: [],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+    nutrition: { kcal: 420, protein: 18, fat: 19, carbs: 42 },
+  },
+  {
+    id: 'itm-roll-rainbow',
+    name: 'Рейнбоу',
+    description: 'Микс рыбы сверху: лосось, тунец, угорь, авокадо.',
+    photo: ROLL_PIC('1583623025817-d180a2221d0a'),
+    composition: 'Лосось, тунец, угорь, авокадо, рис, нори',
+    category_id: 'cat-rolls',
+    price: 850,
+    weight: '250 г',
+    labels: ['chef_pick'],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+    nutrition: { kcal: 440, protein: 22, fat: 16, carbs: 48 },
+  },
+  {
+    id: 'itm-roll-sake-maki',
+    name: 'Сяке маки',
+    description: 'Классический маленький ролл с лососем.',
+    photo: ROLL_PIC('1563612116-1b1e4be8b5a0'),
+    composition: 'Лосось, рис, нори',
+    category_id: 'cat-rolls',
+    price: 450,
+    weight: '160 г',
+    labels: [],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+    nutrition: { kcal: 240, protein: 11, fat: 5, carbs: 38 },
+  },
+  {
+    id: 'itm-roll-set-barvikha',
+    name: 'Сет «Барвиха»',
+    description: 'Авторский микс — 48 шт. Идеально для компании 3–4 человек.',
+    photo: ROLL_PIC('1617196034796-73dfa7b1fd56'),
+    composition: 'Филадельфия + Калифорния + Унаги-маки + Спайси тунец, 48 шт',
+    category_id: 'cat-rolls',
+    price: 2200,
+    weight: '950 г',
+    labels: ['hit', 'chef_pick'],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+  },
+  {
+    id: 'itm-roll-set-premium',
+    name: 'Сет «Премиум»',
+    description: 'С угрем, тунцом и икрой. Лучшие позиции в одном сете.',
+    photo: ROLL_PIC('1607301406259-dfb186e15de8'),
+    composition: 'Унаги + Рейнбоу + Лосось темпура + Запечённый, с икрой и угрём, 56 шт',
+    category_id: 'cat-rolls',
+    price: 3500,
+    weight: '1100 г',
+    labels: ['premium', 'chef_pick'],
+    is_available: true,
+    is_premium: true,
+    is_alcoholic: false,
+    has_3d_model: false,
+    spline_url: null,
+  },
+];
+
+// ============================================================================
+// ПРАВИЛА ЦЕН ПО ЛОКАЦИЯМ
+// ============================================================================
+export const LOCATION_PRICING: Record<string, { discount?: number; allowedCategories?: string[] }> = {
+  // Бюджетные точки — всё меню на 25% дешевле, округление до 50 ₽
+  'baumanskaya':  { discount: 0.25 },
+  'mitino':       { discount: 0.25 },
+  'krylatskoe':   { discount: 0.25 },
+  // Рублёвка — премиум, без скидки, но в категории «Кухня» вместо обычной — только роллы
+  // (бар, кальяны, десерты — стандартные)
+  'rublyovka':    { allowedCategories: ['cat-hookah', 'cat-bar', 'cat-rolls', 'cat-desserts'] },
+};
+
+function roundTo50(n: number): number {
+  return Math.round(n / 50) * 50;
+}
+
+// ВСЕ блюда сети (основа + роллы)
+export const MOCK_ALL_ITEMS: ResolvedMenuItem[] = [...MOCK_RESOLVED_ITEMS, ...MOCK_ROLLS];
+
+// Резолвер: возвращает меню с учётом скидки и whitelist категорий
+export function resolveMenuForLocation(slug: string): ResolvedMenuItem[] {
+  const cfg = LOCATION_PRICING[slug] || {};
+  let items = MOCK_ALL_ITEMS;
+  // На обычных точках роллы скрыты — они только для Рублёвки (если потом захотим
+  // открыть и для других — уберём фильтр или добавим в allowedCategories).
+  if (!cfg.allowedCategories) {
+    items = items.filter((it) => it.category_id !== 'cat-rolls');
+  } else {
+    items = items.filter((it) => cfg.allowedCategories!.includes(it.category_id || ''));
+  }
+  if (cfg.discount) {
+    items = items.map((it) => ({ ...it, price: roundTo50(it.price * (1 - cfg.discount!)) }));
+  }
+  return items;
+}
