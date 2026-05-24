@@ -26,7 +26,7 @@ export function CategoryCard({ href, title, subtitle, icon, count, index = 0, la
           large ? 'aspect-[2/1]' : 'aspect-square'
         }`}
       >
-        <div className="relative flex h-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-[#1f1f1f] to-[#0a0a0a] p-5">
+        <div className="relative flex h-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-[#3B2A20] to-[#2A1B11] p-5">
           <span className="text-5xl sm:text-6xl text-gold-dark opacity-40 transition group-hover:opacity-60 group-hover:scale-110">
             {icon}
           </span>
