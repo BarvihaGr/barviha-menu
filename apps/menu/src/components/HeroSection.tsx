@@ -28,7 +28,7 @@ export function HeroSection({
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <section className="relative -mx-4 sm:-mx-6 -mt-6 mb-2 h-[46vh] min-h-[320px] max-h-[480px] overflow-hidden">
+    <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -mt-6 mb-2 h-[100svh] min-h-[560px] overflow-hidden">
       {/* Фон: видео или градиент */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#643102] via-[#3F1904] to-[#05342C]" />
       {videoSrc && (
