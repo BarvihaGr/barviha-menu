@@ -5,9 +5,7 @@ import type { Locale } from '@/i18n/routing';
 import { pickCategoryName } from '@/lib/i18n-helpers';
 import { CategoryCard } from '@/components/CategoryCard';
 import { SectionTitle } from '@/components/SectionTitle';
-import { SearchBar } from '@/components/SearchBar';
 import { HeroSection } from '@/components/HeroSection';
-import { PromoCarousel } from '@/components/PromoCarousel';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
 import { getLocationAccent } from '@/lib/location-theme';
 
@@ -40,8 +38,6 @@ export default async function LocationHome({
     db.getAnnouncementsForLocation(location.id),
   ]);
 
-  const featured = items.filter((i) => i.labels.includes('hit') || i.labels.includes('chef_pick'));
-
   // Все категории в едином порядке миров (Кухня → Бар → Кальяны), без дробления на секции
   const orderedCategories = [...categories].sort(
     (a, b) =>
@@ -66,15 +62,6 @@ export default async function LocationHome({
         locationCity={location.city ?? location.address}
         accent={accent}
       />
-
-      <SearchBar items={items} locationSlug={location.slug} />
-
-      {featured.length > 0 && (
-        <section className="flex flex-col gap-3">
-          <SectionTitle>{tHome('featured')}</SectionTitle>
-          <PromoCarousel items={featured.slice(0, 10)} locationSlug={location.slug} />
-        </section>
-      )}
 
       {orderedCategories.length > 0 && (
         <section>
