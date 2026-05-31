@@ -62,16 +62,16 @@ export function HeroSection({
           transition={{ duration: 0.7, ease: 'easeOut' }}
         >
           <Image
-            src="/logo-arka.png"
+            src="/locations/arka/logo-tree.png"
             alt="Barvikha"
-            width={2560}
-            height={2560}
+            width={2559}
+            height={1591}
             priority
-            className="h-32 sm:h-44 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
+            className="h-40 sm:h-52 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
           />
         </motion.div>
 
-        {/* Название локации — крупно, с акцентным подчёркиванием */}
+        {/* Название локации — крупно, золотом в цвет дерева */}
         {locationName && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -80,13 +80,12 @@ export function HeroSection({
             className="flex flex-col items-center gap-2 -mt-2"
           >
             <h1
-              className="font-[family-name:var(--font-display)] text-3xl sm:text-5xl font-semibold tracking-wide text-[color:var(--cream)] drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)]"
-              style={{ textShadow: `0 0 40px ${accent}66` }}
+              className="gold-text font-[family-name:var(--font-display)] text-[1.7rem] sm:text-[2.7rem] font-semibold tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)]"
             >
               {locationName}
             </h1>
             {locationCity && (
-              <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-beige/80">
+              <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em] text-gold/85">
                 {locationCity}
               </span>
             )}
