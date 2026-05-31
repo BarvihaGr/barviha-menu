@@ -26,7 +26,7 @@ export function HeroSection({
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -mt-6 -mb-10 h-[82svh] min-h-[480px] overflow-hidden">
+    <section className="relative -mt-4 -mb-8 h-[68svh] min-h-[420px] overflow-hidden">
       {/* Фон: видео или градиент */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]" />
       {videoSrc && (
@@ -44,17 +44,20 @@ export function HeroSection({
           onLoadedData={() => setLoaded(true)}
         />
       )}
-      {/* Затемнение для читаемости (мягкое, сверху и снизу) */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/60 via-transparent to-[var(--background)]/35" />
-      {/* Акцентная вуаль локации (еле заметный цветовой подтон) */}
+      {/* Лёгкое затемнение для читаемости */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/55 via-transparent to-[var(--background)]/30" />
+      {/* Акцентная вуаль локации */}
       <div
         className="absolute inset-0 opacity-25 mix-blend-soft-light pointer-events-none"
-        style={{ background: `radial-gradient(circle at 50% 20%, ${accent}, transparent 60%)` }}
+        style={{ background: `radial-gradient(circle at 50% 35%, ${accent}, transparent 60%)` }}
       />
-      {/* Плавное растворение видео в фон страницы снизу */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/85 to-transparent pointer-events-none" />
+      {/* Плавный фейд по всем 4 краям — видео без резких границ */}
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--background)] to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/80 to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-[var(--background)] to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-[var(--background)] to-transparent pointer-events-none" />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-3 px-6 pb-[12%] text-center">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-1 px-6 text-center">
         {/* Логотип */}
         <motion.div
           initial={{ opacity: 0, y: 18, scale: 0.96 }}
@@ -77,7 +80,7 @@ export function HeroSection({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex flex-col items-center gap-2 -mt-2"
+            className="flex flex-col items-center gap-1 -mt-4"
           >
             <h1
               className="gold-text font-[family-name:var(--font-display)] text-[1.7rem] sm:text-[2.7rem] font-semibold tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)]"
