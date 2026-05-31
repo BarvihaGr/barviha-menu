@@ -46,52 +46,58 @@ const PIC = {
   apples: '1571091718767-18b5b1457add',
 } as const;
 
+/**
+ * Все 27 локаций Barviha Group. Slug'и 1:1 совпадают с боевыми URL
+ * (menu.barvikhagroup.ru/<slug>) — модель «1 сайт + переключатель».
+ * Меню пока общее (заглушка) для всех, кроме конфигов в LOCATION_PRICING;
+ * реальное меню подставляется по локациям по мере загрузки контента.
+ */
+const LOC = (
+  id: string,
+  slug: string,
+  name: string,
+  features: Location['features'] = ['lounge'],
+): Location => ({
+  id,
+  slug,
+  name,
+  address: null,
+  features,
+  brand_color: '#3F1904',
+  created_at: '2026-01-01T00:00:00Z',
+});
+
 export const MOCK_LOCATIONS: Location[] = [
+  LOC('loc-arka', 'arka', 'Арка'),
+  LOC('loc-baumanskaia', 'baumanskaia', 'Бауманская'),
+  LOC('loc-domodedovo', 'domodedovo', 'Домодедово'),
+  LOC('loc-erevan', 'erevan', 'Ереван'),
+  LOC('loc-kievskaia', 'kievskaia', 'Киевская'),
+  LOC('loc-kolomenskaia', 'kolomenskaia', 'Коломенская'),
+  LOC('loc-krasnaia-ploshchad', 'krasnaia-ploshchad', 'Красная Площадь'),
+  LOC('loc-krylatskoe', 'barvixa-lounge-krylatskoe', 'Крылатское', ['lounge', 'karaoke']),
+  LOC('loc-likerka', 'likerka', 'Ликёрка'),
+  LOC('loc-marino', 'marino', 'Марьино'),
+  LOC('loc-maxackala', 'maxackala', 'Махачкала'),
   {
-    id: 'loc-mendeleevskaya',
-    slug: 'mendeleevskaya',
-    name: 'Менделеевская',
+    ...LOC('loc-mendeleevskaia', 'mendeleevskaia', 'Менделеевская', ['lounge', 'karaoke', 'veranda']),
     address: 'г. Москва, ул. Образцова, 4А',
-    features: ['lounge', 'karaoke', 'veranda'],
-    brand_color: '#C49262',
-    created_at: '2026-01-01T00:00:00Z',
   },
-  {
-    id: 'loc-baumanskaya',
-    slug: 'baumanskaya',
-    name: 'Бауманская',
-    address: 'г. Москва, ул. Бакунинская, 8',
-    features: ['lounge'],
-    brand_color: '#C49262',
-    created_at: '2026-01-01T00:00:00Z',
-  },
-  {
-    id: 'loc-mitino',
-    slug: 'mitino',
-    name: 'Митино',
-    address: 'г. Москва, Пятницкое ш., 3',
-    features: ['lounge'],
-    brand_color: '#C49262',
-    created_at: '2026-01-01T00:00:00Z',
-  },
-  {
-    id: 'loc-krylatskoe',
-    slug: 'krylatskoe',
-    name: 'Крылатское',
-    address: 'г. Москва, Рублёвское ш., 52',
-    features: ['lounge', 'karaoke'],
-    brand_color: '#C49262',
-    created_at: '2026-01-01T00:00:00Z',
-  },
-  {
-    id: 'loc-rublyovka',
-    slug: 'rublyovka',
-    name: 'Рублёвка',
-    address: 'г. Москва, Рублёво-Успенское ш., 1-й км',
-    features: ['lounge', 'karaoke', 'vip_karaoke', 'veranda', 'terrace'],
-    brand_color: '#C49262',
-    created_at: '2026-01-01T00:00:00Z',
-  },
+  LOC('loc-mitino', 'mitino', 'Митино'),
+  LOC('loc-moskva-siti', 'moskva-siti', 'Москва-Сити'),
+  LOC('loc-nevskii', 'nevskii', 'Невский'),
+  LOC('loc-niznii-novgorod', 'niznii-novgorod', 'Нижний Новгород'),
+  LOC('loc-otradnoe', 'otradnoe', 'Отрадное'),
+  LOC('loc-paveletskaia', 'paveletskaia', 'Павелецкая'),
+  LOC('loc-penza', 'penza', 'Пенза'),
+  LOC('loc-ramenki', 'ramenki', 'Раменки'),
+  LOC('loc-rublevka', 'rublevka', 'Рублёвка', ['lounge', 'karaoke', 'vip_karaoke', 'veranda', 'terrace']),
+  LOC('loc-saratov', 'barvixa-lounge-saratov', 'Саратов'),
+  LOC('loc-seligerskaia', 'seligerskaia', 'Селигерская'),
+  LOC('loc-taskent', 'taskent', 'Ташкент'),
+  LOC('loc-tepliy-stan', 'tepliy-stan', 'Тёплый Стан'),
+  LOC('loc-cska', 'cska', 'ЦСКА'),
+  LOC('loc-iugo-zapadnaia', 'iugo-zapadnaia', 'Юго-Западная'),
 ];
 
 // Back-compat: код, который импортит MOCK_LOCATION, продолжит работать
@@ -1019,13 +1025,9 @@ export const MOCK_ROLLS: ResolvedMenuItem[] = [
 // ПРАВИЛА ЦЕН ПО ЛОКАЦИЯМ
 // ============================================================================
 export const LOCATION_PRICING: Record<string, { discount?: number; allowedCategories?: string[] }> = {
-  // Бюджетные точки — всё меню на 25% дешевле, округление до 50 ₽
-  'baumanskaya':  { discount: 0.25 },
-  'mitino':       { discount: 0.25 },
-  'krylatskoe':   { discount: 0.25 },
-  // Рублёвка — премиум, без скидки, но в категории «Кухня» вместо обычной — только роллы
-  // (бар, кальяны, десерты — стандартные)
-  'rublyovka':    { allowedCategories: ['cat-hookah', 'cat-bar', 'cat-rolls', 'cat-desserts'] },
+  // Рублёвка — премиум: в «Кухне» вместо обычной — только роллы
+  // (бар, кальяны, десерты — стандартные). Боевой slug — rublevka.
+  'rublevka': { allowedCategories: ['cat-hookah', 'cat-bar', 'cat-rolls', 'cat-desserts'] },
 };
 
 function roundTo50(n: number): number {
