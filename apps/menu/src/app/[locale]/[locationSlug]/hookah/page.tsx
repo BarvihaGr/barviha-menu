@@ -1,8 +1,6 @@
 import { getClient } from '@barviha/db';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { ChevronLeft } from 'lucide-react';
-import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import {
   pickItemDescription,
@@ -23,7 +21,6 @@ export default async function HookahPage({
   const { locale, locationSlug } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('hookah');
-  const tCommon = await getTranslations('common');
 
   const db = getClient();
   const location = await db.getLocationBySlug(locationSlug);
@@ -41,14 +38,6 @@ export default async function HookahPage({
 
   return (
     <div className="flex flex-col gap-10">
-      <Link
-        href={`/${locationSlug}`}
-        className="inline-flex items-center gap-1 self-start text-[10px] uppercase tracking-[0.25em] text-muted hover:text-gold cursor-pointer"
-      >
-        <ChevronLeft size={14} />
-        {tCommon('back')}
-      </Link>
-
       <section className="text-center max-w-2xl mx-auto">
         <h1
           className="text-3xl sm:text-4xl uppercase tracking-[0.15em] font-light"

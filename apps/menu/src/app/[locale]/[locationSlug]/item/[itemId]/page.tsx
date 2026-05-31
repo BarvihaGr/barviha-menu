@@ -2,8 +2,6 @@ import Image from 'next/image';
 import { getClient } from '@barviha/db';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { ChevronLeft } from 'lucide-react';
-import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { pickItemComposition, pickItemDescription, pickItemName } from '@/lib/i18n-helpers';
 import { formatPrice, parseIngredients } from '@/lib/utils';
@@ -15,10 +13,9 @@ export default async function ItemDetailPage({
 }: {
   params: Promise<{ locale: string; locationSlug: string; itemId: string }>;
 }) {
-  const { locale, locationSlug, itemId } = await params;
+  const { locale, itemId } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('item');
-  const tCommon = await getTranslations('common');
 
   const db = getClient();
   const item = await db.getMenuItemById(itemId);
@@ -31,14 +28,6 @@ export default async function ItemDetailPage({
 
   return (
     <div className="flex flex-col gap-6 max-w-3xl mx-auto">
-      <Link
-        href={`/${locationSlug}`}
-        className="inline-flex items-center gap-1 self-start text-[10px] uppercase tracking-[0.25em] text-muted hover:text-gold cursor-pointer"
-      >
-        <ChevronLeft size={14} />
-        {tCommon('back')}
-      </Link>
-
       <div className="overflow-hidden rounded-sm border border-[color:var(--border)] bg-card">
         <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#453324] to-[#2A1B11]">
           {item.photo ? (

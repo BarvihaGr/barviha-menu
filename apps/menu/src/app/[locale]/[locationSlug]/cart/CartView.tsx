@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ChevronLeft, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ResolvedMenuItem } from '@barviha/db';
@@ -20,7 +20,6 @@ interface Props {
 
 export function CartView({ allItems, locationSlug }: Props) {
   const t = useTranslations('cart');
-  const tCommon = useTranslations('common');
   const locale = useLocale() as Locale;
   const cart = useCart();
 
@@ -35,14 +34,6 @@ export function CartView({ allItems, locationSlug }: Props) {
 
   return (
     <div className="flex flex-col gap-6 max-w-3xl mx-auto">
-      <Link
-        href={`/${locationSlug}`}
-        className="inline-flex items-center gap-1 self-start text-[10px] uppercase tracking-[0.25em] text-muted hover:text-gold cursor-pointer"
-      >
-        <ChevronLeft size={14} />
-        {tCommon('back')}
-      </Link>
-
       <SectionTitle>{t('title')}</SectionTitle>
 
       {entries.length === 0 ? (

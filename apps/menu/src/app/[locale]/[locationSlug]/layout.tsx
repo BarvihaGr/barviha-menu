@@ -4,6 +4,7 @@ import { getClient } from '@barviha/db';
 import { LocationHeader } from '@/components/LocationHeader';
 import { Toaster } from '@/components/Toaster';
 import { FloatingCartButton } from '@/components/FloatingCartButton';
+import { SwipeBack } from '@/components/SwipeBack';
 import { getLocationAccent } from '@/lib/location-theme';
 
 export default async function LocationLayout({
@@ -46,6 +47,7 @@ export default async function LocationLayout({
       </main>
       <FloatingCartButton locationSlug={location.slug} />
       <Toaster />
+      <SwipeBack />
     </div>
   );
 }
