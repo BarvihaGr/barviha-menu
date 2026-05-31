@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
@@ -16,6 +16,21 @@ interface Props {
   accent?: string;
 }
 
+/**
+ * Hero-секция главной страницы локации.
+ *
+ * Загрузка идёт поэтапно (вместо «всё разом» = лаг):
+ *  1. Сначала показывается градиент + poster.jpg (мгновенно, ~30-200KB)
+ *  2. Параллельно стартует анимация логотипа (без блокировки видео)
+ *  3. Видео начинает грузиться ТОЛЬКО после mount + idle (откладывает 11MB на потом)
+ *  4. Когда видео реально загрузилось — оно плавно фейдится с лёгким zoom-out
+ *
+ * Появление контента:
+ *  - Видео: blur(20px)→0 + scale(1.08)→1 (cinemagraph effect, 1.4s)
+ *  - Лого: scale(0.7)+rotate(-6°)→1, с golden-glow burst (0.8s, spring)
+ *  - Название: каждая буква отдельно через stagger (0.07s между буквами)
+ *  - Адрес: fade-up с задержкой
+ */
 export function HeroSection({
   videoSrc,
   poster,
@@ -23,27 +38,66 @@ export function HeroSection({
   locationCity,
   accent = '#C49262',
 }: Props) {
-  const [loaded, setLoaded] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Откладываем загрузку видео до idle — постер уже показан, не лагает первый paint
+  useEffect(() => {
+    if (!videoSrc) return;
+    const start = () => setShouldLoadVideo(true);
+    if ('requestIdleCallback' in window) {
+      const id = (window as Window & typeof globalThis).requestIdleCallback(start, { timeout: 1200 });
+      return () => (window as Window & typeof globalThis).cancelIdleCallback?.(id);
+    }
+    const t = setTimeout(start, 400);
+    return () => clearTimeout(t);
+  }, [videoSrc]);
+
+  // Когда src появился — велим браузеру начать загрузку
+  useEffect(() => {
+    if (shouldLoadVideo && videoRef.current) {
+      videoRef.current.load();
+    }
+  }, [shouldLoadVideo]);
 
   return (
-    <section className="relative -mt-4 -mb-8 h-[68svh] min-h-[420px] overflow-hidden">
-      {/* Фон: видео или градиент */}
+    <section className="relative h-[68svh] min-h-[420px] overflow-hidden left-1/2 -translate-x-1/2 w-[min(130%,calc(100vw-1rem))]">
+      {/* Фон-плейсхолдер: градиент + постер (показывается мгновенно) */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]" />
-      {videoSrc && (
-        <video
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-            loaded ? 'opacity-100' : 'opacity-0'
-          }`}
+      {poster && (
+        <Image
+          src={poster}
+          alt=""
+          fill
+          priority
+          sizes="(max-width: 1024px) 100vw, 1560px"
+          className={`object-cover transition-opacity duration-500 ${videoReady ? 'opacity-0' : 'opacity-90'}`}
+        />
+      )}
+
+      {videoSrc && shouldLoadVideo && (
+        <motion.video
+          ref={videoRef}
+          initial={{ opacity: 0, scale: 1.08, filter: 'blur(20px)' }}
+          animate={
+            videoReady
+              ? { opacity: 1, scale: 1, filter: 'blur(0px)' }
+              : { opacity: 0, scale: 1.08, filter: 'blur(20px)' }
+          }
+          transition={{ duration: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
+          className="absolute inset-0 h-full w-full object-cover"
           src={videoSrc}
           poster={poster ?? undefined}
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
-          onLoadedData={() => setLoaded(true)}
+          preload="none"
+          onLoadedData={() => setVideoReady(true)}
         />
       )}
+
       {/* Лёгкое затемнение для читаемости */}
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/55 via-transparent to-[var(--background)]/30" />
       {/* Акцентная вуаль локации */}
@@ -57,44 +111,78 @@ export function HeroSection({
       <div className="absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-[var(--background)] to-transparent pointer-events-none" />
       <div className="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-[var(--background)] to-transparent pointer-events-none" />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-1 px-6 text-center">
-        {/* Логотип */}
+      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
+        {/* Логотип — кинематографичный entrance (scale + slight rotate + glow burst) */}
         <motion.div
-          initial={{ opacity: 0, y: 18, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          initial={{ opacity: 0, scale: 0.7, rotate: -6, filter: 'blur(8px)' }}
+          animate={{ opacity: 1, scale: 1, rotate: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
         >
-          <Image
-            src="/locations/arka/logo-tree.png"
-            alt="Barvikha"
-            width={2559}
-            height={1591}
-            priority
-            className="h-40 sm:h-52 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
-          />
+          <motion.div
+            initial={{ filter: 'drop-shadow(0 0 0 rgba(229,196,144,0))' }}
+            animate={{
+              filter: [
+                'drop-shadow(0 0 0 rgba(229,196,144,0))',
+                'drop-shadow(0 0 40px rgba(229,196,144,0.7))',
+                'drop-shadow(0 4px 24px rgba(0,0,0,0.6))',
+              ],
+            }}
+            transition={{ duration: 1.6, delay: 0.6, times: [0, 0.4, 1], ease: 'easeOut' }}
+          >
+            <Image
+              src="/locations/arka/logo-tree.png"
+              alt="Barvikha"
+              width={2559}
+              height={1591}
+              priority
+              className="h-40 sm:h-52 w-auto"
+            />
+          </motion.div>
         </motion.div>
 
-        {/* Название локации — крупно, золотом в цвет дерева */}
+        {/* Название локации — буква за буквой (stagger) */}
         {locationName && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex flex-col items-center gap-1 -mt-4"
+          <motion.h1
+            className="gold-text font-[family-name:var(--font-display)] text-[1.7rem] sm:text-[2.7rem] font-semibold tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)] -mt-3"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.07, delayChildren: 0.7 } },
+            }}
+            aria-label={locationName}
           >
-            <h1
-              className="gold-text font-[family-name:var(--font-display)] text-[1.7rem] sm:text-[2.7rem] font-semibold tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)]"
-            >
-              {locationName}
-            </h1>
-            {locationCity && (
-              <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em] text-gold/85">
-                {locationCity}
-              </span>
-            )}
-          </motion.div>
+            {Array.from(locationName).map((ch, i) => (
+              <motion.span
+                key={i}
+                style={{ display: 'inline-block', whiteSpace: 'pre' }}
+                variants={{
+                  hidden: { opacity: 0, y: 18, filter: 'blur(6px)' },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    filter: 'blur(0px)',
+                    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+                  },
+                }}
+              >
+                {ch}
+              </motion.span>
+            ))}
+          </motion.h1>
         )}
 
+        {/* Адрес — slide-up fade с финальной задержкой */}
+        {locationCity && (
+          <motion.span
+            className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em] text-gold/85"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.2, ease: 'easeOut' }}
+          >
+            {locationCity}
+          </motion.span>
+        )}
       </div>
     </section>
   );
