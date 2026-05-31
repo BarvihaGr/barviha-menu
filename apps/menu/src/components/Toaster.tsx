@@ -15,7 +15,7 @@ export function Toaster() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            className="pointer-events-auto rounded-sm bg-gold text-black px-5 py-3 text-xs uppercase tracking-[0.2em] font-semibold shadow-[0_10px_40px_rgba(201,169,97,0.4)]"
+            className="pointer-events-auto rounded-sm bg-gold text-[#3F1904] px-5 py-3 text-xs uppercase tracking-[0.2em] font-semibold shadow-[0_10px_40px_rgba(218,193,120,0.4)]"
           >
             {t.message}
           </motion.div>

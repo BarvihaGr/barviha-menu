@@ -1,30 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 :root {
-  /* Master Blend — единая палитра с основным сайтом Барвиха */
-  --background: #2A1B11;
-  --foreground: #F4E9D5;
-  --muted: rgba(244,233,213,0.55);
-  --card: #3B2A20;
-  --border: rgba(196, 146, 98, 0.22);
-  --gold: #C49262;
-  --gold-light: #E5C490;
-  --gold-dark: #6F4827;
+  /* ── Barviha «Oxblood» — палитра из ТЗ ──
+     основа #3F1904 + тёплые допы, глубокий изумруд и дорогое золото. */
+  --background: #3F1904;          /* основа (фон) */
+  --background-deep: #1A1A1A;     /* глубокий слой / оверлеи */
+  --card: #643102;               /* карточки / поверхности */
+  --foreground: #F5F5F5;         /* основной текст */
+  --cream: #FAE9C8;              /* тёплый светлый акцент */
+  --beige: #E8D1BD;             /* приглушённый текст */
+  --muted: rgba(232, 209, 189, 0.60);
+  --emerald: #05342C;           /* глубокий зелёный акцент */
+  --border: rgba(218, 193, 120, 0.22);
+
+  /* Дорогое переливающееся золото */
+  --gold: #DAC178;
+  --gold-light: #F3E3B0;
+  --gold-dark: #A87B2C;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-deep: var(--background-deep);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-cream: var(--cream);
+  --color-beige: var(--beige);
+  --color-emerald: var(--emerald);
   --color-card: var(--card);
   --color-border: var(--border);
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
   --color-gold-dark: var(--gold-dark);
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: 'Tenor Sans', 'Inter', sans-serif;
+  --font-display: 'Playfair Display', 'Times New Roman', Georgia, serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -37,12 +52,57 @@ body {
   font-family: var(--font-sans);
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   letter-spacing: 0.01em;
 }
 
-/* Заголовки — Tenor Sans, как на основном сайте */
+/* Заголовки — Playfair Display, в один тон с основным сайтом Барвихи */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  letter-spacing: 0.04em;
-  font-weight: 400;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+}
+
+/* ── Дорогое переливающееся золото ── */
+.gold-text {
+  background: linear-gradient(
+    110deg,
+    var(--gold-dark) 0%,
+    var(--gold) 25%,
+    var(--gold-light) 50%,
+    var(--gold) 75%,
+    var(--gold-dark) 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: gold-shimmer 6s linear infinite;
+}
+
+.gold-surface {
+  background: linear-gradient(
+    135deg,
+    var(--gold-dark),
+    var(--gold) 45%,
+    var(--gold-light) 50%,
+    var(--gold) 55%,
+    var(--gold-dark)
+  );
+  background-size: 200% auto;
+  animation: gold-shimmer 6s linear infinite;
+}
+
+@keyframes gold-shimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gold-text,
+  .gold-surface {
+    animation: none;
+  }
 }

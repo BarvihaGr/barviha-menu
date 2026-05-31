@@ -40,7 +40,7 @@ export default async function ItemDetailPage({
       </Link>
 
       <div className="overflow-hidden rounded-sm border border-[color:var(--border)] bg-card">
-        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#222] to-[#0c0c0c]">
+        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#643102] to-[#3F1904]">
           {item.photo ? (
             <Image
               src={item.photo}
@@ -78,7 +78,7 @@ export default async function ItemDetailPage({
             )}
           </div>
 
-          {description && <p className="text-sm leading-relaxed text-[#ccc]">{description}</p>}
+          {description && <p className="text-sm leading-relaxed text-beige">{description}</p>}
 
           {ingredients.length > 0 && (
             <div>

@@ -34,7 +34,7 @@ export function HookahMoodCard({
         backgroundImage: `linear-gradient(135deg, ${gradientFrom} 0%, ${gradientTo} 100%)`,
       }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,169,97,0.2),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(218,193,120,0.2),transparent_60%)]" />
       <div className="absolute -right-6 -top-6 text-[140px] leading-none text-white/5 select-none pointer-events-none">
         {icon}
       </div>

@@ -22,7 +22,7 @@ export function FloatingCartButton({ locationSlug }: { locationSlug: string }) {
         >
           <Link
             href={`/${locationSlug}/cart`}
-            className="flex items-center gap-3 rounded-full bg-gold text-black px-5 py-4 text-xs uppercase tracking-[0.2em] font-semibold shadow-[0_10px_30px_rgba(201,169,97,0.4)] hover:bg-gold-light transition cursor-pointer"
+            className="flex items-center gap-3 rounded-full bg-gold text-[#3F1904] px-5 py-4 text-xs uppercase tracking-[0.2em] font-semibold shadow-[0_10px_30px_rgba(218,193,120,0.4)] hover:bg-gold-light transition cursor-pointer"
           >
             <ShoppingBag size={16} />
             <span>{t('cart')}</span>
