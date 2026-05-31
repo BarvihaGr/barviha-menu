@@ -143,7 +143,8 @@ export function HeroSection({
         {/* Название локации — буква за буквой (stagger) */}
         {locationName && (
           <motion.h1
-            className="gold-text font-[family-name:var(--font-display)] text-[1.7rem] sm:text-[2.7rem] font-semibold tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)] -mt-3"
+            className="font-[family-name:var(--font-display)] text-[1.7rem] sm:text-[2.7rem] font-semibold tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)] -mt-3"
+            style={{ color: '#E5C490' }}
             initial="hidden"
             animate="visible"
             variants={{
@@ -175,7 +176,8 @@ export function HeroSection({
         {/* Адрес — slide-up fade с финальной задержкой */}
         {locationCity && (
           <motion.span
-            className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em] text-gold/85"
+            className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em]"
+            style={{ color: '#E5C490', opacity: 0.85 }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.2, ease: 'easeOut' }}
