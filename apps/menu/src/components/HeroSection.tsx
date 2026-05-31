@@ -65,9 +65,9 @@ export function HeroSection({
             src="/logo-arka.png"
             alt="Barvikha"
             width={2560}
-            height={2072}
+            height={2560}
             priority
-            className="h-28 sm:h-36 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
+            className="h-32 sm:h-44 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
           />
         </motion.div>
 
@@ -77,7 +77,7 @@ export function HeroSection({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex flex-col items-center gap-2"
+            className="flex flex-col items-center gap-2 -mt-2"
           >
             <h1
               className="font-[family-name:var(--font-display)] text-3xl sm:text-5xl font-semibold tracking-wide text-[color:var(--cream)] drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)]"
