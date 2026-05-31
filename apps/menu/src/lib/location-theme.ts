@@ -3,7 +3,7 @@
  *
  * Каждой локации присваивается свой акцентный цвет — чтобы 27 точек
  * различались с первого взгляда (удобнее работать). Цвета — тёплые/
- * драгоценные тона, согласованные с базовой палитрой (#3F1904 + золото).
+ * драгоценные тона, согласованные с базовой палитрой (#2A1B11 + золото).
  *
  * Назначение детерминированное (хэш slug → индекс палитры), поэтому
  * у локации всегда один и тот же акцент. Если у локации задан brand_color
@@ -15,7 +15,7 @@ const ACCENTS: string[] = [
   '#C9A227', // золото
   '#B5651D', // охра
   '#8C3B2B', // терракота
-  '#05342C', // изумруд
+  '#1B110A', // изумруд
   '#2E5E4E', // нефрит
   '#7A4E2D', // карамель
   '#9C2B2B', // бордо
@@ -39,6 +39,6 @@ function hashSlug(slug: string): number {
 }
 
 export function getLocationAccent(slug: string, brandColor?: string | null): string {
-  if (brandColor && brandColor.toLowerCase() !== '#3f1904') return brandColor;
+  if (brandColor && brandColor.toLowerCase() !== '#2a1b11') return brandColor;
   return ACCENTS[hashSlug(slug) % ACCENTS.length]!;
 }

@@ -31,7 +31,7 @@ export function AddToCartButton({ itemId, itemName, variant = 'icon', className 
         type="button"
         onClick={onClick}
         className={cn(
-          'flex-1 bg-gold text-[#3F1904] border-0 px-6 py-4 text-xs uppercase tracking-[0.25em] font-semibold transition hover:-translate-y-0.5 hover:bg-gold-light cursor-pointer',
+          'flex-1 bg-gold text-[#2A1B11] border-0 px-6 py-4 text-xs uppercase tracking-[0.25em] font-semibold transition hover:-translate-y-0.5 hover:bg-gold-light cursor-pointer',
           className,
         )}
       >
@@ -46,7 +46,7 @@ export function AddToCartButton({ itemId, itemName, variant = 'icon', className 
       onClick={onClick}
       aria-label={t('common.add') + ' ' + itemName}
       className={cn(
-        'flex h-9 w-9 items-center justify-center rounded-full border border-gold text-gold transition hover:bg-gold hover:text-[#3F1904] hover:scale-110 cursor-pointer',
+        'flex h-9 w-9 items-center justify-center rounded-full border border-gold text-gold transition hover:bg-gold hover:text-[#2A1B11] hover:scale-110 cursor-pointer',
         className,
       )}
     >

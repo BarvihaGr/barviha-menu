@@ -23,14 +23,14 @@ export function HeroSection({
   tagline,
   locationName,
   locationCity,
-  accent = '#DAC178',
+  accent = '#C49262',
 }: Props) {
   const [loaded, setLoaded] = useState(false);
 
   return (
     <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -mt-6 mb-2 h-[100svh] min-h-[560px] overflow-hidden">
       {/* Фон: видео или градиент */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#643102] via-[#3F1904] to-[#05342C]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]" />
       {videoSrc && (
         <video
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
@@ -47,7 +47,7 @@ export function HeroSection({
         />
       )}
       {/* Затемнение для читаемости */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#3F1904] via-[#3F1904]/45 to-[#3F1904]/30" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#2A1B11] via-[#2A1B11]/45 to-[#2A1B11]/30" />
       {/* Акцентная вуаль локации (еле заметный цветовой подтон) */}
       <div
         className="absolute inset-0 opacity-25 mix-blend-soft-light pointer-events-none"

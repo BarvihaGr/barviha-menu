@@ -40,7 +40,7 @@ export default async function ItemDetailPage({
       </Link>
 
       <div className="overflow-hidden rounded-sm border border-[color:var(--border)] bg-card">
-        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#643102] to-[#3F1904]">
+        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#453324] to-[#2A1B11]">
           {item.photo ? (
             <Image
               src={item.photo}

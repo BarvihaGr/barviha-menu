@@ -27,7 +27,7 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
         href={`/${locationSlug}/item/${item.id}`}
         className="group block h-full overflow-hidden rounded-sm border border-[color:var(--border)] bg-card transition hover:-translate-y-1 hover:border-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
       >
-        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#643102] to-[#3F1904]">
+        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#453324] to-[#2A1B11]">
           {item.photo ? (
             <Image
               src={item.photo}

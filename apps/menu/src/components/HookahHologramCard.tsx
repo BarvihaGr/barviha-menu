@@ -23,7 +23,7 @@ export function HookahHologramCard({ itemId, name, description, price, photo }: 
       initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden rounded-sm border border-gold bg-gradient-to-br from-[#643102] via-[#3F1904] to-[#05342C]"
+      className="relative overflow-hidden rounded-sm border border-gold bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(218,193,120,0.25),transparent_55%)]" />
       <div className="relative grid sm:grid-cols-2 gap-0">

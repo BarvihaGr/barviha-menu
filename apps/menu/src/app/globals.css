@@ -2,25 +2,30 @@
 @import "tailwindcss";
 
 :root {
-  /* ── Barviha — палитра из ТЗ ──
-     основа #3F1904, карточки #643102, глубокий #1A1A1A,
-     текст #F5F5F5 / тёплый #FAE9C8, приглушённый #E8D1BD,
-     дорогое перламутровое золото на базе #E8D1BD → #FAE9C8. */
-  --background: #3F1904;          /* основа (фон) */
-  --background-deep: #1A1A1A;     /* глубокий слой / оверлеи */
-  --card: #643102;               /* карточки / поверхности */
-  --card-elev: #7A3E08;          /* приподнятая поверхность (производная) */
-  --foreground: #F5F5F5;         /* основной текст */
-  --cream: #FAE9C8;              /* тёплый светлый акцент */
-  --beige: #E8D1BD;             /* приглушённый текст / перламутр */
-  --muted: rgba(232, 209, 189, 0.58);
-  --emerald: #05342C;           /* глубокий зелёный акцент (доп.) */
-  --border: rgba(232, 209, 189, 0.22);
+  /* ── Barviha — палитра «бронзовый ресторан» ──
+     перенесена с эталонного сайта incandescent-starburst.netlify.app.
+     Тёплая коричнево-золотая гамма: фон #2A1B11, слои #33221A→#453324,
+     текст #F4E9D5, золото-бронза #C49262 (soft #A07642, deep #6F4827). */
+  --background: #2A1B11;          /* --bg — основа (фон) */
+  --background-deep: #1B110A;     /* глубокий слой / оверлеи */
+  --card: #3B2A20;               /* --bg-2 — карточки / поверхности */
+  --card-elev: #453324;          /* --bg-3 — приподнятая поверхность */
+  --foreground: #F4E9D5;         /* --text — основной текст */
+  --cream: #F1D9B0;              /* тёплый светлый акцент */
+  --beige: #E5C490;             /* светлое золото / перламутр */
+  --muted: rgba(244, 233, 213, 0.62);    /* --text-soft */
+  --muted-dim: rgba(244, 233, 213, 0.38); /* --text-mute */
+  --emerald: #533720;           /* тёплый средний тон (металлик-середина) */
+  --border: rgba(196, 146, 98, 0.14);     /* --line */
+  --border-strong: rgba(196, 146, 98, 0.32); /* --line-strong */
+  --hair: rgba(255, 255, 255, 0.06);
 
-  /* Дорогое перламутровое золото (в тон #E8D1BD / #FAE9C8) */
-  --gold: #E3C8A0;
-  --gold-light: #FAE9C8;
-  --gold-dark: #B08A5A;
+  /* Золото-бронза (как на эталоне) */
+  --gold: #C49262;              /* --gold */
+  --gold-light: #E5C490;
+  --gold-soft: #A07642;         /* --gold-soft */
+  --gold-dark: #6F4827;         /* --gold-deep */
+  --gold-glow: rgba(196, 146, 98, 0.35);  /* --gold-glow */
 }
 
 @theme inline {
@@ -28,15 +33,20 @@
   --color-background-deep: var(--background-deep);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-muted-dim: var(--muted-dim);
   --color-cream: var(--cream);
   --color-beige: var(--beige);
   --color-emerald: var(--emerald);
   --color-card: var(--card);
   --color-card-elev: var(--card-elev);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-hair: var(--hair);
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
+  --color-gold-soft: var(--gold-soft);
   --color-gold-dark: var(--gold-dark);
+  --color-gold-glow: var(--gold-glow);
   --font-sans: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: 'Playfair Display', 'Times New Roman', Georgia, serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
@@ -77,7 +87,7 @@ h1, h2, h3, h4, h5, h6 {
     var(--gold-dark) 0%,
     var(--gold) 22%,
     var(--gold-light) 48%,
-    #ffffff 52%,
+    #F1D9B0 52%,
     var(--gold-light) 56%,
     var(--gold) 78%,
     var(--gold-dark) 100%
@@ -96,7 +106,7 @@ h1, h2, h3, h4, h5, h6 {
     var(--gold-dark),
     var(--gold) 42%,
     var(--gold-light) 50%,
-    #ffffff 53%,
+    #F1D9B0 53%,
     var(--gold) 60%,
     var(--gold-dark)
   );

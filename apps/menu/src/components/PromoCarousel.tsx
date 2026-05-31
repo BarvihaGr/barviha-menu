@@ -35,7 +35,7 @@ export function PromoCarousel({ items, locationSlug }: Props) {
               href={`/${locationSlug}/item/${item.id}`}
               className="group block overflow-hidden rounded-sm border border-[color:var(--border)] bg-card transition hover:-translate-y-1 hover:border-gold cursor-pointer"
             >
-              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#643102] to-[#3F1904]">
+              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#453324] to-[#2A1B11]">
                 {item.photo ? (
                   <Image
                     src={item.photo}
