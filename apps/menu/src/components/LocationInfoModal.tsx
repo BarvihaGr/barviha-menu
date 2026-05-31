@@ -78,11 +78,11 @@ export function LocationInfoModal({
               onOpenAutoFocus={(e) => e.preventDefault()}
             >
               <motion.div
-                initial={{ opacity: 0, y: 16, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 16, scale: 0.96 }}
+                initial={{ opacity: 0, x: '-50%', y: 'calc(-50% + 16px)', scale: 0.96 }}
+                animate={{ opacity: 1, x: '-50%', y: '-50%', scale: 1 }}
+                exit={{ opacity: 0, x: '-50%', y: 'calc(-50% + 16px)', scale: 0.96 }}
                 transition={{ duration: 0.22, ease: 'easeOut' }}
-                className="fixed left-1/2 top-1/2 z-[90] w-[min(440px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 rounded-sm border border-gold bg-card shadow-2xl"
+                className="fixed left-1/2 top-1/2 z-[90] w-[min(440px,calc(100vw-2rem))] rounded-sm border border-gold bg-card shadow-2xl"
               >
                 <div className="h-1 w-full" style={{ background: accent, boxShadow: `0 0 12px ${accent}` }} />
 
