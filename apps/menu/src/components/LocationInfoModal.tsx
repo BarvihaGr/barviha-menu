@@ -55,7 +55,7 @@ export function LocationInfoModal({
           </span>
           <ChevronDown
             size={12}
-            className="text-muted group-hover:text-gold transition opacity-70"
+            className="text-muted group-hover:text-gold transition opacity-20"
           />
         </button>
       </Dialog.Trigger>
