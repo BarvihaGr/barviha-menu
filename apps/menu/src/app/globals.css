@@ -120,6 +120,23 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Пульсирующее золото — намёк что элемент кликабелен */
+.gold-pulse {
+  color: var(--gold);
+  animation: gold-pulse-anim 2.2s ease-in-out infinite;
+  text-shadow: 0 0 8px var(--gold-glow);
+}
+@keyframes gold-pulse-anim {
+  0%, 100% {
+    color: var(--gold);
+    text-shadow: 0 0 8px var(--gold-glow);
+  }
+  50% {
+    color: var(--gold-light);
+    text-shadow: 0 0 18px var(--gold), 0 0 28px var(--gold-glow);
+  }
+}
+
 /* Плавное появление контента */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(12px); }

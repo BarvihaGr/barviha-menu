@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown, MapPin, Phone, X, Navigation } from 'lucide-react';
+import { MapPin, Phone, X, Navigation } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
@@ -41,22 +41,14 @@ export function LocationInfoModal({
         <button
           type="button"
           className={cn(
-            'group inline-flex items-center gap-2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-sm px-1.5 py-0.5 -mx-1.5',
+            'group cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-sm px-2 py-1 -mx-2',
             triggerClassName,
           )}
           aria-label={t('info')}
         >
-          <span
-            className="inline-block h-2 w-2 rounded-full shrink-0"
-            style={{ background: accent, boxShadow: `0 0 8px ${accent}` }}
-          />
-          <span className="text-[11px] tracking-[0.25em] uppercase text-cream font-medium group-hover:text-gold transition">
+          <span className="gold-pulse text-[11px] tracking-[0.25em] uppercase font-medium">
             {locationName}
           </span>
-          <ChevronDown
-            size={12}
-            className="text-muted group-hover:text-gold transition opacity-20"
-          />
         </button>
       </Dialog.Trigger>
 

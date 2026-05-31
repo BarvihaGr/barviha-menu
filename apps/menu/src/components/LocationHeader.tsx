@@ -30,7 +30,7 @@ export function LocationHeader({
   const homeHref = `/${locationSlug}`;
 
   return (
-    <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-xl border-b border-[color:var(--border)]">
+    <header className="sticky top-0 z-30 bg-background/25 backdrop-blur-md">
       <div className="mx-auto grid max-w-[1200px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-3.5">
         <div className="flex items-center">
           <LocationSwitcher locations={locations} currentSlug={locationSlug} />
