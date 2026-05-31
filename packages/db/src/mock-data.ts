@@ -70,7 +70,12 @@ const LOC = (
 });
 
 export const MOCK_LOCATIONS: Location[] = [
-  LOC('loc-arka', 'arka', 'Арка', ['lounge'], '/locations/arka/hero.mp4'),
+  {
+    // TODO: заменить на реальные address/phone для Арки.
+    ...LOC('loc-arka', 'arka', 'Арка', ['lounge'], '/locations/arka/hero.mp4'),
+    address: 'г. Москва, ул. Воздвиженка, 1',
+    phone: '+7 (495) 000-00-00',
+  },
   LOC('loc-baumanskaia', 'baumanskaia', 'Бауманская'),
   LOC('loc-domodedovo', 'domodedovo', 'Домодедово'),
   LOC('loc-erevan', 'erevan', 'Ереван'),

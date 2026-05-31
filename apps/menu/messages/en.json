@@ -90,7 +90,14 @@
   "location": {
     "switch": "Choose location",
     "current": "Current location",
-    "search": "Search location…"
+    "search": "Search location…",
+    "info": "Venue info",
+    "close": "Close",
+    "address": "Address",
+    "phone": "Phone",
+    "directions": "Get directions",
+    "addressTBD": "Address coming soon",
+    "phoneTBD": "Phone coming soon"
   },
   "search": {
     "noResults": "Nothing found",

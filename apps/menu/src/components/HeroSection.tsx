@@ -8,7 +8,6 @@ interface Props {
   /** Путь к hero-видео локации (mp4). Если нет — показываем градиент-фон. */
   videoSrc?: string | null;
   poster?: string | null;
-  tagline?: string;
   /** Название локации — крупно под логотипом. */
   locationName?: string;
   /** Город/адрес — мелким под названием. */
@@ -20,7 +19,6 @@ interface Props {
 export function HeroSection({
   videoSrc,
   poster,
-  tagline,
   locationName,
   locationCity,
   accent = '#C49262',
@@ -28,7 +26,7 @@ export function HeroSection({
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -mt-6 mb-2 h-[100svh] min-h-[560px] overflow-hidden">
+    <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -mt-6 -mb-10 h-[82svh] min-h-[480px] overflow-hidden">
       {/* Фон: видео или градиент */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]" />
       {videoSrc && (
@@ -46,15 +44,17 @@ export function HeroSection({
           onLoadedData={() => setLoaded(true)}
         />
       )}
-      {/* Затемнение для читаемости */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#2A1B11] via-[#2A1B11]/45 to-[#2A1B11]/30" />
+      {/* Затемнение для читаемости (мягкое, сверху и снизу) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/60 via-transparent to-[var(--background)]/35" />
       {/* Акцентная вуаль локации (еле заметный цветовой подтон) */}
       <div
         className="absolute inset-0 opacity-25 mix-blend-soft-light pointer-events-none"
         style={{ background: `radial-gradient(circle at 50% 20%, ${accent}, transparent 60%)` }}
       />
+      {/* Плавное растворение видео в фон страницы снизу */}
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/85 to-transparent pointer-events-none" />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-3 px-6 pb-[12%] text-center">
         {/* Логотип */}
         <motion.div
           initial={{ opacity: 0, y: 18, scale: 0.96 }}
@@ -62,12 +62,12 @@ export function HeroSection({
           transition={{ duration: 0.7, ease: 'easeOut' }}
         >
           <Image
-            src="/logo.png"
+            src="/logo-arka.png"
             alt="Barvikha"
-            width={427}
-            height={57}
+            width={2560}
+            height={2072}
             priority
-            className="h-8 sm:h-10 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
+            className="h-28 sm:h-36 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]"
           />
         </motion.div>
 
@@ -85,10 +85,6 @@ export function HeroSection({
             >
               {locationName}
             </h1>
-            <span
-              className="block h-[3px] w-16 rounded-full"
-              style={{ background: accent, boxShadow: `0 0 16px ${accent}` }}
-            />
             {locationCity && (
               <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-beige/80">
                 {locationCity}
@@ -97,16 +93,6 @@ export function HeroSection({
           </motion.div>
         )}
 
-        {tagline && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="text-[9px] sm:text-[11px] uppercase tracking-[0.4em] gold-text font-medium"
-          >
-            {tagline}
-          </motion.p>
-        )}
       </div>
     </section>
   );

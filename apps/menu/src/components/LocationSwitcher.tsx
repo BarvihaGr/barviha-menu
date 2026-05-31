@@ -8,12 +8,11 @@ import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
-import { getLocationAccent } from '@/lib/location-theme';
+import { getMetroColor } from '@/lib/location-theme';
 
 interface Props {
   locations: Location[];
   currentSlug: string;
-  accent?: string;
 }
 
 function locName(l: Location, locale: Locale): string {
@@ -22,14 +21,14 @@ function locName(l: Location, locale: Locale): string {
   return l.name;
 }
 
-export function LocationSwitcher({ locations, currentSlug, accent }: Props) {
+export function LocationSwitcher({ locations, currentSlug }: Props) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState('');
   const t = useTranslations('location');
   const locale = useLocale() as Locale;
 
   const current = locations.find((l) => l.slug === currentSlug);
-  const currentAccent = accent ?? getLocationAccent(currentSlug);
+  const currentAccent = getMetroColor(currentSlug);
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase().replace(/ё/g, 'е');
     const list = query
@@ -87,7 +86,7 @@ export function LocationSwitcher({ locations, currentSlug, accent }: Props) {
               </div>
               <div className="max-h-[60vh] overflow-y-auto py-1">
                 {filtered.map((l) => {
-                  const a = getLocationAccent(l.slug, l.brand_color);
+                  const a = getMetroColor(l.slug);
                   return (
                     <Link
                       key={l.id}

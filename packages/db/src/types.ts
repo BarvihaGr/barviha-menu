@@ -19,6 +19,8 @@ export interface Location {
   name_zh?: string;
   city?: string | null;
   address: string | null;
+  /** Контактный телефон локации в международном формате (+7…) */
+  phone?: string | null;
   features: LocationFeature[];
   brand_color: string | null;
   /** Hero background video (mp4) for the home screen. Filled from content drop. */

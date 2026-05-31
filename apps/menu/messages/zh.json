@@ -90,7 +90,14 @@
   "location": {
     "switch": "选择门店",
     "current": "当前门店",
-    "search": "搜索门店…"
+    "search": "搜索门店…",
+    "info": "门店信息",
+    "close": "关闭",
+    "address": "地址",
+    "phone": "电话",
+    "directions": "查看路线",
+    "addressTBD": "地址即将公布",
+    "phoneTBD": "电话即将公布"
   },
   "search": {
     "noResults": "未找到匹配项",

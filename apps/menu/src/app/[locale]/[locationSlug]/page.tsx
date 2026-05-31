@@ -62,7 +62,6 @@ export default async function LocationHome({
       <HeroSection
         videoSrc={location.hero_video}
         poster={location.hero_video ? location.hero_video.replace(/hero\.mp4$/, 'poster.jpg') : null}
-        tagline={tBrand('tagline')}
         locationName={locationName}
         locationCity={location.city ?? location.address}
         accent={accent}

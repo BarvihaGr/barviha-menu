@@ -35,7 +35,8 @@ export default async function LocationLayout({
     <div className="flex min-h-screen flex-col">
       <LocationHeader
         locationName={locationName}
-        locationAddress={location.city ?? location.address}
+        locationAddress={location.address}
+        locationPhone={location.phone ?? null}
         locationSlug={location.slug}
         locations={locations}
         accent={accent}
