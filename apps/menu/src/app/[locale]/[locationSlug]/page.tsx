@@ -28,9 +28,7 @@ export default async function LocationHome({
 }) {
   const { locale, locationSlug } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('hookah');
   const tHome = await getTranslations('home');
-  const tRealms = await getTranslations('realms');
   const tBrand = await getTranslations('brand');
 
   const db = getClient();
@@ -44,11 +42,12 @@ export default async function LocationHome({
 
   const featured = items.filter((i) => i.labels.includes('hit') || i.labels.includes('chef_pick'));
 
-  // Группируем категории по «мирам»: Кухня / Бар / Кальяны
-  const byRealm = REALM_ORDER.map((realm) => ({
-    realm,
-    cats: categories.filter((c) => (c.realm ?? 'kitchen') === realm),
-  })).filter((g) => g.cats.length > 0);
+  // Все категории в едином порядке миров (Кухня → Бар → Кальяны), без дробления на секции
+  const orderedCategories = [...categories].sort(
+    (a, b) =>
+      REALM_ORDER.indexOf((a.realm ?? 'kitchen') as 'kitchen' | 'bar' | 'hookah') -
+      REALM_ORDER.indexOf((b.realm ?? 'kitchen') as 'kitchen' | 'bar' | 'hookah'),
+  );
 
   const accent = getLocationAccent(location.slug, location.brand_color);
   const locationName =
@@ -59,9 +58,10 @@ export default async function LocationHome({
         : location.name;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <HeroSection
         videoSrc={location.hero_video}
+        poster={location.hero_video ? location.hero_video.replace(/hero\.mp4$/, 'poster.jpg') : null}
         tagline={tBrand('tagline')}
         locationName={locationName}
         locationCity={location.city ?? location.address}
@@ -71,17 +71,17 @@ export default async function LocationHome({
       <SearchBar items={items} locationSlug={location.slug} />
 
       {featured.length > 0 && (
-        <section className="flex flex-col gap-4">
+        <section className="flex flex-col gap-3">
           <SectionTitle>{tHome('featured')}</SectionTitle>
           <PromoCarousel items={featured.slice(0, 10)} locationSlug={location.slug} />
         </section>
       )}
 
-      {byRealm.map(({ realm, cats }) => (
-        <section key={realm}>
-          <SectionTitle>{tRealms(realm)}</SectionTitle>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-            {cats.map((c, idx) => {
+      {orderedCategories.length > 0 && (
+        <section>
+          <SectionTitle>{tHome('menu')}</SectionTitle>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {orderedCategories.map((c, idx) => {
               const count = items.filter((i) => i.category_id === c.id).length;
               const href = c.slug === 'hookah' ? `/${location.slug}/hookah` : `/${location.slug}/${c.slug}`;
               return (
@@ -95,23 +95,6 @@ export default async function LocationHome({
                 />
               );
             })}
-          </div>
-        </section>
-      ))}
-
-      {featured.length > 0 && (
-        <section>
-          <SectionTitle>{t('hitsTitle')}</SectionTitle>
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
-            {featured.slice(0, 8).map((item, i) => (
-              <CategoryCard
-                key={`hit-${item.id}`}
-                href={`/${location.slug}/item/${item.id}`}
-                title={item.name}
-                icon="✦"
-                index={i}
-              />
-            ))}
           </div>
         </section>
       )}

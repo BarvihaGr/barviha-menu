@@ -57,6 +57,7 @@ const LOC = (
   slug: string,
   name: string,
   features: Location['features'] = ['lounge'],
+  hero_video: string | null = null,
 ): Location => ({
   id,
   slug,
@@ -64,11 +65,12 @@ const LOC = (
   address: null,
   features,
   brand_color: '#3F1904',
+  hero_video,
   created_at: '2026-01-01T00:00:00Z',
 });
 
 export const MOCK_LOCATIONS: Location[] = [
-  LOC('loc-arka', 'arka', 'Арка'),
+  LOC('loc-arka', 'arka', 'Арка', ['lounge'], '/locations/arka/hero.mp4'),
   LOC('loc-baumanskaia', 'baumanskaia', 'Бауманская'),
   LOC('loc-domodedovo', 'domodedovo', 'Домодедово'),
   LOC('loc-erevan', 'erevan', 'Ереван'),
