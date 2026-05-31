@@ -4,6 +4,7 @@ import { getClient } from '@barviha/db';
 import { LocationHeader } from '@/components/LocationHeader';
 import { Toaster } from '@/components/Toaster';
 import { FloatingCartButton } from '@/components/FloatingCartButton';
+import { getLocationAccent } from '@/lib/location-theme';
 
 export default async function LocationLayout({
   children,
@@ -22,13 +23,22 @@ export default async function LocationLayout({
   ]);
   if (!location) notFound();
 
+  const accent = getLocationAccent(location.slug, location.brand_color);
+  const locationName =
+    locale === 'en' && location.name_en
+      ? location.name_en
+      : locale === 'zh' && location.name_zh
+        ? location.name_zh
+        : location.name;
+
   return (
     <div className="flex min-h-screen flex-col">
       <LocationHeader
-        locationName={location.name}
-        locationAddress={location.address}
+        locationName={locationName}
+        locationAddress={location.city ?? location.address}
         locationSlug={location.slug}
         locations={locations}
+        accent={accent}
       />
       <main className="flex-1 mx-auto w-full max-w-[1200px] px-4 sm:px-6 py-6 pb-32">
         {children}

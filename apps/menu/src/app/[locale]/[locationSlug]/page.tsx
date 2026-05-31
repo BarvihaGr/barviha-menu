@@ -9,6 +9,7 @@ import { SearchBar } from '@/components/SearchBar';
 import { HeroSection } from '@/components/HeroSection';
 import { PromoCarousel } from '@/components/PromoCarousel';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
+import { getLocationAccent } from '@/lib/location-theme';
 
 const CATEGORY_ICONS: Record<string, string> = {
   hookah: '◈',
@@ -49,9 +50,23 @@ export default async function LocationHome({
     cats: categories.filter((c) => (c.realm ?? 'kitchen') === realm),
   })).filter((g) => g.cats.length > 0);
 
+  const accent = getLocationAccent(location.slug, location.brand_color);
+  const locationName =
+    locale === 'en' && location.name_en
+      ? location.name_en
+      : locale === 'zh' && location.name_zh
+        ? location.name_zh
+        : location.name;
+
   return (
     <div className="flex flex-col gap-8">
-      <HeroSection videoSrc={location.hero_video} tagline={tBrand('tagline')} />
+      <HeroSection
+        videoSrc={location.hero_video}
+        tagline={tBrand('tagline')}
+        locationName={locationName}
+        locationCity={location.city ?? location.address}
+        accent={accent}
+      />
 
       <SearchBar items={items} locationSlug={location.slug} />
 

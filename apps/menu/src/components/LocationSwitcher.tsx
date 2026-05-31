@@ -8,10 +8,12 @@ import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
+import { getLocationAccent } from '@/lib/location-theme';
 
 interface Props {
   locations: Location[];
   currentSlug: string;
+  accent?: string;
 }
 
 function locName(l: Location, locale: Locale): string {
@@ -20,13 +22,14 @@ function locName(l: Location, locale: Locale): string {
   return l.name;
 }
 
-export function LocationSwitcher({ locations, currentSlug }: Props) {
+export function LocationSwitcher({ locations, currentSlug, accent }: Props) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState('');
   const t = useTranslations('location');
   const locale = useLocale() as Locale;
 
   const current = locations.find((l) => l.slug === currentSlug);
+  const currentAccent = accent ?? getLocationAccent(currentSlug);
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase().replace(/ё/g, 'е');
     const list = query
@@ -48,7 +51,10 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
         aria-label={t('switch')}
         aria-expanded={open}
       >
-        <MapPin size={12} className="text-gold" />
+        <span
+          className="inline-block h-2.5 w-2.5 rounded-full shrink-0"
+          style={{ background: currentAccent, boxShadow: `0 0 8px ${currentAccent}` }}
+        />
         <span className="max-w-[120px] truncate">{current ? locName(current, locale) : t('switch')}</span>
         <ChevronDown size={12} className={cn('transition', open && 'rotate-180')} />
       </button>
@@ -80,22 +86,30 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
                 )}
               </div>
               <div className="max-h-[60vh] overflow-y-auto py-1">
-                {filtered.map((l) => (
-                  <Link
-                    key={l.id}
-                    href={`/${l.slug}`}
-                    onClick={() => setOpen(false)}
-                    className={cn(
-                      'flex items-center justify-between gap-2 px-3 py-2.5 text-xs transition hover:bg-black/30 cursor-pointer',
-                      l.slug === currentSlug ? 'text-gold' : 'text-foreground',
-                    )}
-                  >
-                    <span className="truncate">{locName(l, locale)}</span>
-                    {l.city && l.city !== locName(l, locale) && (
-                      <span className="shrink-0 text-[10px] text-muted">{l.city}</span>
-                    )}
-                  </Link>
-                ))}
+                {filtered.map((l) => {
+                  const a = getLocationAccent(l.slug, l.brand_color);
+                  return (
+                    <Link
+                      key={l.id}
+                      href={`/${l.slug}`}
+                      onClick={() => setOpen(false)}
+                      className={cn(
+                        'flex items-center gap-2.5 px-3 py-2.5 text-xs transition hover:bg-black/30 cursor-pointer border-l-2',
+                        l.slug === currentSlug ? 'text-gold' : 'text-foreground',
+                      )}
+                      style={{ borderLeftColor: l.slug === currentSlug ? a : 'transparent' }}
+                    >
+                      <span
+                        className="inline-block h-2.5 w-2.5 rounded-full shrink-0"
+                        style={{ background: a, boxShadow: `0 0 6px ${a}` }}
+                      />
+                      <span className="truncate flex-1">{locName(l, locale)}</span>
+                      {l.city && l.city !== locName(l, locale) && (
+                        <span className="shrink-0 text-[10px] text-muted">{l.city}</span>
+                      )}
+                    </Link>
+                  );
+                })}
                 {filtered.length === 0 && (
                   <div className="px-3 py-6 text-center text-[11px] uppercase tracking-[0.2em] text-muted">—</div>
                 )}

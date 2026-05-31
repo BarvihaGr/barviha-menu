@@ -12,9 +12,17 @@ interface Props {
   locationAddress: string | null;
   locationSlug: string;
   locations: Location[];
+  /** Акцентный цвет локации — для полосы и индикатора. */
+  accent: string;
 }
 
-export function LocationHeader({ locationName, locationAddress, locationSlug, locations }: Props) {
+export function LocationHeader({
+  locationName,
+  locationAddress,
+  locationSlug,
+  locations,
+  accent,
+}: Props) {
   const t = useTranslations('brand');
   const pathname = usePathname();
   const homeHref = `/${locationSlug}`;
@@ -22,9 +30,11 @@ export function LocationHeader({ locationName, locationAddress, locationSlug, lo
 
   return (
     <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-xl border-b border-[color:var(--border)]">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-4">
+      {/* Акцентная полоса локации — мгновенно различает 27 точек */}
+      <div className="h-1 w-full" style={{ background: accent, boxShadow: `0 0 12px ${accent}` }} />
+      <div className="mx-auto grid max-w-[1200px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-3.5">
         <div className="flex items-center">
-          <LocationSwitcher locations={locations} currentSlug={locationSlug} />
+          <LocationSwitcher locations={locations} currentSlug={locationSlug} accent={accent} />
         </div>
         <Link href={homeHref} className="flex justify-center cursor-pointer" aria-label={t('name')}>
           <Image
@@ -40,11 +50,21 @@ export function LocationHeader({ locationName, locationAddress, locationSlug, lo
           <LangSwitch />
         </div>
       </div>
-      {isHome && locationAddress && (
-        <div className="mx-auto max-w-[1200px] px-5 pb-3 text-center sm:text-left text-[10px] tracking-[0.2em] uppercase text-muted">
-          {locationName} · {locationAddress}
-        </div>
-      )}
+      {/* Название локации видно всегда (на всех страницах), с акцентной точкой */}
+      <div className="mx-auto flex max-w-[1200px] items-center justify-center gap-2 px-5 pb-2.5">
+        <span
+          className="inline-block h-2 w-2 rounded-full shrink-0"
+          style={{ background: accent, boxShadow: `0 0 8px ${accent}` }}
+        />
+        <span className="text-[11px] tracking-[0.25em] uppercase text-cream font-medium">
+          {locationName}
+        </span>
+        {isHome && locationAddress && (
+          <span className="text-[10px] tracking-[0.15em] uppercase text-muted hidden sm:inline">
+            · {locationAddress}
+          </span>
+        )}
+      </div>
     </header>
   );
 }
