@@ -39,4 +39,8 @@ pnpm-debug.log*
 # Source data folders (kept locally, not in repo)
 Данные по кухне*
 фото с меню*
+ФУЛЛ ИНФО*
 *.xlsx
+*.docx
+*.mov
+make_palette_doc.py

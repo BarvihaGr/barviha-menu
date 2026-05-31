@@ -30,8 +30,6 @@ export function LocationHeader({
 
   return (
     <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-xl border-b border-[color:var(--border)]">
-      {/* Акцентная полоса локации — мгновенно различает 27 точек */}
-      <div className="h-1 w-full" style={{ background: accent, boxShadow: `0 0 12px ${accent}` }} />
       <div className="mx-auto grid max-w-[1200px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-3.5">
         <div className="flex items-center">
           <LocationSwitcher locations={locations} currentSlug={locationSlug} accent={accent} />
@@ -50,12 +48,8 @@ export function LocationHeader({
           <LangSwitch />
         </div>
       </div>
-      {/* Название локации видно всегда (на всех страницах), с акцентной точкой */}
+      {/* Название локации видно всегда (на всех страницах) */}
       <div className="mx-auto flex max-w-[1200px] items-center justify-center gap-2 px-5 pb-2.5">
-        <span
-          className="inline-block h-2 w-2 rounded-full shrink-0"
-          style={{ background: accent, boxShadow: `0 0 8px ${accent}` }}
-        />
         <span className="text-[11px] tracking-[0.25em] uppercase text-cream font-medium">
           {locationName}
         </span>

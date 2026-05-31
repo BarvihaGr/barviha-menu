@@ -75,6 +75,7 @@
   },
   "home": {
     "featured": "Hits & chef's picks",
+    "menu": "Menu",
     "promos": "Specials",
     "exploreMenu": "Open menu",
     "viewAll": "View all"
