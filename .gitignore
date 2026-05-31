@@ -36,6 +36,10 @@ pnpm-debug.log*
 # Turbo
 .turbo/
 
+# Local-only: тестовые макеты и бэкапы видео
+preview/
+*.orig.bak.*
+
 # Source data folders (kept locally, not in repo)
 Данные по кухне*
 фото с меню*
