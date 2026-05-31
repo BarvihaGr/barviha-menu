@@ -31,7 +31,11 @@ export default async function CategoryPage({
   return (
     <div className="flex flex-col gap-4">
       <SectionTitle>{pickCategoryName(category, locale as Locale)}</SectionTitle>
-      <CategoryItemsList items={items} locationSlug={locationSlug} />
+      <CategoryItemsList
+        items={items}
+        locationSlug={locationSlug}
+        realm={(category.realm as 'bar' | 'kitchen' | 'hookah') ?? 'kitchen'}
+      />
     </div>
   );
 }

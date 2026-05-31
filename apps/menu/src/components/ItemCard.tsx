@@ -60,7 +60,7 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
               {description}
             </p>
           )}
-          <div className="flex items-center justify-between border-t border-[color:var(--border)] pt-3 mt-auto">
+          <div className="flex items-center justify-between pt-1 mt-auto">
             <span className="text-base sm:text-lg font-medium text-gold">
               {formatPrice(item.price)}
             </span>

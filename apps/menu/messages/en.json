@@ -42,10 +42,17 @@
   "filters": {
     "title": "Filters",
     "noAlcohol": "No alcohol",
+    "withAlcohol": "With alcohol",
+    "withIce": "On ice",
+    "sparkling": "Sparkling",
     "priceUnder1000": "Under 1000 ₽",
     "spicy": "Spicy",
     "vegan": "Vegan",
-    "reset": "Reset"
+    "withMeat": "With meat",
+    "noMeat": "No meat",
+    "salty": "Salty",
+    "reset": "Reset",
+    "close": "Done"
   },
   "item": {
     "addToCart": "Add to my table",

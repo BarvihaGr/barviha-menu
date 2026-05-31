@@ -42,10 +42,17 @@
   "filters": {
     "title": "Фильтры",
     "noAlcohol": "Без алкоголя",
+    "withAlcohol": "С алкоголем",
+    "withIce": "Со льдом",
+    "sparkling": "Игристое",
     "priceUnder1000": "До 1000 ₽",
     "spicy": "Острое",
     "vegan": "Веган",
-    "reset": "Сбросить"
+    "withMeat": "С мясом",
+    "noMeat": "Без мяса",
+    "salty": "Солёное",
+    "reset": "Сбросить",
+    "close": "Готово"
   },
   "item": {
     "addToCart": "В Мой стол",
