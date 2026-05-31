@@ -16,7 +16,10 @@ export default async function LocationLayout({
   setRequestLocale(locale);
 
   const db = getClient();
-  const location = await db.getLocationBySlug(locationSlug);
+  const [location, locations] = await Promise.all([
+    db.getLocationBySlug(locationSlug),
+    db.getAllLocations(),
+  ]);
   if (!location) notFound();
 
   return (
@@ -25,6 +28,7 @@ export default async function LocationLayout({
         locationName={location.name}
         locationAddress={location.address}
         locationSlug={location.slug}
+        locations={locations}
       />
       <main className="flex-1 mx-auto w-full max-w-[1200px] px-4 sm:px-6 py-6 pb-32">
         {children}

@@ -19,10 +19,16 @@
     "menu": "Меню",
     "hookahFlow": "Кальяны"
   },
+  "realms": {
+    "kitchen": "Кухня",
+    "bar": "Бар",
+    "hookah": "Кальяны"
+  },
   "categories": {
     "hookah": "Кальяны",
     "bar": "Бар",
     "kitchen": "Кухня",
+    "rolls": "Роллы",
     "desserts": "Десерты"
   },
   "labels": {
@@ -67,12 +73,35 @@
     "hitsTitle": "Наши хиты",
     "premiumTitle": "Премиум кальян"
   },
+  "home": {
+    "featured": "Хиты и выбор шефа",
+    "promos": "Акции",
+    "exploreMenu": "Открыть меню",
+    "viewAll": "Смотреть все"
+  },
+  "announce": {
+    "today": "Сегодня",
+    "soon": "Скоро",
+    "dj": "DJ-сет",
+    "match": "Трансляция матча",
+    "event": "Событие"
+  },
+  "location": {
+    "switch": "Выбрать локацию",
+    "current": "Текущая локация",
+    "search": "Поиск локации…"
+  },
+  "search": {
+    "noResults": "Ничего не найдено",
+    "placeholder": "Поиск: блюда, напитки, кальяны…"
+  },
   "toast": {
     "addedToCart": "Добавлено в Мой стол"
   },
   "lang": {
     "ru": "RU",
     "en": "EN",
+    "zh": "中",
     "switch": "Сменить язык"
   }
 }

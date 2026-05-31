@@ -19,10 +19,16 @@
     "menu": "Menu",
     "hookahFlow": "Hookah"
   },
+  "realms": {
+    "kitchen": "Kitchen",
+    "bar": "Bar",
+    "hookah": "Hookah"
+  },
   "categories": {
     "hookah": "Hookah",
     "bar": "Bar",
     "kitchen": "Kitchen",
+    "rolls": "Rolls",
     "desserts": "Desserts"
   },
   "labels": {
@@ -67,12 +73,35 @@
     "hitsTitle": "Our hits",
     "premiumTitle": "Premium hookah"
   },
+  "home": {
+    "featured": "Hits & chef's picks",
+    "promos": "Specials",
+    "exploreMenu": "Open menu",
+    "viewAll": "View all"
+  },
+  "announce": {
+    "today": "Today",
+    "soon": "Soon",
+    "dj": "DJ set",
+    "match": "Match broadcast",
+    "event": "Event"
+  },
+  "location": {
+    "switch": "Choose location",
+    "current": "Current location",
+    "search": "Search location…"
+  },
+  "search": {
+    "noResults": "Nothing found",
+    "placeholder": "Search dishes, drinks, hookah…"
+  },
   "toast": {
     "addedToCart": "Added to your table"
   },
   "lang": {
     "ru": "RU",
     "en": "EN",
+    "zh": "中",
     "switch": "Switch language"
   }
 }

@@ -24,7 +24,7 @@ export function LangSwitch({ className }: { className?: string }) {
           onClick={() => switchTo(l)}
           className={cn(
             'px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] transition cursor-pointer',
-            locale === l ? 'bg-gold text-black' : 'text-muted hover:text-gold',
+            locale === l ? 'bg-gold text-[#3F1904]' : 'text-muted hover:text-gold',
           )}
           aria-pressed={locale === l}
         >

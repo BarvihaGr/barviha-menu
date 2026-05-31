@@ -51,7 +51,7 @@ export function CartView({ allItems, locationSlug }: Props) {
           <p className="text-sm text-muted max-w-sm">{t('empty')}</p>
           <Link
             href={`/${locationSlug}`}
-            className="border border-gold text-gold px-6 py-3 text-xs uppercase tracking-[0.25em] hover:bg-gold hover:text-black transition cursor-pointer"
+            className="border border-gold text-gold px-6 py-3 text-xs uppercase tracking-[0.25em] hover:bg-gold hover:text-[#3F1904] transition cursor-pointer"
           >
             {t('browse')}
           </Link>

@@ -10,7 +10,7 @@ export function QtyControl({ itemId, qty }: { itemId: string; qty: number }) {
       <button
         type="button"
         onClick={() => setQty(itemId, qty - 1)}
-        className="flex h-8 w-8 items-center justify-center rounded-full border border-gold text-gold transition hover:bg-gold hover:text-black cursor-pointer"
+        className="flex h-8 w-8 items-center justify-center rounded-full border border-gold text-gold transition hover:bg-gold hover:text-[#3F1904] cursor-pointer"
         aria-label="−"
       >
         <Minus size={14} strokeWidth={2.5} />
@@ -19,7 +19,7 @@ export function QtyControl({ itemId, qty }: { itemId: string; qty: number }) {
       <button
         type="button"
         onClick={() => setQty(itemId, qty + 1)}
-        className="flex h-8 w-8 items-center justify-center rounded-full border border-gold text-gold transition hover:bg-gold hover:text-black cursor-pointer"
+        className="flex h-8 w-8 items-center justify-center rounded-full border border-gold text-gold transition hover:bg-gold hover:text-[#3F1904] cursor-pointer"
         aria-label="+"
       >
         <Plus size={14} strokeWidth={2.5} />

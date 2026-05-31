@@ -42,7 +42,7 @@ export function FilterBar({ active, onChange }: FilterBarProps) {
           className={cn(
             'shrink-0 rounded-sm border px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] transition cursor-pointer',
             active.has(f)
-              ? 'border-gold bg-gold text-black'
+              ? 'border-gold bg-gold text-[#3F1904]'
               : 'border-[color:var(--border)] text-muted hover:text-gold hover:border-gold',
           )}
         >

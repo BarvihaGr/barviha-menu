@@ -11,9 +11,17 @@ import {
   MOCK_TABLES,
   resolveMenuForLocation,
 } from './mock-data';
-import type { Category, HookahMood, Location, ResolvedMenuItem, Table } from './types';
+import type {
+  Announcement,
+  Category,
+  HookahMood,
+  Location,
+  ResolvedMenuItem,
+  Table,
+} from './types';
 
 export interface BarvihaClient {
+  getAllLocations(): Promise<Location[]>;
   getLocationBySlug(slug: string): Promise<Location | null>;
   getCategoriesForLocation(locationId: string): Promise<Category[]>;
   getMenuItemsForLocation(locationId: string): Promise<ResolvedMenuItem[]>;
@@ -21,6 +29,7 @@ export interface BarvihaClient {
   getCategoryBySlug(slug: string): Promise<Category | null>;
   getHookahMoods(): Promise<HookahMood[]>;
   getTableByToken(token: string): Promise<Table | null>;
+  getAnnouncementsForLocation(locationId: string): Promise<Announcement[]>;
 }
 
 function getLocationById(id: string): Location | undefined {
@@ -28,6 +37,10 @@ function getLocationById(id: string): Location | undefined {
 }
 
 class MockBarvihaClient implements BarvihaClient {
+  async getAllLocations(): Promise<Location[]> {
+    return MOCK_LOCATIONS;
+  }
+
   async getLocationBySlug(slug: string): Promise<Location | null> {
     return MOCK_LOCATIONS.find((l) => l.slug === slug) ?? null;
   }
@@ -64,6 +77,11 @@ class MockBarvihaClient implements BarvihaClient {
 
   async getTableByToken(token: string): Promise<Table | null> {
     return MOCK_TABLES.find((t) => t.qr_token === token) ?? null;
+  }
+
+  async getAnnouncementsForLocation(_locationId: string): Promise<Announcement[]> {
+    // Заполняется из контента по локациям (DJ-сеты, матчи, события).
+    return [];
   }
 }
 

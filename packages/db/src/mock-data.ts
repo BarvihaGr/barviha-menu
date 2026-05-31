@@ -111,11 +111,11 @@ export const MOCK_TABLES: Table[] = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 export const MOCK_CATEGORIES: Category[] = [
-  { id: 'cat-hookah', slug: 'hookah', name: 'Кальяны', parent_id: null, sort_order: 1 },
-  { id: 'cat-bar', slug: 'bar', name: 'Бар', parent_id: null, sort_order: 2 },
-  { id: 'cat-kitchen', slug: 'kitchen', name: 'Кухня', parent_id: null, sort_order: 3 },
-  { id: 'cat-rolls', slug: 'rolls', name: 'Роллы', parent_id: null, sort_order: 4 },
-  { id: 'cat-desserts', slug: 'desserts', name: 'Десерты', parent_id: null, sort_order: 5 },
+  { id: 'cat-hookah', slug: 'hookah', name: 'Кальяны', name_en: 'Hookah', name_zh: '水烟', realm: 'hookah', parent_id: null, sort_order: 1 },
+  { id: 'cat-bar', slug: 'bar', name: 'Бар', name_en: 'Bar', name_zh: '酒吧', realm: 'bar', parent_id: null, sort_order: 2 },
+  { id: 'cat-kitchen', slug: 'kitchen', name: 'Кухня', name_en: 'Kitchen', name_zh: '厨房', realm: 'kitchen', parent_id: null, sort_order: 3 },
+  { id: 'cat-rolls', slug: 'rolls', name: 'Роллы', name_en: 'Rolls', name_zh: '卷物', realm: 'kitchen', parent_id: null, sort_order: 4 },
+  { id: 'cat-desserts', slug: 'desserts', name: 'Десерты', name_en: 'Desserts', name_zh: '甜点', realm: 'kitchen', parent_id: null, sort_order: 5 },
 ];
 
 export const MOCK_HOOKAH_MOODS: HookahMood[] = [

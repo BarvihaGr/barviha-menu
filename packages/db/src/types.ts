@@ -15,10 +15,32 @@ export interface Location {
   id: UUID;
   slug: string;
   name: string;
+  name_en?: string;
+  name_zh?: string;
+  city?: string | null;
   address: string | null;
   features: LocationFeature[];
   brand_color: string | null;
+  /** Hero background video (mp4) for the home screen. Filled from content drop. */
+  hero_video?: string | null;
+  /** Hookah realm enabled for this location (staged rollout). */
+  has_hookah?: boolean;
   created_at: string;
+}
+
+/** Главный анонс на входном экране (DJ-сет, матч, событие). */
+export interface Announcement {
+  id: string;
+  type: 'dj' | 'match' | 'event';
+  title: string;
+  title_en?: string;
+  title_zh?: string;
+  subtitle?: string;
+  subtitle_en?: string;
+  subtitle_zh?: string;
+  image?: string | null;
+  /** ISO date-time когда событие; используется для показа «сегодня/скоро». */
+  when?: string | null;
 }
 
 export interface Table {
@@ -32,6 +54,10 @@ export interface Category {
   id: UUID;
   slug: string;
   name: string;
+  name_en?: string;
+  name_zh?: string;
+  /** Верхний «мир» меню: кухня / бар / кальяны. Для группировки разделов. */
+  realm?: 'kitchen' | 'bar' | 'hookah';
   parent_id: UUID | null;
   sort_order: number;
 }
@@ -106,11 +132,14 @@ export interface ResolvedMenuItem {
   id: UUID;
   name: string;
   name_en?: string;
+  name_zh?: string;
   description: string | null;
   description_en?: string | null;
+  description_zh?: string | null;
   photo: string | null;
   composition: string | null;
   composition_en?: string | null;
+  composition_zh?: string | null;
   category_id: UUID | null;
   price: number;
   weight: string | null;
@@ -128,8 +157,10 @@ export interface HookahMood {
   slug: string;
   name: string;
   name_en?: string;
+  name_zh?: string;
   description: string;
   description_en?: string;
+  description_zh?: string;
   gradient_from: string;
   gradient_to: string;
   icon: string;

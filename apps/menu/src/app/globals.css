@@ -1,23 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap');
 @import "tailwindcss";
 
 :root {
-  /* ── Barviha «Oxblood» — палитра из ТЗ ──
-     основа #3F1904 + тёплые допы, глубокий изумруд и дорогое золото. */
+  /* ── Barviha — палитра из ТЗ ──
+     основа #3F1904, карточки #643102, глубокий #1A1A1A,
+     текст #F5F5F5 / тёплый #FAE9C8, приглушённый #E8D1BD,
+     дорогое перламутровое золото на базе #E8D1BD → #FAE9C8. */
   --background: #3F1904;          /* основа (фон) */
   --background-deep: #1A1A1A;     /* глубокий слой / оверлеи */
   --card: #643102;               /* карточки / поверхности */
+  --card-elev: #7A3E08;          /* приподнятая поверхность (производная) */
   --foreground: #F5F5F5;         /* основной текст */
   --cream: #FAE9C8;              /* тёплый светлый акцент */
-  --beige: #E8D1BD;             /* приглушённый текст */
-  --muted: rgba(232, 209, 189, 0.60);
-  --emerald: #05342C;           /* глубокий зелёный акцент */
-  --border: rgba(218, 193, 120, 0.22);
+  --beige: #E8D1BD;             /* приглушённый текст / перламутр */
+  --muted: rgba(232, 209, 189, 0.58);
+  --emerald: #05342C;           /* глубокий зелёный акцент (доп.) */
+  --border: rgba(232, 209, 189, 0.22);
 
-  /* Дорогое переливающееся золото */
-  --gold: #DAC178;
-  --gold-light: #F3E3B0;
-  --gold-dark: #A87B2C;
+  /* Дорогое перламутровое золото (в тон #E8D1BD / #FAE9C8) */
+  --gold: #E3C8A0;
+  --gold-light: #FAE9C8;
+  --gold-dark: #B08A5A;
 }
 
 @theme inline {
@@ -29,17 +32,22 @@
   --color-beige: var(--beige);
   --color-emerald: var(--emerald);
   --color-card: var(--card);
+  --color-card-elev: var(--card-elev);
   --color-border: var(--border);
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
   --color-gold-dark: var(--gold-dark);
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: 'Playfair Display', 'Times New Roman', Georgia, serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
 }
 
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -56,21 +64,22 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* Заголовки — Playfair Display, в один тон с основным сайтом Барвихи */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   letter-spacing: 0.02em;
   font-weight: 500;
 }
 
-/* ── Дорогое переливающееся золото ── */
+/* ── Дорогое перламутровое золото ── */
 .gold-text {
   background: linear-gradient(
     110deg,
     var(--gold-dark) 0%,
-    var(--gold) 25%,
-    var(--gold-light) 50%,
-    var(--gold) 75%,
+    var(--gold) 22%,
+    var(--gold-light) 48%,
+    #ffffff 52%,
+    var(--gold-light) 56%,
+    var(--gold) 78%,
     var(--gold-dark) 100%
   );
   background-size: 220% auto;
@@ -85,9 +94,10 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(
     135deg,
     var(--gold-dark),
-    var(--gold) 45%,
+    var(--gold) 42%,
     var(--gold-light) 50%,
-    var(--gold) 55%,
+    #ffffff 53%,
+    var(--gold) 60%,
     var(--gold-dark)
   );
   background-size: 200% auto;
@@ -100,9 +110,30 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Плавное появление контента */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fade-up 0.5s ease both; }
+
+/* Скелетон-шиммер для прогрузки */
+.skeleton {
+  background: linear-gradient(100deg, var(--card) 30%, var(--card-elev) 50%, var(--card) 70%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  to { background-position: -200% 0; }
+}
+
+/* Тонкий золотой скроллбар */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 8px; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 @media (prefers-reduced-motion: reduce) {
-  .gold-text,
-  .gold-surface {
-    animation: none;
-  }
+  .gold-text, .gold-surface, .skeleton, .fade-up { animation: none; }
 }
