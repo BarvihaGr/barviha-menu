@@ -1,21 +1,25 @@
 import type { Category, HookahMood, ItemLabel, ResolvedMenuItem } from '@barviha/db';
 import type { Locale } from '@/i18n/routing';
+import { ITEM_TRANSLATIONS } from './item-translations';
 
 export function pickItemName(item: ResolvedMenuItem, locale: Locale): string {
-  if (locale === 'en' && item.name_en) return item.name_en;
-  if (locale === 'zh' && item.name_zh) return item.name_zh;
+  const tr = ITEM_TRANSLATIONS[item.id];
+  if (locale === 'en') return item.name_en ?? tr?.name_en ?? item.name;
+  if (locale === 'zh') return item.name_zh ?? tr?.name_zh ?? item.name;
   return item.name;
 }
 
 export function pickItemDescription(item: ResolvedMenuItem, locale: Locale): string | null {
-  if (locale === 'en' && item.description_en) return item.description_en;
-  if (locale === 'zh' && item.description_zh) return item.description_zh;
+  const tr = ITEM_TRANSLATIONS[item.id];
+  if (locale === 'en') return item.description_en ?? tr?.description_en ?? item.description;
+  if (locale === 'zh') return item.description_zh ?? tr?.description_zh ?? item.description;
   return item.description;
 }
 
 export function pickItemComposition(item: ResolvedMenuItem, locale: Locale): string | null {
-  if (locale === 'en' && item.composition_en) return item.composition_en;
-  if (locale === 'zh' && item.composition_zh) return item.composition_zh;
+  const tr = ITEM_TRANSLATIONS[item.id];
+  if (locale === 'en') return item.composition_en ?? tr?.composition_en ?? item.composition;
+  if (locale === 'zh') return item.composition_zh ?? tr?.composition_zh ?? item.composition;
   return item.composition;
 }
 
