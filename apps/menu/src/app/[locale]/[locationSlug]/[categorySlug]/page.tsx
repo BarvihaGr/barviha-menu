@@ -19,9 +19,11 @@ export default async function CategoryPage({
   }
 
   const db = getClient();
-  const location = await db.getLocationBySlug(locationSlug);
+  const [location, category] = await Promise.all([
+    db.getLocationBySlug(locationSlug),
+    db.getCategoryBySlug(categorySlug),
+  ]);
   if (!location) notFound();
-  const category = await db.getCategoryBySlug(categorySlug);
   if (!category) notFound();
 
   const items = (await db.getMenuItemsForLocation(location.id)).filter(

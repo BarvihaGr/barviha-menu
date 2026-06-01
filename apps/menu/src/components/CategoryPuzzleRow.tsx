@@ -188,19 +188,12 @@ const CLAMP: ReadonlyArray<(x: number, y: number) => number> = [
   (x, y) => Math.max(x, cut1(y) + GAP / 2),
 ];
 
-/** clip-path в процентах → кликабельная зона повторяет видимую форму среза и тянется адаптивно. */
-function clipFor(i: number): string {
-  const clamp = CLAMP[i]!;
-  const pts = BLOBS[i]!.pts;
-  const out: string[] = [];
-  for (let j = 0; j < pts.length; j += 2) {
-    const [x, y] = pts[j]!;
-    const cx = clamp(x, y);
-    out.push(`${((cx / VB_W) * 100).toFixed(2)}% ${((y / VB_H) * 100).toFixed(2)}%`);
-  }
-  return `polygon(${out.join(', ')})`;
-}
-const CLIPS = [clipFor(0), clipFor(1), clipFor(2)];
+// Кликабельные зоны — простые прямоугольники по швам (надёжный тап на тач, без clip-path).
+const ZONES = [
+  { left: 0, width: (SEAM0.x / VB_W) * 100 },
+  { left: (SEAM0.x / VB_W) * 100, width: ((SEAM1.x - SEAM0.x) / VB_W) * 100 },
+  { left: (SEAM1.x / VB_W) * 100, width: ((VB_W - SEAM1.x) / VB_W) * 100 },
+];
 
 /** Видимый силуэт среза (контур, обрезанный по резу) в координатах SVG — для золотой подсветки на hover. */
 function silhouette(i: number): string {
@@ -321,8 +314,8 @@ export function CategoryPuzzleRow({ items }: Props) {
               initial={false}
               animate={hovered === i ? { opacity: 1, pathLength: 1 } : { opacity: 0, pathLength: 0 }}
               transition={{
-                pathLength: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-                opacity: { duration: 0.25 },
+                pathLength: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+                opacity: { duration: 0.18 },
               }}
               style={{
                 pointerEvents: 'none',
@@ -332,37 +325,47 @@ export function CategoryPuzzleRow({ items }: Props) {
           ))}
         </svg>
 
-        {/* Вся деталь — кнопка: clip-path повторяет форму среза */}
+        {/* Визуальный слой: иконка + подпись по сердцевине (тап не перехватывает) */}
+        {items.slice(0, 3).map((it, i) => (
+          <div
+            key={`v${i}`}
+            className="pointer-events-none absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2"
+            style={{ left: `${(PITH[i]![0] / VB_W) * 100}%`, top: `${(PITH[i]![1] / VB_H) * 100}%` }}
+          >
+            <span
+              className="text-[#E7C994] transition-transform duration-300"
+              style={{
+                transform: hovered === i ? 'scale(1.12)' : 'scale(1)',
+                filter: 'drop-shadow(0 0 8px rgba(231,201,148,0.5))',
+              }}
+            >
+              {it.icon}
+            </span>
+            <span
+              className="text-center text-[11px] uppercase tracking-[0.25em] font-medium sm:text-sm"
+              style={{ color: '#E7C994', textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}
+            >
+              {it.title}
+            </span>
+          </div>
+        ))}
+
+        {/* Кликабельные зоны: настоящие Next Link (prefetch → быстрый переход),
+            прямоугольники по швам — надёжный тап на телефоне; подсветка по касанию. */}
         {items.slice(0, 3).map((it, i) => (
           <Link
             key={it.href}
             href={it.href}
+            prefetch
             aria-label={it.title}
-            className="group absolute inset-0 block transition-[filter] duration-300 hover:brightness-110 focus:outline-none"
-            style={{ clipPath: CLIPS[i], WebkitClipPath: CLIPS[i] } as React.CSSProperties}
-            onMouseEnter={() => setHovered(i)}
-            onMouseLeave={() => setHovered((h) => (h === i ? null : h))}
+            className="absolute bottom-0 top-0 block focus:outline-none"
+            style={{ left: `${ZONES[i]!.left}%`, width: `${ZONES[i]!.width}%` }}
+            onPointerEnter={() => setHovered(i)}
+            onPointerDown={() => setHovered(i)}
+            onPointerLeave={() => setHovered((h) => (h === i ? null : h))}
             onFocus={() => setHovered(i)}
             onBlur={() => setHovered((h) => (h === i ? null : h))}
-          >
-            <span
-              className="pointer-events-none absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2"
-              style={{ left: `${(PITH[i]![0] / VB_W) * 100}%`, top: `${(PITH[i]![1] / VB_H) * 100}%` }}
-            >
-              <span
-                className="text-[#E7C994] transition group-hover:scale-110"
-                style={{ filter: 'drop-shadow(0 0 8px rgba(231,201,148,0.5))' }}
-              >
-                {it.icon}
-              </span>
-              <span
-                className="text-center text-[11px] uppercase tracking-[0.25em] font-medium sm:text-sm"
-                style={{ color: '#E7C994', textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}
-              >
-                {it.title}
-              </span>
-            </span>
-          </Link>
+          />
         ))}
       </motion.div>
     </div>

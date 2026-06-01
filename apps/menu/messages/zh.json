@@ -1,114 +1,114 @@
 {
   "brand": {
-    "name": "巴尔维哈",
-    "tagline": "高级水烟 & 休闲会所"
+    "name": "巴爾維哈",
+    "tagline": "高級水煙 & 休閒會所"
   },
   "common": {
     "back": "返回",
     "currency": "₽",
-    "add": "添加",
-    "added": "已添加",
+    "add": "加入",
+    "added": "已加入",
     "weight": "份量",
-    "price": "价格",
-    "search": "搜索菜单",
+    "price": "價格",
+    "search": "搜尋菜單",
     "all": "全部",
-    "loading": "加载中…"
+    "loading": "載入中…"
   },
   "nav": {
     "cart": "我的餐桌",
-    "menu": "菜单",
-    "hookahFlow": "水烟"
+    "menu": "菜單",
+    "hookahFlow": "水煙"
   },
   "realms": {
-    "kitchen": "厨房",
+    "kitchen": "廚房",
     "bar": "酒吧",
-    "hookah": "水烟"
+    "hookah": "水煙"
   },
   "categories": {
-    "hookah": "水烟",
+    "hookah": "水煙",
     "bar": "酒吧",
-    "kitchen": "厨房",
-    "rolls": "卷物",
-    "desserts": "甜点"
+    "kitchen": "廚房",
+    "rolls": "壽司捲",
+    "desserts": "甜點"
   },
   "labels": {
-    "hit": "热销",
+    "hit": "熱銷",
     "new": "新品",
-    "chef_pick": "主厨推荐",
+    "chef_pick": "主廚推薦",
     "premium": "尊享",
     "spicy": "辣",
     "vegan": "素食"
   },
   "filters": {
-    "title": "筛选",
-    "noAlcohol": "无酒精",
+    "title": "篩選",
+    "noAlcohol": "無酒精",
     "withAlcohol": "含酒精",
     "withIce": "加冰",
-    "sparkling": "气泡",
-    "priceUnder1000": "1000 卢布以内",
+    "sparkling": "氣泡",
+    "priceUnder1000": "1000 盧布以內",
     "spicy": "辣味",
     "vegan": "素食",
     "withMeat": "含肉",
-    "noMeat": "无肉",
-    "salty": "咸味",
+    "noMeat": "無肉",
+    "salty": "鹹味",
     "reset": "重置",
     "close": "完成"
   },
   "item": {
     "addToCart": "加入我的餐桌",
     "composition": "配料",
-    "nutrition": "每份营养成分",
+    "nutrition": "每份營養成分",
     "kcal": "千卡",
-    "protein": "蛋白质",
+    "protein": "蛋白質",
     "fat": "脂肪",
     "carbs": "碳水"
   },
   "cart": {
     "title": "我的餐桌",
-    "empty": "餐桌还是空的，请从菜单中挑选。",
-    "browse": "前往菜单",
-    "subtotal": "合计",
-    "submitDescription": "服务员到来时请出示此页面",
-    "qty": "数量",
+    "empty": "餐桌還是空的，請從菜單中挑選。",
+    "browse": "前往菜單",
+    "subtotal": "合計",
+    "submitDescription": "服務員到來時請出示此頁面",
+    "qty": "數量",
     "remove": "移除",
-    "addNote": "备注…"
+    "addNote": "備註…"
   },
   "hookah": {
-    "title": "水烟",
-    "subtitle": "选择心情，我们的水烟师将为您调配完美口味",
-    "moodTitle": "今天想要什么感觉？",
-    "hitsTitle": "我们的热销",
-    "premiumTitle": "尊享水烟"
+    "title": "水煙",
+    "subtitle": "選擇心情，我們的水煙師將為您調配完美口味",
+    "moodTitle": "今天想要什麼感覺？",
+    "hitsTitle": "我們的熱銷",
+    "premiumTitle": "尊享水煙"
   },
   "home": {
-    "featured": "热销与精选",
-    "menu": "菜单",
-    "promos": "优惠活动",
-    "exploreMenu": "浏览菜单",
+    "featured": "熱銷與精選",
+    "menu": "菜單",
+    "promos": "優惠活動",
+    "exploreMenu": "瀏覽菜單",
     "viewAll": "查看全部"
   },
   "announce": {
     "today": "今日",
-    "soon": "即将",
+    "soon": "即將",
     "dj": "DJ 之夜",
-    "match": "赛事直播",
-    "event": "活动"
+    "match": "賽事直播",
+    "event": "活動"
   },
   "location": {
-    "switch": "选择门店",
-    "current": "当前门店",
-    "search": "搜索门店…",
-    "info": "门店信息",
-    "close": "关闭",
+    "switch": "選擇門店",
+    "current": "當前門店",
+    "search": "搜尋門店…",
+    "info": "門店資訊",
+    "close": "關閉",
     "address": "地址",
-    "phone": "电话",
-    "directions": "查看路线",
-    "addressTBD": "地址即将公布",
-    "phoneTBD": "电话即将公布"
+    "phone": "電話",
+    "directions": "查看路線",
+    "addressTBD": "地址即將公佈",
+    "phoneTBD": "電話即將公佈"
   },
   "search": {
-    "noResults": "未找到匹配项",
-    "placeholder": "搜索菜品、饮品、水烟…"
+    "noResults": "未找到匹配項",
+    "placeholder": "搜尋菜品、飲品、水煙…"
   },
   "toast": {
     "addedToCart": "已加入我的餐桌"
@@ -116,7 +116,7 @@
   "lang": {
     "ru": "RU",
     "en": "EN",
-    "zh": "中",
-    "switch": "切换语言"
+    "zh": "繁",
+    "switch": "切換語言"
   }
 }
