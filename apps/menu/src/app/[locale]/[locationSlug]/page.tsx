@@ -11,8 +11,8 @@ import { AnnouncementBanner } from '@/components/AnnouncementBanner';
 import { HookahIcon } from '@/components/icons/HookahIcon';
 import { getLocationAccent } from '@/lib/location-theme';
 
-/** Только 3 раздела на главной — десерты/роллы скрыты, относятся к кухне. */
-const HOME_CATEGORIES = ['kitchen', 'bar', 'hookah'] as const;
+/** Порядок слотов слева-направо: Кальяны | Кухня | Бар. */
+const HOME_CATEGORIES = ['hookah', 'kitchen', 'bar'] as const;
 
 const CATEGORY_VISUALS: Record<
   (typeof HOME_CATEGORIES)[number],
@@ -20,25 +20,26 @@ const CATEGORY_VISUALS: Record<
     icon: React.ReactNode;
     aspect: 'tall' | 'normal' | 'wide';
     offsetY: 'up' | 'none' | 'down';
+    /** shape 0 — бугор справа; shape 1 — впадина слева + бугор справа; shape 2 — впадина слева */
     shape: 0 | 1 | 2;
   }
 > = {
+  hookah: {
+    icon: <HookahIcon size={48} />,
+    aspect: 'tall',
+    offsetY: 'down',
+    shape: 0,
+  },
   kitchen: {
     icon: <UtensilsCrossed size={44} strokeWidth={1.6} />,
     aspect: 'tall',
     offsetY: 'none',
-    shape: 0,
+    shape: 1,
   },
   bar: {
     icon: <Wine size={44} strokeWidth={1.6} />,
     aspect: 'normal',
     offsetY: 'down',
-    shape: 1,
-  },
-  hookah: {
-    icon: <HookahIcon size={48} />,
-    aspect: 'tall',
-    offsetY: 'up',
     shape: 2,
   },
 };
@@ -86,18 +87,11 @@ export default async function LocationHome({
       {homeCategories.length > 0 && (
         <section className="pb-4">
           <SectionTitle>{tHome('menu')}</SectionTitle>
-          <div className="grid grid-cols-3 gap-0 px-2 sm:px-6">
+          <div className="grid grid-cols-3 gap-1 sm:gap-2 px-2 sm:px-6">
             {homeCategories.map((c, idx) => {
               const slug = c.slug as (typeof HOME_CATEGORIES)[number];
               const visual = CATEGORY_VISUALS[slug];
               const href = slug === 'hookah' ? `/${location.slug}/hookah` : `/${location.slug}/${slug}`;
-              // overlap: левая чуть вправо, центр поверх, правая чуть влево — пазл
-              const overlap =
-                idx === 0
-                  ? '-mr-5 sm:-mr-10'
-                  : idx === 1
-                    ? '-mx-5 sm:-mx-10'
-                    : '-ml-5 sm:-ml-10';
               return (
                 <CategoryPuzzleCard
                   key={c.id}
@@ -108,8 +102,6 @@ export default async function LocationHome({
                   offsetY={visual.offsetY}
                   shape={visual.shape}
                   index={idx}
-                  className={overlap}
-                  z={idx === 1 ? 20 : 10}
                 />
               );
             })}

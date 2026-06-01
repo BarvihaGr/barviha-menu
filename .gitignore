@@ -48,3 +48,4 @@ preview/
 *.docx
 *.mov
 make_palette_doc.py
+_backups/

@@ -15,10 +15,6 @@ interface Props {
   offsetY?: 'up' | 'none' | 'down';
   /** Какой вариант «среза дерева» — 3 разных силуэта + узора колец. */
   shape?: 0 | 1 | 2;
-  /** Доп. CSS-классы (для overlap через negative margin). */
-  className?: string;
-  /** z-index — чтобы средняя могла лечь поверх краёв соседей. */
-  z?: number;
 }
 
 const ASPECT_MAP = {
@@ -47,73 +43,109 @@ function mulberry32(seed: number) {
 
 interface SliceData {
   outline: string;
-  rings: Array<{ rx: number; ry: number; cx: number; cy: number; rot: number; opacity: number }>;
-  cracks: string[];
+  /** Кольца теперь — path с дрожанием (как на отпечатке), не идеальные эллипсы. */
+  rings: Array<{ path: string; opacity: number; width: number }>;
   cx: number;
   cy: number;
 }
 
-function buildSlice(seed: number): SliceData {
-  const rng = mulberry32(seed);
-  const cx = 50 + (rng() - 0.5) * 6;
-  const cy = 52 + (rng() - 0.5) * 6;
+/** Минимальная разница углов в радианах [0, π]. */
+function angleDist(a: number, b: number) {
+  let d = Math.abs(a - b) % (Math.PI * 2);
+  if (d > Math.PI) d = Math.PI * 2 - d;
+  return d;
+}
 
-  // Зазубренный контур: 44 точки с пульсирующим радиусом + шум
+/**
+ * Генератор «среза» с пазловыми бугорками/впадинами.
+ *   bumps:   углы (рад), где радиус увеличивается — выпуклость
+ *   notches: углы (рад), где радиус уменьшается — впадина
+ * Профиль перехода — плавный (cos easing), ширина зоны ~0.35 рад.
+ */
+function buildSlice(seed: number, bumps: number[] = [], notches: number[] = []): SliceData {
+  const rng = mulberry32(seed);
+  const cx = 50 + (rng() - 0.5) * 4;
+  const cy = 52 + (rng() - 0.5) * 4;
+
+  const radiusAt = (a: number, base: number, jitter = 0): number => {
+    let r = base + Math.sin(a + seed * 0.7) * 2 + Math.sin(a * 3 + seed * 1.1) * 1.6;
+    r += Math.sin(a * 7 + seed * 1.7) * 0.9 + Math.sin(a * 15 + seed * 0.5) * 0.45;
+    r += jitter;
+    // пазловые искажения
+    const ZONE = 0.5;
+    const AMP = 8;
+    for (const bA of bumps) {
+      const d = angleDist(a, bA);
+      if (d < ZONE) r += AMP * Math.cos((d / ZONE) * (Math.PI / 2));
+    }
+    for (const nA of notches) {
+      const d = angleDist(a, nA);
+      if (d < ZONE) r -= AMP * Math.cos((d / ZONE) * (Math.PI / 2));
+    }
+    return r;
+  };
+
+  // Контур: 60 точек со средним радиусом ~40 + пазловые бугры/впадины
+  const N = 60;
   const pts: Array<[number, number]> = [];
-  const N = 44;
   for (let i = 0; i < N; i++) {
     const a = (i / N) * Math.PI * 2;
-    const baseR = 46 + Math.sin(a * 1 + seed * 0.7) * 3;
-    const wide = Math.sin(a * 3 + seed * 1.1) * 2.5;
-    const med = Math.sin(a * 7 + seed * 1.7) * 1.4;
-    const fine = Math.sin(a * 15 + seed * 0.5) * 0.7;
-    const noise = (rng() - 0.5) * 1.6;
-    const r = baseR + wide + med + fine + noise;
+    const r = radiusAt(a, 40, (rng() - 0.5) * 1.4);
     pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r * 1.05]);
   }
   const outline =
     pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)}`).join(' ') + ' Z';
 
-  // ~22 концентрических кольца с лёгким эксцентриситетом
+  // Кольца — 48 штук, каждое сделано как path из 64 точек с шумом,
+  // → не идеальные эллипсы, а реально «дрожащие» кольца как на отпечатке.
   const rings: SliceData['rings'] = [];
-  const ringRot = (rng() - 0.5) * 30;
-  for (let i = 1; i <= 22; i++) {
-    const t = i / 22;
-    const rx = 4 + t * 44 + Math.sin(i + seed) * 1.4;
-    const ry = rx * (1.05 + Math.sin(i * 0.7) * 0.06);
-    const opacity = 0.08 + (1 - Math.abs(t - 0.55)) * 0.22 + (i % 3 === 0 ? 0.05 : 0);
-    rings.push({ rx, ry, cx, cy, rot: ringRot, opacity });
-  }
-
-  // 4-5 радиальных трещин от центра к краю
-  const cracks: string[] = [];
-  const crackCount = 4 + Math.floor(rng() * 2);
-  for (let i = 0; i < crackCount; i++) {
-    const a = (i / crackCount) * Math.PI * 2 + rng() * 0.6;
-    const len = 38 + rng() * 12;
-    const segs = 3;
-    let path = `M${cx.toFixed(2)},${cy.toFixed(2)}`;
-    for (let s = 1; s <= segs; s++) {
-      const tt = s / segs;
-      const wobble = (rng() - 0.5) * 4;
-      const x = cx + Math.cos(a + wobble * 0.04) * len * tt;
-      const y = cy + Math.sin(a + wobble * 0.04) * len * tt * 1.05 + wobble * 0.4;
-      path += ` L${x.toFixed(2)},${y.toFixed(2)}`;
+  const RING_PTS = 64;
+  for (let k = 1; k <= 48; k++) {
+    const t = k / 48;
+    const ringR = 2 + t * 36; // от 2 до 38 — внутри среза
+    const eccent = 1.0 + Math.sin(k * 0.4 + seed) * 0.08; // лёгкий эксцентриситет
+    const rng2 = mulberry32(seed * 100 + k);
+    let path = '';
+    for (let i = 0; i <= RING_PTS; i++) {
+      const a = (i / RING_PTS) * Math.PI * 2;
+      // микро-шум по радиусу — кольцо «дрожит»
+      const wobble =
+        Math.sin(a * 5 + k * 1.3 + seed) * 0.35 +
+        Math.sin(a * 11 + k * 0.7) * 0.18 +
+        (rng2() - 0.5) * 0.45;
+      const rk = ringR + wobble;
+      const x = cx + Math.cos(a) * rk;
+      const y = cy + Math.sin(a) * rk * eccent;
+      path += `${i === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)} `;
     }
-    cracks.push(path);
+    // opacity и толщина варьируются — повторяет неровную плотность отпечатка
+    const opacity =
+      0.24 + (1 - Math.abs(t - 0.55)) * 0.38 + (k % 4 === 0 ? 0.12 : 0) - (k % 7 === 0 ? 0.06 : 0);
+    const width = 0.2 + (k % 5 === 0 ? 0.14 : 0);
+    rings.push({ path: path.trim(), opacity: Math.min(0.72, opacity), width });
   }
 
-  return { outline, rings, cracks, cx, cy };
+  return { outline, rings, cx, cy };
 }
 
-const SLICES = [buildSlice(7), buildSlice(31), buildSlice(53)];
+// 3 слота слева-направо: Кальяны | Кухня | Бар.
+// Углы: 0 = справа, π = слева.
+// — Кальяны: бугор справа (соединяется с Кухней)
+// — Кухня:   впадина слева (принимает Кальяны), бугор справа (соединяется с Баром)
+// — Бар:     впадина слева (принимает Кухню)
+const SLICES: SliceData[] = [
+  buildSlice(7, [0], []),
+  buildSlice(31, [0], [Math.PI]),
+  buildSlice(53, [], [Math.PI]),
+];
 
 /**
  * Карточка-«срез дерева».
  *
- * SVG целиком: зазубренный контур + ~22 годовых кольца с эксцентричным
- * центром + 4-5 радиальных трещин + шум-текстура (feTurbulence). Над SVG —
- * иконка и подпись золотом. Каждый shape — свой сид: рендер уникален.
+ * SVG целиком: контур с пазловыми буграми/впадинами + 48 «дрожащих»
+ * годовых колец (path с шумом, как на отпечатке) + шум-текстура
+ * (feTurbulence). Над SVG — иконка и подпись золотом. Каждый shape — свой
+ * сид: рендер уникален.
  */
 export function CategoryPuzzleCard({
   href,
@@ -123,8 +155,6 @@ export function CategoryPuzzleCard({
   aspect = 'normal',
   offsetY = 'none',
   shape = 0,
-  className,
-  z,
 }: Props) {
   const slice = SLICES[shape] ?? SLICES[0]!;
   const rotate = ROTATE_MAP[shape] ?? '0deg';
@@ -138,8 +168,8 @@ export function CategoryPuzzleCard({
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: Math.min(index * 0.1, 0.5), duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className={cn('relative', OFFSET_MAP[offsetY], className)}
-      style={{ transform: `rotate(${rotate})`, zIndex: z }}
+      className={cn('relative', OFFSET_MAP[offsetY])}
+      style={{ transform: `rotate(${rotate})` }}
     >
       <Link
         href={href}
@@ -151,7 +181,8 @@ export function CategoryPuzzleCard({
         <svg
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
-          className="absolute inset-0 h-full w-full overflow-visible"
+          className="absolute inset-0 h-full w-full overflow-visible transition-[filter] duration-300"
+          style={{ filter: 'drop-shadow(0 8px 14px rgba(0,0,0,0.55))' }}
           aria-hidden
         >
           <defs>
@@ -182,19 +213,17 @@ export function CategoryPuzzleCard({
           <g clipPath={`url(#${clipId})`}>
             <rect width="100" height="100" fill={`url(#${bgId})`} />
 
-            {/* годовые кольца — концентрические эллипсы */}
+            {/* годовые кольца — «дрожащие» path с шумом, как на реальном отпечатке */}
             {slice.rings.map((r, i) => (
-              <ellipse
+              <path
                 key={i}
-                cx={r.cx}
-                cy={r.cy}
-                rx={r.rx}
-                ry={r.ry}
-                transform={`rotate(${r.rot} ${r.cx} ${r.cy})`}
+                d={r.path}
                 fill="none"
                 stroke="#E5C490"
-                strokeWidth={0.25}
+                strokeWidth={r.width}
                 opacity={r.opacity}
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             ))}
 
@@ -203,6 +232,15 @@ export function CategoryPuzzleCard({
 
             {/* мягкий glow к центру */}
             <rect width="100" height="100" fill={`url(#${glowId})`} />
+
+            {/* тёмный обод-«кора» по краю среза — даёт объём и отделяет от фона */}
+            <path
+              d={slice.outline}
+              fill="none"
+              stroke="#160D07"
+              strokeWidth={7}
+              opacity={0.55}
+            />
           </g>
 
           {/* тонкая золотая обводка контура — подсвечивается на hover */}
