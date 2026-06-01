@@ -38,8 +38,8 @@ export function LocationHeader({
         Десктоп (≥sm) — один ряд: локация | лого | язык.
        */}
 
-      {/* Mobile only: лого ряд */}
-      <div className="flex sm:hidden justify-center px-3 pt-3 pb-1">
+      {/* Mobile only: лого ряд — узкий вертикально */}
+      <div className="flex sm:hidden justify-center px-3 pt-1.5 pb-0">
         <Link href={homeHref} className="flex cursor-pointer" aria-label={t('name')}>
           <Image
             src="/logo.png"
@@ -47,12 +47,12 @@ export function LocationHeader({
             width={427}
             height={57}
             priority
-            className="h-5 w-auto"
+            className="h-[18px] w-auto"
           />
         </Link>
       </div>
 
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-3 pb-1 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:gap-4 sm:px-5 sm:pt-3.5">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-3 pt-0.5 pb-0 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:gap-4 sm:px-5 sm:pt-3.5 sm:pb-1">
         <div className="flex items-center min-w-0">
           <LocationSwitcher locations={locations} currentSlug={locationSlug} />
         </div>
@@ -75,7 +75,7 @@ export function LocationHeader({
         </div>
       </div>
       {/* Бейдж локации — кнопка, открывает модалку с адресом/телефоном/маршрутом */}
-      <div className="mx-auto flex max-w-[1200px] items-center justify-center gap-2 px-5 pb-2.5 -mt-1">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-center gap-2 px-5 pt-0.5 pb-1 sm:pb-2.5 sm:-mt-1">
         <LocationInfoModal
           locationName={locationName}
           address={locationAddress}
