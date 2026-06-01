@@ -36,11 +36,11 @@ export function pickMoodDescription(mood: HookahMood, locale: Locale): string {
 }
 
 const CATEGORY_FALLBACK: Record<string, { en: string; zh: string }> = {
-  hookah: { en: 'Hookah', zh: '水烟' },
+  hookah: { en: 'Hookah', zh: '水煙' },
   bar: { en: 'Bar', zh: '酒吧' },
-  kitchen: { en: 'Kitchen', zh: '厨房' },
-  rolls: { en: 'Rolls', zh: '卷物' },
-  desserts: { en: 'Desserts', zh: '甜点' },
+  kitchen: { en: 'Kitchen', zh: '廚房' },
+  rolls: { en: 'Rolls', zh: '壽司捲' },
+  desserts: { en: 'Desserts', zh: '甜點' },
 };
 
 export function pickCategoryName(cat: Category, locale: Locale): string {
