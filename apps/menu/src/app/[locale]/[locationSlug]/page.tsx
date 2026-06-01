@@ -16,22 +16,30 @@ const HOME_CATEGORIES = ['kitchen', 'bar', 'hookah'] as const;
 
 const CATEGORY_VISUALS: Record<
   (typeof HOME_CATEGORIES)[number],
-  { icon: React.ReactNode; aspect: 'tall' | 'normal' | 'wide'; offsetY: 'up' | 'none' | 'down' }
+  {
+    icon: React.ReactNode;
+    aspect: 'tall' | 'normal' | 'wide';
+    offsetY: 'up' | 'none' | 'down';
+    shape: 0 | 1 | 2;
+  }
 > = {
   kitchen: {
     icon: <UtensilsCrossed size={44} strokeWidth={1.6} />,
     aspect: 'tall',
     offsetY: 'none',
+    shape: 0,
   },
   bar: {
     icon: <Wine size={44} strokeWidth={1.6} />,
     aspect: 'normal',
     offsetY: 'down',
+    shape: 1,
   },
   hookah: {
     icon: <HookahIcon size={48} />,
     aspect: 'tall',
     offsetY: 'up',
+    shape: 2,
   },
 };
 
@@ -91,6 +99,7 @@ export default async function LocationHome({
                   icon={visual.icon}
                   aspect={visual.aspect}
                   offsetY={visual.offsetY}
+                  shape={visual.shape}
                   index={idx}
                 />
               );

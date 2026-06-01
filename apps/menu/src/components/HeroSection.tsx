@@ -97,12 +97,8 @@ export function HeroSection({
       {videoSrc && shouldLoadVideo && (
         <motion.video
           ref={videoRef}
-          initial={{ opacity: 0, scale: 1.08, filter: 'blur(20px)' }}
-          animate={
-            videoReady
-              ? { opacity: 1, scale: 1, filter: 'blur(0px)' }
-              : { opacity: 0, scale: 1.08, filter: 'blur(20px)' }
-          }
+          initial={{ opacity: 0, scale: 1.08 }}
+          animate={videoReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.08 }}
           transition={{ duration: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0 h-full w-full object-cover"
           src={videoSrc}
@@ -120,7 +116,7 @@ export function HeroSection({
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/55 via-transparent to-[var(--background)]/30" />
       {/* Акцентная вуаль локации */}
       <div
-        className="absolute inset-0 opacity-25 mix-blend-soft-light pointer-events-none"
+        className="absolute inset-0 opacity-20 pointer-events-none"
         style={{ background: `radial-gradient(circle at 50% 35%, ${accent}, transparent 60%)` }}
       />
       {/* Плавный фейд по всем 4 краям — видео без резких границ */}

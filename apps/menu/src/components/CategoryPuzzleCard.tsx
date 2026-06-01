@@ -13,6 +13,8 @@ interface Props {
   aspect?: 'tall' | 'normal' | 'wide';
   /** Вертикальное смещение от базовой линии — создаёт пазл. */
   offsetY?: 'up' | 'none' | 'down';
+  /** Какой вариант «среза дерева» — каждая карточка имеет свою форму. */
+  shape?: 0 | 1 | 2;
 }
 
 const ASPECT_MAP = {
@@ -27,13 +29,32 @@ const OFFSET_MAP = {
 };
 
 /**
+ * Органические формы «срезов дерева» — разные неровные border-radius
+ * и лёгкий поворот. Каждый shape уникальный, не выглядит как квадрат.
+ */
+const SHAPE_STYLES: Array<{ radius: string; rotate: string }> = [
+  { radius: '62% 38% 52% 48% / 48% 60% 40% 52%', rotate: '-2.5deg' },
+  { radius: '44% 56% 38% 62% / 56% 42% 58% 44%', rotate: '1.8deg' },
+  { radius: '58% 42% 64% 36% / 38% 56% 44% 62%', rotate: '-1.2deg' },
+];
+
+/**
  * Карточка категории в стиле «пазл-срез дерева».
  *
  * Визуал: тёмный фон + текстура годовых колец (SVG inline), карточки
  * разной высоты и смещены по вертикали — складываются как пазл.
  * Иконка крупно по центру золотом + название снизу.
  */
-export function CategoryPuzzleCard({ href, title, icon, index = 0, aspect = 'normal', offsetY = 'none' }: Props) {
+export function CategoryPuzzleCard({
+  href,
+  title,
+  icon,
+  index = 0,
+  aspect = 'normal',
+  offsetY = 'none',
+  shape = 0,
+}: Props) {
+  const shapeStyle = SHAPE_STYLES[shape];
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -44,10 +65,14 @@ export function CategoryPuzzleCard({ href, title, icon, index = 0, aspect = 'nor
       <Link
         href={href}
         className={cn(
-          'group relative block h-full w-full overflow-hidden rounded-md border border-gold/30 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer',
+          'group relative block h-full w-full overflow-hidden border border-gold/30 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer',
           'hover:border-gold hover:shadow-[0_8px_28px_rgba(196,146,98,0.25)]',
           ASPECT_MAP[aspect],
         )}
+        style={{
+          borderRadius: shapeStyle?.radius,
+          transform: `rotate(${shapeStyle?.rotate})`,
+        }}
       >
         {/* Базовый фон карточки (тёплый тёмный) */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#3B2A20] via-[#2A1B11] to-[#1B110A]" />
@@ -92,8 +117,11 @@ export function CategoryPuzzleCard({ href, title, icon, index = 0, aspect = 'nor
           }}
         />
 
-        {/* Контент */}
-        <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-3 px-3 py-5">
+        {/* Контент — отвёрнут в обратную сторону чтобы текст и иконка стояли ровно */}
+        <div
+          className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-3 px-3 py-5"
+          style={{ transform: `rotate(${shapeStyle ? `calc(${shapeStyle.rotate} * -1)` : '0deg'})` }}
+        >
           <div
             className="text-[#E5C490] drop-shadow-[0_2px_12px_rgba(229,196,144,0.25)] transition group-hover:scale-110"
             style={{ filter: 'drop-shadow(0 0 6px rgba(229,196,144,0.35))' }}
