@@ -161,7 +161,7 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
     <>
       <div
         ref={scrollerRef}
-        className="-mx-4 sm:-mx-6 flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar px-4 sm:px-6 py-1"
+        className="flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar px-4 sm:px-6 py-1"
         onMouseEnter={pause}
         onMouseLeave={() => resumeSoon(400)}
         onPointerDown={(e) => {
