@@ -65,6 +65,7 @@ export default async function LocationHome({
           <SectionTitle>{tHome('menu')}</SectionTitle>
           <div className="px-2 sm:px-6">
             <CategoryPuzzleRow
+              locationSlug={location.slug}
               items={homeCategories.map((c) => {
                 const slug = c.slug as (typeof HOME_CATEGORIES)[number];
                 return {

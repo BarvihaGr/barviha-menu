@@ -1,8 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from '@/i18n/navigation';
+import {
+  DEFAULT_LAYOUT,
+  getPuzzleLayout,
+  type PuzzleLayout,
+  type Seam,
+  type BlobConfig,
+} from '@/lib/puzzle-layout';
 
 export interface PuzzleItem {
   href: string;
@@ -13,12 +20,17 @@ export interface PuzzleItem {
 interface Props {
   /** Ровно 3 элемента, порядок слева-направо: Кальяны | Кухня | Бар. */
   items: PuzzleItem[];
+  /**
+   * Slug локации — определяет уникальную посадку пазла.
+   * Если не передан, используется DEFAULT_LAYOUT (как Арка).
+   */
+  locationSlug?: string;
 }
 
 // ───────────────────── система координат ─────────────────────
 const VB_W = 300;
 const VB_H = 156;
-const GAP = 5; // тонкий шов между деталями
+const GAP = 5;
 
 function mulberry32(seed: number) {
   let s = seed >>> 0;
@@ -31,20 +43,15 @@ function mulberry32(seed: number) {
   };
 }
 
-// ───────────────────── общий рез между соседями ─────────────────────
-// Одна и та же кривая для пары деталей → их края совпадают идеально (пазл).
-function cutX(seamX: number, y: number, phase: number, knobY: number, knobDir: number): number {
-  const wave = 6 * Math.sin(y * 0.05 + phase) + 2.5 * Math.sin(y * 0.13 + phase * 1.7);
-  const knob = knobDir * 14 * Math.exp(-((y - knobY) ** 2) / (2 * 16 ** 2));
-  return seamX + wave + knob;
+// ───────────────────── рез между соседями ─────────────────────
+function makeCutFn(seam: Seam) {
+  return (y: number): number => {
+    const wave = 6 * Math.sin(y * 0.05 + seam.phase) + 2.5 * Math.sin(y * 0.13 + seam.phase * 1.7);
+    const knob = seam.dir * 14 * Math.exp(-((y - seam.knobY) ** 2) / (2 * 16 ** 2));
+    return seam.x + wave + knob;
+  };
 }
 
-const SEAM0 = { x: 106, phase: 0.6, knobY: 70, dir: 1 }; // Кальяны ↔ Кухня
-const SEAM1 = { x: 194, phase: 2.1, knobY: 86, dir: 1 }; // Кухня ↔ Бар
-const cut0 = (y: number) => cutX(SEAM0.x, y, SEAM0.phase, SEAM0.knobY, SEAM0.dir);
-const cut1 = (y: number) => cutX(SEAM1.x, y, SEAM1.phase, SEAM1.knobY, SEAM1.dir);
-
-// область детали (полигон-маска): пересекается с органическим контуром → виден рез
 const YS: number[] = [];
 for (let y = -8; y <= VB_H + 8; y += 3) YS.push(y);
 
@@ -67,12 +74,6 @@ function stripMiddle(leftFn: (y: number) => number, rightFn: (y: number) => numb
   return d + 'Z';
 }
 
-const STRIPS = [
-  stripLeft((y) => cut0(y) - GAP / 2),
-  stripMiddle((y) => cut0(y) + GAP / 2, (y) => cut1(y) - GAP / 2),
-  stripRight((y) => cut1(y) + GAP / 2),
-];
-
 // ───────────────────── реалистичный срез дерева ─────────────────────
 interface Blob {
   outline: string;
@@ -81,21 +82,15 @@ interface Blob {
   cracks: string[];
 }
 
-/**
- * Срез с эксцентричной сердцевиной. Кольца — масштабные копии контура,
- * стянутые к сердцевине P → реально вложены и сгущаются к краю, как у спила.
- * Контур плавный (низкие гармоники), кольца тонкие, чистые, почти параллельные —
- * не «каляки». Контур заведомо больше шва, лишнее обрежет маска.
- */
-function buildBlob(seed: number, O: [number, number], P: [number, number], Rb: number): Blob {
+function buildBlob(seed: number, cfg: BlobConfig): Blob {
   const rng = mulberry32(seed);
   const ph1 = seed * 0.7;
   const ph2 = seed * 1.3;
   const ph3 = seed * 2.1;
-  const [ox, oy] = O;
-  const [px, py] = P;
+  const [ox, oy] = cfg.O;
+  const [px, py] = cfg.P;
+  const Rb = cfg.Rb;
 
-  // плавный округлый контур (без высокочастотной зазубренности)
   const Rout = (a: number) =>
     Rb *
     (1 +
@@ -113,7 +108,6 @@ function buildBlob(seed: number, O: [number, number], P: [number, number], Rb: n
   const outline =
     B.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)}`).join(' ') + ' Z';
 
-  // годовые кольца — копии контура, стянутые к сердцевине; к краю гуще
   const rings: Blob['rings'] = [];
   let f = 0.03;
   for (let k = 1; k <= 96 && f < 0.985; k++) {
@@ -126,7 +120,6 @@ function buildBlob(seed: number, O: [number, number], P: [number, number], Rb: n
       const a = (i / STEPS) * Math.PI * 2;
       const bx = B[idx]![0];
       const by = B[idx]![1];
-      // микро-неровность кольца — маленькая и гладкая (не «каляки»)
       const wob = 0.28 * Math.sin(a * 3 + k * 0.6 + seed) + (rngK() - 0.5) * 0.16;
       const dirx = bx - px;
       const diry = by - py;
@@ -134,7 +127,7 @@ function buildBlob(seed: number, O: [number, number], P: [number, number], Rb: n
       const rr = f + wob / len;
       d += `${i === 0 ? 'M' : 'L'}${(px + dirx * rr).toFixed(2)},${(py + diry * rr).toFixed(2)} `;
     }
-    const late = k % 8 === 0; // имитация «поздней» (тёмной/плотной) древесины года
+    const late = k % 8 === 0;
     rings.push({
       d: d.trim(),
       opacity: Math.min(0.8, 0.32 + 0.34 * (1 - Math.abs(f - 0.5)) + (late ? 0.12 : 0)),
@@ -143,7 +136,6 @@ function buildBlob(seed: number, O: [number, number], P: [number, number], Rb: n
     });
   }
 
-  // радиальные трещины от сердцевины к краю — тонкие, чуть волнистые
   const cracks: string[] = [];
   const crackCount = 2 + Math.floor(rng() * 2);
   for (let c = 0; c < crackCount; c++) {
@@ -169,50 +161,83 @@ function buildBlob(seed: number, O: [number, number], P: [number, number], Rb: n
   return { outline, pts: B, rings, cracks };
 }
 
-// хаотичная расстановка: Кухня крупнее и выше, соседи ниже и смещены
-const BLOBS: Blob[] = [
-  buildBlob(7, [72, 80], [62, 86], 62), // Кальяны
-  buildBlob(23, [150, 74], [158, 66], 70), // Кухня
-  buildBlob(51, [230, 80], [240, 86], 60), // Бар
-];
-
-// сердцевины (для иконок/подписей) и зажимы для кликабельной формы
-const PITH: ReadonlyArray<readonly [number, number]> = [
-  [62, 86],
-  [158, 66],
-  [240, 86],
-];
-const CLAMP: ReadonlyArray<(x: number, y: number) => number> = [
-  (x, y) => Math.min(x, cut0(y) - GAP / 2),
-  (x, y) => Math.min(Math.max(x, cut0(y) + GAP / 2), cut1(y) - GAP / 2),
-  (x, y) => Math.max(x, cut1(y) + GAP / 2),
-];
-
-// Кликабельные зоны — простые прямоугольники по швам (надёжный тап на тач, без clip-path).
-const ZONES = [
-  { left: 0, width: (SEAM0.x / VB_W) * 100 },
-  { left: (SEAM0.x / VB_W) * 100, width: ((SEAM1.x - SEAM0.x) / VB_W) * 100 },
-  { left: (SEAM1.x / VB_W) * 100, width: ((VB_W - SEAM1.x) / VB_W) * 100 },
-];
-
-/** Видимый силуэт среза (контур, обрезанный по резу) в координатах SVG — для золотой подсветки на hover. */
-function silhouette(i: number): string {
-  const clamp = CLAMP[i]!;
-  const pts = BLOBS[i]!.pts;
-  return (
-    pts
-      .map(([x, y], j) => `${j === 0 ? 'M' : 'L'}${clamp(x, y).toFixed(2)},${y.toFixed(2)}`)
-      .join(' ') + ' Z'
-  );
+interface BuiltLayout {
+  layout: PuzzleLayout;
+  blobs: [Blob, Blob, Blob];
+  strips: [string, string, string];
+  silhouettes: [string, string, string];
+  pith: ReadonlyArray<readonly [number, number]>;
+  zones: Array<{ left: number; width: number }>;
 }
-const SILHOUETTE = [silhouette(0), silhouette(1), silhouette(2)];
+
+function buildLayout(layout: PuzzleLayout): BuiltLayout {
+  const cut0 = makeCutFn(layout.seams[0]);
+  const cut1 = makeCutFn(layout.seams[1]);
+
+  const blobs: [Blob, Blob, Blob] = [
+    buildBlob(7, layout.blobs[0]),
+    buildBlob(23, layout.blobs[1]),
+    buildBlob(51, layout.blobs[2]),
+  ];
+
+  const strips: [string, string, string] = [
+    stripLeft((y) => cut0(y) - GAP / 2),
+    stripMiddle(
+      (y) => cut0(y) + GAP / 2,
+      (y) => cut1(y) - GAP / 2,
+    ),
+    stripRight((y) => cut1(y) + GAP / 2),
+  ];
+
+  const clamps: ((x: number, y: number) => number)[] = [
+    (x, y) => Math.min(x, cut0(y) - GAP / 2),
+    (x, y) => Math.min(Math.max(x, cut0(y) + GAP / 2), cut1(y) - GAP / 2),
+    (x, y) => Math.max(x, cut1(y) + GAP / 2),
+  ];
+
+  const silhouettes = [0, 1, 2].map((i) => {
+    const clamp = clamps[i]!;
+    const pts = blobs[i]!.pts;
+    return (
+      pts
+        .map(([x, y], j) => `${j === 0 ? 'M' : 'L'}${clamp(x, y).toFixed(2)},${y.toFixed(2)}`)
+        .join(' ') + ' Z'
+    );
+  }) as [string, string, string];
+
+  // сердцевина = pith из cfg (визуально это центр иконки/подписи)
+  const pith = layout.blobs.map((b) => b.P as readonly [number, number]);
+
+  const zones = [
+    { left: 0, width: (layout.seams[0].x / VB_W) * 100 },
+    {
+      left: (layout.seams[0].x / VB_W) * 100,
+      width: ((layout.seams[1].x - layout.seams[0].x) / VB_W) * 100,
+    },
+    {
+      left: (layout.seams[1].x / VB_W) * 100,
+      width: ((VB_W - layout.seams[1].x) / VB_W) * 100,
+    },
+  ];
+
+  return { layout, blobs, strips, silhouettes, pith, zones };
+}
 
 /**
- * Три реалистичных «среза дерева», сложенных в пазл. Вся деталь — кнопка:
- * клик в любое место среза открывает раздел (Link с clip-path по форме).
+ * Три реалистичных «среза дерева», сложенных в пазл.
+ *
+ * Каждая локация получает уникальную композицию: швы, центры и размеры
+ * срезов рандомизируются детерминированно от `locationSlug`. У одной точки
+ * Кухня крупнее, у другой Бар наклонён иначе, у третьей бугры пазла идут
+ * наоборот — общий «фирменный стиль» сохраняется, но 27 вариаций.
  */
-export function CategoryPuzzleRow({ items }: Props) {
+export function CategoryPuzzleRow({ items, locationSlug }: Props) {
   const [hovered, setHovered] = useState<number | null>(null);
+
+  const built = useMemo(
+    () => buildLayout(locationSlug ? getPuzzleLayout(locationSlug) : DEFAULT_LAYOUT),
+    [locationSlug],
+  );
 
   return (
     <div className="relative mx-auto w-full max-w-2xl">
@@ -247,24 +272,22 @@ export function CategoryPuzzleRow({ items }: Props) {
                         0 0 0 0.5 0"
               />
             </filter>
-            {BLOBS.map((b, i) => (
+            {built.blobs.map((b, i) => (
               <clipPath id={`pz-blob-${i}`} key={`b${i}`}>
                 <path d={b.outline} />
               </clipPath>
             ))}
-            {STRIPS.map((s, i) => (
+            {built.strips.map((s, i) => (
               <clipPath id={`pz-strip-${i}`} key={`s${i}`}>
                 <path d={s} />
               </clipPath>
             ))}
           </defs>
 
-          {BLOBS.map((b, i) => (
-            // вложенные клипы = пересечение: органический контур ∩ область реза
+          {built.blobs.map((b, i) => (
             <g key={i} clipPath={`url(#pz-strip-${i})`}>
               <g clipPath={`url(#pz-blob-${i})`}>
                 <rect width={VB_W} height={VB_H} fill="url(#pz-bg)" />
-                {/* волокна вдоль колец (тонкая древесная текстура) */}
                 <rect width={VB_W} height={VB_H} filter="url(#pz-grain)" opacity="0.22" />
 
                 {b.rings.map((r, k) => (
@@ -294,15 +317,13 @@ export function CategoryPuzzleRow({ items }: Props) {
 
                 <rect width={VB_W} height={VB_H} fill="url(#pz-glow)" />
 
-                {/* тёмная кора по природному краю (на резе её обрежет strip-клип) */}
                 <path d={b.outline} fill="none" stroke="#130B05" strokeWidth={5} opacity={0.6} />
                 <path d={b.outline} fill="none" stroke="rgba(196,146,98,0.5)" strokeWidth={0.5} />
               </g>
             </g>
           ))}
 
-          {/* золотой светящийся контур — «прорисовывается» при наведении на деталь */}
-          {SILHOUETTE.map((d, i) => (
+          {built.silhouettes.map((d, i) => (
             <motion.path
               key={`glow${i}`}
               d={d}
@@ -319,18 +340,21 @@ export function CategoryPuzzleRow({ items }: Props) {
               }}
               style={{
                 pointerEvents: 'none',
-                filter: 'drop-shadow(0 0 3px rgba(242,214,158,0.95)) drop-shadow(0 0 7px rgba(231,201,148,0.6))',
+                filter:
+                  'drop-shadow(0 0 3px rgba(242,214,158,0.95)) drop-shadow(0 0 7px rgba(231,201,148,0.6))',
               }}
             />
           ))}
         </svg>
 
-        {/* Визуальный слой: иконка + подпись по сердцевине (тап не перехватывает) */}
         {items.slice(0, 3).map((it, i) => (
           <div
             key={`v${i}`}
             className="pointer-events-none absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2"
-            style={{ left: `${(PITH[i]![0] / VB_W) * 100}%`, top: `${(PITH[i]![1] / VB_H) * 100}%` }}
+            style={{
+              left: `${(built.pith[i]![0] / VB_W) * 100}%`,
+              top: `${(built.pith[i]![1] / VB_H) * 100}%`,
+            }}
           >
             <span
               className="text-[#E7C994] transition-transform duration-300"
@@ -350,8 +374,6 @@ export function CategoryPuzzleRow({ items }: Props) {
           </div>
         ))}
 
-        {/* Кликабельные зоны: настоящие Next Link (prefetch → быстрый переход),
-            прямоугольники по швам — надёжный тап на телефоне; подсветка по касанию. */}
         {items.slice(0, 3).map((it, i) => (
           <Link
             key={it.href}
@@ -359,7 +381,7 @@ export function CategoryPuzzleRow({ items }: Props) {
             prefetch
             aria-label={it.title}
             className="absolute bottom-0 top-0 block focus:outline-none"
-            style={{ left: `${ZONES[i]!.left}%`, width: `${ZONES[i]!.width}%` }}
+            style={{ left: `${built.zones[i]!.left}%`, width: `${built.zones[i]!.width}%` }}
             onPointerEnter={() => setHovered(i)}
             onPointerDown={() => setHovered(i)}
             onPointerLeave={() => setHovered((h) => (h === i ? null : h))}
