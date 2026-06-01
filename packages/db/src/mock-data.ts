@@ -13,6 +13,7 @@ import type {
   LocationMenuItem,
   MenuCatalogItem,
   ResolvedMenuItem,
+  Spotlight,
   Table,
 } from './types';
 
@@ -118,11 +119,11 @@ export const MOCK_TABLES: Table[] = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 export const MOCK_CATEGORIES: Category[] = [
-  { id: 'cat-hookah', slug: 'hookah', name: 'Кальяны', name_en: 'Hookah', name_zh: '水煙', realm: 'hookah', parent_id: null, sort_order: 1 },
-  { id: 'cat-bar', slug: 'bar', name: 'Бар', name_en: 'Bar', name_zh: '酒吧', realm: 'bar', parent_id: null, sort_order: 2 },
-  { id: 'cat-kitchen', slug: 'kitchen', name: 'Кухня', name_en: 'Kitchen', name_zh: '廚房', realm: 'kitchen', parent_id: null, sort_order: 3 },
-  { id: 'cat-rolls', slug: 'rolls', name: 'Роллы', name_en: 'Rolls', name_zh: '壽司捲', realm: 'kitchen', parent_id: null, sort_order: 4 },
-  { id: 'cat-desserts', slug: 'desserts', name: 'Десерты', name_en: 'Desserts', name_zh: '甜點', realm: 'kitchen', parent_id: null, sort_order: 5 },
+  { id: 'cat-hookah', slug: 'hookah', name: 'Кальяны', name_en: 'Hookah', name_zh: '水煙', name_hy: 'Կալյաններ', realm: 'hookah', parent_id: null, sort_order: 1 },
+  { id: 'cat-bar', slug: 'bar', name: 'Бар', name_en: 'Bar', name_zh: '酒吧', name_hy: 'Բար', realm: 'bar', parent_id: null, sort_order: 2 },
+  { id: 'cat-kitchen', slug: 'kitchen', name: 'Кухня', name_en: 'Kitchen', name_zh: '廚房', name_hy: 'Խոհանոց', realm: 'kitchen', parent_id: null, sort_order: 3 },
+  { id: 'cat-rolls', slug: 'rolls', name: 'Роллы', name_en: 'Rolls', name_zh: '壽司捲', name_hy: 'Ռոլլեր', realm: 'kitchen', parent_id: null, sort_order: 4 },
+  { id: 'cat-desserts', slug: 'desserts', name: 'Десерты', name_en: 'Desserts', name_zh: '甜點', name_hy: 'Աղանդեր', realm: 'kitchen', parent_id: null, sort_order: 5 },
 ];
 
 export const MOCK_HOOKAH_MOODS: HookahMood[] = [
@@ -131,8 +132,10 @@ export const MOCK_HOOKAH_MOODS: HookahMood[] = [
     slug: 'soft',
     name: 'Мягкий',
     name_en: 'Soft',
+    name_hy: 'Մեղմ',
     description: 'Лёгкий, обволакивающий вкус — для долгих разговоров',
     description_en: 'Light and enveloping flavor — for long conversations',
+    description_hy: 'Թեթև, պարուրող համ՝ երկար զրույցների համար',
     gradient_from: '#5a4a2c',
     gradient_to: '#1a1108',
     icon: '◯',
@@ -143,8 +146,10 @@ export const MOCK_HOOKAH_MOODS: HookahMood[] = [
     slug: 'fresh',
     name: 'Освежающий',
     name_en: 'Fresh',
+    name_hy: 'Թարմացնող',
     description: 'Цитрусы, мята, лёд — бодрит и тонизирует',
     description_en: 'Citrus, mint, ice — invigorating',
+    description_hy: 'Ցիտրուսներ, անանուխ, սառույց՝ աշխուժացնում և տոնուսավորում է',
     gradient_from: '#1a4a44',
     gradient_to: '#081818',
     icon: '❅',
@@ -155,8 +160,10 @@ export const MOCK_HOOKAH_MOODS: HookahMood[] = [
     slug: 'strong',
     name: 'Крепкий',
     name_en: 'Strong',
+    name_hy: 'Ուժեղ',
     description: 'Густой дым, выраженный никотиновый удар',
     description_en: 'Thick smoke, pronounced nicotine hit',
+    description_hy: 'Խիտ ծուխ, ընդգծված նիկոտինային հարված',
     gradient_from: '#5a1818',
     gradient_to: '#1a0606',
     icon: '✦',
@@ -167,8 +174,10 @@ export const MOCK_HOOKAH_MOODS: HookahMood[] = [
     slug: 'fruit',
     name: 'Фруктовый',
     name_en: 'Fruity',
+    name_hy: 'Մրգային',
     description: 'Сочные ноты тропических и ягодных фруктов',
     description_en: 'Juicy tropical and berry notes',
+    description_hy: 'Հյութալի արևադարձային և հատապտղային նոտաներ',
     gradient_from: '#5a3814',
     gradient_to: '#1a0c04',
     icon: '✤',
@@ -179,14 +188,140 @@ export const MOCK_HOOKAH_MOODS: HookahMood[] = [
     slug: 'dessert',
     name: 'Десертный',
     name_en: 'Dessert',
+    name_hy: 'Աղանդային',
     description: 'Сладкие миксы — ваниль, карамель, шоколад',
     description_en: 'Sweet mixes — vanilla, caramel, chocolate',
+    description_hy: 'Քաղցր խառնուրդներ՝ վանիլ, կարամել, շոկոլադ',
     gradient_from: '#3a1a4a',
     gradient_to: '#0a0418',
     icon: '✧',
     examples: 'Ваниль, карамель, тирамису, шоколад',
   },
 ];
+
+// ============================================================================
+// СПОТЛАЙТЫ — слайды крутящейся карусели под меню (DJ, акции, соцсети)
+// ----------------------------------------------------------------------------
+// Заготовка под реальные данные: пока общий демо-набор для всех локаций +
+// точечные переопределения по slug. Когда подключим Supabase — заменим на
+// выборку из таблицы spotlights (location_id), интерфейс компонента не
+// изменится. Соцсети у каждой локации свои — правим в SPOTLIGHTS_BY_SLUG.
+// ============================================================================
+
+/** Демо-набор по умолчанию — показывается на любой локации, где нет своего. */
+const DEFAULT_SPOTLIGHTS: Spotlight[] = [
+  {
+    id: 'sp-dj',
+    kind: 'dj',
+    title: 'Живой DJ-сет',
+    title_en: 'Live DJ set',
+    title_zh: '现场 DJ 演出',
+    subtitle: 'Каждую пятницу и субботу',
+    subtitle_en: 'Every Friday & Saturday',
+    subtitle_zh: '每周五和周六',
+    body: 'По выходным у нас играет резидент-диджей: deep house и r&b до утра. Бронируйте стол заранее — на выходных аншлаг.',
+    body_en: 'On weekends our resident DJ spins deep house and r&b till morning. Book a table in advance — weekends fill up fast.',
+    body_zh: '每逢周末，我们的驻场 DJ 献上 deep house 与 R&B，直至清晨。周末座位紧张，请提前预订。',
+    body_hy: 'Հանգստյան օրերին մեզ մոտ նվագում է ռեզիդենт DJ-ն՝ deep house և R&B մինչև առավոт։ Ամրագրեք սեղանը նախապես՝ հանգստյան օրերին տեղերը արագ են զբաղվում։',
+    badge: 'ПТ · СБ',
+    badge_en: 'FRI · SAT',
+    badge_zh: '周五·周六',
+    badge_hy: 'ՈՒՐ · ՇԲ',
+    when: 'Пт–Сб, 22:00 – 04:00',
+    when_en: 'Fri–Sat, 22:00 – 04:00',
+    when_zh: '周五至周六，22:00 – 04:00',
+    when_hy: 'Ուրբ–Շաբ, 22:00 – 04:00',
+    image: UNSPLASH(PIC.loungeDark),
+    accent: '#C49262',
+    links: [],
+  },
+  {
+    id: 'sp-happy-hours',
+    kind: 'promo',
+    title: 'Счастливые часы',
+    title_en: 'Happy hours',
+    title_zh: '欢乐时光',
+    subtitle: '−20% на бар по будням 16:00–19:00',
+    subtitle_en: '−20% on the bar, weekdays 16:00–19:00',
+    subtitle_zh: '工作日 16:00–19:00，全酒单 −20%',
+    body: 'Каждый будний вечер с 16:00 до 19:00 — скидка 20% на всю барную карту. Идеальный повод начать вечер пораньше.',
+    body_en: 'Every weekday from 16:00 to 19:00 — 20% off the entire bar menu. The perfect excuse to start the evening early.',
+    body_zh: '每个工作日傍晚 16:00 至 19:00，全酒单享 8 折优惠。正是提早开启夜晚的好理由。',
+    body_hy: 'Ամեն աշխատանքային օր 16:00-ից 19:00 — 20% զեղչ ողջ բարի ցանկի վրա։ Կատարյալ առիթ՝ երեկոն շուտ սկսելու համար։',
+    badge: '−20%',
+    badge_en: '−20%',
+    badge_zh: '−20%',
+    badge_hy: '−20%',
+    when: 'Пн–Пт, 16:00 – 19:00',
+    when_en: 'Mon–Fri, 16:00 – 19:00',
+    when_zh: '周一至周五，16:00 – 19:00',
+    when_hy: 'Երկ–Ուրբ, 16:00 – 19:00',
+    image: UNSPLASH(PIC.cocktailIced),
+    accent: '#E5C490',
+    links: [],
+  },
+  {
+    id: 'sp-deposit',
+    kind: 'offer',
+    title: 'Депозит, а не счёт',
+    title_en: 'Deposit, not a bill',
+    title_zh: '是预存，而非门槛',
+    subtitle: 'Минимальный заказ превращается в депозит',
+    subtitle_en: 'Your minimum spend becomes a deposit',
+    subtitle_zh: '最低消费将转为您的预存金额',
+    body: 'Минимальный заказ на стол — это не плата за вход, а депозит: вся сумма идёт в ваш счёт за меню и кальяны.',
+    body_en: 'The table minimum is not a cover charge — it is a deposit that goes fully toward your food and hookah.',
+    body_zh: '餐桌最低消费并非入场费，而是预存：全额可用于您的餐品与水烟消费。',
+    body_hy: 'Սեղանի նվազագույն պատվերը մուտքի վճար չէ, այլ դեպոզիտ՝ ամբողջ գումարը գնում է ձեր ուտեստների և կալյանների հաշվին։',
+    badge: 'MIN',
+    badge_en: 'MIN',
+    badge_zh: '最低',
+    badge_hy: 'ՆՎԶ',
+    when: null,
+    when_en: null,
+    when_zh: null,
+    when_hy: null,
+    image: UNSPLASH(PIC.loungeGold),
+    accent: '#A07642',
+    links: [],
+  },
+  {
+    id: 'sp-social',
+    kind: 'social',
+    title: 'Мы в соцсетях',
+    title_en: 'Follow us',
+    title_zh: '关注我们的社交媒体',
+    subtitle: 'Афиша, розыгрыши и новинки',
+    subtitle_en: 'Lineups, giveaways and new arrivals',
+    subtitle_zh: '活动预告、抽奖与新品',
+    body: 'Подписывайтесь, чтобы первыми узнавать про DJ-вечера, новинки меню и закрытые розыгрыши среди гостей.',
+    body_en: 'Follow us to be the first to know about DJ nights, new menu items and members-only giveaways.',
+    body_zh: '关注我们，第一时间获取 DJ 之夜、新菜品以及仅限客人的专属抽奖资讯。',
+    badge: '@',
+    badge_en: '@',
+    badge_zh: '@',
+    when: null,
+    when_en: null,
+    when_zh: null,
+    image: UNSPLASH(PIC.loungeBartender),
+    accent: '#C49262',
+    // Заготовка — заменить на реальные ссылки локации.
+    links: [
+      { kind: 'instagram', href: '#' },
+      { kind: 'telegram', href: '#' },
+    ],
+  },
+];
+
+/** Точечные переопределения по локациям. Здесь подвязываем соцсети/акции. */
+const SPOTLIGHTS_BY_SLUG: Record<string, Spotlight[]> = {
+  // TODO: подставить реальные ссылки соцсетей и актуальные акции Арки.
+  arka: DEFAULT_SPOTLIGHTS,
+};
+
+export function getSpotlightsForSlug(slug: string): Spotlight[] {
+  return SPOTLIGHTS_BY_SLUG[slug] ?? DEFAULT_SPOTLIGHTS;
+}
 
 export const MOCK_CATALOG: MenuCatalogItem[] = [];
 export const MOCK_LOCATION_MENU: LocationMenuItem[] = [];

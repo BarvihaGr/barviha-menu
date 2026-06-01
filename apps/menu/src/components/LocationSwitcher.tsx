@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { MapPin, ChevronDown, Search, X } from 'lucide-react';
+import { ChevronDown, Search, X } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Location } from '@barviha/db';
@@ -46,18 +46,18 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-gold/40 bg-gold/10 hover:bg-gold/20 hover:border-gold transition px-2.5 sm:px-3.5 py-1.5 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] sm:tracking-[0.2em] text-gold cursor-pointer shadow-[0_0_12px_rgba(196,146,98,0.18)]"
+        className="flex items-center gap-1 sm:gap-2 rounded-full border border-gold/40 bg-gold/10 hover:bg-gold/20 hover:border-gold transition px-2 sm:px-3.5 py-1 sm:py-1.5 text-[9px] sm:text-[11px] uppercase tracking-[0.1em] sm:tracking-[0.2em] text-gold cursor-pointer shadow-[0_0_12px_rgba(196,146,98,0.18)]"
         aria-label={t('switch')}
         aria-expanded={open}
       >
         <span
-          className="inline-block h-2 w-2 rounded-full shrink-0 opacity-70"
+          className="inline-block h-[7px] w-[7px] sm:h-2 sm:w-2 rounded-full shrink-0 opacity-70"
           style={{ background: currentAccent }}
         />
-        <span className="max-w-[110px] sm:max-w-[180px] truncate">
+        <span className="max-w-[68px] sm:max-w-[180px] truncate">
           {current ? locName(current, locale) : t('switch')}
         </span>
-        <ChevronDown size={12} className={cn('transition opacity-80 shrink-0', open && 'rotate-180')} />
+        <ChevronDown size={11} className={cn('transition opacity-80 shrink-0', open && 'rotate-180')} />
       </button>
 
       <AnimatePresence>

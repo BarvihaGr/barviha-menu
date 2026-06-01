@@ -81,6 +81,13 @@ export default async function LocationHome({
         accent={accent}
       />
 
+      {spotlights.length > 0 && (
+        <section className="pb-6 -mt-10 [&_h2]:my-3">
+          <SectionTitle>{tHome('spotlight')}</SectionTitle>
+          <SpotlightCarousel spotlights={spotlights} accent={accent} />
+        </section>
+      )}
+
       {homeCategories.length > 0 && (
         <section className="pb-4">
           <SectionTitle>{tHome('menu')}</SectionTitle>
@@ -97,13 +104,6 @@ export default async function LocationHome({
               })}
             />
           </div>
-        </section>
-      )}
-
-      {spotlights.length > 0 && (
-        <section className="pb-6 pt-2">
-          <SectionTitle>{tHome('spotlight')}</SectionTitle>
-          <SpotlightCarousel spotlights={spotlights} accent={accent} />
         </section>
       )}
 

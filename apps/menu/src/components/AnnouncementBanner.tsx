@@ -12,6 +12,7 @@ const ICONS = { dj: Disc3, match: Trophy, event: Sparkles } as const;
 function pick(a: Announcement, field: 'title' | 'subtitle', locale: Locale): string | undefined {
   if (locale === 'en') return a[`${field}_en`] ?? a[field];
   if (locale === 'zh') return a[`${field}_zh`] ?? a[field];
+  if (locale === 'hy') return a[`${field}_hy`] ?? a[field];
   return a[field];
 }
 

@@ -6,6 +6,7 @@ export function pickItemName(item: ResolvedMenuItem, locale: Locale): string {
   const tr = ITEM_TRANSLATIONS[item.id];
   if (locale === 'en') return item.name_en ?? tr?.name_en ?? item.name;
   if (locale === 'zh') return item.name_zh ?? tr?.name_zh ?? item.name;
+  if (locale === 'hy') return item.name_hy ?? tr?.name_hy ?? item.name;
   return item.name;
 }
 
@@ -13,6 +14,7 @@ export function pickItemDescription(item: ResolvedMenuItem, locale: Locale): str
   const tr = ITEM_TRANSLATIONS[item.id];
   if (locale === 'en') return item.description_en ?? tr?.description_en ?? item.description;
   if (locale === 'zh') return item.description_zh ?? tr?.description_zh ?? item.description;
+  if (locale === 'hy') return item.description_hy ?? tr?.description_hy ?? item.description;
   return item.description;
 }
 
@@ -20,32 +22,36 @@ export function pickItemComposition(item: ResolvedMenuItem, locale: Locale): str
   const tr = ITEM_TRANSLATIONS[item.id];
   if (locale === 'en') return item.composition_en ?? tr?.composition_en ?? item.composition;
   if (locale === 'zh') return item.composition_zh ?? tr?.composition_zh ?? item.composition;
+  if (locale === 'hy') return item.composition_hy ?? tr?.composition_hy ?? item.composition;
   return item.composition;
 }
 
 export function pickMoodName(mood: HookahMood, locale: Locale): string {
   if (locale === 'en' && mood.name_en) return mood.name_en;
   if (locale === 'zh' && mood.name_zh) return mood.name_zh;
+  if (locale === 'hy' && mood.name_hy) return mood.name_hy;
   return mood.name;
 }
 
 export function pickMoodDescription(mood: HookahMood, locale: Locale): string {
   if (locale === 'en' && mood.description_en) return mood.description_en;
   if (locale === 'zh' && mood.description_zh) return mood.description_zh;
+  if (locale === 'hy' && mood.description_hy) return mood.description_hy;
   return mood.description;
 }
 
-const CATEGORY_FALLBACK: Record<string, { en: string; zh: string }> = {
-  hookah: { en: 'Hookah', zh: '水煙' },
-  bar: { en: 'Bar', zh: '酒吧' },
-  kitchen: { en: 'Kitchen', zh: '廚房' },
-  rolls: { en: 'Rolls', zh: '壽司捲' },
-  desserts: { en: 'Desserts', zh: '甜點' },
+const CATEGORY_FALLBACK: Record<string, { en: string; zh: string; hy: string }> = {
+  hookah: { en: 'Hookah', zh: '水煙', hy: 'Կալյաններ' },
+  bar: { en: 'Bar', zh: '酒吧', hy: 'Բար' },
+  kitchen: { en: 'Kitchen', zh: '廚房', hy: 'Խոհանոց' },
+  rolls: { en: 'Rolls', zh: '壽司捲', hy: 'Ռոլլեր' },
+  desserts: { en: 'Desserts', zh: '甜點', hy: 'Աղանդեր' },
 };
 
 export function pickCategoryName(cat: Category, locale: Locale): string {
   if (locale === 'en') return cat.name_en ?? CATEGORY_FALLBACK[cat.slug]?.en ?? cat.name;
   if (locale === 'zh') return cat.name_zh ?? CATEGORY_FALLBACK[cat.slug]?.zh ?? cat.name;
+  if (locale === 'hy') return cat.name_hy ?? CATEGORY_FALLBACK[cat.slug]?.hy ?? cat.name;
   return cat.name;
 }
 

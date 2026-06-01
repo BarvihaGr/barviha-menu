@@ -7,34 +7,22 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { cn } from '@/lib/utils';
 
-/**
- * Нижняя плавающая навигация — «таблетка» по центру экрана,
- * sticky при скролле. Перекидывает между главной локации (меню)
- * и корзиной. Активный пункт подсвечен золотом.
- */
-export function FloatingCartButton({ locationSlug }: { locationSlug: string }) {
-  const count = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
-  const t = useTranslations('nav');
-  const pathname = usePathname();
-
-  const homeHref = `/${locationSlug}`;
-  const cartHref = `/${locationSlug}/cart`;
-  const isCart = pathname.startsWith(cartHref);
-  const isHome = !isCart;
-
-  const Item = ({
-    href,
-    icon,
-    label,
-    active,
-    badge,
-  }: {
-    href: string;
-    icon: React.ReactNode;
-    label: string;
-    active: boolean;
-    badge?: number;
-  }) => (
+/** Один пункт плавающей навигации. Вынесен наружу, чтобы не пересоздаваться
+ *  при каждой перерисовке родителя. */
+function NavItem({
+  href,
+  icon,
+  label,
+  active,
+  badge,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+  badge?: number;
+}) {
+  return (
     <Link
       href={href}
       className={cn(
@@ -58,6 +46,22 @@ export function FloatingCartButton({ locationSlug }: { locationSlug: string }) {
       )}
     </Link>
   );
+}
+
+/**
+ * Нижняя плавающая навигация — «таблетка» по центру экрана,
+ * sticky при скролле. Перекидывает между главной локации (меню)
+ * и корзиной. Активный пункт подсвечен золотом.
+ */
+export function FloatingCartButton({ locationSlug }: { locationSlug: string }) {
+  const count = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
+  const t = useTranslations('nav');
+  const pathname = usePathname();
+
+  const homeHref = `/${locationSlug}`;
+  const cartHref = `/${locationSlug}/cart`;
+  const isCart = pathname.startsWith(cartHref);
+  const isHome = !isCart;
 
   return (
     <motion.div
@@ -68,13 +72,13 @@ export function FloatingCartButton({ locationSlug }: { locationSlug: string }) {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="flex items-center gap-1 rounded-full border border-gold/40 bg-[color:var(--card-elev)] p-1 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
-        <Item
+        <NavItem
           href={homeHref}
           icon={<UtensilsCrossed size={15} />}
           label={t('menu')}
           active={isHome}
         />
-        <Item
+        <NavItem
           href={cartHref}
           icon={<ShoppingBag size={15} />}
           label={t('cart')}

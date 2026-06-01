@@ -84,8 +84,20 @@
     "featured": "熱銷與精選",
     "menu": "菜單",
     "promos": "優惠活動",
+    "spotlight": "活動與優惠",
     "exploreMenu": "瀏覽菜單",
     "viewAll": "查看全部"
+  },
+  "spotlight": {
+    "more": "了解更多",
+    "close": "關閉",
+    "kind": {
+      "dj": "DJ 現場",
+      "promo": "優惠",
+      "offer": "特惠",
+      "social": "社群",
+      "event": "活動"
+    }
   },
   "announce": {
     "today": "今日",

@@ -112,18 +112,15 @@ export function HeroSection({
         />
       )}
 
-      {/* Лёгкое затемнение для читаемости */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/55 via-transparent to-[var(--background)]/30" />
+      {/* Лёгкое затемнение только под текстом — никаких боковых/верхних рамок */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/25 via-transparent to-transparent pointer-events-none" />
       {/* Акцентная вуаль локации */}
       <div
-        className="absolute inset-0 opacity-20 pointer-events-none"
+        className="absolute inset-0 opacity-10 pointer-events-none"
         style={{ background: `radial-gradient(circle at 50% 35%, ${accent}, transparent 60%)` }}
       />
-      {/* Плавный фейд по всем 4 краям — видео без резких границ */}
-      <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[var(--background)] to-transparent pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/80 to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 left-0 w-16 sm:w-40 bg-gradient-to-r from-[var(--background)] to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-16 sm:w-40 bg-gradient-to-l from-[var(--background)] to-transparent pointer-events-none" />
+      {/* Только нижний плавный переход в фон страницы — безрамочное видео */}
+      <div className="absolute inset-x-0 bottom-0 h-20 sm:h-28 bg-gradient-to-t from-[var(--background)] to-transparent pointer-events-none" />
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-16 pb-4 text-center">
         {/* Логотип — кинематографичный entrance (scale + slight rotate + glow burst) */}

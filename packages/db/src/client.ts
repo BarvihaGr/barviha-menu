@@ -9,6 +9,7 @@ import {
   MOCK_HOOKAH_MOODS,
   MOCK_LOCATIONS,
   MOCK_TABLES,
+  getSpotlightsForSlug,
   resolveMenuForLocation,
 } from './mock-data';
 import type {
@@ -17,6 +18,7 @@ import type {
   HookahMood,
   Location,
   ResolvedMenuItem,
+  Spotlight,
   Table,
 } from './types';
 
@@ -30,6 +32,7 @@ export interface BarvihaClient {
   getHookahMoods(): Promise<HookahMood[]>;
   getTableByToken(token: string): Promise<Table | null>;
   getAnnouncementsForLocation(locationId: string): Promise<Announcement[]>;
+  getSpotlightsForLocation(locationId: string): Promise<Spotlight[]>;
 }
 
 function getLocationById(id: string): Location | undefined {
@@ -82,6 +85,14 @@ class MockBarvihaClient implements BarvihaClient {
   async getAnnouncementsForLocation(_locationId: string): Promise<Announcement[]> {
     // Заполняется из контента по локациям (DJ-сеты, матчи, события).
     return [];
+  }
+
+  async getSpotlightsForLocation(locationId: string): Promise<Spotlight[]> {
+    // Слайды карусели под меню (DJ, акции, соцсети). Пока из mock по slug —
+    // позже выборка из Supabase по location_id.
+    const loc = getLocationById(locationId);
+    if (!loc) return [];
+    return getSpotlightsForSlug(loc.slug);
   }
 }
 

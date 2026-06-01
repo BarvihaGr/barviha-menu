@@ -84,8 +84,20 @@
     "featured": "Хиты и выбор шефа",
     "menu": "Меню",
     "promos": "Акции",
+    "spotlight": "Афиша и акции",
     "exploreMenu": "Открыть меню",
     "viewAll": "Смотреть все"
+  },
+  "spotlight": {
+    "more": "Подробнее",
+    "close": "Закрыть",
+    "kind": {
+      "dj": "DJ-сет",
+      "promo": "Акция",
+      "offer": "Предложение",
+      "social": "Соцсети",
+      "event": "Событие"
+    }
   },
   "announce": {
     "today": "Сегодня",

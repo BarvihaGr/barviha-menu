@@ -37,12 +37,77 @@ export interface Announcement {
   title: string;
   title_en?: string;
   title_zh?: string;
+  title_hy?: string;
   subtitle?: string;
   subtitle_en?: string;
   subtitle_zh?: string;
+  subtitle_hy?: string;
   image?: string | null;
   /** ISO date-time когда событие; используется для показа «сегодня/скоро». */
   when?: string | null;
+}
+
+/**
+ * Карточка «спотлайта» — слайд в крутящейся карусели под меню на главной
+ * локации. Рассказывает про DJ-сеты, акции, спецпредложения, соцсети.
+ *
+ * Заготовка под реальные данные: пока наполняется из mock-data по локациям,
+ * позже — из Supabase (таблица spotlights с location_id). Поле `kind`
+ * определяет иконку/акцент, `links` — кнопки в раскрытой модалке (соцсети,
+ * телефон, маршрут). Каждую локацию подвязываем отдельно.
+ */
+export type SpotlightKind = 'dj' | 'promo' | 'social' | 'event' | 'offer';
+
+export type SpotlightLinkKind =
+  | 'instagram'
+  | 'telegram'
+  | 'vk'
+  | 'whatsapp'
+  | 'web'
+  | 'phone';
+
+export interface SpotlightLink {
+  kind: SpotlightLinkKind;
+  /** Подпись кнопки (если пусто — берётся дефолт по kind). */
+  label?: string;
+  /** URL или tel: — куда ведёт кнопка. */
+  href: string;
+}
+
+export interface Spotlight {
+  id: string;
+  kind: SpotlightKind;
+  /** Короткий заголовок на карточке и в модалке. */
+  title: string;
+  title_en?: string;
+  title_zh?: string;
+  title_hy?: string;
+  /** Подзаголовок — одна строка на карточке. */
+  subtitle?: string;
+  subtitle_en?: string;
+  subtitle_zh?: string;
+  subtitle_hy?: string;
+  /** Развёрнутый текст — показывается только в модалке. */
+  body?: string;
+  body_en?: string;
+  body_zh?: string;
+  body_hy?: string;
+  /** Угловой маркер на карточке: «−20%», «ПТ · СБ», «NEW». */
+  badge?: string;
+  badge_en?: string;
+  badge_zh?: string;
+  badge_hy?: string;
+  /** Человеко-читаемое «когда»: «Пт–Сб, 22:00». */
+  when?: string | null;
+  when_en?: string | null;
+  when_zh?: string | null;
+  when_hy?: string | null;
+  /** Фоновое фото слайда. Если null — рисуется градиент по акценту. */
+  image?: string | null;
+  /** Переопределение акцентного цвета слайда (иначе — акцент локации). */
+  accent?: string | null;
+  /** Кнопки-действия в модалке (соцсети, звонок, сайт). */
+  links?: SpotlightLink[];
 }
 
 export interface Table {
@@ -58,6 +123,7 @@ export interface Category {
   name: string;
   name_en?: string;
   name_zh?: string;
+  name_hy?: string;
   /** Верхний «мир» меню: кухня / бар / кальяны. Для группировки разделов. */
   realm?: 'kitchen' | 'bar' | 'hookah';
   parent_id: UUID | null;
@@ -135,13 +201,16 @@ export interface ResolvedMenuItem {
   name: string;
   name_en?: string;
   name_zh?: string;
+  name_hy?: string;
   description: string | null;
   description_en?: string | null;
   description_zh?: string | null;
+  description_hy?: string | null;
   photo: string | null;
   composition: string | null;
   composition_en?: string | null;
   composition_zh?: string | null;
+  composition_hy?: string | null;
   category_id: UUID | null;
   price: number;
   weight: string | null;
@@ -160,9 +229,11 @@ export interface HookahMood {
   name: string;
   name_en?: string;
   name_zh?: string;
+  name_hy?: string;
   description: string;
   description_en?: string;
   description_zh?: string;
+  description_hy?: string;
   gradient_from: string;
   gradient_to: string;
   icon: string;

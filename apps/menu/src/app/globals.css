@@ -62,11 +62,38 @@ html {
 
 html,
 body {
-  background: var(--background);
+  background-color: var(--background-deep);
   color: var(--foreground);
 }
 
+/* Атмосферный «расскрас» на ВЕСЬ экран: тёмный центр, тёплые
+   медно-бронзовые мазки по левому и правому краю, мягкое свечение
+   сверху/снизу. background-attachment: fixed → градиент прибит к
+   вьюпорту и покрывает всю страницу без швов при любом скролле и
+   высоте (моб / iPad / десктоп). */
 body {
+  background-image:
+    radial-gradient(135% 90% at -8% 28%,
+      rgba(168, 104, 56, 0.55) 0%,
+      rgba(111, 72, 39, 0.30) 24%,
+      transparent 58%),
+    radial-gradient(135% 90% at 108% 72%,
+      rgba(168, 104, 56, 0.50) 0%,
+      rgba(111, 72, 39, 0.26) 24%,
+      transparent 58%),
+    radial-gradient(90% 50% at 50% -8%,
+      rgba(120, 74, 40, 0.30) 0%,
+      transparent 60%),
+    radial-gradient(90% 50% at 50% 108%,
+      rgba(120, 74, 40, 0.28) 0%,
+      transparent 60%),
+    radial-gradient(120% 120% at 50% 50%,
+      transparent 30%,
+      rgba(10, 6, 3, 0.50) 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+
   font-family: var(--font-sans);
   font-weight: 300;
   -webkit-font-smoothing: antialiased;

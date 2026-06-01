@@ -32,50 +32,31 @@ export function LocationHeader({
   return (
     <header className="sticky top-0 z-30 bg-gradient-to-b from-[var(--background)]/40 via-[var(--background)]/15 to-transparent">
       {/*
-        Мобильная раскладка — 2 ряда:
-          Ряд 1: BARVIKHA GROUP мини-лого по центру.
-          Ряд 2: локация (слева) ↔ переключатель языка (справа).
-        Десктоп (≥sm) — один ряд: локация | лого | язык.
+        Один ряд везде: локация | лого BARVIKHA GROUP | язык.
+        На мобиле всё сжато (меньше padding/text), на десктопе — крупнее.
+        АРКА бейдж — отдельной строкой под этим рядом.
        */}
-
-      {/* Mobile only: лого ряд — узкий вертикально */}
-      <div className="flex sm:hidden justify-center px-3 pt-1.5 pb-0">
-        <Link href={homeHref} className="flex cursor-pointer" aria-label={t('name')}>
-          <Image
-            src="/logo.png"
-            alt={t('name')}
-            width={427}
-            height={57}
-            priority
-            className="h-[18px] w-auto"
-          />
-        </Link>
-      </div>
-
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-3 pt-0.5 pb-0 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:gap-4 sm:px-5 sm:pt-3.5 sm:pb-1">
+      <div className="mx-auto grid max-w-[1200px] items-center grid-cols-[1fr_auto_1fr] gap-1.5 sm:gap-4 px-2 sm:px-5 pt-2 sm:pt-3.5 pb-0.5 sm:pb-1">
         <div className="flex items-center min-w-0">
           <LocationSwitcher locations={locations} currentSlug={locationSlug} />
         </div>
-        <Link
-          href={homeHref}
-          className="hidden sm:flex justify-center cursor-pointer"
-          aria-label={t('name')}
-        >
+        <Link href={homeHref} className="flex justify-center cursor-pointer" aria-label={t('name')}>
           <Image
             src="/logo.png"
             alt={t('name')}
             width={427}
             height={57}
             priority
-            className="h-6 w-auto"
+            className="h-[18px] sm:h-6 w-auto"
           />
         </Link>
         <div className="flex justify-end shrink-0">
           <LangSwitch />
         </div>
       </div>
-      {/* Бейдж локации — кнопка, открывает модалку с адресом/телефоном/маршрутом */}
-      <div className="mx-auto flex max-w-[1200px] items-center justify-center gap-2 px-5 pt-0.5 pb-1 sm:pb-2.5 sm:-mt-1">
+
+      {/* АРКА бейдж под общим рядом — на мобиле вплотную, на десктопе с привычным отступом */}
+      <div className="mx-auto flex max-w-[1200px] items-center justify-center gap-2 px-3 sm:px-5 pt-1 sm:pt-0 pb-1.5 sm:pb-2.5 sm:-mt-1">
         <LocationInfoModal
           locationName={locationName}
           address={locationAddress}

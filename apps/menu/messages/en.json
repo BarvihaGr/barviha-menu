@@ -84,8 +84,20 @@
     "featured": "Hits & chef's picks",
     "menu": "Menu",
     "promos": "Specials",
+    "spotlight": "What's on",
     "exploreMenu": "Open menu",
     "viewAll": "View all"
+  },
+  "spotlight": {
+    "more": "Learn more",
+    "close": "Close",
+    "kind": {
+      "dj": "DJ set",
+      "promo": "Promo",
+      "offer": "Offer",
+      "social": "Socials",
+      "event": "Event"
+    }
   },
   "announce": {
     "today": "Today",
