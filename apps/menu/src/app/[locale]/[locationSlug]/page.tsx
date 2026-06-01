@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { UtensilsCrossed, Wine } from 'lucide-react';
 import type { Locale } from '@/i18n/routing';
 import { pickCategoryName } from '@/lib/i18n-helpers';
-import { CategoryPuzzleRow } from '@/components/CategoryPuzzleRow';
+import { CategoryPuzzleCard } from '@/components/CategoryPuzzleCard';
 import { SectionTitle } from '@/components/SectionTitle';
 import { HeroSection } from '@/components/HeroSection';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
@@ -14,10 +14,34 @@ import { getLocationAccent } from '@/lib/location-theme';
 /** Порядок слотов слева-направо: Кальяны | Кухня | Бар. */
 const HOME_CATEGORIES = ['hookah', 'kitchen', 'bar'] as const;
 
-const CATEGORY_ICONS: Record<(typeof HOME_CATEGORIES)[number], React.ReactNode> = {
-  hookah: <HookahIcon size={48} />,
-  kitchen: <UtensilsCrossed size={44} strokeWidth={1.6} />,
-  bar: <Wine size={44} strokeWidth={1.6} />,
+const CATEGORY_VISUALS: Record<
+  (typeof HOME_CATEGORIES)[number],
+  {
+    icon: React.ReactNode;
+    aspect: 'tall' | 'normal' | 'wide';
+    offsetY: 'up' | 'none' | 'down';
+    /** shape 0 — бугор справа; shape 1 — впадина слева + бугор справа; shape 2 — впадина слева */
+    shape: 0 | 1 | 2;
+  }
+> = {
+  hookah: {
+    icon: <HookahIcon size={48} />,
+    aspect: 'tall',
+    offsetY: 'down',
+    shape: 0,
+  },
+  kitchen: {
+    icon: <UtensilsCrossed size={44} strokeWidth={1.6} />,
+    aspect: 'tall',
+    offsetY: 'none',
+    shape: 1,
+  },
+  bar: {
+    icon: <Wine size={44} strokeWidth={1.6} />,
+    aspect: 'normal',
+    offsetY: 'down',
+    shape: 2,
+  },
 };
 
 export default async function LocationHome({
@@ -63,17 +87,24 @@ export default async function LocationHome({
       {homeCategories.length > 0 && (
         <section className="pb-4">
           <SectionTitle>{tHome('menu')}</SectionTitle>
-          <div className="px-2 sm:px-6">
-            <CategoryPuzzleRow
-              items={homeCategories.map((c) => {
-                const slug = c.slug as (typeof HOME_CATEGORIES)[number];
-                return {
-                  href: slug === 'hookah' ? `/${location.slug}/hookah` : `/${location.slug}/${slug}`,
-                  title: pickCategoryName(c, locale as Locale),
-                  icon: CATEGORY_ICONS[slug],
-                };
-              })}
-            />
+          <div className="grid grid-cols-3 gap-1 sm:gap-2 px-2 sm:px-6">
+            {homeCategories.map((c, idx) => {
+              const slug = c.slug as (typeof HOME_CATEGORIES)[number];
+              const visual = CATEGORY_VISUALS[slug];
+              const href = slug === 'hookah' ? `/${location.slug}/hookah` : `/${location.slug}/${slug}`;
+              return (
+                <CategoryPuzzleCard
+                  key={c.id}
+                  href={href}
+                  title={pickCategoryName(c, locale as Locale)}
+                  icon={visual.icon}
+                  aspect={visual.aspect}
+                  offsetY={visual.offsetY}
+                  shape={visual.shape}
+                  index={idx}
+                />
+              );
+            })}
           </div>
         </section>
       )}
