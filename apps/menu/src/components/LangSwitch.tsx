@@ -17,7 +17,7 @@ export function LangSwitch({ className }: { className?: string }) {
 
   return (
     <div className={cn('flex border border-[color:var(--border)] rounded-sm overflow-hidden', className)}>
-      {(['ru', 'en'] as const).map((l) => (
+      {(['ru', 'en', 'zh'] as const).map((l) => (
         <button
           key={l}
           type="button"
@@ -28,7 +28,7 @@ export function LangSwitch({ className }: { className?: string }) {
           )}
           aria-pressed={locale === l}
         >
-          {l}
+          {l === 'zh' ? '繁' : l}
         </button>
       ))}
     </div>
