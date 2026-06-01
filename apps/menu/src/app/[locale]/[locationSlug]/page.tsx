@@ -1,23 +1,39 @@
 import { getClient } from '@barviha/db';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { UtensilsCrossed, Wine } from 'lucide-react';
 import type { Locale } from '@/i18n/routing';
 import { pickCategoryName } from '@/lib/i18n-helpers';
-import { CategoryCard } from '@/components/CategoryCard';
+import { CategoryPuzzleCard } from '@/components/CategoryPuzzleCard';
 import { SectionTitle } from '@/components/SectionTitle';
 import { HeroSection } from '@/components/HeroSection';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
+import { HookahIcon } from '@/components/icons/HookahIcon';
 import { getLocationAccent } from '@/lib/location-theme';
 
-const CATEGORY_ICONS: Record<string, string> = {
-  hookah: '◈',
-  bar: '◉',
-  kitchen: '◆',
-  rolls: '❖',
-  desserts: '✦',
-};
+/** Только 3 раздела на главной — десерты/роллы скрыты, относятся к кухне. */
+const HOME_CATEGORIES = ['kitchen', 'bar', 'hookah'] as const;
 
-const REALM_ORDER: Array<'kitchen' | 'bar' | 'hookah'> = ['kitchen', 'bar', 'hookah'];
+const CATEGORY_VISUALS: Record<
+  (typeof HOME_CATEGORIES)[number],
+  { icon: React.ReactNode; aspect: 'tall' | 'normal' | 'wide'; offsetY: 'up' | 'none' | 'down' }
+> = {
+  kitchen: {
+    icon: <UtensilsCrossed size={44} strokeWidth={1.6} />,
+    aspect: 'tall',
+    offsetY: 'none',
+  },
+  bar: {
+    icon: <Wine size={44} strokeWidth={1.6} />,
+    aspect: 'normal',
+    offsetY: 'down',
+  },
+  hookah: {
+    icon: <HookahIcon size={48} />,
+    aspect: 'tall',
+    offsetY: 'up',
+  },
+};
 
 export default async function LocationHome({
   params,
@@ -27,22 +43,18 @@ export default async function LocationHome({
   const { locale, locationSlug } = await params;
   setRequestLocale(locale);
   const tHome = await getTranslations('home');
-  const tBrand = await getTranslations('brand');
 
   const db = getClient();
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) notFound();
-  const [categories, items, announcements] = await Promise.all([
+  const [categories, announcements] = await Promise.all([
     db.getCategoriesForLocation(location.id),
-    db.getMenuItemsForLocation(location.id),
     db.getAnnouncementsForLocation(location.id),
   ]);
 
-  // Все категории в едином порядке миров (Кухня → Бар → Кальяны), без дробления на секции
-  const orderedCategories = [...categories].sort(
-    (a, b) =>
-      REALM_ORDER.indexOf((a.realm ?? 'kitchen') as 'kitchen' | 'bar' | 'hookah') -
-      REALM_ORDER.indexOf((b.realm ?? 'kitchen') as 'kitchen' | 'bar' | 'hookah'),
+  // Берём ровно 3 категории (kitchen → bar → hookah) в этом порядке
+  const homeCategories = HOME_CATEGORIES.map((slug) => categories.find((c) => c.slug === slug)).filter(
+    (c): c is NonNullable<typeof c> => Boolean(c),
   );
 
   const accent = getLocationAccent(location.slug, location.brand_color);
@@ -63,20 +75,22 @@ export default async function LocationHome({
         accent={accent}
       />
 
-      {orderedCategories.length > 0 && (
-        <section>
+      {homeCategories.length > 0 && (
+        <section className="pb-4">
           <SectionTitle>{tHome('menu')}</SectionTitle>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {orderedCategories.map((c, idx) => {
-              const count = items.filter((i) => i.category_id === c.id).length;
-              const href = c.slug === 'hookah' ? `/${location.slug}/hookah` : `/${location.slug}/${c.slug}`;
+          <div className="grid grid-cols-3 gap-2 sm:gap-4">
+            {homeCategories.map((c, idx) => {
+              const slug = c.slug as (typeof HOME_CATEGORIES)[number];
+              const visual = CATEGORY_VISUALS[slug];
+              const href = slug === 'hookah' ? `/${location.slug}/hookah` : `/${location.slug}/${slug}`;
               return (
-                <CategoryCard
+                <CategoryPuzzleCard
                   key={c.id}
                   href={href}
                   title={pickCategoryName(c, locale as Locale)}
-                  icon={CATEGORY_ICONS[c.slug] ?? '◇'}
-                  count={count}
+                  icon={visual.icon}
+                  aspect={visual.aspect}
+                  offsetY={visual.offsetY}
                   index={idx}
                 />
               );
