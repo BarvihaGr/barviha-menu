@@ -167,7 +167,6 @@ interface BuiltLayout {
   layout: PuzzleLayout;
   blobs: [Blob, Blob, Blob];
   strips: [string, string, string];
-  silhouettes: [string, string, string];
   pith: ReadonlyArray<readonly [number, number]>;
   zones: Array<{ left: number; width: number }>;
 }
@@ -177,9 +176,9 @@ function buildLayout(layout: PuzzleLayout): BuiltLayout {
   const cut1 = makeCutFn(layout.seams[1]);
 
   const blobs: [Blob, Blob, Blob] = [
-    buildBlob(7, layout.blobs[0]),
-    buildBlob(23, layout.blobs[1]),
-    buildBlob(51, layout.blobs[2]),
+    buildBlob(layout.blobSeeds[0], layout.blobs[0]),
+    buildBlob(layout.blobSeeds[1], layout.blobs[1]),
+    buildBlob(layout.blobSeeds[2], layout.blobs[2]),
   ];
 
   const strips: [string, string, string] = [
@@ -190,22 +189,6 @@ function buildLayout(layout: PuzzleLayout): BuiltLayout {
     ),
     stripRight((y) => cut1(y) + GAP / 2),
   ];
-
-  const clamps: ((x: number, y: number) => number)[] = [
-    (x, y) => Math.min(x, cut0(y) - GAP / 2),
-    (x, y) => Math.min(Math.max(x, cut0(y) + GAP / 2), cut1(y) - GAP / 2),
-    (x, y) => Math.max(x, cut1(y) + GAP / 2),
-  ];
-
-  const silhouettes = [0, 1, 2].map((i) => {
-    const clamp = clamps[i]!;
-    const pts = blobs[i]!.pts;
-    return (
-      pts
-        .map(([x, y], j) => `${j === 0 ? 'M' : 'L'}${clamp(x, y).toFixed(2)},${y.toFixed(2)}`)
-        .join(' ') + ' Z'
-    );
-  }) as [string, string, string];
 
   // сердцевина = pith из cfg (визуально это центр иконки/подписи)
   const pith = layout.blobs.map((b) => b.P as readonly [number, number]);
@@ -222,7 +205,7 @@ function buildLayout(layout: PuzzleLayout): BuiltLayout {
     },
   ];
 
-  return { layout, blobs, strips, silhouettes, pith, zones };
+  return { layout, blobs, strips, pith, zones };
 }
 
 /**
@@ -321,31 +304,29 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
 
                 <path d={b.outline} fill="none" stroke="#130B05" strokeWidth={5} opacity={0.6} />
                 <path d={b.outline} fill="none" stroke="rgba(196,146,98,0.5)" strokeWidth={0.5} />
+
+                {/* Золотая подсветка контура при наведении — рисуется
+                    ВНУТРИ того же clip-стека (strip ∩ blob), поэтому
+                    автоматически совпадает с реальной видимой формой
+                    среза. Никаких «хвостов» от X-clamp подхода. */}
+                <motion.path
+                  d={b.outline}
+                  fill="none"
+                  stroke="#F2D69E"
+                  strokeWidth={1.6}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  initial={false}
+                  animate={{ opacity: hovered === i ? 1 : 0 }}
+                  transition={{ duration: 0.22 }}
+                  style={{
+                    pointerEvents: 'none',
+                    filter:
+                      'drop-shadow(0 0 1.5px rgba(242,214,158,0.95)) drop-shadow(0 0 4px rgba(231,201,148,0.6))',
+                  }}
+                />
               </g>
             </g>
-          ))}
-
-          {built.silhouettes.map((d, i) => (
-            <motion.path
-              key={`glow${i}`}
-              d={d}
-              fill="none"
-              stroke="#F2D69E"
-              strokeWidth={1.4}
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              initial={false}
-              animate={hovered === i ? { opacity: 1, pathLength: 1 } : { opacity: 0, pathLength: 0 }}
-              transition={{
-                pathLength: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
-                opacity: { duration: 0.18 },
-              }}
-              style={{
-                pointerEvents: 'none',
-                filter:
-                  'drop-shadow(0 0 3px rgba(242,214,158,0.95)) drop-shadow(0 0 7px rgba(231,201,148,0.6))',
-              }}
-            />
           ))}
         </svg>
 

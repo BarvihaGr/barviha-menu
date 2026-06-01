@@ -56,6 +56,9 @@ export interface PuzzleLayout {
   seams: [Seam, Seam];
   /** Конфигурация трёх «срезов»: 0 — Кальяны, 1 — Кухня, 2 — Бар. */
   blobs: [BlobConfig, BlobConfig, BlobConfig];
+  /** Сиды для процедурной генерации каждого среза — определяют форму
+   *  контура и узор колец. Уникальны для локации → у каждой свои деревяшки. */
+  blobSeeds: [number, number, number];
 }
 
 /** Layout по умолчанию (как сейчас на Арке) — fallback. */
@@ -69,6 +72,7 @@ export const DEFAULT_LAYOUT: PuzzleLayout = {
     { O: [150, 74], P: [158, 66], Rb: 70 },
     { O: [230, 80], P: [240, 86], Rb: 60 },
   ],
+  blobSeeds: [7, 23, 51],
 };
 
 /**
@@ -90,17 +94,23 @@ export function getPuzzleLayout(slug: string): PuzzleLayout {
   const rng = mulberry32(hashStr(slug));
   const D = DEFAULT_LAYOUT;
 
+  // Оба шва ОБЯЗАТЕЛЬНО смотрят в одну сторону: иначе Кухня посередине
+  // зажимается с двух сторон и становится похожа на «арахис».
+  // Бугры на близких Y — пазл «накреняется» в одну сторону цельно.
+  const sharedDir: 1 | -1 = rng() > 0.5 ? 1 : -1;
+  const sharedKnobY = 55 + Math.round(rng() * 50); // 55..105
+
   const seam0: Seam = {
     x: D.seams[0].x,
     phase: rng() * Math.PI * 2,
-    knobY: 38 + Math.round(rng() * 80), // 38..118
-    dir: rng() > 0.5 ? 1 : -1,
+    knobY: clamp(sharedKnobY + Math.round((rng() - 0.5) * 24), 40, 116),
+    dir: sharedDir,
   };
   const seam1: Seam = {
     x: D.seams[1].x,
     phase: rng() * Math.PI * 2,
-    knobY: 38 + Math.round(rng() * 80),
-    dir: rng() > 0.5 ? 1 : -1,
+    knobY: clamp(sharedKnobY + Math.round((rng() - 0.5) * 24), 40, 116),
+    dir: sharedDir,
   };
 
   // Минимальные радиусы подобраны так, чтобы блоб ГАРАНТИРОВАННО доставал
@@ -112,7 +122,15 @@ export function getPuzzleLayout(slug: string): PuzzleLayout {
     blobFromBase(D.blobs[2], rng, 72),
   ];
 
-  return { seams: [seam0, seam1], blobs };
+  // Сиды для процедурной генерации — у каждой локации свои, поэтому
+  // и рисунок контура, и узор колец отличаются.
+  const blobSeeds: [number, number, number] = [
+    1 + Math.floor(rng() * 9999),
+    1 + Math.floor(rng() * 9999),
+    1 + Math.floor(rng() * 9999),
+  ];
+
+  return { seams: [seam0, seam1], blobs, blobSeeds };
 }
 
 function blobFromBase(base: BlobConfig, rng: () => number, minR: number): BlobConfig {
