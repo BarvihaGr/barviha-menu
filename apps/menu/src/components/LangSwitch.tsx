@@ -23,7 +23,7 @@ export function LangSwitch({ className }: { className?: string }) {
           type="button"
           onClick={() => switchTo(l)}
           className={cn(
-            'px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] transition cursor-pointer',
+            'px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.2em] transition cursor-pointer',
             locale === l ? 'bg-gold text-[#2A1B11]' : 'text-muted hover:text-gold',
           )}
           aria-pressed={locale === l}

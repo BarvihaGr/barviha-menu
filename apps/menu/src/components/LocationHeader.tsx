@@ -31,21 +31,31 @@ export function LocationHeader({
 
   return (
     <header className="sticky top-0 z-30 bg-gradient-to-b from-[var(--background)]/40 via-[var(--background)]/15 to-transparent">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 pt-3.5 pb-1">
-        <div className="flex items-center">
+      <div
+        className={
+          // mobile: 2 кол. (локация | язык), мини-лого спрятан — он есть в hero.
+          // desktop ≥sm: 3 кол. с центральным мини-лого BARVIKHA GROUP.
+          'mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-3 pt-3 pb-1 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:gap-4 sm:px-5 sm:pt-3.5'
+        }
+      >
+        <div className="flex items-center min-w-0">
           <LocationSwitcher locations={locations} currentSlug={locationSlug} />
         </div>
-        <Link href={homeHref} className="flex justify-center cursor-pointer" aria-label={t('name')}>
+        <Link
+          href={homeHref}
+          className="hidden sm:flex justify-center cursor-pointer"
+          aria-label={t('name')}
+        >
           <Image
             src="/logo.png"
             alt={t('name')}
             width={427}
             height={57}
             priority
-            className="h-5 sm:h-6 w-auto"
+            className="h-6 w-auto"
           />
         </Link>
-        <div className="flex justify-end">
+        <div className="flex justify-end shrink-0">
           <LangSwitch />
         </div>
       </div>

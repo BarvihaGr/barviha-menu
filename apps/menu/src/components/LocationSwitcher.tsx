@@ -46,7 +46,7 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 hover:bg-gold/20 hover:border-gold transition px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] text-gold cursor-pointer shadow-[0_0_12px_rgba(196,146,98,0.18)]"
+        className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-gold/40 bg-gold/10 hover:bg-gold/20 hover:border-gold transition px-2.5 sm:px-3.5 py-1.5 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] sm:tracking-[0.2em] text-gold cursor-pointer shadow-[0_0_12px_rgba(196,146,98,0.18)]"
         aria-label={t('switch')}
         aria-expanded={open}
       >
@@ -54,8 +54,10 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
           className="inline-block h-2 w-2 rounded-full shrink-0 opacity-70"
           style={{ background: currentAccent }}
         />
-        <span className="max-w-[140px] truncate">{current ? locName(current, locale) : t('switch')}</span>
-        <ChevronDown size={13} className={cn('transition opacity-80', open && 'rotate-180')} />
+        <span className="max-w-[110px] sm:max-w-[180px] truncate">
+          {current ? locName(current, locale) : t('switch')}
+        </span>
+        <ChevronDown size={12} className={cn('transition opacity-80 shrink-0', open && 'rotate-180')} />
       </button>
 
       <AnimatePresence>

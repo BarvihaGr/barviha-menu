@@ -349,7 +349,7 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
               {it.icon}
             </span>
             <span
-              className="text-center text-[11px] uppercase tracking-[0.25em] font-medium sm:text-sm"
+              className="text-center text-[10px] sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.25em] font-medium whitespace-nowrap"
               style={{ color: '#E7C994', textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}
             >
               {it.title}
