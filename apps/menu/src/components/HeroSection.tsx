@@ -42,9 +42,20 @@ export function HeroSection({
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Откладываем загрузку видео до idle — постер уже показан, не лагает первый paint
+  /**
+   * НЕ грузим видео если:
+   *  - мобильный viewport (<768px): 8.7MB убивают 4G и батарею
+   *  - Data Saver включён или соединение медленнее 4G
+   * Вместо видео показываем постер с лёгким Ken-Burns зумом (CSS).
+   */
   useEffect(() => {
     if (!videoSrc) return;
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } })
+      .connection;
+    const slow = conn?.saveData === true || (conn?.effectiveType && /2g|slow-2g|3g/.test(conn.effectiveType));
+    if (isMobile || slow) return; // десктоп only
+
     const start = () => setShouldLoadVideo(true);
     if ('requestIdleCallback' in window) {
       const id = (window as Window & typeof globalThis).requestIdleCallback(start, { timeout: 1200 });
@@ -62,7 +73,7 @@ export function HeroSection({
   }, [shouldLoadVideo]);
 
   return (
-    <section className="relative h-[68svh] min-h-[420px] overflow-hidden left-1/2 -translate-x-1/2 w-[min(130%,calc(100vw-1rem))]">
+    <section className="relative -mt-12 sm:-mt-8 h-[62svh] min-h-[380px] overflow-hidden left-1/2 -translate-x-1/2 w-[min(130%,calc(100vw-1rem))]">
       {/* Фон-плейсхолдер: градиент + постер (показывается мгновенно) */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]" />
       {poster && (
@@ -72,7 +83,7 @@ export function HeroSection({
           fill
           priority
           sizes="(max-width: 1024px) 100vw, 1560px"
-          className={`object-cover transition-opacity duration-500 ${videoReady ? 'opacity-0' : 'opacity-90'}`}
+          className={`object-cover transition-opacity duration-500 ${videoReady ? 'opacity-0' : 'opacity-90'} ken-burns`}
         />
       )}
 
@@ -106,12 +117,12 @@ export function HeroSection({
         style={{ background: `radial-gradient(circle at 50% 35%, ${accent}, transparent 60%)` }}
       />
       {/* Плавный фейд по всем 4 краям — видео без резких границ */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--background)] to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[var(--background)] to-transparent pointer-events-none" />
       <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/80 to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-[var(--background)] to-transparent pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-[var(--background)] to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 left-0 w-16 sm:w-40 bg-gradient-to-r from-[var(--background)] to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-16 sm:w-40 bg-gradient-to-l from-[var(--background)] to-transparent pointer-events-none" />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-2 pb-16 text-center">
         {/* Логотип — кинематографичный entrance (scale + slight rotate + glow burst) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.7, rotate: -6, filter: 'blur(8px)' }}
