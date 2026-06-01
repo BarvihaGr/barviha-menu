@@ -31,7 +31,7 @@ export function LocationHeader({
 
   return (
     <header className="sticky top-0 z-30 bg-gradient-to-b from-[var(--background)]/40 via-[var(--background)]/15 to-transparent">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-3.5">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 pt-3.5 pb-1">
         <div className="flex items-center">
           <LocationSwitcher locations={locations} currentSlug={locationSlug} />
         </div>
@@ -50,7 +50,7 @@ export function LocationHeader({
         </div>
       </div>
       {/* Бейдж локации — кнопка, открывает модалку с адресом/телефоном/маршрутом */}
-      <div className="mx-auto flex max-w-[1200px] items-center justify-center gap-2 px-5 pb-2.5">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-center gap-2 px-5 pb-2.5 -mt-1">
         <LocationInfoModal
           locationName={locationName}
           address={locationAddress}
