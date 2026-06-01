@@ -46,8 +46,10 @@ function mulberry32(seed: number) {
 // ───────────────────── рез между соседями ─────────────────────
 function makeCutFn(seam: Seam) {
   return (y: number): number => {
-    const wave = 6 * Math.sin(y * 0.05 + seam.phase) + 2.5 * Math.sin(y * 0.13 + seam.phase * 1.7);
-    const knob = seam.dir * 14 * Math.exp(-((y - seam.knobY) ** 2) / (2 * 16 ** 2));
+    // wave + knob ограничены так, чтобы суммарный сдвиг шва не превышал ±18px:
+    // соседний срез всегда успевает дотянуться до своего края (никаких щелей).
+    const wave = 4.5 * Math.sin(y * 0.05 + seam.phase) + 2 * Math.sin(y * 0.13 + seam.phase * 1.7);
+    const knob = seam.dir * 10 * Math.exp(-((y - seam.knobY) ** 2) / (2 * 16 ** 2));
     return seam.x + wave + knob;
   };
 }

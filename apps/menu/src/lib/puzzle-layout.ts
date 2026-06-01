@@ -75,53 +75,59 @@ export const DEFAULT_LAYOUT: PuzzleLayout = {
  * Возвращает уникальный layout для конкретной локации.
  *
  * Что меняется (детерминированно от slug):
- *  - X швов: ±6px (внутри ±20% базы — швы не уезжают)
- *  - Фаза и knobY/dir каждого шва: рисунок «зацепления» совсем другой
- *  - Y центров срезов: ±8px — кто-то приподнят, кто-то посажен ниже
- *  - Радиус каждого среза: ±5px — иногда Кухня крупнее Бара, иногда наоборот
+ *  - Фаза швов и knobY/dir: рисунок «зацепления» совсем другой
+ *  - Y центров срезов: ±6px — кто-то приподнят, кто-то посажен ниже
+ *  - Радиус каждого среза: только в плюс (+0..+8) — никогда не меньше базы,
+ *    иначе срез не дотянется до шва и появится тёмная щель
  *  - Сердцевина (pith): сдвинута внутри среза эксцентрично, по-разному
+ *
+ * X швов и X центров срезов жёстко зафиксированы. Это гарантирует, что
+ * все три детали всегда уверенно перекрывают свои швы — щелей не будет
+ * никогда. Визуальную «изюминку» дают фаза/knob швов и сдвиги/pith,
+ * которых вполне достаточно для 27 уникальных композиций.
  */
 export function getPuzzleLayout(slug: string): PuzzleLayout {
   const rng = mulberry32(hashStr(slug));
   const D = DEFAULT_LAYOUT;
 
-  // швы
   const seam0: Seam = {
-    x: D.seams[0].x + Math.round((rng() - 0.5) * 12),
+    x: D.seams[0].x,
     phase: rng() * Math.PI * 2,
-    knobY: 38 + Math.round(rng() * 80), // 38..118 — внутри VB_H=156
+    knobY: 38 + Math.round(rng() * 80), // 38..118
     dir: rng() > 0.5 ? 1 : -1,
   };
   const seam1: Seam = {
-    x: D.seams[1].x + Math.round((rng() - 0.5) * 12),
+    x: D.seams[1].x,
     phase: rng() * Math.PI * 2,
     knobY: 38 + Math.round(rng() * 80),
     dir: rng() > 0.5 ? 1 : -1,
   };
 
-  // срезы — по очереди, каждый со своим сдвигом/размером
+  // Минимальные радиусы подобраны так, чтобы блоб ГАРАНТИРОВАННО доставал
+  // до своего шва даже при самой неудачной фазе/knob — иначе появляется
+  // тёмная щель между деталями.
   const blobs: PuzzleLayout['blobs'] = [
-    blobFromBase(D.blobs[0], rng),
-    blobFromBase(D.blobs[1], rng),
-    blobFromBase(D.blobs[2], rng),
+    blobFromBase(D.blobs[0], rng, 70),
+    blobFromBase(D.blobs[1], rng, 80),
+    blobFromBase(D.blobs[2], rng, 72),
   ];
 
   return { seams: [seam0, seam1], blobs };
 }
 
-function blobFromBase(base: BlobConfig, rng: () => number): BlobConfig {
-  const dy = Math.round((rng() - 0.5) * 16); // -8..+8
-  const dR = Math.round((rng() - 0.5) * 10); // -5..+5
-  // сердцевина: эксцентрично смещена от центра, по-разному у каждой локации
-  const pdx = Math.round((rng() - 0.5) * 22);
-  const pdy = Math.round((rng() - 0.5) * 18);
+function blobFromBase(base: BlobConfig, rng: () => number, minR: number): BlobConfig {
+  const dy = Math.round((rng() - 0.5) * 12); // -6..+6
+  const dR = Math.round(rng() * 8); // 0..+8 (никогда не уменьшаем)
+  // сердцевина: эксцентрично смещена внутри среза, не близко к краю
+  const pdx = Math.round((rng() - 0.5) * 18);
+  const pdy = Math.round((rng() - 0.5) * 16);
   return {
-    O: [base.O[0], clamp(base.O[1] + dy, 56, 96)],
+    O: [base.O[0], clamp(base.O[1] + dy, 60, 92)],
     P: [
-      clamp(base.O[0] + pdx, base.O[0] - 18, base.O[0] + 18),
-      clamp(base.O[1] + pdy, 46, 110),
+      clamp(base.O[0] + pdx, base.O[0] - 14, base.O[0] + 14),
+      clamp(base.O[1] + pdy, 50, 106),
     ],
-    Rb: clamp(base.Rb + dR, 55, 76),
+    Rb: Math.max(minR, base.Rb + dR),
   };
 }
 
