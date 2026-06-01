@@ -80,7 +80,7 @@ export function HeroSection({
   }, [shouldLoadVideo]);
 
   return (
-    <section className="relative -mt-20 sm:-mt-14 -mb-8 h-[56svh] min-h-[340px] overflow-hidden left-1/2 -translate-x-1/2 w-[min(130%,calc(100vw-1rem))]">
+    <section className="relative -mt-28 sm:-mt-20 -mb-8 h-[56svh] min-h-[340px] overflow-hidden left-1/2 -translate-x-1/2 w-[min(130%,calc(100vw-1rem))]">
       {/* Фон-плейсхолдер: градиент + постер (показывается мгновенно) */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]" />
       {poster && (
@@ -129,7 +129,7 @@ export function HeroSection({
       <div className="absolute inset-y-0 left-0 w-16 sm:w-40 bg-gradient-to-r from-[var(--background)] to-transparent pointer-events-none" />
       <div className="absolute inset-y-0 right-0 w-16 sm:w-40 bg-gradient-to-l from-[var(--background)] to-transparent pointer-events-none" />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-10 pb-4 text-center">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-16 pb-4 text-center">
         {/* Логотип — кинематографичный entrance (scale + slight rotate + glow burst) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.7, rotate: -6, filter: 'blur(8px)' }}
@@ -153,7 +153,7 @@ export function HeroSection({
               width={2559}
               height={1591}
               priority
-              className="h-40 sm:h-52 w-auto"
+              className="h-[8.5rem] sm:h-44 w-auto"
             />
           </motion.div>
         </motion.div>
@@ -161,7 +161,7 @@ export function HeroSection({
         {/* Название локации — буква за буквой (stagger) */}
         {locationName && (
           <motion.h1
-            className="font-[family-name:var(--font-display)] text-[1.7rem] sm:text-[2.7rem] font-semibold tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)] -mt-3"
+            className="font-[family-name:var(--font-display)] text-[1.45rem] sm:text-[2.3rem] font-semibold tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)] -mt-3"
             style={{ color: '#E5C490' }}
             initial="hidden"
             animate="visible"
