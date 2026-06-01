@@ -31,13 +31,28 @@ export function LocationHeader({
 
   return (
     <header className="sticky top-0 z-30 bg-gradient-to-b from-[var(--background)]/40 via-[var(--background)]/15 to-transparent">
-      <div
-        className={
-          // mobile: 2 кол. (локация | язык), мини-лого спрятан — он есть в hero.
-          // desktop ≥sm: 3 кол. с центральным мини-лого BARVIKHA GROUP.
-          'mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-3 pt-3 pb-1 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:gap-4 sm:px-5 sm:pt-3.5'
-        }
-      >
+      {/*
+        Мобильная раскладка — 2 ряда:
+          Ряд 1: BARVIKHA GROUP мини-лого по центру.
+          Ряд 2: локация (слева) ↔ переключатель языка (справа).
+        Десктоп (≥sm) — один ряд: локация | лого | язык.
+       */}
+
+      {/* Mobile only: лого ряд */}
+      <div className="flex sm:hidden justify-center px-3 pt-3 pb-1">
+        <Link href={homeHref} className="flex cursor-pointer" aria-label={t('name')}>
+          <Image
+            src="/logo.png"
+            alt={t('name')}
+            width={427}
+            height={57}
+            priority
+            className="h-5 w-auto"
+          />
+        </Link>
+      </div>
+
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-3 pb-1 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:gap-4 sm:px-5 sm:pt-3.5">
         <div className="flex items-center min-w-0">
           <LocationSwitcher locations={locations} currentSlug={locationSlug} />
         </div>
