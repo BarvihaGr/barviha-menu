@@ -43,25 +43,32 @@ export function HeroSection({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   /**
-   * НЕ грузим видео если:
-   *  - мобильный viewport (<768px): 8.7MB убивают 4G и батарею
-   *  - Data Saver включён или соединение медленнее 4G
-   * Вместо видео показываем постер с лёгким Ken-Burns зумом (CSS).
+   * Видео грузится поэтапно — НЕ блокирует первый paint:
+   *  - сначала постер (мгновенно)
+   *  - после mount + idle (~700-1500ms) стартует загрузка видео
+   *  - когда видео реально готово — фейдится поверх постера
+   *
+   * Если включён Data Saver или соединение 2g/slow-2g —
+   * оставляем только постер.
    */
   useEffect(() => {
     if (!videoSrc) return;
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } })
       .connection;
-    const slow = conn?.saveData === true || (conn?.effectiveType && /2g|slow-2g|3g/.test(conn.effectiveType));
-    if (isMobile || slow) return; // десктоп only
+    const veryslow = conn?.saveData === true || (conn?.effectiveType && /^(2g|slow-2g)$/.test(conn.effectiveType));
+    if (veryslow) return;
 
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
     const start = () => setShouldLoadVideo(true);
+    // на мобиле — больше задержка чтобы UI успел проинтерактивиться
+    const fallbackMs = isMobile ? 900 : 400;
     if ('requestIdleCallback' in window) {
-      const id = (window as Window & typeof globalThis).requestIdleCallback(start, { timeout: 1200 });
+      const id = (window as Window & typeof globalThis).requestIdleCallback(start, {
+        timeout: isMobile ? 2500 : 1200,
+      });
       return () => (window as Window & typeof globalThis).cancelIdleCallback?.(id);
     }
-    const t = setTimeout(start, 400);
+    const t = setTimeout(start, fallbackMs);
     return () => clearTimeout(t);
   }, [videoSrc]);
 
@@ -73,7 +80,7 @@ export function HeroSection({
   }, [shouldLoadVideo]);
 
   return (
-    <section className="relative -mt-12 sm:-mt-8 h-[62svh] min-h-[380px] overflow-hidden left-1/2 -translate-x-1/2 w-[min(130%,calc(100vw-1rem))]">
+    <section className="relative -mt-20 sm:-mt-14 -mb-8 h-[56svh] min-h-[340px] overflow-hidden left-1/2 -translate-x-1/2 w-[min(130%,calc(100vw-1rem))]">
       {/* Фон-плейсхолдер: градиент + постер (показывается мгновенно) */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]" />
       {poster && (
@@ -122,7 +129,7 @@ export function HeroSection({
       <div className="absolute inset-y-0 left-0 w-16 sm:w-40 bg-gradient-to-r from-[var(--background)] to-transparent pointer-events-none" />
       <div className="absolute inset-y-0 right-0 w-16 sm:w-40 bg-gradient-to-l from-[var(--background)] to-transparent pointer-events-none" />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-2 pb-16 text-center">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-10 pb-4 text-center">
         {/* Логотип — кинематографичный entrance (scale + slight rotate + glow burst) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.7, rotate: -6, filter: 'blur(8px)' }}

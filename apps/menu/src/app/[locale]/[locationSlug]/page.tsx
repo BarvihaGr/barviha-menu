@@ -54,7 +54,7 @@ export default async function LocationHome({
         : location.name;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-2">
       <HeroSection
         videoSrc={location.hero_video}
         poster={location.hero_video ? location.hero_video.replace(/hero\.mp4$/, 'poster.jpg') : null}
