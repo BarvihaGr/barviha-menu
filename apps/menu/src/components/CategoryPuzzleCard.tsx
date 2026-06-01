@@ -15,6 +15,10 @@ interface Props {
   offsetY?: 'up' | 'none' | 'down';
   /** Какой вариант «среза дерева» — 3 разных силуэта + узора колец. */
   shape?: 0 | 1 | 2;
+  /** Доп. CSS-классы (для overlap через negative margin). */
+  className?: string;
+  /** z-index — чтобы средняя могла лечь поверх краёв соседей. */
+  z?: number;
 }
 
 const ASPECT_MAP = {
@@ -119,6 +123,8 @@ export function CategoryPuzzleCard({
   aspect = 'normal',
   offsetY = 'none',
   shape = 0,
+  className,
+  z,
 }: Props) {
   const slice = SLICES[shape] ?? SLICES[0]!;
   const rotate = ROTATE_MAP[shape] ?? '0deg';
@@ -132,8 +138,8 @@ export function CategoryPuzzleCard({
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: Math.min(index * 0.1, 0.5), duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className={cn(OFFSET_MAP[offsetY])}
-      style={{ transform: `rotate(${rotate})` }}
+      className={cn('relative', OFFSET_MAP[offsetY], className)}
+      style={{ transform: `rotate(${rotate})`, zIndex: z }}
     >
       <Link
         href={href}
@@ -189,19 +195,6 @@ export function CategoryPuzzleCard({
                 stroke="#E5C490"
                 strokeWidth={0.25}
                 opacity={r.opacity}
-              />
-            ))}
-
-            {/* радиальные трещины */}
-            {slice.cracks.map((d, i) => (
-              <path
-                key={i}
-                d={d}
-                fill="none"
-                stroke="#F1D9B0"
-                strokeWidth={0.4}
-                opacity={0.6}
-                strokeLinecap="round"
               />
             ))}
 

@@ -16,7 +16,7 @@ export function Badge({ label, className }: { label: ItemLabel; className?: stri
   return (
     <span
       className={cn(
-        'border bg-black/70 px-2 py-1 text-[9px] uppercase tracking-[0.2em] backdrop-blur-sm',
+        'border bg-black/80 px-2 py-1 text-[9px] uppercase tracking-[0.2em]',
         VARIANTS[label],
         className,
       )}

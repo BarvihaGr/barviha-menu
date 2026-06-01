@@ -67,7 +67,7 @@ export function FloatingCartButton({ locationSlug }: { locationSlug: string }) {
       className="fixed left-1/2 bottom-5 z-40 -translate-x-1/2"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="flex items-center gap-1 rounded-full border border-gold/40 bg-[color:var(--card-elev)]/85 backdrop-blur-xl p-1 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
+      <div className="flex items-center gap-1 rounded-full border border-gold/40 bg-[color:var(--card-elev)] p-1 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
         <Item
           href={homeHref}
           icon={<UtensilsCrossed size={15} />}

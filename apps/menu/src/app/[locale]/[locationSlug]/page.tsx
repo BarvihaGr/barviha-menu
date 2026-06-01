@@ -86,11 +86,18 @@ export default async function LocationHome({
       {homeCategories.length > 0 && (
         <section className="pb-4">
           <SectionTitle>{tHome('menu')}</SectionTitle>
-          <div className="grid grid-cols-3 gap-2 sm:gap-4">
+          <div className="grid grid-cols-3 gap-0 px-2 sm:px-6">
             {homeCategories.map((c, idx) => {
               const slug = c.slug as (typeof HOME_CATEGORIES)[number];
               const visual = CATEGORY_VISUALS[slug];
               const href = slug === 'hookah' ? `/${location.slug}/hookah` : `/${location.slug}/${slug}`;
+              // overlap: левая чуть вправо, центр поверх, правая чуть влево — пазл
+              const overlap =
+                idx === 0
+                  ? '-mr-5 sm:-mr-10'
+                  : idx === 1
+                    ? '-mx-5 sm:-mx-10'
+                    : '-ml-5 sm:-ml-10';
               return (
                 <CategoryPuzzleCard
                   key={c.id}
@@ -101,6 +108,8 @@ export default async function LocationHome({
                   offsetY={visual.offsetY}
                   shape={visual.shape}
                   index={idx}
+                  className={overlap}
+                  z={idx === 1 ? 20 : 10}
                 />
               );
             })}

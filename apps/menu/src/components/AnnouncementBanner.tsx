@@ -36,7 +36,7 @@ export function AnnouncementBanner({ announcements }: { announcements: Announcem
         transition={{ type: 'spring', stiffness: 260, damping: 26 }}
         className="fixed bottom-24 left-1/2 z-40 w-[min(92vw,420px)] -translate-x-1/2"
       >
-        <div className="relative flex items-center gap-3 overflow-hidden rounded-sm border border-gold bg-card/95 backdrop-blur-xl px-4 py-3 shadow-2xl">
+        <div className="relative flex items-center gap-3 overflow-hidden rounded-sm border border-gold bg-card px-4 py-3 shadow-2xl">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_left,rgba(218,193,120,0.18),transparent_60%)]" />
           <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/40 text-gold">
             <Icon size={18} />

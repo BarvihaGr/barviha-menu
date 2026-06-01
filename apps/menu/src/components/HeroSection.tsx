@@ -128,30 +128,19 @@ export function HeroSection({
       <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-16 pb-4 text-center">
         {/* Логотип — кинематографичный entrance (scale + slight rotate + glow burst) */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.7, rotate: -6, filter: 'blur(8px)' }}
-          animate={{ opacity: 1, scale: 1, rotate: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, scale: 0.7, rotate: -6 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+          style={{ filter: 'drop-shadow(0 4px 24px rgba(0,0,0,0.6))' }}
         >
-          <motion.div
-            initial={{ filter: 'drop-shadow(0 0 0 rgba(229,196,144,0))' }}
-            animate={{
-              filter: [
-                'drop-shadow(0 0 0 rgba(229,196,144,0))',
-                'drop-shadow(0 0 40px rgba(229,196,144,0.7))',
-                'drop-shadow(0 4px 24px rgba(0,0,0,0.6))',
-              ],
-            }}
-            transition={{ duration: 1.6, delay: 0.6, times: [0, 0.4, 1], ease: 'easeOut' }}
-          >
-            <Image
-              src="/locations/arka/logo-tree.png"
-              alt="Barvikha"
-              width={2559}
-              height={1591}
-              priority
-              className="h-[8.5rem] sm:h-44 w-auto"
-            />
-          </motion.div>
+          <Image
+            src="/locations/arka/logo-tree.png"
+            alt="Barvikha"
+            width={2559}
+            height={1591}
+            priority
+            className="h-[8.5rem] sm:h-44 w-auto"
+          />
         </motion.div>
 
         {/* Название локации — буква за буквой (stagger) */}
@@ -172,11 +161,10 @@ export function HeroSection({
                 key={i}
                 style={{ display: 'inline-block', whiteSpace: 'pre' }}
                 variants={{
-                  hidden: { opacity: 0, y: 18, filter: 'blur(6px)' },
+                  hidden: { opacity: 0, y: 18 },
                   visible: {
                     opacity: 1,
                     y: 0,
-                    filter: 'blur(0px)',
                     transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
                   },
                 }}
