@@ -1,6 +1,18 @@
 [build]
 builder = "NIXPACKS"
 buildCommand = "pnpm install --frozen-lockfile && pnpm --filter @barviha/menu build"
+# Пересобирать при изменении приложения И общих пакетов (меню/цены/фото лежат
+# в packages/db). Раньше следили только за apps/menu → правки в packages/db
+# пропускались ("No changes to watched files").
+watchPatterns = [
+  "apps/**",
+  "packages/**",
+  "package.json",
+  "pnpm-lock.yaml",
+  "pnpm-workspace.yaml",
+  "railway.toml",
+  "nixpacks.toml",
+]
 
 [deploy]
 startCommand = "pnpm --filter @barviha/menu start"
