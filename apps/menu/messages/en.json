@@ -80,7 +80,9 @@
     "carbs": "Carbs",
     "related": "From this category",
     "more": "Read more",
-    "less": "Show less"
+    "less": "Show less",
+    "viewPhoto": "View photo",
+    "closePhoto": "Close"
   },
   "cart": {
     "title": "My table",

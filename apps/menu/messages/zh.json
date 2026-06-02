@@ -80,7 +80,9 @@
     "carbs": "碳水",
     "related": "同類菜品",
     "more": "展开全文",
-    "less": "收起"
+    "less": "收起",
+    "viewPhoto": "查看照片",
+    "closePhoto": "关闭"
   },
   "cart": {
     "title": "我的餐桌",

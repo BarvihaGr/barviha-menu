@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { getClient } from '@barviha/db';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -9,6 +8,7 @@ import { Badge } from '@/components/Badge';
 import { AddToCartButton } from '@/components/AddToCartButton';
 import { RelatedItemsRail, type RelatedItem } from '@/components/RelatedItemsRail';
 import { ExpandableText } from '@/components/ExpandableText';
+import { ItemPhotoViewer } from '@/components/ItemPhotoViewer';
 
 export default async function ItemDetailPage({
   params,
@@ -43,15 +43,7 @@ export default async function ItemDetailPage({
         <div className="px-3 pt-3 sm:px-4 sm:pt-4">
           <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-gradient-to-br from-[#453324] to-[#2A1B11]">
             {item.photo ? (
-              <Image
-                src={item.photo}
-                alt={name}
-                fill
-                sizes="(max-width: 768px) 100vw, 768px"
-                priority
-                className="object-cover"
-                style={{ filter: 'brightness(0.85) saturate(0.9)' }}
-              />
+              <ItemPhotoViewer src={item.photo} alt={name} />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-7xl text-gold-dark opacity-30">
                 ◈
