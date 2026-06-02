@@ -14,25 +14,26 @@ export type FilterKey =
   | 'withAlcohol'
   | 'withIce'
   | 'sparkling'
-  | 'priceUnder1000'
   // Кухня
   | 'spicy'
   | 'vegan'
   | 'withMeat'
   | 'noMeat'
-  | 'salty';
+  | 'salty'
+  | 'sweet';
 
 /** Раздел определяет какие фильтры доступны. */
 export type FilterRealm = 'bar' | 'kitchen' | 'hookah';
 
 const FILTERS_BY_REALM: Record<FilterRealm, FilterKey[]> = {
-  bar: ['noAlcohol', 'withAlcohol', 'withIce', 'sparkling', 'priceUnder1000'],
-  kitchen: ['spicy', 'vegan', 'withMeat', 'noMeat', 'salty', 'priceUnder1000'],
+  bar: ['noAlcohol', 'withAlcohol', 'withIce', 'sparkling', 'sweet'],
+  kitchen: ['spicy', 'vegan', 'withMeat', 'noMeat', 'salty', 'sweet'],
   hookah: [], // у кальянов фильтр не нужен
 };
 
 const MEAT_RE = /говяд|телятин|свинин|бекон|курин|утк|утин|ростбиф|брезаол|тартар|стейк|рибай|бургер|котлет|ветчин|карбонад|колбас|сосис|лосось|тунец|рыб|креветк|кальмар|мидии|осьминог|форель/i;
 const SALT_RE = /соль|солён|соленый|каперс|олив|маслин|маринован|бекон|сыр|пармезан|брынз|анчоус|икр/i;
+const SWEET_RE = /сладк|мёд|мед|сироп|сахар|шокол|карамел|варен|джем|ваниль|ягод|клубник|малин|вишн|персик|ананас|банан|кокос|маршмел|пастил|мороже|тирамис|чизкей|медовик|сорбе|десерт|тарт|кокос|кленов/i;
 
 /** Применить выбранные фильтры к списку блюд. */
 export function applyFilters(items: ResolvedMenuItem[], active: Set<FilterKey>): ResolvedMenuItem[] {
@@ -45,7 +46,6 @@ export function applyFilters(items: ResolvedMenuItem[], active: Set<FilterKey>):
 
     if (active.has('noAlcohol') && i.is_alcoholic) return false;
     if (active.has('withAlcohol') && !i.is_alcoholic) return false;
-    if (active.has('priceUnder1000') && i.price > 1000) return false;
     if (active.has('spicy') && !labels.includes('spicy')) return false;
     if (active.has('vegan') && !labels.includes('vegan')) return false;
     if (active.has('withIce') && !/лёд|лед|ice/i.test(haystack)) return false;
@@ -53,6 +53,7 @@ export function applyFilters(items: ResolvedMenuItem[], active: Set<FilterKey>):
     if (active.has('withMeat') && !MEAT_RE.test(haystack)) return false;
     if (active.has('noMeat') && MEAT_RE.test(haystack)) return false;
     if (active.has('salty') && !SALT_RE.test(haystack)) return false;
+    if (active.has('sweet') && !SWEET_RE.test(haystack)) return false;
     return true;
   });
 }

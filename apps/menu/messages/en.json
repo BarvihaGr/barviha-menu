@@ -45,14 +45,30 @@
     "withAlcohol": "With alcohol",
     "withIce": "On ice",
     "sparkling": "Sparkling",
-    "priceUnder1000": "Under 1000 ₽",
     "spicy": "Spicy",
     "vegan": "Vegan",
     "withMeat": "With meat",
     "noMeat": "No meat",
     "salty": "Salty",
+    "sweet": "Sweet",
     "reset": "Reset",
     "close": "Done"
+  },
+  "sections": {
+    "all": "All",
+    "salads": "Salads",
+    "coldApps": "Cold appetizers",
+    "hotApps": "Hot appetizers",
+    "platters": "Platters",
+    "soups": "Soups",
+    "mains": "Mains",
+    "authorCocktails": "Signature cocktails",
+    "classics": "Classics",
+    "noAlcoholDrinks": "Non-alcoholic",
+    "tea": "Tea",
+    "classicRolls": "Classic rolls",
+    "sets": "Sets",
+    "desserts": "Desserts"
   },
   "item": {
     "addToCart": "Add to my table",
@@ -61,7 +77,10 @@
     "kcal": "Kcal",
     "protein": "Protein",
     "fat": "Fat",
-    "carbs": "Carbs"
+    "carbs": "Carbs",
+    "related": "From this category",
+    "more": "Read more",
+    "less": "Show less"
   },
   "cart": {
     "title": "My table",

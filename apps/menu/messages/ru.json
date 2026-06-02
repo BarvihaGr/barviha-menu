@@ -45,14 +45,30 @@
     "withAlcohol": "С алкоголем",
     "withIce": "Со льдом",
     "sparkling": "Игристое",
-    "priceUnder1000": "До 1000 ₽",
     "spicy": "Острое",
     "vegan": "Веган",
     "withMeat": "С мясом",
     "noMeat": "Без мяса",
     "salty": "Солёное",
+    "sweet": "Сладкое",
     "reset": "Сбросить",
     "close": "Готово"
+  },
+  "sections": {
+    "all": "Все",
+    "salads": "Салаты",
+    "coldApps": "Холодные закуски",
+    "hotApps": "Горячие закуски",
+    "platters": "Плато",
+    "soups": "Супы",
+    "mains": "Горячее",
+    "authorCocktails": "Авторские коктейли",
+    "classics": "Классика",
+    "noAlcoholDrinks": "Безалкогольные",
+    "tea": "Чай",
+    "classicRolls": "Классические роллы",
+    "sets": "Сеты",
+    "desserts": "Десерты"
   },
   "item": {
     "addToCart": "В Мой стол",
@@ -61,7 +77,10 @@
     "kcal": "Ккал",
     "protein": "Белки",
     "fat": "Жиры",
-    "carbs": "Углеводы"
+    "carbs": "Углеводы",
+    "related": "Из этой категории",
+    "more": "Читать дальше",
+    "less": "Свернуть"
   },
   "cart": {
     "title": "Мой стол",

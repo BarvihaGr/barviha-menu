@@ -45,14 +45,30 @@
     "withAlcohol": "含酒精",
     "withIce": "加冰",
     "sparkling": "氣泡",
-    "priceUnder1000": "1000 盧布以內",
     "spicy": "辣味",
     "vegan": "素食",
     "withMeat": "含肉",
     "noMeat": "無肉",
     "salty": "鹹味",
+    "sweet": "甜",
     "reset": "重置",
     "close": "完成"
+  },
+  "sections": {
+    "all": "全部",
+    "salads": "沙拉",
+    "coldApps": "冷盤",
+    "hotApps": "熱前菜",
+    "platters": "拼盤",
+    "soups": "湯品",
+    "mains": "主菜",
+    "authorCocktails": "招牌雞尾酒",
+    "classics": "經典",
+    "noAlcoholDrinks": "無酒精飲品",
+    "tea": "茶",
+    "classicRolls": "經典壽司捲",
+    "sets": "套餐",
+    "desserts": "甜點"
   },
   "item": {
     "addToCart": "加入我的餐桌",
@@ -61,7 +77,10 @@
     "kcal": "千卡",
     "protein": "蛋白質",
     "fat": "脂肪",
-    "carbs": "碳水"
+    "carbs": "碳水",
+    "related": "同類菜品",
+    "more": "展开全文",
+    "less": "收起"
   },
   "cart": {
     "title": "我的餐桌",

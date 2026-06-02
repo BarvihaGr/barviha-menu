@@ -10,6 +10,7 @@ import {
   getSpotlightsForSlug,
 } from './mock-data';
 import { GEN_CATEGORIES, GEN_ITEMS } from './menu-generated';
+import { PHOTOS } from './menu-photos';
 import type { GenItem, Realm } from './menu-types';
 import type {
   Announcement,
@@ -70,8 +71,8 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
     id: it.id,
     name: it.name,
     description: it.description,
-    photo: null,
-    composition: null,
+    photo: PHOTOS[it.id] ?? null,
+    composition: it.composition,
     category_id: it.realm,
     price,
     weight: kb && kb.weight != null ? `${kb.weight} г` : null,

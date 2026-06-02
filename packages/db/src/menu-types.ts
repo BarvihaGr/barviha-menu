@@ -24,6 +24,7 @@ export interface GenItem {
   sub: string;
   name: string;
   description: string | null;
+  composition: string | null;
   kbju: GenKbju | null;
   prices: Record<string, number>;
 }

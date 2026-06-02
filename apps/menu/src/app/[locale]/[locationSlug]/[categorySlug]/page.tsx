@@ -36,6 +36,7 @@ export default async function CategoryPage({
       <CategoryItemsList
         items={items}
         locationSlug={locationSlug}
+        categorySlug={category.slug}
         realm={(category.realm as 'bar' | 'kitchen' | 'hookah') ?? 'kitchen'}
       />
     </div>

@@ -16,7 +16,7 @@ interface Props {
   index?: number;
 }
 
-export function ItemCard({ item, name, description, locationSlug, index = 0 }: Props) {
+export function ItemCard({ item, name, locationSlug, index = 0 }: Props) {
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -25,9 +25,9 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
     >
       <Link
         href={`/${locationSlug}/item/${item.id}`}
-        className="group block h-full overflow-hidden rounded-sm border border-[color:var(--border)] bg-card transition hover:-translate-y-1 hover:border-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
+        className="group block h-full overflow-hidden rounded-3xl border border-[color:var(--border)] bg-card transition hover:-translate-y-1 hover:border-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
       >
-        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#453324] to-[#2A1B11]">
+        <div className="relative m-2.5 mb-0 aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-[#453324] to-[#2A1B11]">
           {item.photo ? (
             <Image
               src={item.photo}
@@ -51,21 +51,16 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-3 p-4 sm:p-5">
-          <h3 className="text-base sm:text-lg font-normal tracking-wide text-white leading-tight line-clamp-2">
-            {name}
-          </h3>
-          {description && (
-            <p className="flex-1 text-xs sm:text-sm leading-relaxed text-muted line-clamp-2">
-              {description}
-            </p>
-          )}
-          <div className="flex items-center justify-between pt-1 mt-auto">
-            <span className="text-base sm:text-lg font-medium text-gold">
+        <div className="flex items-center justify-between gap-3 p-4 sm:p-5">
+          <div className="min-w-0">
+            <h3 className="text-base sm:text-lg font-normal tracking-wide text-white leading-tight line-clamp-2">
+              {name}
+            </h3>
+            <span className="mt-1.5 block text-base sm:text-lg font-medium text-gold">
               {formatPrice(item.price)}
             </span>
-            <AddToCartButton itemId={item.id} itemName={name} />
           </div>
+          <AddToCartButton itemId={item.id} itemName={name} className="shrink-0" />
         </div>
       </Link>
     </motion.article>

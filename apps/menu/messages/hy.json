@@ -45,14 +45,30 @@
     "withAlcohol": "Ալկոհոլով",
     "withIce": "Սառույցով",
     "sparkling": "Փրփրուն",
-    "priceUnder1000": "Մինչև 1000 ₽",
     "spicy": "Կծու",
     "vegan": "Վեգան",
     "withMeat": "Մսով",
     "noMeat": "Առանց մսի",
     "salty": "Աղի",
+    "sweet": "Քաղցր",
     "reset": "Զրոյացնել",
     "close": "Պատրաստ է"
+  },
+  "sections": {
+    "all": "Բոլորը",
+    "salads": "Աղցաններ",
+    "coldApps": "Սառը նախուտեստներ",
+    "hotApps": "Տաք նախուտեստներ",
+    "platters": "Փլատոներ",
+    "soups": "Ապուրներ",
+    "mains": "Տաք ուտեստներ",
+    "authorCocktails": "Հեղինակային կոկտեյլներ",
+    "classics": "Դասական",
+    "noAlcoholDrinks": "Անալկոհոլ",
+    "tea": "Թեյ",
+    "classicRolls": "Դասական ռոլներ",
+    "sets": "Սեթեր",
+    "desserts": "Աղանդեր"
   },
   "item": {
     "addToCart": "Իմ սեղանին",
@@ -61,7 +77,10 @@
     "kcal": "Կկալ",
     "protein": "Սպիտակուցներ",
     "fat": "Ճարպեր",
-    "carbs": "Ածխաջրեր"
+    "carbs": "Ածխաջրեր",
+    "related": "Նույն բաժնից",
+    "more": "Կարդալ ավելին",
+    "less": "Թաքցնել"
   },
   "cart": {
     "title": "Իմ սեղանը",

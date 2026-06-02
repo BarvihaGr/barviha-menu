@@ -7,6 +7,8 @@ import { pickItemComposition, pickItemDescription, pickItemName } from '@/lib/i1
 import { formatPrice, parseIngredients } from '@/lib/utils';
 import { Badge } from '@/components/Badge';
 import { AddToCartButton } from '@/components/AddToCartButton';
+import { RelatedItemsRail, type RelatedItem } from '@/components/RelatedItemsRail';
+import { ExpandableText } from '@/components/ExpandableText';
 
 export default async function ItemDetailPage({
   params,
@@ -26,33 +28,44 @@ export default async function ItemDetailPage({
   const composition = pickItemComposition(item, locale as Locale);
   const ingredients = parseIngredients(composition);
 
+  // Соседи по категории — для боковой ленты «из этой же категории».
+  const loc = await db.getLocationBySlug(locationSlug);
+  const related: RelatedItem[] = loc
+    ? (await db.getMenuItemsForLocation(loc.id))
+        .filter((x) => x.id !== item.id && x.category_id === item.category_id && x.is_available)
+        .slice(0, 16)
+        .map((x) => ({ id: x.id, name: pickItemName(x, locale as Locale), photo: x.photo }))
+    : [];
+
   return (
-    <div className="flex flex-col gap-6 max-w-3xl mx-auto">
-      <div className="overflow-hidden rounded-sm border border-[color:var(--border)] bg-card">
-        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#453324] to-[#2A1B11]">
-          {item.photo ? (
-            <Image
-              src={item.photo}
-              alt={name}
-              fill
-              sizes="(max-width: 768px) 100vw, 768px"
-              priority
-              className="object-cover"
-              style={{ filter: 'brightness(0.85) saturate(0.9)' }}
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-7xl text-gold-dark opacity-30">
-              ◈
-            </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
-          {item.labels.length > 0 && (
-            <div className="absolute left-4 top-4 flex flex-col gap-1.5 z-10">
-              {item.labels.map((l) => (
-                <Badge key={l} label={l} />
-              ))}
-            </div>
-          )}
+    <div className="mx-auto flex max-w-4xl gap-3 sm:gap-5">
+      <article className="min-w-0 flex-1 overflow-hidden rounded-3xl border border-[color:var(--border)] bg-card">
+        <div className="px-3 pt-3 sm:px-4 sm:pt-4">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-gradient-to-br from-[#453324] to-[#2A1B11]">
+            {item.photo ? (
+              <Image
+                src={item.photo}
+                alt={name}
+                fill
+                sizes="(max-width: 768px) 100vw, 768px"
+                priority
+                className="object-cover"
+                style={{ filter: 'brightness(0.85) saturate(0.9)' }}
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center text-7xl text-gold-dark opacity-30">
+                ◈
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+            {item.labels.length > 0 && (
+              <div className="absolute left-4 top-4 flex flex-col gap-1.5 z-10">
+                {item.labels.map((l) => (
+                  <Badge key={l} label={l} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col gap-6 p-6 sm:p-8">
@@ -67,7 +80,9 @@ export default async function ItemDetailPage({
             )}
           </div>
 
-          {description && <p className="text-sm leading-relaxed text-beige">{description}</p>}
+          {description && (
+            <ExpandableText text={description} className="text-sm leading-relaxed text-beige" />
+          )}
 
           {ingredients.length > 0 && (
             <div>
@@ -120,12 +135,14 @@ export default async function ItemDetailPage({
             </div>
           )}
 
-          <div className="flex items-center gap-4 border-t border-[color:var(--border)] pt-5">
+          <div className="flex items-center justify-between gap-4 border-t border-[color:var(--border)] pt-5">
             <div className="text-2xl sm:text-3xl text-gold font-medium">{formatPrice(item.price)}</div>
-            <AddToCartButton itemId={item.id} itemName={name} variant="full" />
+            <AddToCartButton itemId={item.id} itemName={name} />
           </div>
         </div>
-      </div>
+      </article>
+
+      <RelatedItemsRail items={related} locationSlug={locationSlug} />
     </div>
   );
 }
