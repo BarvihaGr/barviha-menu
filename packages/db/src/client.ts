@@ -48,7 +48,7 @@ const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
 
 // Временно показываем ТОЛЬКО позиции, у которых есть фото (по просьбе:
 // блюда без фото деактивируем до появления фотографий). Чтобы вернуть всё —
-// поставить false. Касается и кухни, и бара, на всех локациях.
+// поставить false. Касается кухни, бара И кальянов, на всех локациях.
 const HIDE_PHOTOLESS = true;
 function hasPhoto(id: string): boolean {
   return !HIDE_PHOTOLESS || PHOTOS[id] != null;
@@ -123,15 +123,14 @@ class MockBarvihaClient implements BarvihaClient {
     const loc = getLocationById(locationId);
     const slug = effectiveSlug(loc?.slug);
     const realms: Realm[] = ['kitchen', 'bar', 'hookah'];
-    // Реалм показываем, если у локации есть видимые позиции (кухня/бар — только
-    // с фото; кальяны не фильтруем).
+    // Реалм показываем, если у локации есть видимые позиции (только с фото).
     return realms
       .filter((rm) =>
         GEN_ITEMS.some(
           (it) =>
             it.realm === rm &&
             (!slug || it.prices[slug] != null) &&
-            (rm === 'hookah' || hasPhoto(it.id)),
+            hasPhoto(it.id),
         ),
       )
       .map(realmCategory);
@@ -143,8 +142,8 @@ class MockBarvihaClient implements BarvihaClient {
     const base = slug
       ? GEN_ITEMS.filter((it) => it.prices[slug] != null)
       : GEN_ITEMS;
-    // Кухню/бар без фото скрываем; кальяны оставляем.
-    const items = base.filter((it) => it.realm === 'hookah' || hasPhoto(it.id));
+    // Любые позиции без фото скрываем (кухня, бар, кальяны).
+    const items = base.filter((it) => hasPhoto(it.id));
     return items
       .map((it) => toResolved(it, slug))
       .sort((a, b) => (SUB_ORDER.get(`${a.category_id}/${a.sub}`) ?? 99) - (SUB_ORDER.get(`${b.category_id}/${b.sub}`) ?? 99));
