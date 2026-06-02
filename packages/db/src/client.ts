@@ -45,6 +45,17 @@ const SUB_ORDER = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.or
 const REALM_NAME: Record<Realm, string> = { kitchen: 'Кухня', bar: 'Бар', hookah: 'Кальяны' };
 const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
 
+// Локации, реально покрытые меню в файле «ФУЛЛ ИНФО».
+const COVERED_SLUGS = new Set<string>(GEN_ITEMS.flatMap((it) => Object.keys(it.prices)));
+// Для непокрытых точек (Саратов, Ташкент) показываем сетевое меню-базу.
+const FALLBACK_SLUG = 'baumanskaia';
+
+/** slug локации → slug, по которому реально брать меню/цены. */
+function effectiveSlug(slug: string | undefined): string | undefined {
+  if (!slug) return slug;
+  return COVERED_SLUGS.has(slug) ? slug : FALLBACK_SLUG;
+}
+
 function minPrice(prices: Record<string, number>): number {
   const vals = Object.values(prices);
   return vals.length ? Math.min(...vals) : 0;
@@ -101,7 +112,7 @@ class MockBarvihaClient implements BarvihaClient {
 
   async getCategoriesForLocation(locationId: string): Promise<Category[]> {
     const loc = getLocationById(locationId);
-    const slug = loc?.slug;
+    const slug = effectiveSlug(loc?.slug);
     const realms: Realm[] = ['kitchen', 'bar', 'hookah'];
     // Только реалмы, где у локации реально есть позиции.
     return realms
@@ -111,7 +122,7 @@ class MockBarvihaClient implements BarvihaClient {
 
   async getMenuItemsForLocation(locationId: string): Promise<ResolvedMenuItem[]> {
     const loc = getLocationById(locationId);
-    const slug = loc?.slug;
+    const slug = effectiveSlug(loc?.slug);
     const items = slug
       ? GEN_ITEMS.filter((it) => it.prices[slug] != null)
       : GEN_ITEMS;
@@ -122,7 +133,7 @@ class MockBarvihaClient implements BarvihaClient {
 
   async getMenuItemById(itemId: string, locationSlug?: string): Promise<ResolvedMenuItem | null> {
     const it = GEN_ITEMS.find((x) => x.id === itemId);
-    return it ? toResolved(it, locationSlug) : null;
+    return it ? toResolved(it, effectiveSlug(locationSlug)) : null;
   }
 
   async getCategoryBySlug(slug: string): Promise<Category | null> {
