@@ -46,6 +46,14 @@ const SUB_ORDER = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.or
 const REALM_NAME: Record<Realm, string> = { kitchen: 'Кухня', bar: 'Бар', hookah: 'Кальяны' };
 const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
 
+// Временно показываем ТОЛЬКО позиции, у которых есть фото (по просьбе:
+// блюда без фото деактивируем до появления фотографий). Чтобы вернуть всё —
+// поставить false. Касается и кухни, и бара, на всех локациях.
+const HIDE_PHOTOLESS = true;
+function hasPhoto(id: string): boolean {
+  return !HIDE_PHOTOLESS || PHOTOS[id] != null;
+}
+
 // Локации, реально покрытые меню в файле «ФУЛЛ ИНФО».
 const COVERED_SLUGS = new Set<string>(GEN_ITEMS.flatMap((it) => Object.keys(it.prices)));
 // Для непокрытых точек (Саратов, Ташкент) показываем сетевое меню-базу.
@@ -115,18 +123,28 @@ class MockBarvihaClient implements BarvihaClient {
     const loc = getLocationById(locationId);
     const slug = effectiveSlug(loc?.slug);
     const realms: Realm[] = ['kitchen', 'bar', 'hookah'];
-    // Только реалмы, где у локации реально есть позиции.
+    // Реалм показываем, если у локации есть видимые позиции (кухня/бар — только
+    // с фото; кальяны не фильтруем).
     return realms
-      .filter((rm) => GEN_ITEMS.some((it) => it.realm === rm && (!slug || it.prices[slug] != null)))
+      .filter((rm) =>
+        GEN_ITEMS.some(
+          (it) =>
+            it.realm === rm &&
+            (!slug || it.prices[slug] != null) &&
+            (rm === 'hookah' || hasPhoto(it.id)),
+        ),
+      )
       .map(realmCategory);
   }
 
   async getMenuItemsForLocation(locationId: string): Promise<ResolvedMenuItem[]> {
     const loc = getLocationById(locationId);
     const slug = effectiveSlug(loc?.slug);
-    const items = slug
+    const base = slug
       ? GEN_ITEMS.filter((it) => it.prices[slug] != null)
       : GEN_ITEMS;
+    // Кухню/бар без фото скрываем; кальяны оставляем.
+    const items = base.filter((it) => it.realm === 'hookah' || hasPhoto(it.id));
     return items
       .map((it) => toResolved(it, slug))
       .sort((a, b) => (SUB_ORDER.get(`${a.category_id}/${a.sub}`) ?? 99) - (SUB_ORDER.get(`${b.category_id}/${b.sub}`) ?? 99));
