@@ -221,6 +221,9 @@ export interface ResolvedMenuItem {
   has_3d_model: boolean;
   spline_url: string | null;
   nutrition?: NutritionFacts;
+  /** Подкатегория-раздел внутри реалма (для группировки секциями). */
+  sub?: string;
+  subLabel?: string;
 }
 
 export interface HookahMood {

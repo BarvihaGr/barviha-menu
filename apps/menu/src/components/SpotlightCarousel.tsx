@@ -192,7 +192,7 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
                 if (movedRef.current) return; // это был свайп, не тап
                 setActive(s);
               }}
-              className="group relative shrink-0 w-[230px] sm:w-[270px] aspect-[3/4] overflow-hidden rounded-lg border border-gold/25 text-left transition-transform duration-300 hover:scale-[1.03] hover:border-gold/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              className="group relative shrink-0 w-[230px] sm:w-[270px] aspect-[9/8] overflow-hidden rounded-lg border border-gold/25 text-left transition-transform duration-300 hover:scale-[1.03] hover:border-gold/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
               {/* Фон: фото или градиент по акценту */}
               {s.image ? (
@@ -237,15 +237,15 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
               </div>
 
               {/* Низ: заголовок + подзаголовок + хинт */}
-              <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-4">
+              <div className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-3">
                 <span className="text-[10px] uppercase tracking-[0.25em]" style={{ color: a }}>
                   {t(`kind.${s.kind}`)}
                 </span>
-                <h3 className="font-[family-name:var(--font-display)] text-lg font-semibold leading-tight text-white drop-shadow">
+                <h3 className="font-[family-name:var(--font-display)] text-base font-semibold leading-tight text-white drop-shadow">
                   {title}
                 </h3>
                 {subtitle && (
-                  <p className="text-xs leading-snug text-white/75 line-clamp-2">{subtitle}</p>
+                  <p className="text-xs leading-snug text-white/75 line-clamp-1">{subtitle}</p>
                 )}
                 <span className="mt-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] text-gold/90 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   {t('more')} →

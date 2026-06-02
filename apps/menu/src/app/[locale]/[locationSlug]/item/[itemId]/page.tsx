@@ -13,12 +13,12 @@ export default async function ItemDetailPage({
 }: {
   params: Promise<{ locale: string; locationSlug: string; itemId: string }>;
 }) {
-  const { locale, itemId } = await params;
+  const { locale, locationSlug, itemId } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('item');
 
   const db = getClient();
-  const item = await db.getMenuItemById(itemId);
+  const item = await db.getMenuItemById(itemId, locationSlug);
   if (!item) notFound();
 
   const name = pickItemName(item, locale as Locale);

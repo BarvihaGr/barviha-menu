@@ -1,5 +1,7 @@
 export * from './types';
+export * from './menu-types';
 export * from './client';
+export { GEN_CATEGORIES, GEN_ITEMS } from './menu-generated';
 export {
   MOCK_LOCATION,
   MOCK_LOCATIONS,

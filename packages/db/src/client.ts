@@ -1,17 +1,16 @@
 /**
- * DB client facade. Currently returns mock data — swap to a real Supabase
- * client when env vars are configured (Stage 2 of the TZ).
+ * DB client facade. Меню — из автогенерированного датасета (menu-generated.ts,
+ * собран из «ФУЛЛ ИНФО» по локациям). Локации/кальянные настроения/анонсы —
+ * из mock-data. При подключении Supabase меняем реализацию, интерфейс тот же.
  */
 import {
-  LOCATION_PRICING,
-  MOCK_ALL_ITEMS,
-  MOCK_CATEGORIES,
   MOCK_HOOKAH_MOODS,
   MOCK_LOCATIONS,
   MOCK_TABLES,
   getSpotlightsForSlug,
-  resolveMenuForLocation,
 } from './mock-data';
+import { GEN_CATEGORIES, GEN_ITEMS } from './menu-generated';
+import type { GenItem, Realm } from './menu-types';
 import type {
   Announcement,
   Category,
@@ -27,7 +26,7 @@ export interface BarvihaClient {
   getLocationBySlug(slug: string): Promise<Location | null>;
   getCategoriesForLocation(locationId: string): Promise<Category[]>;
   getMenuItemsForLocation(locationId: string): Promise<ResolvedMenuItem[]>;
-  getMenuItemById(itemId: string): Promise<ResolvedMenuItem | null>;
+  getMenuItemById(itemId: string, locationSlug?: string): Promise<ResolvedMenuItem | null>;
   getCategoryBySlug(slug: string): Promise<Category | null>;
   getHookahMoods(): Promise<HookahMood[]>;
   getTableByToken(token: string): Promise<Table | null>;
@@ -37,6 +36,58 @@ export interface BarvihaClient {
 
 function getLocationById(id: string): Location | undefined {
   return MOCK_LOCATIONS.find((l) => l.id === id);
+}
+
+// ── Карты подкатегорий (для подписи/порядка/группировки) ──
+const SUB_LABEL = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.label]));
+const SUB_ORDER = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.order]));
+
+const REALM_NAME: Record<Realm, string> = { kitchen: 'Кухня', bar: 'Бар', hookah: 'Кальяны' };
+const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
+
+function minPrice(prices: Record<string, number>): number {
+  const vals = Object.values(prices);
+  return vals.length ? Math.min(...vals) : 0;
+}
+
+/** GenItem -> ResolvedMenuItem с ценой выбранной локации. */
+function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
+  const price = (slug && it.prices[slug]) || minPrice(it.prices);
+  const kb = it.kbju;
+  const r = (n: number | null | undefined) => (n == null ? 0 : Math.round(n));
+  return {
+    id: it.id,
+    name: it.name,
+    description: it.description,
+    photo: null,
+    composition: null,
+    category_id: it.realm,
+    price,
+    weight: kb && kb.weight != null ? `${kb.weight} г` : null,
+    labels: [],
+    is_available: true,
+    is_premium: false,
+    is_alcoholic: it.realm === 'bar' && ALCOHOL_SUBS.has(it.sub),
+    has_3d_model: false,
+    spline_url: null,
+    nutrition:
+      kb && kb.kcal != null
+        ? { kcal: r(kb.kcal), protein: r(kb.prot), fat: r(kb.fat), carbs: r(kb.carb) }
+        : undefined,
+    sub: it.sub,
+    subLabel: SUB_LABEL.get(`${it.realm}/${it.sub}`) ?? it.sub,
+  };
+}
+
+function realmCategory(realm: Realm): Category {
+  return {
+    id: realm,
+    slug: realm,
+    name: REALM_NAME[realm],
+    realm,
+    parent_id: null,
+    sort_order: realm === 'kitchen' ? 1 : realm === 'bar' ? 2 : 3,
+  };
 }
 
 class MockBarvihaClient implements BarvihaClient {
@@ -50,28 +101,33 @@ class MockBarvihaClient implements BarvihaClient {
 
   async getCategoriesForLocation(locationId: string): Promise<Category[]> {
     const loc = getLocationById(locationId);
-    if (!loc) return [];
-    // Если у локации задан whitelist категорий (например, Рублёвка — только роллы)
-    const cfg = LOCATION_PRICING[loc.slug];
-    if (cfg?.allowedCategories) {
-      return MOCK_CATEGORIES.filter((c) => cfg.allowedCategories!.includes(c.id));
-    }
-    // Иначе — все категории, кроме «Роллы» (роллы только на whitelist-локациях)
-    return MOCK_CATEGORIES.filter((c) => c.id !== 'cat-rolls');
+    const slug = loc?.slug;
+    const realms: Realm[] = ['kitchen', 'bar', 'hookah'];
+    // Только реалмы, где у локации реально есть позиции.
+    return realms
+      .filter((rm) => GEN_ITEMS.some((it) => it.realm === rm && (!slug || it.prices[slug] != null)))
+      .map(realmCategory);
   }
 
   async getMenuItemsForLocation(locationId: string): Promise<ResolvedMenuItem[]> {
     const loc = getLocationById(locationId);
-    if (!loc) return [];
-    return resolveMenuForLocation(loc.slug);
+    const slug = loc?.slug;
+    const items = slug
+      ? GEN_ITEMS.filter((it) => it.prices[slug] != null)
+      : GEN_ITEMS;
+    return items
+      .map((it) => toResolved(it, slug))
+      .sort((a, b) => (SUB_ORDER.get(`${a.category_id}/${a.sub}`) ?? 99) - (SUB_ORDER.get(`${b.category_id}/${b.sub}`) ?? 99));
   }
 
-  async getMenuItemById(itemId: string): Promise<ResolvedMenuItem | null> {
-    return MOCK_ALL_ITEMS.find((i) => i.id === itemId) ?? null;
+  async getMenuItemById(itemId: string, locationSlug?: string): Promise<ResolvedMenuItem | null> {
+    const it = GEN_ITEMS.find((x) => x.id === itemId);
+    return it ? toResolved(it, locationSlug) : null;
   }
 
   async getCategoryBySlug(slug: string): Promise<Category | null> {
-    return MOCK_CATEGORIES.find((c) => c.slug === slug) ?? null;
+    if (slug === 'kitchen' || slug === 'bar' || slug === 'hookah') return realmCategory(slug);
+    return null;
   }
 
   async getHookahMoods(): Promise<HookahMood[]> {
@@ -83,13 +139,10 @@ class MockBarvihaClient implements BarvihaClient {
   }
 
   async getAnnouncementsForLocation(_locationId: string): Promise<Announcement[]> {
-    // Заполняется из контента по локациям (DJ-сеты, матчи, события).
     return [];
   }
 
   async getSpotlightsForLocation(locationId: string): Promise<Spotlight[]> {
-    // Слайды карусели под меню (DJ, акции, соцсети). Пока из mock по slug —
-    // позже выборка из Supabase по location_id.
     const loc = getLocationById(locationId);
     if (!loc) return [];
     return getSpotlightsForSlug(loc.slug);
