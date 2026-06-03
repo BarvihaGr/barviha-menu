@@ -83,7 +83,8 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
     composition: it.composition,
     category_id: it.realm,
     price,
-    weight: kb && kb.weight != null ? `${kb.weight} г` : null,
+    // Только число (граммы). Единицу подставляет UI по локали — см. item page (t('grams')).
+    weight: kb && kb.weight != null ? `${kb.weight}` : null,
     labels: [],
     is_available: true,
     is_premium: false,

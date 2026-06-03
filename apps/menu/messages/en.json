@@ -82,7 +82,8 @@
     "more": "Read more",
     "less": "Show less",
     "viewPhoto": "View photo",
-    "closePhoto": "Close"
+    "closePhoto": "Close",
+    "grams": "g"
   },
   "cart": {
     "title": "My table",

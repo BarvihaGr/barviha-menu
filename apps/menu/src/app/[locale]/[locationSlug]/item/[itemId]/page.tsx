@@ -67,7 +67,7 @@ export default async function ItemDetailPage({
             </h1>
             {item.weight && (
               <div className="mt-2 text-[10px] uppercase tracking-[0.25em] text-gold">
-                {item.weight}
+                {item.weight} {t('grams')}
               </div>
             )}
           </div>
