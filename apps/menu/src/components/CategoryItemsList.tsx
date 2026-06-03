@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ResolvedMenuItem } from '@barviha/db';
-import { pickItemDescription, pickItemName } from '@/lib/i18n-helpers';
+import { pickItemDescription, pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/routing';
 import { activeSectionsFor, SECTIONS_BY_CATEGORY } from '@/lib/menu-sections';
 import { ItemCard } from './ItemCard';
@@ -45,7 +45,7 @@ export function CategoryItemsList({
    *     (наш ручной маппинг из lib/menu-sections.ts).
    */
   const sections: SectionDef[] = useMemo(() => {
-    const fromSub = buildFromSub(items);
+    const fromSub = buildFromSub(items, locale);
     if (fromSub.length > 0) return fromSub;
     if (!categorySlug) return [];
     return activeSectionsFor(categorySlug, items).map((s) => ({
@@ -53,7 +53,7 @@ export function CategoryItemsList({
       label: tSections(s.i18nKey),
       itemIds: new Set(s.itemIds),
     }));
-  }, [items, categorySlug, tSections]);
+  }, [items, categorySlug, tSections, locale]);
 
   const filtered = useMemo(() => {
     let pool = items;
@@ -108,14 +108,15 @@ export function CategoryItemsList({
 }
 
 /** Группировка по field item.sub. Возвращает [] если ни у кого нет sub. */
-function buildFromSub(items: ResolvedMenuItem[]): SectionDef[] {
+function buildFromSub(items: ResolvedMenuItem[], locale: Locale): SectionDef[] {
   const order: string[] = [];
   const map = new Map<string, SectionDef>();
   for (const it of items) {
     if (!it.sub) continue;
     let s = map.get(it.sub);
     if (!s) {
-      s = { id: it.sub, label: it.subLabel ?? it.sub, itemIds: new Set() };
+      const label = pickSubLabel(it.sub, it.subLabel ?? it.sub, locale);
+      s = { id: it.sub, label, itemIds: new Set() };
       map.set(it.sub, s);
       order.push(it.sub);
     }
