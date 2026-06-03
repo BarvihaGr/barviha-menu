@@ -14,6 +14,7 @@ import type {
   MenuCatalogItem,
   ResolvedMenuItem,
   Spotlight,
+  SpotlightLink,
   Table,
 } from './types';
 
@@ -208,104 +209,164 @@ export const MOCK_HOOKAH_MOODS: HookahMood[] = [
 // изменится. Соцсети у каждой локации свои — правим в SPOTLIGHTS_BY_SLUG.
 // ============================================================================
 
-/** Демо-набор по умолчанию — показывается на любой локации, где нет своего. */
-const DEFAULT_SPOTLIGHTS: Spotlight[] = [
-  {
-    id: 'sp-dj',
+// Соцсети сети Барвиха — ОДНИ на все локации.
+// TODO: вставить реальные ссылки (Instagram «Барвиха Group», Telegram-канал,
+// сообщество ВКонтакте). Пока '#' — карусель такие кнопки НЕ показывает,
+// появятся сразу как подставим настоящие URL.
+const BARVIHA_SOCIAL: SpotlightLink[] = [
+  { kind: 'instagram', label: 'Instagram', href: '#' }, // TODO: ссылка Instagram
+  { kind: 'telegram', label: 'Telegram-канал', href: '#' }, // TODO: ссылка ТГ-канала
+  { kind: 'vk', label: 'ВКонтакте', href: '#' }, // TODO: ссылка сообщества VK
+];
+
+// Телефон локации для связи — WhatsApp и Telegram («куда писать»). Только цифры.
+const LOCATION_PHONE: Record<string, string> = {
+  baumanskaia: '79997722001',
+  arka: '79999822200',
+  'moskva-siti': '79996677001',
+  mitino: '79688877001',
+  'krasnaia-ploshchad': '79991133001',
+  paveletskaia: '79997733001',
+  nevskii: '79660077001',
+  mendeleevskaia: '79680003001',
+  kievskaia: '79997969111',
+  maxackala: '79882269001',
+  seligerskaia: '79999973001',
+  likerka: '79606002200',
+};
+
+// Афиша по локациям — из «ФУЛЛ ИНФО/МЕРОПРИЯТИЯ/Мероприятия.xlsx»
+// (колонки DJ / Живой звук). Где данных нет (Арка, Ликёрка, Махачкала,
+// Ереван, Рублёвка, Саратов) — слайд афиши не показываем.
+interface EventInfo {
+  subtitle: string;
+  subtitle_en: string;
+  when: string;
+  when_en: string;
+}
+// helpers
+const dj = (when: string, when_en: string): EventInfo => ({
+  subtitle: 'DJ-сеты по пятницам и субботам',
+  subtitle_en: 'DJ sets on Fridays & Saturdays',
+  when,
+  when_en,
+});
+const live = (days: string, days_en: string, when: string, when_en: string): EventInfo => ({
+  subtitle: `Живой вокал ${days}`,
+  subtitle_en: `Live vocals ${days_en}`,
+  when,
+  when_en,
+});
+const both = (when: string, when_en: string): EventInfo => ({
+  subtitle: 'DJ-сеты и живой вокал по выходным',
+  subtitle_en: 'DJ sets and live vocals on weekends',
+  when,
+  when_en,
+});
+
+const EVENTS: Record<string, EventInfo> = {
+  // Наши заведения
+  baumanskaia: dj('Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  'krasnaia-ploshchad': dj('Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  kievskaia: dj('Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  paveletskaia: dj('Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  mendeleevskaia: dj('Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  'moskva-siti': dj('Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  mitino: dj('Пт–Сб, 22:00–01:00', 'Fri–Sat, 22:00–01:00'),
+  nevskii: live('по пятницам и субботам', 'on Fri & Sat', 'Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  // Франшизы
+  kolomenskaia: live('по пятницам и субботам', 'on Fri & Sat', 'Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  cska: live('по пятницам и субботам', 'on Fri & Sat', 'Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  ramenki: live('по пятницам и субботам', 'on Fri & Sat', 'Пт–Сб, 20:00–22:00', 'Fri–Sat, 20:00–22:00'),
+  seligerskaia: live('по четвергам–субботам', 'Thu–Sat', 'Чт–Сб, 22:00–00:00', 'Thu–Sat, 22:00–00:00'),
+  'iugo-zapadnaia': live('по четвергам–субботам', 'Thu–Sat', 'Чт–Сб, 22:00–00:00', 'Thu–Sat, 22:00–00:00'),
+  'barvixa-lounge-krylatskoe': live('по четвергам–субботам', 'Thu–Sat', 'Чт–Сб, 22:00–00:00', 'Thu–Sat, 22:00–00:00'),
+  otradnoe: live('по четвергам–субботам', 'Thu–Sat', 'Чт–Сб, 22:00–00:00', 'Thu–Sat, 22:00–00:00'),
+  'tepliy-stan': dj('Пт–Сб, 22:00–00:00', 'Fri–Sat, 22:00–00:00'),
+  'niznii-novgorod': dj('Пт–Сб, 21:00–00:00', 'Fri–Sat, 21:00–00:00'),
+  marino: both('DJ: Пт–Сб 23:00 · вокал: Чт–Сб', 'DJ: Fri–Sat 23:00 · vocals: Thu–Sat'),
+  domodedovo: both('DJ: Пт–Сб 23:00 · вокал: Чт–Сб', 'DJ: Fri–Sat 23:00 · vocals: Thu–Sat'),
+  penza: both('DJ: Пт–Сб 22:00 · вокал: Пт–Сб 20:00', 'DJ: Fri–Sat 22:00 · vocals: Fri–Sat 20:00'),
+};
+
+function buildEventSpotlight(slug: string): Spotlight | null {
+  const e = EVENTS[slug];
+  if (!e) return null;
+  return {
+    id: 'sp-event',
     kind: 'dj',
-    title: 'Живой DJ-сет',
-    title_en: 'Live DJ set',
-    title_zh: '现场 DJ 演出',
-    title_hy: 'Կենդանի DJ-սեթ',
-    subtitle: 'Каждую пятницу и субботу',
-    subtitle_en: 'Every Friday & Saturday',
-    subtitle_zh: '每周五和周六',
-    subtitle_hy: 'Ամեն ուրբաթ և շաբաթ',
-    body: 'По выходным у нас играет резидент-диджей: deep house и r&b до утра. Бронируйте стол заранее — на выходных аншлаг.',
-    body_en: 'On weekends our resident DJ spins deep house and r&b till morning. Book a table in advance — weekends fill up fast.',
-    body_zh: '每逢周末，我们的驻场 DJ 献上 deep house 与 R&B，直至清晨。周末座位紧张，请提前预订。',
-    body_hy: 'Հանգստյան օրերին մեզ մոտ նվագում է ռեզիդենт DJ-ն՝ deep house և R&B մինչև առավոт։ Ամրագրեք սեղանը նախապես՝ հանգստյան օրերին տեղերը արագ են զբաղվում։',
+    title: 'Афиша выходных',
+    title_en: 'Weekend lineup',
+    title_zh: '周末演出',
+    title_hy: 'Հանգստյան աֆիշա',
+    subtitle: e.subtitle,
+    subtitle_en: e.subtitle_en,
+    body: `${e.subtitle} (${e.when}). Полную программу и артистов смотрите в наших соцсетях — бронируйте стол заранее.`,
+    body_en: `${e.subtitle_en} (${e.when_en}). Check our socials for the full lineup and book a table in advance.`,
     badge: 'ПТ · СБ',
     badge_en: 'FRI · SAT',
     badge_zh: '周五·周六',
     badge_hy: 'ՈՒՐ · ՇԲ',
-    when: 'Пт–Сб, 22:00 – 04:00',
-    when_en: 'Fri–Sat, 22:00 – 04:00',
-    when_zh: '周五至周六，22:00 – 04:00',
-    when_hy: 'Ուրբ–Շաբ, 22:00 – 04:00',
+    when: e.when,
+    when_en: e.when_en,
     image: UNSPLASH(PIC.loungeDark),
     accent: '#C49262',
     links: [],
-  },
-  {
-    id: 'sp-happy-hours',
-    kind: 'promo',
-    title: 'Счастливые часы',
-    title_en: 'Happy hours',
-    title_zh: '欢乐时光',
-    title_hy: 'Երջանիկ ժամեր',
-    subtitle: '−20% на бар по будням 16:00–19:00',
-    subtitle_en: '−20% on the bar, weekdays 16:00–19:00',
-    subtitle_zh: '工作日 16:00–19:00，全酒单 −20%',
-    subtitle_hy: '−20% բարի վրա աշխատանքային օրերին 16:00–19:00',
-    body: 'Каждый будний вечер с 16:00 до 19:00 — скидка 20% на всю барную карту. Идеальный повод начать вечер пораньше.',
-    body_en: 'Every weekday from 16:00 to 19:00 — 20% off the entire bar menu. The perfect excuse to start the evening early.',
-    body_zh: '每个工作日傍晚 16:00 至 19:00，全酒单享 8 折优惠。正是提早开启夜晚的好理由。',
-    body_hy: 'Ամեն աշխատանքային օր 16:00-ից 19:00 — 20% զեղչ ողջ բարի ցանկի վրա։ Կատարյալ առիթ՝ երեկոն շուտ սկսելու համար։',
-    badge: '−20%',
-    badge_en: '−20%',
-    badge_zh: '−20%',
-    badge_hy: '−20%',
-    when: 'Пн–Пт, 16:00 – 19:00',
-    when_en: 'Mon–Fri, 16:00 – 19:00',
-    when_zh: '周一至周五，16:00 – 19:00',
-    when_hy: 'Երկ–Ուրբ, 16:00 – 19:00',
-    image: UNSPLASH(PIC.cocktailIced),
-    accent: '#E5C490',
-    links: [],
-  },
-  {
-    id: 'sp-deposit',
-    kind: 'offer',
-    title: 'Депозит, а не счёт',
-    title_en: 'Deposit, not a bill',
-    title_zh: '是预存，而非门槛',
-    title_hy: 'Դեպոզիտ, ոչ թե հաշիվ',
-    subtitle: 'Минимальный заказ превращается в депозит',
-    subtitle_en: 'Your minimum spend becomes a deposit',
-    subtitle_zh: '最低消费将转为您的预存金额',
-    subtitle_hy: 'Նվազագույն պատվերը վերածվում է դեպոզիտի',
-    body: 'Минимальный заказ на стол — это не плата за вход, а депозит: вся сумма идёт в ваш счёт за меню и кальяны.',
-    body_en: 'The table minimum is not a cover charge — it is a deposit that goes fully toward your food and hookah.',
-    body_zh: '餐桌最低消费并非入场费，而是预存：全额可用于您的餐品与水烟消费。',
-    body_hy: 'Սեղանի նվազագույն պատվերը մուտքի վճար չէ, այլ դեպոզիտ՝ ամբողջ գումարը գնում է ձեր ուտեստների և կալյանների հաշվին։',
-    badge: 'MIN',
-    badge_en: 'MIN',
-    badge_zh: '最低',
-    badge_hy: 'ՆՎԶ',
-    when: null,
-    when_en: null,
-    when_zh: null,
-    when_hy: null,
-    image: UNSPLASH(PIC.loungeGold),
-    accent: '#A07642',
-    links: [],
-  },
-  {
+  };
+}
+
+/** Акция для именинников — подарочный десерт. На каждой локации. */
+const SPOTLIGHT_BIRTHDAY: Spotlight = {
+  id: 'sp-birthday',
+  kind: 'promo',
+  title: 'Имениннику — подарочный десерт',
+  title_en: 'A gift dessert for the birthday guest',
+  title_zh: '寿星专属赠礼甜点',
+  title_hy: 'Նվեր աղանդեր ծննդյան օրվա հյուրին',
+  subtitle: 'Чизкейк или медовик в подарок',
+  subtitle_en: 'A cheesecake or honey cake on us',
+  subtitle_zh: '赠送芝士蛋糕或蜂蜜蛋糕',
+  subtitle_hy: 'Չիզքեյք կամ մեղրաթխվածք նվեր',
+  body: 'Если ваш день рождения сегодня или был вчера — дарим подарочный десерт на выбор: чизкейк или медовик. Сообщите администратору при заказе.',
+  body_en: 'If your birthday is today or was yesterday — enjoy a gift dessert of your choice: cheesecake or honey cake. Just let the host know when ordering.',
+  body_zh: '若您的生日是今天或昨天，可获赠一份甜点（芝士蛋糕或蜂蜜蛋糕），任选其一。点单时请告知接待。',
+  body_hy: 'Եթե ձեր ծննդյան օրը այսօր է կամ երեկ էր — նվիրում ենք աղանդեր ձեր ընտրությամբ՝ չիզքեյք կամ մեղրաթխվածք։ Տեղեկացրեք ադմինիստրատորին պատվիրելիս։',
+  badge: 'ДР',
+  badge_en: 'B-DAY',
+  badge_zh: '生日',
+  badge_hy: 'ԾՌ',
+  when: null,
+  when_en: null,
+  when_zh: null,
+  when_hy: null,
+  image: UNSPLASH(PIC.cocktailIced),
+  accent: '#E5C490',
+  links: [],
+};
+
+/** Слайд соцсетей + контакты локации (WhatsApp / Telegram «куда писать»). */
+function buildSocialSpotlight(slug: string): Spotlight {
+  const phone = LOCATION_PHONE[slug];
+  const links: SpotlightLink[] = [...BARVIHA_SOCIAL];
+  if (phone) {
+    links.push({ kind: 'whatsapp', label: 'Написать в WhatsApp', href: `https://wa.me/${phone}` });
+    links.push({ kind: 'telegram', label: 'Написать в Telegram', href: `https://t.me/+${phone}` });
+  }
+  return {
     id: 'sp-social',
     kind: 'social',
     title: 'Мы в соцсетях',
     title_en: 'Follow us',
     title_zh: '关注我们的社交媒体',
     title_hy: 'Մենք սոցցանցերում',
-    subtitle: 'Афиша, розыгрыши и новинки',
-    subtitle_en: 'Lineups, giveaways and new arrivals',
-    subtitle_zh: '活动预告、抽奖与新品',
-    subtitle_hy: 'Աֆիշա, խաղարկություններ և նորույթներ',
-    body: 'Подписывайтесь, чтобы первыми узнавать про DJ-вечера, новинки меню и закрытые розыгрыши среди гостей.',
-    body_en: 'Follow us to be the first to know about DJ nights, new menu items and members-only giveaways.',
-    body_zh: '关注我们，第一时间获取 DJ 之夜、新菜品以及仅限客人的专属抽奖资讯。',
-    body_hy: 'Բաժանորդագրվեք՝ առաջինը իմանալու DJ-երեկոների, մենյուի նորույթների և հյուրերի շրջանում փակ խաղարկությունների մասին։',
+    subtitle: 'Афиша, акции и связь с нами',
+    subtitle_en: 'Lineups, offers and how to reach us',
+    subtitle_zh: '活动预告、优惠与联系方式',
+    subtitle_hy: 'Աֆիշա, ակցիաներ և կապ մեզ հետ',
+    body: 'Подписывайтесь на наши соцсети, чтобы первыми узнавать про афишу, акции и новинки. Хотите забронировать или спросить — напишите нам в WhatsApp или Telegram.',
+    body_en: 'Follow our socials to be first to know about lineups, offers and new arrivals. To book or ask anything — message us on WhatsApp or Telegram.',
+    body_zh: '关注我们的社交媒体，第一时间了解演出、优惠与新品。如需订座或咨询，请通过 WhatsApp 或 Telegram 联系我们。',
+    body_hy: 'Բաժանորդագրվեք մեր սոցցանցերին՝ առաջինը իմանալու աֆիշայի, ակցիաների և նորույթների մասին։ Ամրագրման կամ հարցերի համար գրեք մեզ WhatsApp-ով կամ Telegram-ով։',
     badge: '@',
     badge_en: '@',
     badge_zh: '@',
@@ -316,22 +377,17 @@ const DEFAULT_SPOTLIGHTS: Spotlight[] = [
     when_hy: null,
     image: UNSPLASH(PIC.loungeBartender),
     accent: '#C49262',
-    // Заготовка — заменить на реальные ссылки локации.
-    links: [
-      { kind: 'instagram', href: '#' },
-      { kind: 'telegram', href: '#' },
-    ],
-  },
-];
+    links,
+  };
+}
 
-/** Точечные переопределения по локациям. Здесь подвязываем соцсети/акции. */
-const SPOTLIGHTS_BY_SLUG: Record<string, Spotlight[]> = {
-  // TODO: подставить реальные ссылки соцсетей и актуальные акции Арки.
-  arka: DEFAULT_SPOTLIGHTS,
-};
-
+/** Блок «Афиша и акции»: афиша + акция именинникам + соцсети/контакты. */
 export function getSpotlightsForSlug(slug: string): Spotlight[] {
-  return SPOTLIGHTS_BY_SLUG[slug] ?? DEFAULT_SPOTLIGHTS;
+  const event = buildEventSpotlight(slug);
+  const slides: Spotlight[] = [];
+  if (event) slides.push(event);
+  slides.push(SPOTLIGHT_BIRTHDAY, buildSocialSpotlight(slug));
+  return slides;
 }
 
 export const MOCK_CATALOG: MenuCatalogItem[] = [];
