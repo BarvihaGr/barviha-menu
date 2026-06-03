@@ -84,12 +84,21 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
   const pausedRef = useRef(false);
   const movedRef = useRef(false);
   const startXRef = useRef(0);
+  const draggingRef = useRef(false);
+  const startScrollRef = useRef(0);
   const visibleRef = useRef(true);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [active, setActive] = useState<Spotlight | null>(null);
+  // Сколько раз повторить набор слайдов. Нужно, чтобы лента ВСЕГДА была шире
+  // экрана (иначе на широком десктопе 2–3 карточки влезают и карусель стоит).
+  // Пересчитывается под ширину контейнера в эффекте ниже.
+  const [reps, setReps] = useState(4);
 
-  // Дублируем список — для бесшовной петли (две одинаковые половины).
-  const loop = spotlights.length > 0 ? [...spotlights, ...spotlights] : [];
+  // Лента = набор слайдов, повторённый reps раз — для бесшовной петли.
+  const loop =
+    spotlights.length > 0
+      ? Array.from({ length: reps }).flatMap(() => spotlights)
+      : [];
 
   const pause = () => {
     pausedRef.current = true;
@@ -133,11 +142,11 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
       // с нативной инерцией свайпа на iOS (иначе рывки).
       if (!pausedRef.current && !active && visibleRef.current) {
         el.scrollLeft += SPEED * dt;
-        // Бесшовная петля: одна половина = ширина первого набора.
-        const half = el.scrollWidth / 2;
-        if (half > 0) {
-          if (el.scrollLeft >= half) el.scrollLeft -= half;
-          else if (el.scrollLeft < 0) el.scrollLeft += half;
+        // Бесшовная петля: период = ширина ОДНОГО набора (всего reps наборов).
+        const period = el.scrollWidth / reps;
+        if (period > 0) {
+          if (el.scrollLeft >= period) el.scrollLeft -= period;
+          else if (el.scrollLeft < 0) el.scrollLeft += period;
         }
       }
       raf = requestAnimationFrame(tick);
@@ -147,7 +156,23 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
       cancelAnimationFrame(raf);
       io.disconnect();
     };
-  }, [loop.length, active]);
+  }, [loop.length, active, reps]);
+
+  // Подбираем число повторов так, чтобы лента была шире контейнера минимум
+  // на один набор (нужно для бесшовной петли на любой ширине экрана).
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el || spotlights.length === 0) return;
+    const measure = () => {
+      const oneSet = el.scrollWidth / reps;
+      if (!oneSet || !el.clientWidth) return;
+      const needed = Math.max(2, Math.ceil(el.clientWidth / oneSet) + 1);
+      if (needed !== reps) setReps(needed);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [reps, spotlights.length]);
 
   useEffect(() => {
     return () => {
@@ -161,19 +186,37 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
     <>
       <div
         ref={scrollerRef}
-        className="flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar px-4 sm:px-6 py-1"
+        className="flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar px-4 sm:px-6 py-1 cursor-grab active:cursor-grabbing select-none"
         onMouseEnter={pause}
-        onMouseLeave={() => resumeSoon(400)}
+        onMouseLeave={() => {
+          draggingRef.current = false;
+          resumeSoon(400);
+        }}
         onPointerDown={(e) => {
           pause();
           movedRef.current = false;
           startXRef.current = e.clientX;
+          // Перетаскивание мышью на десктопе; на тач/пере — нативный скролл.
+          if (e.pointerType === 'mouse' && scrollerRef.current) {
+            draggingRef.current = true;
+            startScrollRef.current = scrollerRef.current.scrollLeft;
+            scrollerRef.current.setPointerCapture(e.pointerId);
+          }
         }}
         onPointerMove={(e) => {
           if (Math.abs(e.clientX - startXRef.current) > 8) movedRef.current = true;
+          if (draggingRef.current && scrollerRef.current) {
+            scrollerRef.current.scrollLeft = startScrollRef.current - (e.clientX - startXRef.current);
+          }
         }}
-        onPointerUp={() => resumeSoon()}
-        onPointerCancel={() => resumeSoon()}
+        onPointerUp={() => {
+          draggingRef.current = false;
+          resumeSoon();
+        }}
+        onPointerCancel={() => {
+          draggingRef.current = false;
+          resumeSoon();
+        }}
         onTouchStart={pause}
         onTouchEnd={() => resumeSoon()}
       >
