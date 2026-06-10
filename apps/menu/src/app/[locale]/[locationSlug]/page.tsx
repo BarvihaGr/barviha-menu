@@ -1,44 +1,17 @@
 import { getClient } from '@barviha/db';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { UtensilsCrossed, Wine } from 'lucide-react';
 import type { Locale } from '@/i18n/routing';
 import { pickCategoryName } from '@/lib/i18n-helpers';
-import { CategoryPuzzleRow } from '@/components/CategoryPuzzleRow';
+import { WoodSliceRow } from '@/components/WoodSliceRow';
 import { SectionTitle } from '@/components/SectionTitle';
 import { HeroSection } from '@/components/HeroSection';
 import { SpotlightCarousel } from '@/components/SpotlightCarousel';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
-import { HookahIcon } from '@/components/icons/HookahIcon';
 import { getLocationAccent } from '@/lib/location-theme';
 
 /** Порядок слотов слева-направо: Кальяны | Кухня | Бар. */
 const HOME_CATEGORIES = ['hookah', 'kitchen', 'bar'] as const;
-
-/**
- * Иконки — адаптивные размеры. На мобиле срезы пазла узкие,
- * фиксированный 48px icon выглядит непропорционально большим;
- * на десктопе наоборот — нужны крупные.
- * Решение: оборачиваем в `<span>` с responsive-классами,
- * а внутри SVG растягивается на 100% ширины обёртки.
- */
-const CATEGORY_ICONS: Record<(typeof HOME_CATEGORIES)[number], React.ReactNode> = {
-  hookah: (
-    <span className="block w-[34px] h-[34px] sm:w-12 sm:h-12 [&>svg]:w-full [&>svg]:h-full">
-      <HookahIcon size={48} />
-    </span>
-  ),
-  kitchen: (
-    <span className="block w-[30px] h-[30px] sm:w-11 sm:h-11 [&>svg]:w-full [&>svg]:h-full">
-      <UtensilsCrossed size={44} strokeWidth={1.6} />
-    </span>
-  ),
-  bar: (
-    <span className="block w-[30px] h-[30px] sm:w-11 sm:h-11 [&>svg]:w-full [&>svg]:h-full">
-      <Wine size={44} strokeWidth={1.6} />
-    </span>
-  ),
-};
 
 export default async function LocationHome({
   params,
@@ -94,14 +67,13 @@ export default async function LocationHome({
         <section className="pb-4">
           <SectionTitle>{tHome('menu')}</SectionTitle>
           <div className="px-2 sm:px-6">
-            <CategoryPuzzleRow
+            <WoodSliceRow
               locationSlug={location.slug}
               items={homeCategories.map((c) => {
                 const slug = c.slug as (typeof HOME_CATEGORIES)[number];
                 return {
                   href: slug === 'hookah' ? `/${location.slug}/hookah` : `/${location.slug}/${slug}`,
                   title: pickCategoryName(c, locale as Locale),
-                  icon: CATEGORY_ICONS[slug],
                 };
               })}
             />
