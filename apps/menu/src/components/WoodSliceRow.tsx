@@ -5,16 +5,18 @@ import { motion } from 'framer-motion';
 import { Link } from '@/i18n/navigation';
 
 /**
- * Три отдельных «спила бревна» — реалистичные 3D-срезы дерева.
+ * Три отдельных «спила бревна» — реалистичные срезы дерева в духе
+ * релиф-принтов годовых колец (стиль Bryan Nash Gill), в тёплой
+ * палитре Барвихи.
  *
- * Не пазл: каждый срез самостоятельный, со своей корой по краю
- * (бревно не ошкурено), полной структурой годовых колец, смещённой
- * сердцевиной и радиальными трещинами. Форма природно-неровная
- * (не идеальный круг). Видна толщина спила и контактная тень —
- * срез «лежит» в пространстве. Иконок нет: только подпись снизу.
+ * Не пазл: каждый срез самостоятельный. Неошкуренное бревно — грубая
+ * рваная кора по краю. Полная структура: сотни тончайших годовых колец,
+ * повторяющих органичный контур, смещённая сердцевина, звезда трещин
+ * усушки из центра. Видна толщина спила и контактная тень — объём, как
+ * у настоящего куска дерева.
  *
  * Всё процедурно и детерминировано от (locationSlug + индекс) →
- * SSR-стабильно, у каждой локации свои спилы, но из «одного бревна».
+ * SSR-стабильно, у каждой локации свои спилы «из одного бревна».
  */
 export interface WoodSliceItem {
   href: string;
@@ -26,15 +28,15 @@ interface Props {
   locationSlug?: string;
 }
 
-// геометрия одного спила (общий viewBox для всех трёх)
 const W = 240;
-const H = 268;
+const H = 276;
 const CX = 120;
-const CY = 102;
-const R = 92;
-const KY = 0.93; // лёгкий наклон взгляда → эллипс вместо круга
-const DEPTH = 40; // толщина спила (видимый бок бревна)
-const STEPS = 200;
+const CY = 110;
+const R = 96;
+const KY = 0.95;
+const DEPTH = 34;
+const STEPS = 160; // точки контура
+const RING_STRIDE = 2; // кольца семплируем реже контура (≈80 точек) — экономим payload
 
 function hashStr(s: string): number {
   let h = 2166136261 >>> 0;
@@ -56,249 +58,201 @@ function mulberry32(seed: number) {
   };
 }
 
+function pathOf(pts: Array<[number, number]>, close: boolean, prec = 2): string {
+  let d = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(prec)},${p[1].toFixed(prec)}`).join('');
+  if (close) d += 'Z';
+  return d;
+}
+
 interface Round {
   bark: string;
   barkInner: string;
+  band: string;
   side: string;
   rimSeam: string;
-  rings: Array<{ d: string; stroke: string; w: number; o: number }>;
+  rings: Array<{ d: string; late: boolean; o: number }>;
   cracks: string[];
-  fissures: string[];
   pith: [number, number];
-}
-
-function path(pts: Array<[number, number]>, close = true): string {
-  let d = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' ');
-  if (close) d += ' Z';
-  return d;
 }
 
 function buildRound(seed: number): Round {
   const rng = mulberry32(seed);
-  const p1 = rng() * 6.283;
-  const p2 = rng() * 6.283;
-  const p3 = rng() * 6.283;
-  const p4 = rng() * 6.283;
-  // амплитуды гармоник контура — «горбатость» бревна (никогда не круг)
-  const a1 = 0.1 + rng() * 0.055;
-  const a2 = 0.05 + rng() * 0.045;
-  const a3 = 0.03 + rng() * 0.03;
-  const a4 = 0.015 + rng() * 0.022;
-
-  // сердцевина смещена эксцентрично (как у настоящего дерева)
+  const ph = [0, 0, 0, 0, 0, 0, 0].map(() => rng() * 6.283);
+  const A2 = 0.1 + rng() * 0.05;
+  const A3 = 0.08 + rng() * 0.05;
+  const A5 = 0.05 + rng() * 0.03;
+  const A7 = 0.03 + rng() * 0.025;
+  const A11 = 0.02 + rng() * 0.02;
   const pa = rng() * 6.283;
-  const pr = R * (0.1 + rng() * 0.16);
-  const P: [number, number] = [CX + Math.cos(pa) * pr, CY + Math.sin(pa) * pr * KY];
+  const pr = R * (0.18 + rng() * 0.16);
+  const pith: [number, number] = [CX + Math.cos(pa) * pr, CY + Math.sin(pa) * pr * KY];
+  const jitter: number[] = [];
+  for (let i = 0; i < STEPS; i++) jitter.push(rng() - 0.5);
 
-  const Rout = (a: number) =>
+  const Rout = (a: number, i: number) =>
     R *
     (1 +
-      a1 * Math.sin(a + p1) +
-      a2 * Math.sin(2 * a + p2) +
-      a3 * Math.sin(3 * a + p3) +
-      a4 * Math.sin(5 * a + p4));
+      A2 * Math.sin(2 * a + ph[0]!) +
+      A3 * Math.sin(3 * a + ph[1]!) +
+      A5 * Math.sin(5 * a + ph[2]!) +
+      A7 * Math.sin(7 * a + ph[3]!) +
+      A11 * Math.sin(11 * a + ph[4]!) +
+      0.018 * jitter[i]! +
+      0.012 * Math.sin(a * 23 + ph[5]!));
 
   const outer: Array<[number, number]> = [];
   const inner: Array<[number, number]> = [];
   for (let i = 0; i < STEPS; i++) {
     const a = (i / STEPS) * 6.283;
-    const ro = Rout(a);
+    const ro = Rout(a, i);
     const ox = CX + Math.cos(a) * ro;
     const oy = CY + Math.sin(a) * ro * KY;
     outer.push([ox, oy]);
-    // толщина коры варьируется по периметру
-    const bw = R * (0.06 + 0.05 * (0.5 + 0.5 * Math.sin(a * 3 + p2)) + 0.025 * rng());
+    const bw = R * (0.06 + 0.055 * (0.5 + 0.5 * Math.sin(a * 4 + ph[1]!)) + 0.03 * Math.abs(jitter[i]!));
     const dx = CX - ox;
     const dy = CY - oy;
     const dl = Math.hypot(dx, dy) || 1;
     inner.push([ox + (dx / dl) * bw, oy + (dy / dl) * bw]);
   }
 
-  const bark = path(outer);
-  const barkInner = path(inner);
+  const bark = pathOf(outer, true);
+  const barkInner = pathOf(inner, true);
+  const band = `${bark}${barkInner}`;
 
-  // бок бревна: нижняя дуга (a ∈ [0, π]) выдавлена вниз на DEPTH
   const half = Math.floor(STEPS / 2);
   const bottom = outer.slice(0, half + 1);
-  let side = path(bottom, false);
+  let side = pathOf(bottom, false);
   for (let i = bottom.length - 1; i >= 0; i--) {
-    side += ` L${bottom[i]![0].toFixed(2)},${(bottom[i]![1] + DEPTH).toFixed(2)}`;
+    side += `L${bottom[i]![0].toFixed(2)},${(bottom[i]![1] + DEPTH).toFixed(2)}`;
   }
-  side += ' Z';
-  const rimSeam = path(bottom, false);
+  side += 'Z';
+  const rimSeam = pathOf(bottom, false);
 
-  // годовые кольца: от сердцевины к коре, сходятся в pith
+  // плотные тонкие кольца, повторяющие контур, сходятся к сердцевине
   const rings: Round['rings'] = [];
-  const ringCount = 48 + Math.floor(rng() * 24);
-  let acc = 0;
-  for (let k = 1; k <= ringCount; k++) {
-    // ширина годичного слоя плавает: ранняя древесина шире, поздняя уже
-    const grow = 0.7 + 0.6 * (0.5 + 0.5 * Math.sin(k * 0.5 + seed));
-    acc += grow + (rng() - 0.5) * 0.25;
-    const f = acc / (ringCount + 2);
-    if (f >= 0.99) break;
-    const rngK = mulberry32(seed * 131 + k);
+  const N = 120 + Math.floor(rng() * 45);
+  for (let k = 1; k <= N; k++) {
+    const base = 0.055 + (0.94 * k) / (N + 1);
+    const f = Math.min(0.99, base + 0.01 * Math.sin(k * 0.6 + seed) + (mulberry32(seed * 7 + k)() - 0.5) * 0.003);
+    const rk = mulberry32(seed * 131 + k);
+    const damp = Math.min(1, f * 2.2);
     const pts: Array<[number, number]> = [];
-    for (let i = 0; i <= STEPS; i++) {
+    for (let i = 0; i <= STEPS; i += RING_STRIDE) {
       const idx = i % STEPS;
       const a = (i / STEPS) * 6.283;
-      const wob = 0.012 * Math.sin(a * 3 + k * 0.6 + seed) + (rngK() - 0.5) * 0.01;
+      const wob = (0.005 * Math.sin(a * 4 + k * 0.5 + seed) + (rk() - 0.5) * 0.006) * damp;
       const bx = inner[idx]![0];
       const by = inner[idx]![1];
-      const rr = Math.min(0.995, f + wob);
-      pts.push([P[0] + (bx - P[0]) * rr, P[1] + (by - P[1]) * rr]);
+      const rr = Math.min(0.997, f + wob);
+      pts.push([pith[0] + (bx - pith[0]) * rr, pith[1] + (by - pith[1]) * rr]);
     }
-    const late = k % 6 === 0; // тёмная полоса поздней древесины
-    const veryLate = k % 11 === 0;
+    pts.push(pts[0]!);
     rings.push({
-      d: path(pts, false),
-      stroke: veryLate ? '#5e3d20' : late ? '#7c5230' : k % 2 === 0 ? '#c39a5e' : '#b78a50',
-      w: late ? 0.95 : 0.5,
-      o: Math.min(0.85, 0.45 + 0.3 * (1 - Math.abs(f - 0.5)) + (late ? 0.12 : 0)),
+      d: pathOf(pts, false, 1),
+      late: k % 9 === 0,
+      o: Math.min(0.92, 0.6 + 0.32 * (1 - Math.abs(f - 0.5))),
     });
   }
 
-  // радиальные трещины усушки — не от самого центра, разной длины,
-  // с заметным изломом, чтобы не выглядели как симметричные «спицы»
+  // звезда радиальных трещин усушки из сердцевины
   const cracks: string[] = [];
-  const crackN = 1 + Math.floor(rng() * 2);
-  for (let c = 0; c < crackN; c++) {
-    const a = rng() * 6.283;
+  const cN = 4 + Math.floor(rng() * 3);
+  const baseAng = rng() * 6.283;
+  for (let c = 0; c < cN; c++) {
+    const a = baseAng + (c / cN) * 6.283 + (rng() - 0.5) * 0.5;
     const idx = ((Math.round((a / 6.283) * STEPS) % STEPS) + STEPS) % STEPS;
     const ex = inner[idx]![0];
     const ey = inner[idx]![1];
-    const seg = 6;
-    const start = 0.14 + rng() * 0.12;
-    const span = 0.38 + rng() * 0.34;
-    const nx = -(ey - P[1]);
-    const ny = ex - P[0];
+    const seg = 8;
+    const nx = -(ey - pith[1]);
+    const ny = ex - pith[0];
     const nl = Math.hypot(nx, ny) || 1;
-    const sx = P[0] + (ex - P[0]) * start;
-    const sy = P[1] + (ey - P[1]) * start;
-    let d = `M${sx.toFixed(2)},${sy.toFixed(2)}`;
+    const reach = 0.6 + rng() * 0.38;
+    let d = `M${pith[0].toFixed(2)},${pith[1].toFixed(2)}`;
     for (let s = 1; s <= seg; s++) {
-      const tt = start + (s / seg) * span;
-      const wob = (rng() - 0.5) * 4.2 * (s / seg);
-      const x = P[0] + (ex - P[0]) * tt + (nx / nl) * wob;
-      const y = P[1] + (ey - P[1]) * tt + (ny / nl) * wob;
-      d += ` L${x.toFixed(2)},${y.toFixed(2)}`;
+      const tt = (s / seg) * reach;
+      const wob = (rng() - 0.5) * 2.4 * tt;
+      const x = pith[0] + (ex - pith[0]) * tt + (nx / nl) * wob;
+      const y = pith[1] + (ey - pith[1]) * tt + (ny / nl) * wob;
+      d += `L${x.toFixed(1)},${y.toFixed(1)}`;
     }
     cracks.push(d);
   }
 
-  // продольные борозды коры
-  const fissures: string[] = [];
-  const fisN = 10 + Math.floor(rng() * 8);
-  for (let i = 0; i < fisN; i++) {
-    const idx = Math.floor(rng() * STEPS);
-    const ox = outer[idx]![0];
-    const oy = outer[idx]![1];
-    const ix = inner[idx]![0];
-    const iy = inner[idx]![1];
-    fissures.push(
-      `M${(ox * 0.92 + ix * 0.08).toFixed(2)},${(oy * 0.92 + iy * 0.08).toFixed(2)} L${(ox * 0.12 + ix * 0.88).toFixed(2)},${(oy * 0.12 + iy * 0.88).toFixed(2)}`,
-    );
-  }
-
-  return { bark, barkInner, side, rimSeam, rings, cracks, fissures, pith: P };
+  return { bark, barkInner, band, side, rimSeam, rings, cracks, pith };
 }
 
-function Slice({
-  round,
-  i,
-  hovered,
-}: {
-  round: Round;
-  i: number;
-  hovered: boolean;
-}) {
+function Slice({ round, i, hovered }: { round: Round; i: number; hovered: boolean }) {
   const u = `ws${i}`;
   const [px, py] = round.pith;
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full overflow-visible" aria-hidden>
       <defs>
-        <radialGradient id={`${u}-wood`} cx={px} cy={py} r={R} gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#b07a40" />
-          <stop offset="38%" stopColor="#c89a5d" />
-          <stop offset="72%" stopColor="#d9bd87" />
-          <stop offset="100%" stopColor="#e7d6ab" />
+        <radialGradient id={`${u}-f`} cx={px} cy={py} r={R} gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#4a2f19" />
+          <stop offset="55%" stopColor="#7a5230" />
+          <stop offset="100%" stopColor="#9c6a3a" />
         </radialGradient>
-        <linearGradient id={`${u}-side`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#3c2a19" />
-          <stop offset="45%" stopColor="#2a1c10" />
-          <stop offset="100%" stopColor="#140d07" />
+        <linearGradient id={`${u}-s`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#34230f" />
+          <stop offset="100%" stopColor="#120b05" />
         </linearGradient>
-        <radialGradient id={`${u}-bark`} cx={CX} cy={CY} r={R} gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#4c3722" />
-          <stop offset="100%" stopColor="#241809" />
+        <radialGradient id={`${u}-b`} cx={CX} cy={CY} r={R} gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#2a1b0e" />
+          <stop offset="100%" stopColor="#160d06" />
         </radialGradient>
-        <radialGradient id={`${u}-hi`} cx="40%" cy="32%" r="70%">
-          <stop offset="0%" stopColor="rgba(255,242,214,0.28)" />
-          <stop offset="55%" stopColor="rgba(255,242,214,0)" />
+        <radialGradient id={`${u}-hi`} cx="40%" cy="30%" r="72%">
+          <stop offset="0%" stopColor="rgba(255,244,214,0.18)" />
+          <stop offset="55%" stopColor="rgba(255,244,214,0)" />
         </radialGradient>
-        <filter id={`${u}-barkTex`}>
-          <feTurbulence type="fractalNoise" baseFrequency="0.9 0.45" numOctaves="3" seed={i * 7 + 3} />
-          <feColorMatrix values="0 0 0 0 0.16  0 0 0 0 0.11  0 0 0 0 0.06  0 0 0 0.9 0" />
+        <filter id={`${u}-bt`}>
+          <feTurbulence type="fractalNoise" baseFrequency="0.9 0.5" numOctaves="3" seed={i * 7 + 3} />
+          <feColorMatrix values="0 0 0 0 0.1  0 0 0 0 0.07  0 0 0 0 0.04  0 0 0 0.9 0" />
         </filter>
-        <filter id={`${u}-sideTex`}>
+        <filter id={`${u}-st`}>
           <feTurbulence type="fractalNoise" baseFrequency="0.95 0.06" numOctaves="3" seed={i * 5 + 1} />
-          <feColorMatrix values="0 0 0 0 0.1  0 0 0 0 0.07  0 0 0 0 0.04  0 0 0 0.8 0" />
+          <feColorMatrix values="0 0 0 0 0.08  0 0 0 0 0.05  0 0 0 0 0.03  0 0 0 0.8 0" />
         </filter>
-        <filter id={`${u}-woodTex`}>
-          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.85" numOctaves="3" seed={i * 9 + 5} />
-          <feColorMatrix values="0 0 0 0 0.72  0 0 0 0 0.54  0 0 0 0 0.3  0 0 0 0.5 0" />
-        </filter>
-        <filter id={`${u}-shadow`} x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="6" />
-        </filter>
-        <clipPath id={`${u}-clipInner`}>
+        <clipPath id={`${u}-ci`}>
           <path d={round.barkInner} />
         </clipPath>
-        <clipPath id={`${u}-clipBark`}>
+        <clipPath id={`${u}-cb`}>
           <path d={round.bark} />
         </clipPath>
-        <clipPath id={`${u}-clipSide`}>
+        <clipPath id={`${u}-cs`}>
           <path d={round.side} />
+        </clipPath>
+        <clipPath id={`${u}-cband`}>
+          <path d={round.band} clipRule="evenodd" />
         </clipPath>
       </defs>
 
-      {/* контактная тень под спилом */}
-      <ellipse
-        cx={CX}
-        cy={CY + DEPTH + 26}
-        rx={R * 0.86}
-        ry={16}
-        fill="rgba(0,0,0,0.5)"
-        filter={`url(#${u}-shadow)`}
-      />
+      {/* контактная тень */}
+      <ellipse cx={CX} cy={CY + DEPTH + 24} rx={R * 0.84} ry={15} fill="rgba(0,0,0,0.55)" />
 
-      {/* бок бревна (толщина спила) */}
+      {/* бок бревна (толщина) */}
       <g>
-        <path d={round.side} fill={`url(#${u}-side)`} />
-        <g clipPath={`url(#${u}-clipSide)`}>
-          <rect x="0" y="0" width={W} height={H} filter={`url(#${u}-sideTex)`} opacity="0.5" />
+        <path d={round.side} fill={`url(#${u}-s)`} />
+        <g clipPath={`url(#${u}-cs)`}>
+          <rect width={W} height={H} filter={`url(#${u}-st)`} opacity="0.5" />
         </g>
-        <path d={round.side} fill="none" stroke="#0e0904" strokeWidth="1" opacity="0.7" />
-        {/* блик на верхней кромке бока — ловит свет, усиливает объём */}
-        <path d={round.rimSeam} fill="none" stroke="#6a4c2c" strokeWidth="2.4" opacity="0.55" />
+        <path d={round.side} fill="none" stroke="#0a0602" strokeWidth="1" opacity="0.7" />
+        <path d={round.rimSeam} fill="none" stroke="#7a5230" strokeWidth="2.2" opacity="0.5" />
       </g>
 
-      {/* верхняя плоскость спила */}
-      <g clipPath={`url(#${u}-clipBark)`}>
-        <path d={round.bark} fill={`url(#${u}-wood)`} />
-        <rect x="0" y="0" width={W} height={H} filter={`url(#${u}-woodTex)`} opacity="0.18" />
+      {/* верхняя плоскость */}
+      <g clipPath={`url(#${u}-cb)`}>
+        <path d={round.bark} fill={`url(#${u}-f)`} />
 
-        {/* годовые кольца (внутри сапвуда, не залезают в кору) */}
-        <g clipPath={`url(#${u}-clipInner)`}>
+        <g clipPath={`url(#${u}-ci)`}>
           {round.rings.map((r, k) => (
             <path
               key={k}
               d={r.d}
               fill="none"
-              stroke={r.stroke}
-              strokeWidth={r.w}
+              stroke={r.late ? '#2e1c0e' : r.o > 0.8 ? '#ecd9af' : '#d8bd87'}
+              strokeWidth={r.late ? 0.6 : 0.38}
               opacity={r.o}
-              strokeLinejoin="round"
             />
           ))}
           {round.cracks.map((d, k) => (
@@ -306,46 +260,30 @@ function Slice({
               key={`c${k}`}
               d={d}
               fill="none"
-              stroke="#1c1206"
-              strokeWidth="1.1"
-              opacity="0.78"
+              stroke="#160d05"
+              strokeWidth="1.4"
+              opacity="0.8"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           ))}
         </g>
 
-        {/* кора по краю (бревно не ошкурено) */}
-        <path d={`${round.bark} ${round.barkInner}`} fillRule="evenodd" fill={`url(#${u}-bark)`} />
-        <g clipPath={`url(#${u}-clipBark)`}>
-          <path d={`${round.bark} ${round.barkInner}`} fillRule="evenodd" fill="none" />
-          <rect
-            x="0"
-            y="0"
-            width={W}
-            height={H}
-            filter={`url(#${u}-barkTex)`}
-            opacity="0.55"
-            clipPath={`url(#${u}-clipBark)`}
-          />
+        {/* кора (грейн только в пределах коры) */}
+        <path d={round.band} fillRule="evenodd" fill={`url(#${u}-b)`} />
+        <g clipPath={`url(#${u}-cband)`}>
+          <rect width={W} height={H} filter={`url(#${u}-bt)`} opacity="0.6" />
         </g>
-        {/* борозды коры */}
-        {round.fissures.map((d, k) => (
-          <path key={`f${k}`} d={d} stroke="#170f06" strokeWidth="0.8" opacity="0.5" fill="none" />
-        ))}
-        {/* камбий: светлая линия на границе коры и заболони */}
-        <path d={round.barkInner} fill="none" stroke="rgba(231,214,171,0.45)" strokeWidth="0.7" />
-        {/* мягкое затемнение у коры (объём) */}
-        <path d={round.barkInner} fill="none" stroke="rgba(20,12,5,0.35)" strokeWidth="4" opacity="0.5" />
-
+        {/* камбий */}
+        <path d={round.barkInner} fill="none" stroke="rgba(236,217,175,0.4)" strokeWidth="0.6" />
         {/* верхний свет */}
-        <rect x="0" y="0" width={W} height={H} fill={`url(#${u}-hi)`} />
+        <rect width={W} height={H} fill={`url(#${u}-hi)`} />
       </g>
 
-      {/* тёмный шов между плоскостью и боком */}
-      <path d={round.rimSeam} fill="none" stroke="#100a04" strokeWidth="1.4" opacity="0.55" />
+      {/* шов плоскость↔бок */}
+      <path d={round.rimSeam} fill="none" stroke="#0a0602" strokeWidth="1.3" opacity="0.5" />
 
-      {/* золотая подсветка контура при наведении */}
+      {/* золотая подсветка при наведении */}
       <motion.path
         d={round.bark}
         fill="none"
@@ -369,7 +307,7 @@ export function WoodSliceRow({ items, locationSlug }: Props) {
   const [hovered, setHovered] = useState<number | null>(null);
   const rounds = useMemo(() => {
     const base = hashStr(locationSlug ?? 'default');
-    return [0, 1, 2].map((i) => buildRound(base * 2654435761 + (i + 1) * 40503));
+    return [0, 1, 2].map((i) => buildRound((base * 2654435761 + (i + 1) * 40503) >>> 0));
   }, [locationSlug]);
 
   return (
