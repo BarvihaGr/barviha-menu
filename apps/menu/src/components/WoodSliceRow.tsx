@@ -25,9 +25,9 @@ interface Props {
 
 // варианты подачи одного фото — чтобы три кнопки выглядели как три спила
 const VARIANTS = [
-  { rotate: -4, scaleX: 1, grade: 'saturate(1.12) contrast(1.05) brightness(1.02) sepia(0.08) hue-rotate(-6deg)' },
-  { rotate: 124, scaleX: -1, grade: 'saturate(1.18) contrast(1.06) brightness(0.99) sepia(0.12) hue-rotate(-10deg)' },
-  { rotate: 238, scaleX: 1, grade: 'saturate(1.1) contrast(1.04) brightness(1.05) sepia(0.05) hue-rotate(-3deg)' },
+  { rotate: -4, scaleX: 1, grade: 'saturate(1.06) contrast(1.05) brightness(1.03) hue-rotate(3deg)' },
+  { rotate: 124, scaleX: -1, grade: 'saturate(1.1) contrast(1.06) brightness(1.0) hue-rotate(2deg)' },
+  { rotate: 238, scaleX: 1, grade: 'saturate(1.04) contrast(1.04) brightness(1.06) hue-rotate(4deg)' },
 ] as const;
 
 export function WoodSliceRow({ items }: Props) {
@@ -58,13 +58,27 @@ export function WoodSliceRow({ items }: Props) {
               transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ scale: 1.06, y: -5 }}
             >
+              {/* тёплая подсветка-ореол за спилом */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute rounded-[50%]"
+                style={{
+                  inset: '-14% -10% -6% -10%',
+                  background: isHover
+                    ? 'radial-gradient(50% 50% at 50% 48%, rgba(242,214,158,0.45), rgba(214,162,92,0.18) 55%, rgba(214,162,92,0) 72%)'
+                    : 'radial-gradient(50% 50% at 50% 48%, rgba(214,162,92,0.34), rgba(214,162,92,0.12) 55%, rgba(214,162,92,0) 72%)',
+                  filter: 'blur(14px)',
+                  transition: 'background 0.3s ease',
+                  zIndex: 0,
+                }}
+              />
               {/* контактная тень под спилом */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-x-[12%] bottom-[2%] h-[14%] rounded-[50%]"
+                className="pointer-events-none absolute inset-x-[18%] bottom-[-2%] h-[11%] rounded-[50%]"
                 style={{
-                  background: 'radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.55), rgba(0,0,0,0))',
-                  filter: 'blur(2px)',
+                  background: 'radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.6), rgba(0,0,0,0) 72%)',
+                  filter: 'blur(3px)',
                   zIndex: 0,
                 }}
               />
@@ -77,10 +91,10 @@ export function WoodSliceRow({ items }: Props) {
                 style={{
                   transform: `rotate(${v.rotate}deg) scaleX(${v.scaleX})`,
                   filter: isHover
-                    ? `${v.grade} drop-shadow(0 10px 16px rgba(0,0,0,0.5)) drop-shadow(0 0 7px rgba(242,214,158,0.85)) drop-shadow(0 0 2px rgba(242,214,158,0.95))`
+                    ? `${v.grade} drop-shadow(0 12px 18px rgba(0,0,0,0.5)) drop-shadow(0 0 8px rgba(242,214,158,0.9)) drop-shadow(0 0 2px rgba(242,214,158,0.95))`
                     : `${v.grade} drop-shadow(0 8px 14px rgba(0,0,0,0.45))`,
                   transition: 'filter 0.25s ease',
-                  zIndex: 1,
+                  zIndex: 2,
                 }}
               />
             </motion.div>
