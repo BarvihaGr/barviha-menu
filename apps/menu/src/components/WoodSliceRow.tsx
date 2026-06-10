@@ -115,17 +115,28 @@ export function WoodSliceRow({ items }: Props) {
                   }}
                 />
               </div>
+              {/* название — выжжено прямо по дереву (клеймо) */}
+              <div
+                className="pointer-events-none absolute inset-0 flex items-center justify-center"
+                style={{ paddingBottom: '6%', zIndex: 3 }}
+              >
+                <span
+                  className="text-center uppercase"
+                  style={{
+                    fontWeight: 800,
+                    fontSize: 'clamp(11px, 3vw, 21px)',
+                    letterSpacing: '0.08em',
+                    color: isHover ? '#311a08' : '#241204',
+                    textShadow: isHover
+                      ? '0 0 1px rgba(20,10,4,0.85), 0 1px 1px rgba(0,0,0,0.45), 0 0 8px rgba(242,214,158,0.45), 0 -1px 0 rgba(255,240,205,0.22)'
+                      : '0 0 1px rgba(20,10,4,0.85), 0 1px 1px rgba(0,0,0,0.45), 0 0 7px rgba(74,40,16,0.6), 0 -1px 0 rgba(255,240,205,0.22)',
+                    transition: 'color 0.25s, text-shadow 0.25s',
+                  }}
+                >
+                  {it.title}
+                </span>
+              </div>
             </motion.div>
-            <span
-              className="mt-1 text-center text-[11px] uppercase tracking-[0.2em] sm:mt-2 sm:text-sm sm:tracking-[0.28em]"
-              style={{
-                color: isHover ? '#F2D69E' : '#E7C994',
-                textShadow: '0 1px 6px rgba(0,0,0,0.6)',
-                transition: 'color 0.25s',
-              }}
-            >
-              {it.title}
-            </span>
           </Link>
         );
       })}
