@@ -25,15 +25,18 @@ interface Props {
 }
 
 // градиентный торец спила (объём): силуэт, продавленный вниз, светлее
-// сверху → темнее книзу, как настоящий бок куска дерева
+// сверху → темнее книзу. Применяется на ОБЁРТКЕ поверх повёрнутой
+// картинки → всегда вниз по экрану, не «улетает» при повороте.
 const EDGE =
-  'drop-shadow(0 1px 0 rgb(90,58,30)) drop-shadow(0 2px 0 rgb(85,55,28)) drop-shadow(0 3px 0 rgb(80,51,26)) drop-shadow(0 4px 0 rgb(75,48,25)) drop-shadow(0 5px 0 rgb(70,45,23)) drop-shadow(0 6px 0 rgb(65,42,21)) drop-shadow(0 7px 0 rgb(60,38,19)) drop-shadow(0 8px 0 rgb(55,35,18)) drop-shadow(0 9px 0 rgb(50,32,16)) drop-shadow(0 10px 0 rgb(45,28,14)) drop-shadow(0 11px 0 rgb(40,25,12)) drop-shadow(0 12px 0 rgb(35,22,10)) drop-shadow(0 13px 0 rgb(30,19,9)) drop-shadow(0 14px 0 rgb(25,15,7)) drop-shadow(0 15px 0 rgb(20,12,5))';
+  'drop-shadow(0 1px 0 rgb(88,57,30)) drop-shadow(0 2px 0 rgb(82,53,28)) drop-shadow(0 3px 0 rgb(76,49,25)) drop-shadow(0 4px 0 rgb(70,45,23)) drop-shadow(0 5px 0 rgb(64,41,21)) drop-shadow(0 6px 0 rgb(58,37,19)) drop-shadow(0 7px 0 rgb(52,33,17)) drop-shadow(0 8px 0 rgb(46,29,15)) drop-shadow(0 9px 0 rgb(40,25,12)) drop-shadow(0 10px 0 rgb(34,21,10)) drop-shadow(0 11px 0 rgb(28,17,8)) drop-shadow(0 12px 0 rgb(22,13,6))';
 
-// варианты подачи одного фото — чтобы три кнопки выглядели как три спила
+// варианты подачи одного фото — мелкие естественные углы + отражение +
+// сдвиг тона. Большие повороты убраны: они выдавали один и тот же спил,
+// прокрученный вокруг оси.
 const VARIANTS = [
-  { rotate: -4, scaleX: 1, grade: 'saturate(1.06) contrast(1.05) brightness(1.03) hue-rotate(3deg)' },
-  { rotate: 124, scaleX: -1, grade: 'saturate(1.1) contrast(1.06) brightness(1.0) hue-rotate(2deg)' },
-  { rotate: 238, scaleX: 1, grade: 'saturate(1.04) contrast(1.04) brightness(1.06) hue-rotate(4deg)' },
+  { rotate: -3, scaleX: 1, grade: 'saturate(1.06) contrast(1.05) brightness(1.03) hue-rotate(3deg)' },
+  { rotate: 2, scaleX: -1, grade: 'saturate(1.1) contrast(1.06) brightness(1.0) hue-rotate(2deg)' },
+  { rotate: -2, scaleX: 1, grade: 'saturate(1.04) contrast(1.04) brightness(1.06) hue-rotate(4deg)' },
 ] as const;
 
 export function WoodSliceRow({ items }: Props) {
@@ -88,21 +91,30 @@ export function WoodSliceRow({ items }: Props) {
                   zIndex: 0,
                 }}
               />
-              <img
-                src="/wood/slice-cut.webp"
-                alt=""
-                aria-hidden
-                draggable={false}
-                className="relative block h-auto w-full select-none"
+              {/* обёртка с торцом: фильтр применяется ПОВЕРХ повёрнутой
+                  картинки → выдавливание всегда строго вниз по экрану */}
+              <div
+                className="relative w-full"
                 style={{
-                  transform: `rotate(${v.rotate}deg) scaleX(${v.scaleX})`,
                   filter: isHover
-                    ? `${v.grade} ${EDGE} drop-shadow(0 12px 12px rgba(0,0,0,0.5)) drop-shadow(0 0 8px rgba(242,214,158,0.9)) drop-shadow(0 0 2px rgba(242,214,158,0.95))`
-                    : `${v.grade} ${EDGE} drop-shadow(0 10px 10px rgba(0,0,0,0.5))`,
+                    ? `${EDGE} drop-shadow(0 12px 12px rgba(0,0,0,0.5)) drop-shadow(0 0 8px rgba(242,214,158,0.9)) drop-shadow(0 0 2px rgba(242,214,158,0.95))`
+                    : `${EDGE} drop-shadow(0 10px 10px rgba(0,0,0,0.5))`,
                   transition: 'filter 0.25s ease',
                   zIndex: 2,
                 }}
-              />
+              >
+                <img
+                  src="/wood/slice-cut.webp"
+                  alt=""
+                  aria-hidden
+                  draggable={false}
+                  className="block h-auto w-full select-none"
+                  style={{
+                    transform: `rotate(${v.rotate}deg) scaleX(${v.scaleX})`,
+                    filter: v.grade,
+                  }}
+                />
+              </div>
             </motion.div>
             <span
               className="mt-1 text-center text-[11px] uppercase tracking-[0.2em] sm:mt-2 sm:text-sm sm:tracking-[0.28em]"
