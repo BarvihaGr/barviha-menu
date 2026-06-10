@@ -9,9 +9,10 @@ import { Link } from '@/i18n/navigation';
  * вырезанного по контуру (прозрачный фон, рваный край коры сохранён).
  *
  * Один снимок → три визуально разных спила: поворот + отражение + лёгкий
- * сдвиг тона, чтобы кнопки не выглядели близнецами. Цвет мягко уведён в
- * тёплую палитру Барвихи (фотореализм сохранён). Контактная тень даёт
- * объём, при наведении — золотое свечение по контуру.
+ * сдвиг тона. Главное — у спила есть ТОЛЩИНА (градиентный торец через
+ * стек drop-shadow по силуэту) → это объёмный кусок дерева, а не плоская
+ * наклейка. Тёплый ореол-подсветка + приземляющая тень; при наведении —
+ * золотое свечение по контуру и лёгкий подъём.
  */
 export interface WoodSliceItem {
   href: string;
@@ -22,6 +23,11 @@ interface Props {
   items: WoodSliceItem[];
   locationSlug?: string;
 }
+
+// градиентный торец спила (объём): силуэт, продавленный вниз, светлее
+// сверху → темнее книзу, как настоящий бок куска дерева
+const EDGE =
+  'drop-shadow(0 1px 0 rgb(90,58,30)) drop-shadow(0 2px 0 rgb(85,55,28)) drop-shadow(0 3px 0 rgb(80,51,26)) drop-shadow(0 4px 0 rgb(75,48,25)) drop-shadow(0 5px 0 rgb(70,45,23)) drop-shadow(0 6px 0 rgb(65,42,21)) drop-shadow(0 7px 0 rgb(60,38,19)) drop-shadow(0 8px 0 rgb(55,35,18)) drop-shadow(0 9px 0 rgb(50,32,16)) drop-shadow(0 10px 0 rgb(45,28,14)) drop-shadow(0 11px 0 rgb(40,25,12)) drop-shadow(0 12px 0 rgb(35,22,10)) drop-shadow(0 13px 0 rgb(30,19,9)) drop-shadow(0 14px 0 rgb(25,15,7)) drop-shadow(0 15px 0 rgb(20,12,5))';
 
 // варианты подачи одного фото — чтобы три кнопки выглядели как три спила
 const VARIANTS = [
@@ -75,10 +81,10 @@ export function WoodSliceRow({ items }: Props) {
               {/* контактная тень под спилом */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-x-[18%] bottom-[-2%] h-[11%] rounded-[50%]"
+                className="pointer-events-none absolute inset-x-[16%] bottom-[-6%] h-[12%] rounded-[50%]"
                 style={{
-                  background: 'radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.6), rgba(0,0,0,0) 72%)',
-                  filter: 'blur(3px)',
+                  background: 'radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.62), rgba(0,0,0,0) 72%)',
+                  filter: 'blur(4px)',
                   zIndex: 0,
                 }}
               />
@@ -91,8 +97,8 @@ export function WoodSliceRow({ items }: Props) {
                 style={{
                   transform: `rotate(${v.rotate}deg) scaleX(${v.scaleX})`,
                   filter: isHover
-                    ? `${v.grade} drop-shadow(0 12px 18px rgba(0,0,0,0.5)) drop-shadow(0 0 8px rgba(242,214,158,0.9)) drop-shadow(0 0 2px rgba(242,214,158,0.95))`
-                    : `${v.grade} drop-shadow(0 8px 14px rgba(0,0,0,0.45))`,
+                    ? `${v.grade} ${EDGE} drop-shadow(0 12px 12px rgba(0,0,0,0.5)) drop-shadow(0 0 8px rgba(242,214,158,0.9)) drop-shadow(0 0 2px rgba(242,214,158,0.95))`
+                    : `${v.grade} ${EDGE} drop-shadow(0 10px 10px rgba(0,0,0,0.5))`,
                   transition: 'filter 0.25s ease',
                   zIndex: 2,
                 }}
