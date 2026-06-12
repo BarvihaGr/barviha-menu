@@ -60,10 +60,7 @@ export default async function LocationHome({
       <EventMarquee events={afisha} />
 
       {spotlights.length > 0 && (
-        <section className="pb-6 -mt-10 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] [&_h2]:my-3">
-          <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
-            <SectionTitle>{tHome('spotlight')}</SectionTitle>
-          </div>
+        <section className="pb-6 -mt-6 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw]">
           <SpotlightCarousel spotlights={spotlights} accent={accent} />
         </section>
       )}

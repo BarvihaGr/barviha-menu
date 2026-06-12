@@ -20,7 +20,7 @@ export function EventMarquee({ events }: { events: AfishaEvent[] }) {
   if (events.length === 0) return null;
 
   return (
-    <section className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] overflow-hidden border-y border-[#C49262]/25 bg-[#160C06] py-3">
+    <section className="relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] overflow-hidden bg-[#160C06] py-3">
       <motion.div
         className="flex shrink-0 whitespace-nowrap"
         animate={{ x: ['0%', '-50%'] }}
