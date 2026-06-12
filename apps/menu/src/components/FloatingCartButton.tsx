@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Info, ShoppingBag, UtensilsCrossed } from 'lucide-react';
+import { Info, ShoppingBag, ShoppingCart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
@@ -96,7 +96,7 @@ export function FloatingCartButton({ locationSlug, locationName, address, phone,
         {/* Центр — Меню (главная локации) */}
         <NavItem
           href={homeHref}
-          icon={<UtensilsCrossed size={15} />}
+          icon={<ShoppingCart size={15} />}
           label={t('menu')}
           active={isHome}
         />
