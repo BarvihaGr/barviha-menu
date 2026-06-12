@@ -8,7 +8,6 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { HeroSection } from '@/components/HeroSection';
 import { SpotlightCarousel } from '@/components/SpotlightCarousel';
 import { EventMarquee } from '@/components/EventMarquee';
-import { AfishaCards } from '@/components/AfishaCards';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
 import { getLocationAccent } from '@/lib/location-theme';
 
@@ -59,13 +58,6 @@ export default async function LocationHome({
 
       {/* Бегущая строка-афиша сразу под hero (как в макете) */}
       <EventMarquee events={afisha} />
-
-      {/* Редакционные карточки «Афиша» — события заведения */}
-      {afisha.length > 0 && (
-        <section className="pt-4 pb-2">
-          <AfishaCards events={afisha} />
-        </section>
-      )}
 
       {spotlights.length > 0 && (
         <section className="pb-6 -mt-10 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] [&_h2]:my-3">
