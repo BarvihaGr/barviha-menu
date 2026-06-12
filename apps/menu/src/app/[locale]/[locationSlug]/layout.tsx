@@ -34,18 +34,17 @@ export default async function LocationLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <LocationHeader
-        locationName={locationName}
-        locationAddress={location.address}
-        locationPhone={location.phone ?? null}
-        locationSlug={location.slug}
-        locations={locations}
-        accent={accent}
-      />
+      <LocationHeader locationSlug={location.slug} locations={locations} />
       <main className="flex-1 mx-auto w-full max-w-[1200px] px-4 sm:px-6 pt-2 pb-32">
         {children}
       </main>
-      <FloatingCartButton locationSlug={location.slug} />
+      <FloatingCartButton
+        locationSlug={location.slug}
+        locationName={locationName}
+        address={location.address}
+        phone={location.phone ?? null}
+        accent={accent}
+      />
       <Toaster />
       <SwipeBack />
     </div>

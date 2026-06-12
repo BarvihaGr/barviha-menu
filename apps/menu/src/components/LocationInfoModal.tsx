@@ -14,6 +14,8 @@ interface Props {
   accent: string;
   /** Что показывать в роли триггера — кнопка-бейдж в хедере. */
   triggerClassName?: string;
+  /** Кастомный триггер. Если передан — используется вместо бейджа с названием. */
+  children?: React.ReactNode;
 }
 
 /**
@@ -31,6 +33,7 @@ export function LocationInfoModal({
   phone,
   accent,
   triggerClassName,
+  children,
 }: Props) {
   const [open, setOpen] = useState(false);
   const t = useTranslations('location');
@@ -38,18 +41,20 @@ export function LocationInfoModal({
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <button
-          type="button"
-          className={cn(
-            'group cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-sm px-2 py-1 -mx-2',
-            triggerClassName,
-          )}
-          aria-label={t('info')}
-        >
-          <span className="gold-pulse text-[11px] tracking-[0.25em] uppercase font-medium">
-            {locationName}
-          </span>
-        </button>
+        {children ?? (
+          <button
+            type="button"
+            className={cn(
+              'group cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-sm px-2 py-1 -mx-2',
+              triggerClassName,
+            )}
+            aria-label={t('info')}
+          >
+            <span className="gold-pulse text-[11px] tracking-[0.25em] uppercase font-medium">
+              {locationName}
+            </span>
+          </button>
+        )}
       </Dialog.Trigger>
 
       <AnimatePresence>
