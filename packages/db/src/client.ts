@@ -7,12 +7,14 @@ import {
   MOCK_HOOKAH_MOODS,
   MOCK_LOCATIONS,
   MOCK_TABLES,
+  getAfishaForSlug,
   getSpotlightsForSlug,
 } from './mock-data';
 import { GEN_CATEGORIES, GEN_ITEMS } from './menu-generated';
 import { PHOTOS } from './menu-photos';
 import type { GenItem, Realm } from './menu-types';
 import type {
+  AfishaEvent,
   Announcement,
   Category,
   HookahMood,
@@ -33,6 +35,7 @@ export interface BarvihaClient {
   getTableByToken(token: string): Promise<Table | null>;
   getAnnouncementsForLocation(locationId: string): Promise<Announcement[]>;
   getSpotlightsForLocation(locationId: string): Promise<Spotlight[]>;
+  getAfishaForLocation(locationId: string): Promise<AfishaEvent[]>;
 }
 
 function getLocationById(id: string): Location | undefined {
@@ -176,6 +179,12 @@ class MockBarvihaClient implements BarvihaClient {
     const loc = getLocationById(locationId);
     if (!loc) return [];
     return getSpotlightsForSlug(loc.slug);
+  }
+
+  async getAfishaForLocation(locationId: string): Promise<AfishaEvent[]> {
+    const loc = getLocationById(locationId);
+    if (!loc) return [];
+    return getAfishaForSlug(loc.slug);
   }
 }
 

@@ -7,6 +7,7 @@
  * Replace with real per-dish photography when shoots are done.
  */
 import type {
+  AfishaEvent,
   Category,
   HookahMood,
   Location,
@@ -379,6 +380,49 @@ function buildSocialSpotlight(slug: string): Spotlight {
     accent: '#C49262',
     links,
   };
+}
+
+// ── Афиша-события (бегущая строка + редакционные карточки на главной) ──
+// Per-location. Где данных пока нет — секции афиши/маркизы не показываем.
+// Контент по «Арке» — стартовый (как в макете concepts), заменяйте на реальные.
+const AFISHA_BY_SLUG: Record<string, AfishaEvent[]> = {
+  arka: [
+    {
+      id: 'af-dj',
+      eyebrow: 'СЕГОДНЯ',
+      eyebrow_en: 'TONIGHT',
+      title: 'DJ Veronika — Deep Set',
+      title_en: 'DJ Veronika — Deep Set',
+      when: 'ПТ · 22:00',
+      when_en: 'FRI · 22:00',
+      image: '/menu-photos/p3.webp',
+    },
+    {
+      id: 'af-dinner',
+      eyebrow: 'УЖИН',
+      eyebrow_en: 'DINNER',
+      title: 'Сет-дегустация шефа',
+      title_en: "Chef's tasting set",
+      when: 'СБ · 20:00',
+      when_en: 'SAT · 20:00',
+      image: '/menu-photos/p5.webp',
+    },
+    {
+      id: 'af-lounge',
+      eyebrow: 'ЛАУНЖ',
+      eyebrow_en: 'LOUNGE',
+      title: 'Старая школа: виски & сигары',
+      title_en: 'Old school: whisky & cigars',
+      when: 'ВС · 19:00',
+      when_en: 'SUN · 19:00',
+      image: '/menu-photos/p1.webp',
+    },
+  ],
+};
+
+/** Афиша-события локации (для бегущей строки и карточек «Афиша»). */
+export function getAfishaForSlug(slug: string): AfishaEvent[] {
+  return AFISHA_BY_SLUG[slug] ?? [];
 }
 
 /** Блок «Афиша и акции»: афиша + акция именинникам + соцсети/контакты. */

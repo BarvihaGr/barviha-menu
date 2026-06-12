@@ -3,10 +3,12 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/routing';
 import { pickCategoryName } from '@/lib/i18n-helpers';
-import { WoodSliceRow } from '@/components/WoodSliceRow';
+import { CategoryPuzzleRow } from '@/components/CategoryPuzzleRow';
 import { SectionTitle } from '@/components/SectionTitle';
 import { HeroSection } from '@/components/HeroSection';
 import { SpotlightCarousel } from '@/components/SpotlightCarousel';
+import { EventMarquee } from '@/components/EventMarquee';
+import { AfishaCards } from '@/components/AfishaCards';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
 import { getLocationAccent } from '@/lib/location-theme';
 
@@ -25,10 +27,11 @@ export default async function LocationHome({
   const db = getClient();
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) notFound();
-  const [categories, announcements, spotlights] = await Promise.all([
+  const [categories, announcements, spotlights, afisha] = await Promise.all([
     db.getCategoriesForLocation(location.id),
     db.getAnnouncementsForLocation(location.id),
     db.getSpotlightsForLocation(location.id),
+    db.getAfishaForLocation(location.id),
   ]);
 
   // Берём ровно 3 категории (kitchen → bar → hookah) в этом порядке
@@ -54,6 +57,16 @@ export default async function LocationHome({
         accent={accent}
       />
 
+      {/* Бегущая строка-афиша сразу под hero (как в макете) */}
+      <EventMarquee events={afisha} />
+
+      {/* Редакционные карточки «Афиша» — события заведения */}
+      {afisha.length > 0 && (
+        <section className="pt-4 pb-2">
+          <AfishaCards events={afisha} />
+        </section>
+      )}
+
       {spotlights.length > 0 && (
         <section className="pb-6 -mt-10 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw] [&_h2]:my-3">
           <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
@@ -67,7 +80,7 @@ export default async function LocationHome({
         <section className="pb-4">
           <SectionTitle>{tHome('menu')}</SectionTitle>
           <div className="px-2 sm:px-6">
-            <WoodSliceRow
+            <CategoryPuzzleRow
               locationSlug={location.slug}
               items={homeCategories.map((c) => {
                 const slug = c.slug as (typeof HOME_CATEGORIES)[number];
