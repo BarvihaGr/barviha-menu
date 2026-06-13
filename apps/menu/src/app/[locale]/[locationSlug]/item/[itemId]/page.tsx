@@ -62,7 +62,7 @@ export default async function ItemDetailPage({
 
         <div className="flex flex-col gap-6 p-6 sm:p-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl uppercase tracking-[0.1em] font-light text-white">
+            <h1 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl uppercase tracking-[0.1em] font-light text-cream">
               {name}
             </h1>
             {item.weight && (
@@ -104,7 +104,7 @@ export default async function ItemDetailPage({
               <div className="text-[10px] uppercase tracking-[0.3em] text-gold border-b border-[color:var(--border)] pb-2 mb-3">
                 {t('nutrition')}
               </div>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="flex items-stretch overflow-hidden rounded-sm border border-[color:var(--border)] bg-background">
                 {(
                   [
                     ['kcal', item.nutrition.kcal],
@@ -112,13 +112,13 @@ export default async function ItemDetailPage({
                     ['fat', item.nutrition.fat],
                     ['carbs', item.nutrition.carbs],
                   ] as const
-                ).map(([key, val]) => (
+                ).map(([key, val], i) => (
                   <div
                     key={key}
-                    className="rounded-sm border border-[color:var(--border)] bg-background py-3 text-center"
+                    className={`flex-1 py-3 text-center ${i > 0 ? 'border-l border-[color:var(--border)]' : ''}`}
                   >
                     <span className="block text-lg font-medium text-gold">{val}</span>
-                    <span className="mt-1 block text-[9px] uppercase tracking-[0.2em] text-muted">
+                    <span className="mt-1 block whitespace-nowrap text-[8px] uppercase tracking-[0.12em] text-muted">
                       {t(key)}
                     </span>
                   </div>
