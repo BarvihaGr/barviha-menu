@@ -66,21 +66,13 @@ body {
   color: var(--foreground);
 }
 
-/* Атмосферный «расскрас» на ВЕСЬ экран: тёмный центр, тёплые
-   медно-бронзовые мазки по левому и правому краю, мягкое свечение
-   сверху/снизу. background-attachment: fixed → градиент прибит к
-   вьюпорту и покрывает всю страницу без швов при любом скролле и
-   высоте (моб / iPad / десктоп). */
+/* Атмосферный «расскрас» на ВЕСЬ экран: тёмный центр, мягкое свечение
+   сверху/снизу + виньетка. Боковые медно-бронзовые мазки вынесены в
+   отдельный «дышащий» слой .ambient-light (см. ниже). background-attachment:
+   fixed → градиент прибит к вьюпорту, покрывает страницу без швов при любом
+   скролле и высоте (моб / iPad / десктоп). */
 body {
   background-image:
-    radial-gradient(135% 90% at -8% 28%,
-      rgba(168, 104, 56, 0.55) 0%,
-      rgba(111, 72, 39, 0.30) 24%,
-      transparent 58%),
-    radial-gradient(135% 90% at 108% 72%,
-      rgba(168, 104, 56, 0.50) 0%,
-      rgba(111, 72, 39, 0.26) 24%,
-      transparent 58%),
     radial-gradient(90% 50% at 50% -8%,
       rgba(120, 74, 40, 0.30) 0%,
       transparent 60%),
@@ -125,6 +117,80 @@ body::after {
   background-size: 170px 170px;
   opacity: 0.14;
   mix-blend-mode: overlay;
+}
+
+/* ── МАЗКИ КИСТИ ──
+   Отдельный слой «сухой кисти»: толстые медные штрихи, у которых края рваные
+   (feDisplacementMap искажает гладкие path по фрактальному шуму → эффект кисти).
+   Статичный, за контентом (z-index:-1), под «живым светом» — свет ловит штрихи.
+   mix-blend-mode: soft-light → фактура, а не грязь; текст/карточки не задевает. */
+.brush-strokes {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cdefs%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018' numOctaves='3' seed='12' result='t'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='t' scale='38' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23r)' fill='none' stroke='%23B8814C' stroke-linecap='round'%3E%3Cpath d='M-60 150 Q 300 70 960 200' stroke-width='30' opacity='0.55'/%3E%3Cpath d='M-60 340 Q 360 250 960 400' stroke-width='42' opacity='0.45'/%3E%3Cpath d='M-60 560 Q 320 470 960 600' stroke-width='34' opacity='0.5'/%3E%3Cpath d='M-60 770 Q 400 670 960 810' stroke-width='26' opacity='0.4'/%3E%3Cpath d='M140 -60 Q 320 320 220 960' stroke-width='22' opacity='0.3'/%3E%3Cpath d='M760 -60 Q 600 340 840 960' stroke-width='24' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+}
+
+/* ── ЖИВОЙ СВЕТ ──
+   Боковые медно-бронзовые мазки, которые медленно «дышат»: плавно меняют
+   яркость и чуть смещаются/расширяются. Отдельный фиксированный слой за
+   контентом (z-index:-1). Анимируем только opacity и transform → работа на
+   GPU-композиторе, без перерисовок и нагрузки на скролл. Два мазка дышат в
+   противофазе (разные delay) — свет «перекатывается» с края на край. */
+.ambient-light {
+  position: fixed;
+  inset: -10%; /* запас под scale, чтобы края не оголялись */
+  z-index: -1;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+.ambient-light::before,
+.ambient-light::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  will-change: opacity, transform;
+}
+/* Левый мазок */
+.ambient-light::before {
+  background: radial-gradient(135% 90% at 2% 32%,
+    rgba(168, 104, 56, 0.55) 0%,
+    rgba(111, 72, 39, 0.30) 24%,
+    transparent 58%);
+  animation: ambient-breathe 15s ease-in-out infinite;
+}
+/* Правый мазок — в противофазе */
+.ambient-light::after {
+  background: radial-gradient(135% 90% at 98% 70%,
+    rgba(168, 104, 56, 0.50) 0%,
+    rgba(111, 72, 39, 0.26) 24%,
+    transparent 58%);
+  animation: ambient-breathe 15s ease-in-out infinite;
+  animation-delay: -7.5s;
+}
+@keyframes ambient-breathe {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(1) translateX(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.07) translateX(10px);
+  }
+}
+/* Уважение к «Уменьшению движения»: без анимации, но красивый статичный свет. */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-light::before,
+  .ambient-light::after {
+    animation: none;
+    opacity: 0.8;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {

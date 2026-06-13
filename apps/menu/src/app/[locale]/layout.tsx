@@ -28,6 +28,11 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className="h-full antialiased">
       <body className="min-h-full flex flex-col text-foreground">
+        {/* Фактура мазков кисти (статичный слой за контентом). */}
+        <div className="brush-strokes" aria-hidden="true" />
+        {/* Живой свет: боковые медно-бронзовые мазки медленно «дышат».
+            Чистый CSS-слой за контентом (z-index:-1), анимация opacity/transform → GPU. */}
+        <div className="ambient-light" aria-hidden="true" />
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
