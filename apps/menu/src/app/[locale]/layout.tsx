@@ -30,9 +30,13 @@ export default async function LocaleLayout({
       <body className="min-h-full flex flex-col text-foreground">
         {/* Фактура мазков кисти (статичный слой за контентом). */}
         <div className="brush-strokes" aria-hidden="true" />
+        {/* Переливающийся блик — мягкая золотая полоса медленно идёт по фону. */}
+        <div className="bg-sheen" aria-hidden="true" />
         {/* Живой свет: боковые медно-бронзовые мазки медленно «дышат».
             Чистый CSS-слой за контентом (z-index:-1), анимация opacity/transform → GPU. */}
         <div className="ambient-light" aria-hidden="true" />
+        {/* Золотая пыль: редкие мерцающие крупинки, медленно плывут вверх. */}
+        <div className="gold-dust" aria-hidden="true" />
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>

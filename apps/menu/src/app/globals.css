@@ -129,12 +129,46 @@ body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cdefs%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018' numOctaves='3' seed='12' result='t'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='t' scale='38' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23r)' fill='none' stroke='%23B8814C' stroke-linecap='round'%3E%3Cpath d='M-60 150 Q 300 70 960 200' stroke-width='30' opacity='0.55'/%3E%3Cpath d='M-60 340 Q 360 250 960 400' stroke-width='42' opacity='0.45'/%3E%3Cpath d='M-60 560 Q 320 470 960 600' stroke-width='34' opacity='0.5'/%3E%3Cpath d='M-60 770 Q 400 670 960 810' stroke-width='26' opacity='0.4'/%3E%3Cpath d='M140 -60 Q 320 320 220 960' stroke-width='22' opacity='0.3'/%3E%3Cpath d='M760 -60 Q 600 340 840 960' stroke-width='24' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cdefs%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016' numOctaves='4' seed='12' result='t'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='t' scale='46' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23r)' fill='none' stroke='%23C4965E' stroke-linecap='round'%3E%3Cpath d='M-60 130 Q 300 60 960 180' stroke-width='34' opacity='0.6'/%3E%3Cpath d='M-60 250 Q 340 180 960 290' stroke-width='24' opacity='0.4'/%3E%3Cpath d='M-60 360 Q 360 270 960 420' stroke-width='46' opacity='0.5'/%3E%3Cpath d='M-60 500 Q 300 430 960 540' stroke-width='28' opacity='0.45'/%3E%3Cpath d='M-60 600 Q 320 510 960 650' stroke-width='38' opacity='0.55'/%3E%3Cpath d='M-60 760 Q 400 670 960 810' stroke-width='30' opacity='0.45'/%3E%3Cpath d='M120 -60 Q 320 320 220 960' stroke-width='26' opacity='0.35'/%3E%3Cpath d='M560 -60 Q 460 340 600 960' stroke-width='20' opacity='0.3'/%3E%3Cpath d='M780 -60 Q 620 340 860 960' stroke-width='26' opacity='0.35'/%3E%3C/g%3E%3C/svg%3E");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.55;
-  mix-blend-mode: overlay;
+  opacity: 0.6;
+  /* screen → бронза светлеет на тёмном, мазки заполняют пустые места;
+     под яркой шапкой/карточками почти не проявляется (не пачкает контент). */
+  mix-blend-mode: screen;
+}
+
+/* ── ПЕРЕЛИВАЮЩИЙСЯ БЛИК ──
+   Широкая мягкая золотая полоса под наклоном медленно проходит по экрану —
+   будто свет скользит по металлической краске, фон «переливается».
+   blend screen, анимируем только transform → GPU. Полоса плавно гаснет на
+   краях, чтобы не было резких въездов/выездов. */
+.bg-sheen {
+  position: fixed;
+  inset: -40%;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    rgba(229, 196, 144, 0.08) 46%,
+    rgba(245, 217, 176, 0.16) 50%,
+    rgba(229, 196, 144, 0.08) 54%,
+    transparent 62%
+  );
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  animation: sheen-sweep 17s ease-in-out infinite;
+}
+@keyframes sheen-sweep {
+  0% { transform: translate(-28%, -14%); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translate(28%, 14%); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-sheen { animation: none; opacity: 0; }
 }
 
 /* ── ЖИВОЙ СВЕТ ──
@@ -190,6 +224,61 @@ body::after {
   .ambient-light::after {
     animation: none;
     opacity: 0.8;
+  }
+}
+
+/* ── ЗОЛОТАЯ ПЫЛЬ ──
+   Редкие золотые крупинки, медленно плывущие вверх и мягко мерцающие.
+   Два поля (::before/::after) с разной скоростью → лёгкая глубина-параллакс.
+   blend screen — крупинки светятся на тёмном фоне. Анимируем только transform
+   и opacity → GPU. Дрейф ровно на высоту тайла (бесшовная петля). */
+.gold-dust {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.gold-dust::before,
+.gold-dust::after {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  background-repeat: repeat;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+/* Ближнее поле — мельче, ярче, быстрее */
+.gold-dust::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cg fill='%23F1D9B0'%3E%3Ccircle cx='20' cy='40' r='1.2' opacity='0.9'/%3E%3Ccircle cx='75' cy='110' r='0.8' opacity='0.6'/%3E%3Ccircle cx='130' cy='30' r='1.5' opacity='0.85'/%3E%3Ccircle cx='185' cy='95' r='0.7' opacity='0.55'/%3E%3Ccircle cx='240' cy='50' r='1.1' opacity='0.8'/%3E%3Ccircle cx='300' cy='120' r='1.3' opacity='0.7'/%3E%3Ccircle cx='340' cy='60' r='0.8' opacity='0.6'/%3E%3Ccircle cx='50' cy='180' r='1.1' opacity='0.8'/%3E%3Ccircle cx='110' cy='215' r='0.7' opacity='0.5'/%3E%3Ccircle cx='160' cy='170' r='1.4' opacity='0.75'/%3E%3Ccircle cx='225' cy='205' r='0.9' opacity='0.65'/%3E%3Ccircle cx='285' cy='235' r='1.1' opacity='0.8'/%3E%3Ccircle cx='330' cy='195' r='0.7' opacity='0.55'/%3E%3Ccircle cx='30' cy='285' r='1.0' opacity='0.7'/%3E%3Ccircle cx='95' cy='320' r='1.3' opacity='0.85'/%3E%3Ccircle cx='150' cy='300' r='0.8' opacity='0.6'/%3E%3Ccircle cx='205' cy='340' r='1.0' opacity='0.7'/%3E%3Ccircle cx='265' cy='290' r='1.4' opacity='0.8'/%3E%3Ccircle cx='315' cy='335' r='0.9' opacity='0.6'/%3E%3Ccircle cx='70' cy='260' r='0.7' opacity='0.5'/%3E%3Ccircle cx='190' cy='260' r='0.8' opacity='0.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 360px 360px;
+  animation: dust-drift 55s linear infinite, dust-twinkle 6s ease-in-out infinite;
+}
+/* Дальнее поле — крупнее, мягче, медленнее */
+.gold-dust::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cg fill='%23E5C490'%3E%3Ccircle cx='60' cy='80' r='1.6' opacity='0.6'/%3E%3Ccircle cx='180' cy='40' r='1.2' opacity='0.5'/%3E%3Ccircle cx='300' cy='100' r='1.8' opacity='0.55'/%3E%3Ccircle cx='420' cy='60' r='1.3' opacity='0.5'/%3E%3Ccircle cx='480' cy='160' r='1.5' opacity='0.6'/%3E%3Ccircle cx='120' cy='200' r='1.4' opacity='0.5'/%3E%3Ccircle cx='260' cy='240' r='1.7' opacity='0.6'/%3E%3Ccircle cx='380' cy='200' r='1.2' opacity='0.45'/%3E%3Ccircle cx='80' cy='340' r='1.5' opacity='0.55'/%3E%3Ccircle cx='220' cy='380' r='1.8' opacity='0.6'/%3E%3Ccircle cx='340' cy='340' r='1.3' opacity='0.5'/%3E%3Ccircle cx='460' cy='400' r='1.6' opacity='0.55'/%3E%3Ccircle cx='160' cy='460' r='1.4' opacity='0.5'/%3E%3Ccircle cx='300' cy='480' r='1.7' opacity='0.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 520px 520px;
+  animation: dust-drift-far 85s linear infinite reverse, dust-twinkle 8s ease-in-out infinite;
+  animation-delay: -3s, -2s;
+  opacity: 0.7;
+}
+@keyframes dust-drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-360px); }
+}
+@keyframes dust-drift-far {
+  from { transform: translateY(0); }
+  to { transform: translateY(-520px); }
+}
+@keyframes dust-twinkle {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gold-dust::before,
+  .gold-dust::after {
+    animation: none;
+    opacity: 0.6;
   }
 }
 
