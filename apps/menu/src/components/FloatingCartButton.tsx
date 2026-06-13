@@ -8,9 +8,10 @@ import { useCart } from '@/store/cart';
 import { LocationInfoModal } from './LocationInfoModal';
 import { cn } from '@/lib/utils';
 
-/** Базовые классы пункта плашки — круглая кнопка-иконка (без подписи). */
+/** Базовые классы пункта плашки — круглая кнопка-иконка (без подписи).
+ *  Крупные тап-зоны (56px) — чтобы уверенно попадать пальцем. */
 const navItemBase =
-  'relative flex h-11 w-11 items-center justify-center rounded-full transition cursor-pointer';
+  'relative flex h-14 w-14 items-center justify-center rounded-full transition cursor-pointer';
 const navItemActive = 'bg-gold text-[#2A1B11] shadow-[0_4px_18px_rgba(196,146,98,0.45)]';
 const navItemIdle = 'text-gold hover:bg-gold/10';
 
@@ -78,19 +79,19 @@ export function FloatingCartButton({ locationSlug, locationName, address, phone,
       className="fixed left-1/2 bottom-5 z-40 -translate-x-1/2"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="flex items-center gap-1 rounded-full border border-gold/40 bg-[color:var(--card-elev)] p-1 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
+      <div className="flex items-center gap-2.5 rounded-full border border-gold/40 bg-[color:var(--card-elev)] px-2.5 py-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
         {/* Слева — Information: адрес + телефон во всплывающей модалке */}
         <LocationInfoModal locationName={locationName} address={address} phone={phone} accent={accent}>
           <button type="button" className={cn(navItemBase, navItemIdle)} aria-label={t('info')}>
-            <Info size={19} />
+            <Info size={23} />
           </button>
         </LocationInfoModal>
 
         {/* Центр — Домик (главная локации) */}
-        <NavItem href={homeHref} icon={<Home size={19} />} label={t('menu')} active={isHome} />
+        <NavItem href={homeHref} icon={<Home size={23} />} label={t('menu')} active={isHome} />
 
         {/* Справа — Корзина */}
-        <NavItem href={cartHref} icon={<ShoppingBag size={19} />} label={t('cart')} active={isCart} badge={count} />
+        <NavItem href={cartHref} icon={<ShoppingBag size={23} />} label={t('cart')} active={isCart} badge={count} />
       </div>
     </motion.div>
   );
