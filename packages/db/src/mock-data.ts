@@ -214,10 +214,12 @@ export const MOCK_HOOKAH_MOODS: HookahMood[] = [
 // TODO: вставить реальные ссылки (Instagram «Барвиха Group», Telegram-канал,
 // сообщество ВКонтакте). Пока '#' — карусель такие кнопки НЕ показывает,
 // появятся сразу как подставим настоящие URL.
+// Рабочие ЗАГЛУШКИ — открываются, но это не точные аккаунты.
+// TODO: заменить на реальные ссылки «Барвиха Group».
 const BARVIHA_SOCIAL: SpotlightLink[] = [
-  { kind: 'instagram', label: 'Instagram', href: '#' }, // TODO: ссылка Instagram
-  { kind: 'telegram', label: 'Telegram-канал', href: '#' }, // TODO: ссылка ТГ-канала
-  { kind: 'vk', label: 'ВКонтакте', href: '#' }, // TODO: ссылка сообщества VK
+  { kind: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/barvikha.group' },
+  { kind: 'telegram', label: 'Telegram-канал', href: 'https://t.me/barvikha_group' },
+  { kind: 'vk', label: 'ВКонтакте', href: 'https://vk.com/barvikha_group' },
 ];
 
 // Телефон локации для связи — WhatsApp и Telegram («куда писать»). Только цифры.
