@@ -80,7 +80,7 @@ export function HeroSection({
   }, [shouldLoadVideo]);
 
   return (
-    <section className="relative -mt-28 sm:-mt-20 -mb-8 h-[56svh] min-h-[340px] overflow-hidden left-1/2 -translate-x-1/2 w-[min(130%,calc(100vw-1rem))]">
+    <section className="relative -mt-28 sm:-mt-20 -mb-8 h-[56svh] min-h-[340px] overflow-hidden left-1/2 -translate-x-1/2 w-screen max-w-none">
       {/* Фон-плейсхолдер: градиент + постер (показывается мгновенно) */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]" />
       {poster && (

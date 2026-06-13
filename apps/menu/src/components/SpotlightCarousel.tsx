@@ -117,10 +117,8 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
     const el = scrollerRef.current;
     if (!el || loop.length === 0) return;
 
-    const reduce =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return;
+    // NB: намеренно НЕ глушим карусель при prefers-reduced-motion —
+    // владелец хочет, чтобы лента всегда каталась (это ключевой элемент главной).
 
     // Гасим авто-скролл, когда карусели не видно во вьюпорте.
     const io = new IntersectionObserver(
@@ -131,7 +129,7 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
     );
     io.observe(el);
 
-    const SPEED = 28; // px/сек — спокойный «кинопоказ»
+    const SPEED = 42; // px/сек — заметное, но спокойное движение
     let raf = 0;
     let last = performance.now();
 
