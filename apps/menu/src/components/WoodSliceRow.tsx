@@ -1,18 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from '@/i18n/navigation';
 
 /**
- * Три «спила бревна» — кнопки на основе НАСТОЯЩЕГО фото среза (ясень),
- * вырезанного по контуру (прозрачный фон, рваный край коры сохранён).
- *
- * Один снимок → три визуально разных спила: поворот + отражение + лёгкий
- * сдвиг тона. Главное — у спила есть ТОЛЩИНА (градиентный торец через
- * стек drop-shadow по силуэту) → это объёмный кусок дерева, а не плоская
- * наклейка. Тёплый ореол-подсветка + приземляющая тень; при наведении —
- * золотое свечение по контуру и лёгкий подъём.
+ * Три деревянных «спила-бруска» — кнопки Кальяны / Кухня / Бар.
+ * База, к которой вернулись: реалистичный срез из фото (slice.png), с
+ * объёмом-торцом и тёплым цветом, ЗАПЕЧЁННЫМИ прямо в webp
+ * (public/wood/slice-3d-*.webp). В рантайме НЕТ фильтров (blur/drop-shadow,
+ * framer-motion) — именно они вешали GPU. Только дешёвый transform на hover.
+ * Название — выжжено по дереву чётким клеймом.
  */
 export interface WoodSliceItem {
   href: string;
@@ -24,122 +20,61 @@ interface Props {
   locationSlug?: string;
 }
 
-// градиентный торец спила (объём): силуэт, продавленный вниз, светлее
-// сверху → темнее книзу. Применяется на ОБЁРТКЕ поверх повёрнутой
-// картинки → всегда вниз по экрану, не «улетает» при повороте.
-const EDGE =
-  'drop-shadow(0 1px 0 rgb(88,57,30)) drop-shadow(0 2px 0 rgb(82,53,28)) drop-shadow(0 3px 0 rgb(76,49,25)) drop-shadow(0 4px 0 rgb(70,45,23)) drop-shadow(0 5px 0 rgb(64,41,21)) drop-shadow(0 6px 0 rgb(58,37,19)) drop-shadow(0 7px 0 rgb(52,33,17)) drop-shadow(0 8px 0 rgb(46,29,15)) drop-shadow(0 9px 0 rgb(40,25,12)) drop-shadow(0 10px 0 rgb(34,21,10)) drop-shadow(0 11px 0 rgb(28,17,8)) drop-shadow(0 12px 0 rgb(22,13,6))';
-
-// варианты подачи одного фото — мелкие естественные углы + отражение +
-// сдвиг тона. Большие повороты убраны: они выдавали один и тот же спил,
-// прокрученный вокруг оси.
-const VARIANTS = [
-  { rotate: -3, scaleX: 1, grade: 'saturate(1.06) contrast(1.05) brightness(1.03) hue-rotate(3deg)' },
-  { rotate: 2, scaleX: -1, grade: 'saturate(1.1) contrast(1.06) brightness(1.0) hue-rotate(2deg)' },
-  { rotate: -2, scaleX: 1, grade: 'saturate(1.04) contrast(1.04) brightness(1.06) hue-rotate(4deg)' },
-] as const;
+// запечённые варианты: торец + грейдинг + отражение уже внутри картинки
+const SRC = ['/wood/slice-3d-0.webp', '/wood/slice-3d-1.webp', '/wood/slice-3d-2.webp'];
 
 export function WoodSliceRow({ items }: Props) {
-  const [hovered, setHovered] = useState<number | null>(null);
-
   return (
-    <div className="mx-auto flex w-full max-w-3xl items-end justify-center gap-2 px-1 sm:gap-6 sm:px-4">
-      {items.slice(0, 3).map((it, i) => {
-        const v = VARIANTS[i % VARIANTS.length]!;
-        const isHover = hovered === i;
-        return (
-          <Link
-            key={it.href}
-            href={it.href}
-            prefetch
-            aria-label={it.title}
-            className="group relative flex w-1/3 flex-col items-center focus:outline-none"
-            onPointerEnter={() => setHovered(i)}
-            onPointerDown={() => setHovered(i)}
-            onPointerLeave={() => setHovered((h) => (h === i ? null : h))}
-            onFocus={() => setHovered(i)}
-            onBlur={() => setHovered((h) => (h === i ? null : h))}
-          >
-            <motion.div
-              className="relative w-full"
-              initial={{ opacity: 0, y: 26 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ scale: 1.06, y: -5 }}
+    <div className="mx-auto flex w-full max-w-3xl items-end justify-center gap-3 px-1 sm:gap-6 sm:px-4">
+      {items.slice(0, 3).map((it, i) => (
+        <Link
+          key={it.href}
+          href={it.href}
+          prefetch
+          aria-label={it.title}
+          className="group relative flex w-1/3 flex-col items-center focus:outline-none"
+        >
+          <div className="relative w-full transition-transform duration-200 ease-out group-hover:scale-[1.04] group-active:scale-[0.98]">
+            {/* мягкая статичная тень-подложка: один радиальный градиент, без blur */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-x-[16%] bottom-[1%] h-[11%] rounded-[50%]"
+              style={{
+                background:
+                  'radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.5), rgba(0,0,0,0) 70%)',
+              }}
+            />
+            {/* сам спил — объёмный брусок, статичное фото */}
+            <img
+              src={SRC[i % SRC.length]}
+              alt=""
+              aria-hidden
+              draggable={false}
+              loading="lazy"
+              className="relative block h-auto w-full select-none"
+            />
+            {/* название — выжжено по дереву (чёткое клеймо) */}
+            <div
+              className="pointer-events-none absolute inset-0 flex items-center justify-center"
+              style={{ paddingBottom: '14%' }}
             >
-              {/* тёплая подсветка-ореол за спилом */}
               <span
-                aria-hidden
-                className="pointer-events-none absolute rounded-[50%]"
+                className="text-center uppercase"
                 style={{
-                  inset: '-14% -10% -6% -10%',
-                  background: isHover
-                    ? 'radial-gradient(50% 50% at 50% 48%, rgba(242,214,158,0.45), rgba(214,162,92,0.18) 55%, rgba(214,162,92,0) 72%)'
-                    : 'radial-gradient(50% 50% at 50% 48%, rgba(214,162,92,0.34), rgba(214,162,92,0.12) 55%, rgba(214,162,92,0) 72%)',
-                  filter: 'blur(14px)',
-                  transition: 'background 0.3s ease',
-                  zIndex: 0,
-                }}
-              />
-              {/* контактная тень под спилом */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-x-[16%] bottom-[-6%] h-[12%] rounded-[50%]"
-                style={{
-                  background: 'radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.62), rgba(0,0,0,0) 72%)',
-                  filter: 'blur(4px)',
-                  zIndex: 0,
-                }}
-              />
-              {/* обёртка с торцом: фильтр применяется ПОВЕРХ повёрнутой
-                  картинки → выдавливание всегда строго вниз по экрану */}
-              <div
-                className="relative w-full"
-                style={{
-                  filter: isHover
-                    ? `${EDGE} drop-shadow(0 12px 12px rgba(0,0,0,0.5)) drop-shadow(0 0 8px rgba(242,214,158,0.9)) drop-shadow(0 0 2px rgba(242,214,158,0.95))`
-                    : `${EDGE} drop-shadow(0 10px 10px rgba(0,0,0,0.5))`,
-                  transition: 'filter 0.25s ease',
-                  zIndex: 2,
+                  fontWeight: 800,
+                  fontSize: 'clamp(11px, 3vw, 21px)',
+                  letterSpacing: '0.08em',
+                  color: '#24130a',
+                  textShadow:
+                    '0 1px 0 rgba(248,230,188,0.32), 0 0 1px rgba(15,8,3,1), 0 0 2px rgba(40,22,8,0.45)',
                 }}
               >
-                <img
-                  src="/wood/slice-cut.webp"
-                  alt=""
-                  aria-hidden
-                  draggable={false}
-                  className="block h-auto w-full select-none"
-                  style={{
-                    transform: `rotate(${v.rotate}deg) scaleX(${v.scaleX})`,
-                    filter: v.grade,
-                  }}
-                />
-              </div>
-              {/* название — выжжено прямо по дереву (клеймо) */}
-              <div
-                className="pointer-events-none absolute inset-0 flex items-center justify-center"
-                style={{ paddingBottom: '6%', zIndex: 3 }}
-              >
-                <span
-                  className="text-center uppercase"
-                  style={{
-                    fontWeight: 800,
-                    fontSize: 'clamp(11px, 3vw, 21px)',
-                    letterSpacing: '0.08em',
-                    color: isHover ? '#311a08' : '#241204',
-                    textShadow: isHover
-                      ? '0 0 1px rgba(20,10,4,0.85), 0 1px 1px rgba(0,0,0,0.45), 0 0 8px rgba(242,214,158,0.45), 0 -1px 0 rgba(255,240,205,0.22)'
-                      : '0 0 1px rgba(20,10,4,0.85), 0 1px 1px rgba(0,0,0,0.45), 0 0 7px rgba(74,40,16,0.6), 0 -1px 0 rgba(255,240,205,0.22)',
-                    transition: 'color 0.25s, text-shadow 0.25s',
-                  }}
-                >
-                  {it.title}
-                </span>
-              </div>
-            </motion.div>
-          </Link>
-        );
-      })}
+                {it.title}
+              </span>
+            </div>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }

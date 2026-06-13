@@ -16,7 +16,12 @@ interface Props {
   index?: number;
 }
 
-export function ItemCard({ item, name, locationSlug, index = 0 }: Props) {
+export function ItemCard({ item, name, description, locationSlug, index = 0 }: Props) {
+  // На карточке — короткий тизер: первое предложение описания (ёмкое, «вкусовое»),
+  // а не обрезка абзаца на полуслове. Полный текст — на детальной странице.
+  const teaser = description
+    ? (description.match(/^.*?[.!?…](\s|$)/)?.[0] ?? description).trim()
+    : null;
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -53,9 +58,14 @@ export function ItemCard({ item, name, locationSlug, index = 0 }: Props) {
         </div>
         <div className="flex items-center justify-between gap-3 p-4 sm:p-5">
           <div className="min-w-0">
-            <h3 className="text-base sm:text-lg font-normal tracking-wide text-white leading-tight line-clamp-2">
+            <h3 className="font-[family-name:var(--font-sans)] text-[15px] sm:text-base font-light tracking-[0.03em] text-cream leading-snug line-clamp-2">
               {name}
             </h3>
+            {teaser && (
+              <p className="mt-1 text-[11px] sm:text-xs font-light leading-snug text-muted line-clamp-2">
+                {teaser}
+              </p>
+            )}
             <span className="mt-1.5 block text-base sm:text-lg font-medium text-gold">
               {formatPrice(item.price)}
             </span>

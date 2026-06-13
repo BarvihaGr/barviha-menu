@@ -166,7 +166,8 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
     const measure = () => {
       const oneSet = el.scrollWidth / reps;
       if (!oneSet || !el.clientWidth) return;
-      const needed = Math.max(2, Math.ceil(el.clientWidth / oneSet) + 1);
+      // Ограничиваем сверху — чтобы на 4K не плодить десятки карточек (лаги).
+      const needed = Math.min(8, Math.max(2, Math.ceil(el.clientWidth / oneSet) + 1));
       if (needed !== reps) setReps(needed);
     };
     measure();
@@ -235,7 +236,7 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
                 if (movedRef.current) return; // это был свайп, не тап
                 setActive(s);
               }}
-              className="group relative shrink-0 w-[230px] sm:w-[270px] aspect-[9/8] overflow-hidden rounded-lg border border-gold/25 text-left transition-transform duration-300 hover:scale-[1.03] hover:border-gold/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              className="group relative shrink-0 w-[150px] sm:w-[175px] aspect-square overflow-hidden rounded-xl border border-gold/25 text-left transition-transform duration-300 hover:scale-[1.03] hover:border-gold/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
               {/* Фон: фото или градиент по акценту */}
               {s.image ? (
@@ -243,7 +244,7 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
                   src={s.image}
                   alt=""
                   fill
-                  sizes="270px"
+                  sizes="175px"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               ) : (
@@ -262,16 +263,16 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
               />
 
               {/* Верх: иконка типа + бейдж */}
-              <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3">
+              <div className="absolute inset-x-0 top-0 flex items-start justify-between p-2.5">
                 <span
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/40 text-gold"
+                  className="flex h-7 w-7 items-center justify-center rounded-full border border-white/15 bg-black/40 text-gold"
                   style={{ color: a }}
                 >
-                  <Icon size={17} strokeWidth={1.7} />
+                  <Icon size={14} strokeWidth={1.7} />
                 </span>
                 {badge && (
                   <span
-                    className="rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-black"
+                    className="rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-black"
                     style={{ background: a, borderColor: a }}
                   >
                     {badge}
@@ -279,20 +280,17 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
                 )}
               </div>
 
-              {/* Низ: заголовок + подзаголовок + хинт */}
-              <div className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-3">
-                <span className="text-[10px] uppercase tracking-[0.25em]" style={{ color: a }}>
+              {/* Низ: заголовок + подзаголовок */}
+              <div className="absolute inset-x-0 bottom-0 flex flex-col gap-0.5 p-2.5">
+                <span className="text-[8px] uppercase tracking-[0.22em]" style={{ color: a }}>
                   {t(`kind.${s.kind}`)}
                 </span>
-                <h3 className="font-[family-name:var(--font-display)] text-base font-semibold leading-tight text-white drop-shadow">
+                <h3 className="font-[family-name:var(--font-display)] text-[13px] font-semibold leading-tight text-white drop-shadow line-clamp-1">
                   {title}
                 </h3>
                 {subtitle && (
-                  <p className="text-xs leading-snug text-white/75 line-clamp-1">{subtitle}</p>
+                  <p className="text-[10px] leading-snug text-white/70 line-clamp-1">{subtitle}</p>
                 )}
-                <span className="mt-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] text-gold/90 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  {t('more')} →
-                </span>
               </div>
             </button>
           );

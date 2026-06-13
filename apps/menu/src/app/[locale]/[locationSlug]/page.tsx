@@ -7,7 +7,6 @@ import { CategoryPuzzleRow } from '@/components/CategoryPuzzleRow';
 import { SectionTitle } from '@/components/SectionTitle';
 import { HeroSection } from '@/components/HeroSection';
 import { SpotlightCarousel } from '@/components/SpotlightCarousel';
-import { EventMarquee } from '@/components/EventMarquee';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
 import { getLocationAccent } from '@/lib/location-theme';
 
@@ -26,11 +25,10 @@ export default async function LocationHome({
   const db = getClient();
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) notFound();
-  const [categories, announcements, spotlights, afisha] = await Promise.all([
+  const [categories, announcements, spotlights] = await Promise.all([
     db.getCategoriesForLocation(location.id),
     db.getAnnouncementsForLocation(location.id),
     db.getSpotlightsForLocation(location.id),
-    db.getAfishaForLocation(location.id),
   ]);
 
   // Берём ровно 3 категории (kitchen → bar → hookah) в этом порядке
@@ -55,9 +53,6 @@ export default async function LocationHome({
         locationCity={location.city ?? location.address}
         accent={accent}
       />
-
-      {/* Бегущая строка-афиша сразу под hero (как в макете) */}
-      <EventMarquee events={afisha} />
 
       {spotlights.length > 0 && (
         <section className="pb-6 -mt-6 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw]">

@@ -15,7 +15,7 @@ export function QtyControl({ itemId, qty }: { itemId: string; qty: number }) {
       >
         <Minus size={14} strokeWidth={2.5} />
       </button>
-      <span className="min-w-[24px] text-center text-base text-white">{qty}</span>
+      <span className="min-w-[24px] text-center text-base tabular-nums text-cream">{qty}</span>
       <button
         type="button"
         onClick={() => setQty(itemId, qty + 1)}

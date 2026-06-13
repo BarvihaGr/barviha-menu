@@ -79,7 +79,7 @@ export function CartView({ allItems, locationSlug }: Props) {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm text-white truncate">{name}</div>
+                      <div className="font-[family-name:var(--font-display)] text-sm text-cream truncate">{name}</div>
                       <div className="text-sm text-gold">{formatPrice(item.price)}</div>
                     </div>
                     <QtyControl itemId={entry.itemId} qty={entry.qty} />

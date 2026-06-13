@@ -3,34 +3,33 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from '@/i18n/navigation';
-import {
-  DEFAULT_LAYOUT,
-  getPuzzleLayout,
-  type PuzzleLayout,
-  type Seam,
-  type BlobConfig,
-} from '@/lib/puzzle-layout';
 
 export interface PuzzleItem {
   href: string;
   title: string;
-  icon: React.ReactNode;
 }
 
 interface Props {
   /** Ровно 3 элемента, порядок слева-направо: Кальяны | Кухня | Бар. */
   items: PuzzleItem[];
-  /**
-   * Slug локации — определяет уникальную посадку пазла.
-   * Если не передан, используется DEFAULT_LAYOUT (как Арка).
-   */
+  /** Slug локации — уникальная форма каждого спила. */
   locationSlug?: string;
 }
 
-// ───────────────────── система координат ─────────────────────
-const VB_W = 300;
-const VB_H = 156;
-const GAP = 5;
+// квадратный viewBox на один спил
+const VB = 130;
+const CX = 65;
+const CY = 63;
+const RB = 55; // «пожирнее» — спил почти заполняет кадр
+
+function hashStr(s: string): number {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  return h >>> 0;
+}
 
 function mulberry32(seed: number) {
   let s = seed >>> 0;
@@ -43,78 +42,47 @@ function mulberry32(seed: number) {
   };
 }
 
-// ───────────────────── рез между соседями ─────────────────────
-function makeCutFn(seam: Seam) {
-  return (y: number): number => {
-    // wave + knob ограничены так, чтобы суммарный сдвиг шва не превышал ±18px:
-    // соседний срез всегда успевает дотянуться до своего края (никаких щелей).
-    const wave = 4.5 * Math.sin(y * 0.05 + seam.phase) + 2 * Math.sin(y * 0.13 + seam.phase * 1.7);
-    const knob = seam.dir * 10 * Math.exp(-((y - seam.knobY) ** 2) / (2 * 16 ** 2));
-    return seam.x + wave + knob;
-  };
-}
-
-const YS: number[] = [];
-for (let y = -8; y <= VB_H + 8; y += 3) YS.push(y);
-
-function stripLeft(rightFn: (y: number) => number): string {
-  let d = `M ${-40},${-8} `;
-  for (const y of YS) d += `L ${rightFn(y).toFixed(2)},${y} `;
-  d += `L ${-40},${VB_H + 8} Z`;
-  return d;
-}
-function stripRight(leftFn: (y: number) => number): string {
-  let d = `M ${VB_W + 40},${-8} `;
-  for (const y of YS) d += `L ${leftFn(y).toFixed(2)},${y} `;
-  d += `L ${VB_W + 40},${VB_H + 8} Z`;
-  return d;
-}
-function stripMiddle(leftFn: (y: number) => number, rightFn: (y: number) => number): string {
-  let d = '';
-  YS.forEach((y, i) => (d += `${i === 0 ? 'M' : 'L'} ${leftFn(y).toFixed(2)},${y} `));
-  for (let i = YS.length - 1; i >= 0; i--) d += `L ${rightFn(YS[i]!).toFixed(2)},${YS[i]} `;
-  return d + 'Z';
-}
-
-// ───────────────────── реалистичный срез дерева ─────────────────────
-interface Blob {
+interface Slice {
   outline: string;
-  pts: Array<[number, number]>;
   rings: Array<{ d: string; opacity: number; width: number; tone: string }>;
-  cracks: string[];
 }
 
-function buildBlob(seed: number, cfg: BlobConfig): Blob {
+function buildSlice(seed: number): Slice {
   const rng = mulberry32(seed);
   const ph1 = seed * 0.7;
   const ph2 = seed * 1.3;
   const ph3 = seed * 2.1;
-  const [ox, oy] = cfg.O;
-  const [px, py] = cfg.P;
-  const Rb = cfg.Rb;
+
+  // сердцевина — слегка смещена от центра
+  const pa = rng() * Math.PI * 2;
+  const pr = RB * (0.08 + rng() * 0.16);
+  const px = CX + Math.cos(pa) * pr;
+  const py = CY + Math.sin(pa) * pr;
 
   const Rout = (a: number) =>
-    Rb *
+    RB *
     (1 +
-      0.13 * Math.sin(a + ph1) +
-      0.07 * Math.sin(a * 2 + ph2) +
-      0.035 * Math.sin(a * 3 + ph3));
+      0.11 * Math.sin(a + ph1) +
+      0.06 * Math.sin(a * 2 + ph2) +
+      0.03 * Math.sin(a * 3 + ph3) +
+      0.018 * Math.sin(a * 5 + ph1 * 1.7));
 
   const STEPS = 120;
   const B: Array<[number, number]> = [];
   for (let i = 0; i < STEPS; i++) {
     const a = (i / STEPS) * Math.PI * 2;
     const r = Rout(a);
-    B.push([ox + Math.cos(a) * r, oy + Math.sin(a) * r * 1.02]);
+    B.push([CX + Math.cos(a) * r, CY + Math.sin(a) * r * 1.0]);
   }
   const outline =
     B.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)}`).join(' ') + ' Z';
 
-  const rings: Blob['rings'] = [];
-  let f = 0.03;
-  for (let k = 1; k <= 96 && f < 0.985; k++) {
-    const step = 0.0065 + 0.0125 * (1 - f) + (rng() - 0.5) * 0.0016;
-    f = Math.min(0.985, f + step);
+  const rings: Slice['rings'] = [];
+  let f = 0.025;
+  for (let k = 1; k <= 130 && f < 0.99; k++) {
+    const grow = 0.5 + 0.5 * Math.sin(k * 0.4 + ph2);
+    const step = 0.004 + 0.011 * (1 - f) * (0.55 + 0.9 * grow) + (rng() - 0.5) * 0.0014;
+    f = Math.min(0.99, f + step);
     const rngK = mulberry32(seed * 131 + k);
     let d = '';
     for (let i = 0; i <= STEPS; i++) {
@@ -122,257 +90,232 @@ function buildBlob(seed: number, cfg: BlobConfig): Blob {
       const a = (i / STEPS) * Math.PI * 2;
       const bx = B[idx]![0];
       const by = B[idx]![1];
-      const wob = 0.28 * Math.sin(a * 3 + k * 0.6 + seed) + (rngK() - 0.5) * 0.16;
+      const wob = 0.22 * Math.sin(a * 3 + k * 0.6 + seed) + (rngK() - 0.5) * 0.12;
       const dirx = bx - px;
       const diry = by - py;
       const len = Math.hypot(dirx, diry) || 1;
       const rr = f + wob / len;
       d += `${i === 0 ? 'M' : 'L'}${(px + dirx * rr).toFixed(2)},${(py + diry * rr).toFixed(2)} `;
     }
-    const late = k % 8 === 0;
+    const late = step < 0.006;
     rings.push({
       d: d.trim(),
-      opacity: Math.min(0.8, 0.32 + 0.34 * (1 - Math.abs(f - 0.5)) + (late ? 0.12 : 0)),
-      width: 0.2 + (late ? 0.18 : 0),
-      tone: late ? '#C79E63' : k % 2 === 0 ? '#E7C994' : '#DDBE85',
+      opacity: Math.min(0.55, 0.2 + 0.26 * (1 - Math.abs(f - 0.5)) + (late ? 0.12 : 0)),
+      width: 0.14 + (late ? 0.2 : 0),
+      tone: late ? '#4E331C' : k % 2 === 0 ? '#A87A44' : '#8C6230',
     });
   }
 
-  const cracks: string[] = [];
-  const crackCount = 2 + Math.floor(rng() * 2);
-  for (let c = 0; c < crackCount; c++) {
-    const a = (c / crackCount) * Math.PI * 2 + (rng() - 0.5) * 0.9;
-    const idx = ((Math.round((a / (Math.PI * 2)) * STEPS) % STEPS) + STEPS) % STEPS;
-    const bx = B[idx]![0];
-    const by = B[idx]![1];
-    const seg = 6;
-    let d = `M${px.toFixed(2)},${py.toFixed(2)}`;
-    for (let s = 1; s <= seg; s++) {
-      const tt = (s / seg) * (0.8 + rng() * 0.18);
-      const nx = -(by - py);
-      const ny = bx - px;
-      const nl = Math.hypot(nx, ny) || 1;
-      const wob = (rng() - 0.5) * 2.6 * tt;
-      const x = px + (bx - px) * tt + (nx / nl) * wob;
-      const y = py + (by - py) * tt + (ny / nl) * wob;
-      d += ` L${x.toFixed(2)},${y.toFixed(2)}`;
-    }
-    cracks.push(d);
-  }
-
-  return { outline, pts: B, rings, cracks };
-}
-
-interface BuiltLayout {
-  layout: PuzzleLayout;
-  blobs: [Blob, Blob, Blob];
-  strips: [string, string, string];
-  pith: ReadonlyArray<readonly [number, number]>;
-  zones: Array<{ left: number; width: number }>;
-}
-
-function buildLayout(layout: PuzzleLayout): BuiltLayout {
-  const cut0 = makeCutFn(layout.seams[0]);
-  const cut1 = makeCutFn(layout.seams[1]);
-
-  const blobs: [Blob, Blob, Blob] = [
-    buildBlob(layout.blobSeeds[0], layout.blobs[0]),
-    buildBlob(layout.blobSeeds[1], layout.blobs[1]),
-    buildBlob(layout.blobSeeds[2], layout.blobs[2]),
-  ];
-
-  const strips: [string, string, string] = [
-    stripLeft((y) => cut0(y) - GAP / 2),
-    stripMiddle(
-      (y) => cut0(y) + GAP / 2,
-      (y) => cut1(y) - GAP / 2,
-    ),
-    stripRight((y) => cut1(y) + GAP / 2),
-  ];
-
-  // сердцевина = pith из cfg (визуально это центр иконки/подписи)
-  const pith = layout.blobs.map((b) => b.P as readonly [number, number]);
-
-  const zones = [
-    { left: 0, width: (layout.seams[0].x / VB_W) * 100 },
-    {
-      left: (layout.seams[0].x / VB_W) * 100,
-      width: ((layout.seams[1].x - layout.seams[0].x) / VB_W) * 100,
-    },
-    {
-      left: (layout.seams[1].x / VB_W) * 100,
-      width: ((VB_W - layout.seams[1].x) / VB_W) * 100,
-    },
-  ];
-
-  return { layout, blobs, strips, pith, zones };
+  return { outline, rings };
 }
 
 /**
- * Три реалистичных «среза дерева», сложенных в пазл.
- *
- * Каждая локация получает уникальную композицию: швы, центры и размеры
- * срезов рандомизируются детерминированно от `locationSlug`. У одной точки
- * Кухня крупнее, у другой Бар наклонён иначе, у третьей бугры пазла идут
- * наоборот — общий «фирменный стиль» сохраняется, но 27 вариаций.
+ * Композиция «тройки» — не ровный строй, а живая раскладка:
+ * центр (Кухня) приподнят и крупнее как смысловой фокус, боковые
+ * чуть опущены и развёрнуты веером наружу. Подписи остаются ровными —
+ * вращается только дерево.
  */
+const LAYOUT = [
+  { y: 12, rot: -5, scale: 1.0 }, // слева
+  { y: -18, rot: 1.5, scale: 1.23 }, // центр — герой
+  { y: 9, rot: 5, scale: 1.0 }, // справа
+] as const;
+
 export function CategoryPuzzleRow({ items, locationSlug }: Props) {
   const [hovered, setHovered] = useState<number | null>(null);
 
-  const built = useMemo(
-    () => buildLayout(locationSlug ? getPuzzleLayout(locationSlug) : DEFAULT_LAYOUT),
-    [locationSlug],
-  );
+  const slices = useMemo(() => {
+    const base = hashStr(locationSlug ?? 'default');
+    return [0, 1, 2].map((i) => buildSlice((base * 2654435761 + (i + 1) * 40503) >>> 0));
+  }, [locationSlug]);
 
   return (
-    <div className="relative mx-auto w-full max-w-2xl">
-      <motion.div
-        className="relative"
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <svg
-          viewBox={`0 0 ${VB_W} ${VB_H}`}
-          className="block h-auto w-full overflow-visible"
-          style={{ filter: 'drop-shadow(0 6px 12px rgba(0,0,0,0.5))' }}
-          aria-hidden
-        >
-          <defs>
-            <radialGradient id="pz-bg" cx="50%" cy="48%" r="62%">
-              <stop offset="0%" stopColor="#402E21" />
-              <stop offset="55%" stopColor="#2A1B11" />
-              <stop offset="100%" stopColor="#180E07" />
-            </radialGradient>
-            <radialGradient id="pz-glow" cx="50%" cy="46%" r="52%">
-              <stop offset="0%" stopColor="rgba(231,201,148,0.18)" />
-              <stop offset="65%" stopColor="rgba(231,201,148,0)" />
-            </radialGradient>
-            <filter id="pz-grain">
-              <feTurbulence type="fractalNoise" baseFrequency="0.012 0.9" numOctaves="3" seed="11" />
-              <feColorMatrix
-                values="0 0 0 0 0.72
-                        0 0 0 0 0.54
-                        0 0 0 0 0.30
-                        0 0 0 0.5 0"
-              />
-            </filter>
-            {built.blobs.map((b, i) => (
-              <clipPath id={`pz-blob-${i}`} key={`b${i}`}>
-                <path d={b.outline} />
-              </clipPath>
-            ))}
-            {built.strips.map((s, i) => (
-              <clipPath id={`pz-strip-${i}`} key={`s${i}`}>
-                <path d={s} />
-              </clipPath>
-            ))}
-          </defs>
+    <div className="mx-auto w-full max-w-3xl px-1 sm:px-4">
+      {/* общие фильтры/градиенты — один раз на документ */}
+      <svg width="0" height="0" className="absolute" aria-hidden>
+        <defs>
+          <radialGradient id="pz-bg" cx="50%" cy="48%" r="62%">
+            <stop offset="0%" stopColor="#4D3622" />
+            <stop offset="55%" stopColor="#2E1E12" />
+            <stop offset="100%" stopColor="#160C06" />
+          </radialGradient>
+          <filter id="pz-grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.9" numOctaves="3" seed="11" />
+            <feColorMatrix values="0 0 0 0 0.72  0 0 0 0 0.54  0 0 0 0 0.30  0 0 0 0.5 0" />
+          </filter>
+          <filter id="pz-mottle">
+            <feTurbulence type="fractalNoise" baseFrequency="0.035 0.05" numOctaves="2" seed="7" />
+            <feColorMatrix values="0 0 0 0 0.16  0 0 0 0 0.10  0 0 0 0 0.05  0 0 0 0.6 0" />
+          </filter>
+          <filter id="pz-rough">
+            <feTurbulence type="fractalNoise" baseFrequency="0.5 0.5" numOctaves="2" seed="19" />
+            <feColorMatrix values="0 0 0 0 0.62  0 0 0 0 0.46  0 0 0 0 0.26  0 0 0 0.4 0" />
+          </filter>
+          <radialGradient id="pz-sheen" cx="36%" cy="28%" r="70%">
+            <stop offset="0%" stopColor="rgba(255,242,214,0.12)" />
+            <stop offset="55%" stopColor="rgba(255,242,214,0)" />
+          </radialGradient>
+        </defs>
+      </svg>
 
-          {built.blobs.map((b, i) => (
-            <g key={i} clipPath={`url(#pz-strip-${i})`}>
-              <g clipPath={`url(#pz-blob-${i})`}>
-                <rect width={VB_W} height={VB_H} fill="url(#pz-bg)" />
-                <rect width={VB_W} height={VB_H} filter="url(#pz-grain)" opacity="0.22" />
+      <div className="flex items-center justify-center gap-2 pt-5 pb-3 sm:gap-5">
+        {items.slice(0, 3).map((it, i) => {
+          const s = slices[i % slices.length]!;
+          const isHover = hovered === i;
+          const cfg = LAYOUT[i] ?? LAYOUT[0];
+          return (
+            <Link
+              key={it.href}
+              href={it.href}
+              prefetch
+              aria-label={it.title}
+              className="group relative block w-1/3 focus:outline-none"
+              onPointerEnter={() => setHovered(i)}
+              onPointerDown={() => setHovered(i)}
+              onPointerLeave={() => setHovered((h) => (h === i ? null : h))}
+              onFocus={() => setHovered(i)}
+              onBlur={() => setHovered((h) => (h === i ? null : h))}
+            >
+              <motion.div
+                className="relative w-full"
+                initial={{ opacity: 0, y: cfg.y + 24 }}
+                animate={{ opacity: 1, y: cfg.y, scale: cfg.scale }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ scale: cfg.scale * 1.06, y: cfg.y - 7 }}
+                style={{
+                  filter: 'drop-shadow(0 7px 13px rgba(0,0,0,0.5))',
+                  zIndex: isHover ? 5 : i === 1 ? 3 : 1,
+                }}
+              >
+                {/* дерево — вращается (веер); подпись ниже остаётся ровной */}
+                <div style={{ transform: `rotate(${cfg.rot}deg)`, transformOrigin: '50% 55%' }}>
+                <svg viewBox={`0 0 ${VB} ${VB}`} className="block h-auto w-full overflow-visible" aria-hidden>
+                  <clipPath id={`pz-clip-${i}`}>
+                    <path d={s.outline} />
+                  </clipPath>
+                  <g clipPath={`url(#pz-clip-${i})`}>
+                    <rect width={VB} height={VB} fill="url(#pz-bg)" />
+                    <rect width={VB} height={VB} filter="url(#pz-mottle)" opacity="0.62" />
+                    <rect width={VB} height={VB} filter="url(#pz-grain)" opacity="0.36" />
+                    {s.rings.map((r, k) => (
+                      <path
+                        key={k}
+                        d={r.d}
+                        fill="none"
+                        stroke={r.tone}
+                        strokeWidth={r.width}
+                        opacity={r.opacity}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    ))}
+                    <rect width={VB} height={VB} filter="url(#pz-rough)" opacity="0.12" />
+                    <rect width={VB} height={VB} fill="url(#pz-sheen)" />
+                  </g>
 
-                {b.rings.map((r, k) => (
+                  {/* кора — натуральный грубый чешуйчатый край */}
+                  <path d={s.outline} fill="none" stroke="#0E0805" strokeWidth={6} opacity={0.96} />
                   <path
-                    key={k}
-                    d={r.d}
+                    d={s.outline}
                     fill="none"
-                    stroke={r.tone}
-                    strokeWidth={r.width}
-                    opacity={r.opacity}
+                    stroke="#241509"
+                    strokeWidth={4.5}
+                    strokeDasharray="2.4 1.8"
                     strokeLinecap="round"
+                    opacity={0.85}
+                  />
+                  <path
+                    d={s.outline}
+                    fill="none"
+                    stroke="#3E2812"
+                    strokeWidth={2.4}
+                    strokeDasharray="1.6 2.6"
+                    strokeLinecap="round"
+                    opacity={0.6}
+                  />
+
+                  {/* золотая подсветка контура при наведении */}
+                  <motion.path
+                    d={s.outline}
+                    fill="none"
+                    stroke="#F2D69E"
+                    strokeWidth={1.4}
                     strokeLinejoin="round"
+                    initial={false}
+                    animate={{ opacity: isHover ? 1 : 0 }}
+                    transition={{ duration: 0.22 }}
+                    style={{
+                      pointerEvents: 'none',
+                      filter:
+                        'drop-shadow(0 0 1.5px rgba(242,214,158,0.9)) drop-shadow(0 0 4px rgba(231,201,148,0.55))',
+                    }}
                   />
-                ))}
+                </svg>
+                </div>
 
-                {b.cracks.map((d, k) => (
-                  <path
-                    key={`c${k}`}
-                    d={d}
-                    fill="none"
-                    stroke="#140B05"
-                    strokeWidth={0.8}
-                    opacity={0.75}
-                    strokeLinecap="round"
-                  />
-                ))}
-
-                <rect width={VB_W} height={VB_H} fill="url(#pz-glow)" />
-
-                <path d={b.outline} fill="none" stroke="#130B05" strokeWidth={5} opacity={0.6} />
-                <path d={b.outline} fill="none" stroke="rgba(196,146,98,0.5)" strokeWidth={0.5} />
-
-                {/* Золотая подсветка контура при наведении — рисуется
-                    ВНУТРИ того же clip-стека (strip ∩ blob), поэтому
-                    автоматически совпадает с реальной видимой формой
-                    среза. Никаких «хвостов» от X-clamp подхода. */}
-                <motion.path
-                  d={b.outline}
-                  fill="none"
-                  stroke="#F2D69E"
-                  strokeWidth={1.6}
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  initial={false}
-                  animate={{ opacity: hovered === i ? 1 : 0 }}
-                  transition={{ duration: 0.22 }}
-                  style={{
-                    pointerEvents: 'none',
-                    filter:
-                      'drop-shadow(0 0 1.5px rgba(242,214,158,0.95)) drop-shadow(0 0 4px rgba(231,201,148,0.6))',
-                  }}
-                />
-              </g>
-            </g>
-          ))}
-        </svg>
-
-        {items.slice(0, 3).map((it, i) => (
-          <div
-            key={`v${i}`}
-            className="pointer-events-none absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2"
-            style={{
-              left: `${(built.pith[i]![0] / VB_W) * 100}%`,
-              top: `${(built.pith[i]![1] / VB_H) * 100}%`,
-            }}
-          >
-            <span
-              className="text-[#E7C994] transition-transform duration-300"
-              style={{
-                transform: hovered === i ? 'scale(1.12)' : 'scale(1)',
-                filter: 'drop-shadow(0 0 8px rgba(231,201,148,0.5))',
-              }}
-            >
-              {it.icon}
-            </span>
-            <span
-              className="text-center text-[10px] sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.25em] font-medium whitespace-nowrap"
-              style={{ color: '#E7C994', textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}
-            >
-              {it.title}
-            </span>
-          </div>
-        ))}
-
-        {items.slice(0, 3).map((it, i) => (
-          <Link
-            key={it.href}
-            href={it.href}
-            prefetch
-            aria-label={it.title}
-            className="absolute bottom-0 top-0 block focus:outline-none"
-            style={{ left: `${built.zones[i]!.left}%`, width: `${built.zones[i]!.width}%` }}
-            onPointerEnter={() => setHovered(i)}
-            onPointerDown={() => setHovered(i)}
-            onPointerLeave={() => setHovered((h) => (h === i ? null : h))}
-            onFocus={() => setHovered(i)}
-            onBlur={() => setHovered((h) => (h === i ? null : h))}
-          />
-        ))}
-      </motion.div>
+                {/* название — изящные тонкие золотые капсы + деликатный
+                    вензель снизу (тонкие линии с ромбиком). Композиция, а
+                    не «бумажка на спиле». */}
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                  <div className="flex flex-col items-center" style={{ gap: '0.42em' }}>
+                    <span
+                      className="whitespace-nowrap text-center uppercase"
+                      style={{
+                        fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                        fontWeight: 300,
+                        fontSize: 'clamp(9px, 2.3vw, 14px)',
+                        letterSpacing: '0.36em',
+                        textIndent: '0.36em',
+                        color: isHover ? '#F8E8C2' : '#EAD09C',
+                        textShadow: '0 1px 2px rgba(8,4,2,0.7)',
+                        transition: 'color 0.25s',
+                      }}
+                    >
+                      {it.title}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="flex items-center"
+                      style={{
+                        gap: '0.45em',
+                        opacity: isHover ? 0.95 : 0.65,
+                        transition: 'opacity 0.25s',
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: 'block',
+                          width: '1.5em',
+                          height: '1px',
+                          background: 'linear-gradient(90deg, transparent, #C49262)',
+                        }}
+                      />
+                      <span
+                        style={{
+                          display: 'block',
+                          width: '0.32em',
+                          height: '0.32em',
+                          transform: 'rotate(45deg)',
+                          background: '#E5C490',
+                          boxShadow: '0 0 2px rgba(229,196,144,0.6)',
+                        }}
+                      />
+                      <span
+                        style={{
+                          display: 'block',
+                          width: '1.5em',
+                          height: '1px',
+                          background: 'linear-gradient(90deg, #C49262, transparent)',
+                        }}
+                      />
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }

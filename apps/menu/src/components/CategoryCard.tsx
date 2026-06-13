@@ -30,7 +30,7 @@ export function CategoryCard({ href, title, subtitle, icon, count, index = 0, la
           <span className="text-3xl sm:text-4xl text-gold-dark opacity-40 transition group-hover:opacity-60 group-hover:scale-110">
             {icon}
           </span>
-          <h3 className="text-sm sm:text-base uppercase tracking-[0.18em] text-white font-light text-center leading-tight">
+          <h3 className="text-sm sm:text-base uppercase tracking-[0.18em] text-cream font-light text-center leading-tight">
             {title}
           </h3>
           {subtitle && (

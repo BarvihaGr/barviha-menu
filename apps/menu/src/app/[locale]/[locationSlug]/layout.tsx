@@ -5,6 +5,7 @@ import { LocationHeader } from '@/components/LocationHeader';
 import { Toaster } from '@/components/Toaster';
 import { FloatingCartButton } from '@/components/FloatingCartButton';
 import { SwipeBack } from '@/components/SwipeBack';
+import { ScrollMemory } from '@/components/ScrollMemory';
 import { getLocationAccent } from '@/lib/location-theme';
 
 export default async function LocationLayout({
@@ -47,6 +48,7 @@ export default async function LocationLayout({
       />
       <Toaster />
       <SwipeBack />
+      <ScrollMemory />
     </div>
   );
 }

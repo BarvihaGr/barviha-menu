@@ -40,10 +40,10 @@ export function HookahMoodCard({
       </div>
       <div className="relative z-10 flex flex-col gap-3 justify-end">
         <span className="text-3xl text-gold/80">{icon}</span>
-        <h3 className="text-2xl sm:text-3xl uppercase tracking-[0.12em] text-white font-light">
+        <h3 className="text-2xl sm:text-3xl uppercase tracking-[0.12em] text-cream font-light">
           {name}
         </h3>
-        <p className="text-sm text-white/75 leading-relaxed max-w-[300px]">{description}</p>
+        <p className="text-sm text-foreground/75 leading-relaxed max-w-[300px]">{description}</p>
         <p className="mt-1 text-[10px] uppercase tracking-[0.25em] text-gold/70">{examples}</p>
       </div>
     </motion.article>
