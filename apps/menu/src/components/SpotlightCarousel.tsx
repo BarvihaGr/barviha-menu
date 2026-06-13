@@ -132,6 +132,10 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
     const SPEED = 42; // px/сек — заметное, но спокойное движение
     let raf = 0;
     let last = performance.now();
+    // Аккумулятор позиции — ОБЯЗАТЕЛЬНО float. На мобильных `scrollLeft` целый:
+    // дробный прирост (~0.7px/кадр) при чтении обратно теряется и лента стоит.
+    // Поэтому копим позицию здесь и ПИШЕМ её в scrollLeft, а не читаем для += .
+    let pos = el.scrollLeft;
 
     const tick = (now: number) => {
       const dt = Math.min(now - last, 50) / 1000;
@@ -139,13 +143,18 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
       // scrollLeft трогаем ТОЛЬКО в режиме авто-скролла — чтобы не воевать
       // с нативной инерцией свайпа на iOS (иначе рывки).
       if (!pausedRef.current && !active && visibleRef.current) {
-        el.scrollLeft += SPEED * dt;
+        pos += SPEED * dt;
         // Бесшовная петля: период = ширина ОДНОГО набора (всего reps наборов).
         const period = el.scrollWidth / reps;
         if (period > 0) {
-          if (el.scrollLeft >= period) el.scrollLeft -= period;
-          else if (el.scrollLeft < 0) el.scrollLeft += period;
+          if (pos >= period) pos -= period;
+          else if (pos < 0) pos += period;
         }
+        el.scrollLeft = pos;
+      } else {
+        // Во время паузы/свайпа держим аккумулятор в синхроне с реальным
+        // положением — чтобы на возобновлении не было скачка.
+        pos = el.scrollLeft;
       }
       raf = requestAnimationFrame(tick);
     };
