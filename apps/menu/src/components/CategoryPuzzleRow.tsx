@@ -21,47 +21,51 @@ const VB = 130;
 const RB = 52; // базовый масштаб для длины трещин/фактуры
 
 /**
- * Контуры сняты с зелёной обводки на скрине (нормализованы в кадр 130×130,
- * по часовой стрелке от верхушки). Это жёсткий шаблон формы; острые углы
- * затем срезаются Чайкином — силуэт остаётся «как нарисовано», но мягкий.
- * 0 — слева, 1 — центр, 2 — справа.
+ * Профиль каждого спила: полуоси кадра (ax,by) задают пропорцию, amp —
+ * силу природной неровности края, seed — «рисунок» конкретного среза.
+ * Край строится несколькими гармониками со случайными фазами → живой,
+ * рваный, но без острых шипов контур настоящего дерева.
+ *   0 — Кальяны: круглый живой спил
+ *   1 — Кухня:   широкий овал
+ *   2 — Бар:     высокий слэб
  */
-const SHAPES: ReadonlyArray<ReadonlyArray<readonly [number, number]>> = [
-  [
-    [63.46, 3.0], [72.69, 4.54], [85.0, 16.85], [103.46, 44.54], [108.08, 66.08],
-    [101.92, 89.15], [89.62, 107.62], [65.0, 123.0], [40.38, 113.77], [28.08, 95.31],
-    [21.92, 66.08], [26.54, 38.38], [37.31, 18.38], [51.15, 7.62],
-  ],
-  [
-    [31.7, 3.0], [39.45, 5.58], [54.93, 12.02], [80.74, 17.18], [96.23, 31.38],
-    [106.04, 54.61], [103.97, 80.42], [93.65, 103.65], [73.0, 119.13], [57.51, 123.0],
-    [40.74, 113.97], [29.13, 93.33], [23.96, 64.94], [25.26, 39.13], [27.84, 18.48],
-  ],
-  [
-    [44.31, 3.0], [63.97, 6.1], [82.59, 12.31], [92.93, 26.79], [99.14, 46.45],
-    [97.07, 69.21], [91.9, 89.9], [84.66, 107.48], [73.28, 119.9], [61.9, 123.0],
-    [50.52, 110.59], [42.24, 91.97], [36.03, 73.35], [30.86, 52.66], [31.9, 31.97],
-    [36.03, 14.38], [40.17, 7.13],
-  ],
-];
+const PROFILE = [
+  { ax: 54, by: 50, amp: 0.13, sharp: 1.0, seed: 0x9e21 }, // Кальяны — круглый
+  { ax: 64, by: 39, amp: 0.12, sharp: 1.0, seed: 0x4c77 }, // Кухня — широкий овал
+  { ax: 37, by: 60, amp: 0.13, sharp: 1.0, seed: 0x2b05 }, // Бар — высокий слэб
+] as const;
 
-/** Сглаживание Чайкина (срезание углов) замкнутого контура — без шипов. */
-function chaikin(
-  pts: ReadonlyArray<readonly [number, number]>,
-  iterations: number,
+const CXR = 65;
+const CYR = 63;
+
+/**
+ * Живой неровный контур спила из гармоник со случайными фазами.
+ * sharp — спад амплитуд по частоте: меньше = острее «углы» по краю.
+ */
+function organicOutline(
+  ax: number,
+  by: number,
+  amp: number,
+  sharp: number,
+  seed: number,
 ): Array<[number, number]> {
-  let p: Array<[number, number]> = pts.map(([x, y]) => [x, y]);
-  for (let it = 0; it < iterations; it++) {
-    const np: Array<[number, number]> = [];
-    for (let i = 0; i < p.length; i++) {
-      const a = p[i]!;
-      const b = p[(i + 1) % p.length]!;
-      np.push([0.75 * a[0] + 0.25 * b[0], 0.75 * a[1] + 0.25 * b[1]]);
-      np.push([0.25 * a[0] + 0.75 * b[0], 0.25 * a[1] + 0.75 * b[1]]);
-    }
-    p = np;
+  const srng = mulberry32(seed);
+  const H = 7;
+  const amps: number[] = [];
+  const phs: number[] = [];
+  for (let k = 0; k < H; k++) {
+    amps.push((amp * (0.5 + srng())) / Math.pow(k + 1, sharp));
+    phs.push(srng() * Math.PI * 2);
   }
-  return p;
+  const N = 220;
+  const B: Array<[number, number]> = [];
+  for (let i = 0; i < N; i++) {
+    const a = (i / N) * Math.PI * 2;
+    let r = 1;
+    for (let k = 0; k < H; k++) r += amps[k]! * Math.sin((k + 2) * a + phs[k]!);
+    B.push([CXR + ax * r * Math.cos(a), CYR + by * r * Math.sin(a)]);
+  }
+  return B;
 }
 
 function hashStr(s: string): number {
@@ -89,15 +93,20 @@ interface Slice {
   rings: Array<{ d: string; opacity: number; width: number; tone: string }>;
   /** радиальные трещины-усушки от сердцевины наружу — как в настоящем спиле */
   cracks: string[];
+  /** кольцевой «бубль» коры между внешним и внутренним краем (fill-rule evenodd) */
+  barkBand: string;
+  /** внутренняя кромка коры — тонкий тёплый кант на границе с древесиной */
+  barkInner: string;
+  /** короткие радиальные борозды-чешуйки поперёк коры */
+  barkFissures: string[];
 }
 
 function buildSlice(seed: number, shape: number): Slice {
   const rng = mulberry32(seed);
 
-  // контур «как на обводке» + срезание углов Чайкином (3 прохода) →
-  // тот же силуэт, но скруглённый, без единого острого шипа.
-  const ctrl = SHAPES[shape] ?? SHAPES[0]!;
-  const B = chaikin(ctrl, 3);
+  // живой неровный контур спила по профилю
+  const cfg = PROFILE[shape] ?? PROFILE[0];
+  const B = organicOutline(cfg.ax, cfg.by, cfg.amp, cfg.sharp, cfg.seed);
   const STEPS = B.length;
 
   // сердцевина — центр масс контура, чуть ниже и в сторону
@@ -163,7 +172,44 @@ function buildSlice(seed: number, shape: number): Slice {
     cracks.push(d.trim());
   }
 
-  return { outline, rings, cracks };
+  // ── кора: неровная тёмная кромка вместо «кольца» ──────────────
+  // Внутренний край коры — те же точки контура, сдвинутые к сердцевине
+  // на рваную толщину. Между внешним и внутренним краем заливаем кольцо
+  // (fill-rule evenodd) → получается живая полоса коры, а не ровный обвод.
+  const barkBase = 4.6;
+  const inner: Array<[number, number]> = B.map(([x, y]) => {
+    const dx = px - x;
+    const dy = py - y;
+    const len = Math.hypot(dx, dy) || 1;
+    const tt = barkBase * (0.55 + rng() * 1.0); // рваная толщина коры
+    return [x + (dx / len) * tt, y + (dy / len) * tt];
+  });
+  const barkInner =
+    inner.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)}`).join(' ') +
+    ' Z';
+  const barkBand = `${outline} ${barkInner}`;
+
+  // частые короткие штрихи поперёк кромки — чешуйки/борозды коры,
+  // с пропусками и разной глубиной → неровный природный ритм
+  const barkFissures: string[] = [];
+  for (let i = 0; i < B.length; i += 4) {
+    if (rng() < 0.22) continue; // пропуски
+    const [ox, oy] = B[i]!;
+    const dx = px - ox;
+    const dy = py - oy;
+    const len = Math.hypot(dx, dy) || 1;
+    const ux = dx / len;
+    const uy = dy / len;
+    const out = barkBase * (0.05 + rng() * 0.35); // чуть наружу за кромку
+    const deep = barkBase * (0.9 + rng() * 0.6); // вглубь коры
+    const x0 = ox - ux * out;
+    const y0 = oy - uy * out;
+    const x1 = ox + ux * deep;
+    const y1 = oy + uy * deep;
+    barkFissures.push(`M${x0.toFixed(2)},${y0.toFixed(2)} L${x1.toFixed(2)},${y1.toFixed(2)}`);
+  }
+
+  return { outline, rings, cracks, barkBand, barkInner, barkFissures };
 }
 
 /* ───────── резные эмблемы (гравировка по дереву) ─────────
@@ -257,7 +303,7 @@ function CocktailArt({ c, w }: { c: string; w: number }) {
 function Emblem({ kind }: { kind: number }) {
   const Art = kind === 0 ? HookahArt : kind === 1 ? ClocheArt : CocktailArt;
   const tx = kind === 2 ? 63.5 : 65;
-  const ty = kind === 0 ? 49 : 47;
+  const ty = kind === 1 ? 56 : 50; // в широком овале (кухня) гравюра ниже
   return (
     <g transform={`translate(${tx},${ty}) scale(0.9)`}>
       <g transform="translate(0,0.85)" opacity={0.5}>
@@ -275,9 +321,9 @@ function Emblem({ kind }: { kind: number }) {
  * вращается только дерево.
  */
 const LAYOUT = [
-  { y: 10, rot: 0, scale: 1.12 }, // слева
-  { y: -8, rot: 0, scale: 1.28 }, // центр — герой, крупнее и выше
-  { y: 6, rot: 0, scale: 1.2 }, // справа — крупный, вытянут ниже (как на скрине)
+  { x: 0, y: 0, rot: 0, scale: 1.06 }, // Кальяны — круглый спил (+10%)
+  { x: 14, y: -10, rot: 0, scale: 1.23 }, // Кухня — герой, чуть выше и правее
+  { x: 0, y: 0, rot: 0, scale: 1.25 }, // Бар — высокий слэб (+10%)
 ] as const;
 
 export function CategoryPuzzleRow({ items, locationSlug }: Props) {
@@ -295,9 +341,9 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
         <defs>
           {/* тёмный орех / венге — глубокий тёплый коричневый */}
           <radialGradient id="pz-bg" cx="46%" cy="42%" r="64%">
-            <stop offset="0%" stopColor="#4A2E1A" />
-            <stop offset="52%" stopColor="#2A1A0D" />
-            <stop offset="100%" stopColor="#0E0703" />
+            <stop offset="0%" stopColor="#503320" />
+            <stop offset="52%" stopColor="#301E10" />
+            <stop offset="100%" stopColor="#120A05" />
           </radialGradient>
           <filter id="pz-grain">
             <feTurbulence type="fractalNoise" baseFrequency="0.012 0.9" numOctaves="3" seed="11" />
@@ -312,7 +358,7 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
             <feColorMatrix values="0 0 0 0 0.62  0 0 0 0 0.46  0 0 0 0 0.26  0 0 0 0.4 0" />
           </filter>
           <radialGradient id="pz-sheen" cx="36%" cy="28%" r="70%">
-            <stop offset="0%" stopColor="rgba(255,243,216,0.16)" />
+            <stop offset="0%" stopColor="rgba(255,243,216,0.08)" />
             <stop offset="55%" stopColor="rgba(255,243,216,0)" />
           </radialGradient>
           {/* объём спила: лёгкий блик по верхнему краю + затемнение снизу —
@@ -325,8 +371,8 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
           {/* лаковый зеркальный блик — узкое яркое пятно сверху-слева,
               как отражение тёплого софита на полированном лаке */}
           <radialGradient id="pz-spec" cx="40%" cy="20%" r="42%">
-            <stop offset="0%" stopColor="rgba(255,250,235,0.28)" />
-            <stop offset="40%" stopColor="rgba(255,247,226,0.07)" />
+            <stop offset="0%" stopColor="rgba(255,250,235,0.1)" />
+            <stop offset="40%" stopColor="rgba(255,247,226,0.03)" />
             <stop offset="100%" stopColor="rgba(255,247,226,0)" />
           </radialGradient>
         </defs>
@@ -352,8 +398,8 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
             >
               <motion.div
                 className="relative w-full"
-                initial={{ opacity: 0, y: cfg.y + 24 }}
-                animate={{ opacity: 1, y: cfg.y, scale: cfg.scale }}
+                initial={{ opacity: 0, x: cfg.x, y: cfg.y + 24 }}
+                animate={{ opacity: 1, x: cfg.x, y: cfg.y, scale: cfg.scale }}
                 transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ scale: cfg.scale * 1.06, y: cfg.y - 7 }}
                 style={{
@@ -374,8 +420,8 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
 
                   <g clipPath={`url(#pz-clip-${i})`}>
                     <rect width={VB} height={VB} fill="url(#pz-bg)" />
-                    <rect width={VB} height={VB} filter="url(#pz-mottle)" opacity="0.62" />
-                    <rect width={VB} height={VB} filter="url(#pz-grain)" opacity="0.36" />
+                    <rect width={VB} height={VB} filter="url(#pz-mottle)" opacity="0.74" />
+                    <rect width={VB} height={VB} filter="url(#pz-grain)" opacity="0.54" />
                     {s.rings.map((r, k) => (
                       <path
                         key={k}
@@ -411,32 +457,42 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                         />
                       </g>
                     ))}
-                    <rect width={VB} height={VB} filter="url(#pz-rough)" opacity="0.12" />
+                    <rect width={VB} height={VB} filter="url(#pz-rough)" opacity="0.28" />
+                    {/* настоящая 8K-фактура спила поверх процедурной базы */}
+                    <image
+                      href="/wood/slice-cut.webp"
+                      x={-36}
+                      y={-38}
+                      width={202}
+                      height={211}
+                      preserveAspectRatio="xMidYMid slice"
+                      transform={`rotate(${[0, 134, 248][i] ?? 0} 65 63)`}
+                      style={{ mixBlendMode: 'overlay', opacity: 0.62 }}
+                    />
                     <rect width={VB} height={VB} fill="url(#pz-dome)" />
                     <rect width={VB} height={VB} fill="url(#pz-sheen)" />
                     <rect width={VB} height={VB} fill="url(#pz-spec)" />
                   </g>
 
-                  {/* кора — натуральный грубый чешуйчатый край */}
-                  <path d={s.outline} fill="none" stroke="#0E0805" strokeWidth={6} opacity={0.96} />
-                  <path
-                    d={s.outline}
-                    fill="none"
-                    stroke="#241509"
-                    strokeWidth={4.5}
-                    strokeDasharray="2.4 1.8"
-                    strokeLinecap="round"
-                    opacity={0.85}
-                  />
-                  <path
-                    d={s.outline}
-                    fill="none"
-                    stroke="#3E2812"
-                    strokeWidth={2.4}
-                    strokeDasharray="1.6 2.6"
-                    strokeLinecap="round"
-                    opacity={0.6}
-                  />
+                  {/* кора — тёмная неровная полоса по краю с радиальными
+                      бороздами-чешуйками; НЕ концентрическое «кольцо» */}
+                  <path d={s.barkBand} fillRule="evenodd" fill="#160C05" opacity={0.97} />
+                  <path d={s.barkBand} fillRule="evenodd" fill="#2A1A0C" opacity={0.5} />
+                  {s.barkFissures.map((d, k) => (
+                    <path
+                      key={`brk-${k}`}
+                      d={d}
+                      fill="none"
+                      stroke="#0B0502"
+                      strokeWidth={0.9}
+                      strokeLinecap="round"
+                      opacity={0.55}
+                    />
+                  ))}
+                  {/* тёплый кант на границе коры и древесины */}
+                  <path d={s.barkInner} fill="none" stroke="#5C3E20" strokeWidth={0.5} opacity={0.4} />
+                  {/* тонкий собирающий обвод по самой кромке */}
+                  <path d={s.outline} fill="none" stroke="#0A0503" strokeWidth={1.3} opacity={0.9} />
 
                   {/* резная гравировка + засечная подпись (вырезаны по дереву) */}
                   <g clipPath={`url(#pz-clip-${i})`}>
@@ -444,7 +500,7 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                     <g>
                       <text
                         x={65}
-                        y={91.6}
+                        y={(i === 1 ? 84 : i === 2 ? 96 : 91.6) + 0.7}
                         textAnchor="middle"
                         style={{
                           fontFamily: 'var(--font-display)',
@@ -458,7 +514,7 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                       </text>
                       <text
                         x={65}
-                        y={90.9}
+                        y={i === 1 ? 84 : i === 2 ? 96 : 91.6}
                         textAnchor="middle"
                         style={{
                           fontFamily: 'var(--font-display)',
