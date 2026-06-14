@@ -18,9 +18,68 @@ interface Props {
 
 // квадратный viewBox на один спил
 const VB = 130;
-const CX = 65;
-const CY = 63;
-const RB = 52; // «пожирнее» — спил почти заполняет кадр
+const RB = 52; // базовый масштаб для длины трещин/фактуры
+
+/**
+ * Контуры, снятые точь-в-точь с обводки зелёным маркером на скрине.
+ * Точки — по часовой стрелке от верхней точки, нормализованы в кадр 130×130.
+ * 0 — слева (Кальяны, каплевидный), 1 — центр (Кухня, округлый),
+ * 2 — справа (Бар, вытянутый вниз с «хвостом»).
+ */
+const SHAPES: ReadonlyArray<ReadonlyArray<readonly [number, number]>> = [
+  [
+    [62.7, 1.0], [78.96, 9.1], [95.2, 25.35], [104.93, 44.82], [109.8, 65.9],
+    [105.9, 87.0], [96.16, 106.5], [78.96, 119.5], [64.35, 125.0], [44.88, 119.5],
+    [31.24, 104.87], [22.8, 83.77], [20.2, 62.68], [22.8, 41.6], [29.3, 22.1],
+    [43.25, 9.1], [52.99, 3.6],
+  ],
+  [
+    [29.3, 1.0], [50.6, 6.5], [72.75, 12.07], [90.74, 21.2], [103.2, 36.43],
+    [109.57, 55.8], [107.35, 76.56], [98.49, 97.32], [82.44, 115.3], [64.45, 125.0],
+    [45.07, 120.85], [31.23, 107.0], [23.76, 86.25], [20.43, 64.11], [21.54, 41.96],
+    [23.76, 22.03], [25.69, 10.13],
+  ],
+  [
+    [44.54, 1.0], [62.02, 3.12], [79.06, 8.45], [90.79, 20.17], [98.24, 36.15],
+    [100.8, 53.2], [98.67, 72.38], [93.56, 91.56], [85.46, 108.6], [74.38, 121.4],
+    [63.08, 125.0], [50.94, 112.87], [42.41, 94.75], [36.02, 75.57], [31.12, 56.39],
+    [29.2, 41.47], [30.48, 26.56], [34.31, 12.71], [39.0, 4.82],
+  ],
+];
+
+/** Catmull-Rom через контрольные точки → плотная гладкая замкнутая граница. */
+function smoothBoundary(
+  pts: ReadonlyArray<readonly [number, number]>,
+  per: number,
+): Array<[number, number]> {
+  const n = pts.length;
+  const out: Array<[number, number]> = [];
+  for (let i = 0; i < n; i++) {
+    const p0 = pts[(i - 1 + n) % n]!;
+    const p1 = pts[i]!;
+    const p2 = pts[(i + 1) % n]!;
+    const p3 = pts[(i + 2) % n]!;
+    for (let s = 0; s < per; s++) {
+      const t = s / per;
+      const t2 = t * t;
+      const t3 = t2 * t;
+      const x =
+        0.5 *
+        (2 * p1[0] +
+          (-p0[0] + p2[0]) * t +
+          (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 +
+          (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3);
+      const y =
+        0.5 *
+        (2 * p1[1] +
+          (-p0[1] + p2[1]) * t +
+          (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 +
+          (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3);
+      out.push([x, y]);
+    }
+  }
+  return out;
+}
 
 function hashStr(s: string): number {
   let h = 2166136261 >>> 0;
@@ -49,43 +108,31 @@ interface Slice {
   cracks: string[];
 }
 
-function buildSlice(seed: number): Slice {
+function buildSlice(seed: number, shape: number): Slice {
   const rng = mulberry32(seed);
-  const ph1 = seed * 0.7;
-  const ph2 = seed * 1.3;
-  const ph3 = seed * 2.1;
 
-  // сердцевина — слегка смещена от центра
-  const pa = rng() * Math.PI * 2;
-  const pr = RB * (0.08 + rng() * 0.16);
-  const px = CX + Math.cos(pa) * pr;
-  const py = CY + Math.sin(pa) * pr;
+  // граница «1-в-1» с обводкой на скрине — сглаженная сплайном
+  const ctrl = SHAPES[shape] ?? SHAPES[0]!;
+  const B = smoothBoundary(ctrl, 10);
+  const STEPS = B.length;
 
-  // живой неровный контур спила: низкие гармоники дают крупные «горбы»
-  // и впадины (форма не круг), высокие — мелкую чешую коры по краю.
-  const Rout = (a: number) =>
-    RB *
-    (1 +
-      0.13 * Math.sin(a + ph1) +
-      0.075 * Math.sin(a * 2 + ph2) +
-      0.045 * Math.sin(a * 3 + ph3) +
-      0.025 * Math.sin(a * 5 + ph1 * 1.7) +
-      0.015 * Math.sin(a * 7 + ph2 * 0.6));
-
-  const STEPS = 120;
-  const B: Array<[number, number]> = [];
-  for (let i = 0; i < STEPS; i++) {
-    const a = (i / STEPS) * Math.PI * 2;
-    const r = Rout(a);
-    B.push([CX + Math.cos(a) * r, CY + Math.sin(a) * r * 1.0]);
+  // сердцевина — центр масс контура, чуть ниже и в сторону
+  let sx = 0;
+  let sy = 0;
+  for (const [x, y] of B) {
+    sx += x;
+    sy += y;
   }
+  const px = sx / B.length + (shape === 0 ? -4 : shape === 2 ? 3 : 0);
+  const py = sy / B.length + 6;
+
   const outline =
     B.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)}`).join(' ') + ' Z';
 
   const rings: Slice['rings'] = [];
   let f = 0.025;
   for (let k = 1; k <= 130 && f < 0.99; k++) {
-    const grow = 0.5 + 0.5 * Math.sin(k * 0.4 + ph2);
+    const grow = 0.5 + 0.5 * Math.sin(k * 0.4 + seed * 1.3);
     const step = 0.004 + 0.011 * (1 - f) * (0.55 + 0.9 * grow) + (rng() - 0.5) * 0.0014;
     f = Math.min(0.99, f + step);
     const rngK = mulberry32(seed * 131 + k);
@@ -135,6 +182,108 @@ function buildSlice(seed: number): Slice {
   return { outline, rings, cracks };
 }
 
+/* ───────── резные эмблемы (гравировка по дереву) ─────────
+   Каждая фигура — чистая линейная графика в арт-деко стиле.
+   Цвет (c) и толщину (w) задаёт обёртка Emblem, чтобы рисовать
+   её дважды: светлый кант снизу борозды + тёмная выжженная линия. */
+
+function HookahArt({ c, w }: { c: string; w: number }) {
+  return (
+    <g fill="none" stroke={c} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round">
+      {/* дым */}
+      <path
+        d="M0,-19.5 C-2.4,-22 2,-24 -0.4,-26.5 C-2.4,-28.6 1.4,-30.4 -0.2,-32.6"
+        opacity={0.7}
+        strokeWidth={w * 0.7}
+      />
+      {/* навершие + чаша */}
+      <path d="M-3.4,-18 L-2.4,-13.4 L2.4,-13.4 L3.4,-18 Z" />
+      <path d="M-1.6,-18 L1.6,-18 M0,-18 L0,-19.5" />
+      {/* стебель */}
+      <path d="M0,-13.4 L0,6" />
+      {/* поднос-тарелка */}
+      <path d="M-9,-2.4 C-9,-4 9,-4 9,-2.4 C9,-0.8 -9,-0.8 -9,-2.4 Z" />
+      {/* колба-основание */}
+      <path d="M-2.2,6 C-9.5,7.5 -10.5,16.5 0,17.5 C10.5,16.5 9.5,7.5 2.2,6 Z" />
+      <path
+        d="M-4.6,11 C-1.6,12.4 1.6,12.4 4.6,11"
+        opacity={0.8}
+        strokeWidth={w * 0.8}
+      />
+      {/* шланг с мундштуком */}
+      <path d="M1,-5.5 C12,-5 13.5,4 7,8.2 C4,10.2 6.2,12.4 9.2,11.2" />
+    </g>
+  );
+}
+
+function ClocheArt({ c, w }: { c: string; w: number }) {
+  return (
+    <g fill="none" stroke={c} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round">
+      {/* тарелка */}
+      <path d="M-15.5,11 C-15.5,8 15.5,8 15.5,11 C15.5,14 -15.5,14 -15.5,11 Z" />
+      {/* клош-купол + декоративная дуга */}
+      <path d="M-12,11 A12,12 0 0 1 12,11" />
+      <path d="M-8,7.5 A9,9 0 0 1 8,7.5" opacity={0.7} strokeWidth={w * 0.8} />
+      {/* навершие */}
+      <path d="M0,-1 L0,-3.6" />
+      <circle cx={0} cy={-4.9} r={1.5} />
+      {/* вилка слева */}
+      <path d="M-18,12.5 L-18,-3" />
+      <path d="M-20,-3 L-20,-10 M-18,-3 L-18,-10.6 M-16,-3 L-16,-10" />
+      <path d="M-20,-3 C-18,-1.4 -18,-1.4 -16,-3" />
+      {/* нож справа */}
+      <path d="M18,12.5 L18,-4" />
+      <path d="M16.6,-4 C16.6,-7.4 16.6,-11 18,-11 C19.6,-11 19.6,-6.4 19.4,-4 Z" />
+    </g>
+  );
+}
+
+function CocktailArt({ c, w }: { c: string; w: number }) {
+  return (
+    <g fill="none" stroke={c} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round">
+      {/* бокал-мартини */}
+      <path d="M-14,-12 L6,-12 L-4,0 Z" />
+      <path d="M-4,0 L-4,10 M-10,10.5 L2,10.5" />
+      {/* поверхность напитка */}
+      <path d="M-11.5,-9 L3.5,-9" opacity={0.75} strokeWidth={w * 0.8} />
+      {/* кубик льда */}
+      <path d="M-7.5,-7.5 L-4,-8.5 L-4,-5 L-7.5,-4 Z" opacity={0.85} strokeWidth={w * 0.85} />
+      {/* долька цитруса на ободе */}
+      <circle cx={6} cy={-12.5} r={2.6} />
+      <path
+        d="M6,-12.5 L6,-15.1 M6,-12.5 L8.4,-11.6 M6,-12.5 L3.6,-11.6"
+        strokeWidth={w * 0.7}
+        opacity={0.85}
+      />
+      {/* шпажка */}
+      <path d="M8,-15 L-2,-6" strokeWidth={w * 0.7} />
+      {/* шейкер справа */}
+      <g transform="translate(13,0)">
+        <path d="M-3,12 L-2.6,-2 L2.6,-2 L3,12 Z" />
+        <path d="M-2.6,-2 L-3.2,-5 L3.2,-5 L2.6,-2" />
+        <path d="M-2.2,-5 L-2.2,-8 L2.2,-8 L2.2,-5" />
+        <path d="M-1,-8 L1,-8" />
+        <path d="M-3,4 L3,4" opacity={0.6} strokeWidth={w * 0.7} />
+      </g>
+    </g>
+  );
+}
+
+/** Эмблема с эффектом резьбы: светлый кант снизу + тёмная выжженная линия. */
+function Emblem({ kind }: { kind: number }) {
+  const Art = kind === 0 ? HookahArt : kind === 1 ? ClocheArt : CocktailArt;
+  const tx = kind === 2 ? 63.5 : 65;
+  const ty = kind === 0 ? 49 : 47;
+  return (
+    <g transform={`translate(${tx},${ty}) scale(0.9)`}>
+      <g transform="translate(0,0.85)" opacity={0.5}>
+        <Art c="rgba(255,236,201,0.9)" w={1.5} />
+      </g>
+      <Art c="#180D04" w={1.3} />
+    </g>
+  );
+}
+
 /**
  * Композиция «тройки» — не ровный строй, а живая раскладка:
  * центр (Кухня) приподнят и крупнее как смысловой фокус, боковые
@@ -142,9 +291,9 @@ function buildSlice(seed: number): Slice {
  * вращается только дерево.
  */
 const LAYOUT = [
-  { y: 12, rot: -5, scale: 1.0 }, // слева
-  { y: -18, rot: 1.5, scale: 1.23 }, // центр — герой
-  { y: 9, rot: 5, scale: 1.0 }, // справа
+  { y: 10, rot: -2, scale: 1.12 }, // слева
+  { y: -8, rot: 0, scale: 1.28 }, // центр — герой, крупнее и выше
+  { y: 6, rot: 2, scale: 1.2 }, // справа — крупный, вытянут ниже (как на скрине)
 ] as const;
 
 export function CategoryPuzzleRow({ items, locationSlug }: Props) {
@@ -152,18 +301,19 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
 
   const slices = useMemo(() => {
     const base = hashStr(locationSlug ?? 'default');
-    return [0, 1, 2].map((i) => buildSlice((base * 2654435761 + (i + 1) * 40503) >>> 0));
+    return [0, 1, 2].map((i) => buildSlice((base * 2654435761 + (i + 1) * 40503) >>> 0, i));
   }, [locationSlug]);
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-1 sm:px-4">
+    <div className="mx-auto w-full max-w-4xl px-1 sm:px-2">
       {/* общие фильтры/градиенты — один раз на документ */}
       <svg width="0" height="0" className="absolute" aria-hidden>
         <defs>
-          <radialGradient id="pz-bg" cx="50%" cy="48%" r="62%">
-            <stop offset="0%" stopColor="#4D3622" />
-            <stop offset="55%" stopColor="#2E1E12" />
-            <stop offset="100%" stopColor="#160C06" />
+          {/* тёмный орех / венге — глубокий тёплый коричневый */}
+          <radialGradient id="pz-bg" cx="46%" cy="42%" r="64%">
+            <stop offset="0%" stopColor="#4A2E1A" />
+            <stop offset="52%" stopColor="#2A1A0D" />
+            <stop offset="100%" stopColor="#0E0703" />
           </radialGradient>
           <filter id="pz-grain">
             <feTurbulence type="fractalNoise" baseFrequency="0.012 0.9" numOctaves="3" seed="11" />
@@ -178,20 +328,27 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
             <feColorMatrix values="0 0 0 0 0.62  0 0 0 0 0.46  0 0 0 0 0.26  0 0 0 0.4 0" />
           </filter>
           <radialGradient id="pz-sheen" cx="36%" cy="28%" r="70%">
-            <stop offset="0%" stopColor="rgba(255,242,214,0.12)" />
-            <stop offset="55%" stopColor="rgba(255,242,214,0)" />
+            <stop offset="0%" stopColor="rgba(255,243,216,0.16)" />
+            <stop offset="55%" stopColor="rgba(255,243,216,0)" />
           </radialGradient>
           {/* объём спила: лёгкий блик по верхнему краю + затемнение снизу —
               создаёт ощущение скруглённой кромки и реальной толщины */}
           <linearGradient id="pz-dome" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(255,238,206,0.14)" />
+            <stop offset="0%" stopColor="rgba(255,238,206,0.16)" />
             <stop offset="42%" stopColor="rgba(0,0,0,0)" />
-            <stop offset="100%" stopColor="rgba(0,0,0,0.38)" />
+            <stop offset="100%" stopColor="rgba(0,0,0,0.42)" />
           </linearGradient>
+          {/* лаковый зеркальный блик — узкое яркое пятно сверху-слева,
+              как отражение тёплого софита на полированном лаке */}
+          <radialGradient id="pz-spec" cx="40%" cy="20%" r="42%">
+            <stop offset="0%" stopColor="rgba(255,250,235,0.28)" />
+            <stop offset="40%" stopColor="rgba(255,247,226,0.07)" />
+            <stop offset="100%" stopColor="rgba(255,247,226,0)" />
+          </radialGradient>
         </defs>
       </svg>
 
-      <div className="flex items-center justify-center gap-2 pt-5 pb-3 sm:gap-5">
+      <div className="flex items-center justify-center gap-0 pt-5 pb-3 sm:gap-1">
         {items.slice(0, 3).map((it, i) => {
           const s = slices[i % slices.length]!;
           const isHover = hovered === i;
@@ -273,6 +430,7 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                     <rect width={VB} height={VB} filter="url(#pz-rough)" opacity="0.12" />
                     <rect width={VB} height={VB} fill="url(#pz-dome)" />
                     <rect width={VB} height={VB} fill="url(#pz-sheen)" />
+                    <rect width={VB} height={VB} fill="url(#pz-spec)" />
                   </g>
 
                   {/* кора — натуральный грубый чешуйчатый край */}
@@ -296,6 +454,41 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                     opacity={0.6}
                   />
 
+                  {/* резная гравировка + засечная подпись (вырезаны по дереву) */}
+                  <g clipPath={`url(#pz-clip-${i})`}>
+                    <Emblem kind={i} />
+                    <g>
+                      <text
+                        x={65}
+                        y={91.6}
+                        textAnchor="middle"
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: '9.5px',
+                          letterSpacing: '1.2px',
+                          fontWeight: 600,
+                          fill: 'rgba(255,236,201,0.5)',
+                        }}
+                      >
+                        {it.title.toUpperCase()}
+                      </text>
+                      <text
+                        x={65}
+                        y={90.9}
+                        textAnchor="middle"
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: '9.5px',
+                          letterSpacing: '1.2px',
+                          fontWeight: 600,
+                          fill: '#180D04',
+                        }}
+                      >
+                        {it.title.toUpperCase()}
+                      </text>
+                    </g>
+                  </g>
+
                   {/* золотая подсветка контура при наведении */}
                   <motion.path
                     d={s.outline}
@@ -313,65 +506,6 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                     }}
                   />
                 </svg>
-                </div>
-
-                {/* название — изящные тонкие золотые капсы + деликатный
-                    вензель снизу (тонкие линии с ромбиком). Композиция, а
-                    не «бумажка на спиле». */}
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                  <div className="flex flex-col items-center" style={{ gap: '0.42em' }}>
-                    <span
-                      className="whitespace-nowrap text-center uppercase"
-                      style={{
-                        fontFamily: 'var(--font-sans, system-ui, sans-serif)',
-                        fontWeight: 300,
-                        fontSize: 'clamp(9px, 2.3vw, 14px)',
-                        letterSpacing: '0.36em',
-                        textIndent: '0.36em',
-                        color: isHover ? '#F8E8C2' : '#EAD09C',
-                        textShadow: '0 1px 2px rgba(8,4,2,0.7)',
-                        transition: 'color 0.25s',
-                      }}
-                    >
-                      {it.title}
-                    </span>
-                    <span
-                      aria-hidden
-                      className="flex items-center"
-                      style={{
-                        gap: '0.45em',
-                        opacity: isHover ? 0.95 : 0.65,
-                        transition: 'opacity 0.25s',
-                      }}
-                    >
-                      <span
-                        style={{
-                          display: 'block',
-                          width: '1.5em',
-                          height: '1px',
-                          background: 'linear-gradient(90deg, transparent, #C49262)',
-                        }}
-                      />
-                      <span
-                        style={{
-                          display: 'block',
-                          width: '0.32em',
-                          height: '0.32em',
-                          transform: 'rotate(45deg)',
-                          background: '#E5C490',
-                          boxShadow: '0 0 2px rgba(229,196,144,0.6)',
-                        }}
-                      />
-                      <span
-                        style={{
-                          display: 'block',
-                          width: '1.5em',
-                          height: '1px',
-                          background: 'linear-gradient(90deg, #C49262, transparent)',
-                        }}
-                      />
-                    </span>
-                  </div>
                 </div>
               </motion.div>
             </Link>
