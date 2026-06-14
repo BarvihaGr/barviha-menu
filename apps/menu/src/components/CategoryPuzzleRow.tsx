@@ -357,6 +357,15 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
             <feTurbulence type="fractalNoise" baseFrequency="0.5 0.5" numOctaves="2" seed="19" />
             <feColorMatrix values="0 0 0 0 0.62  0 0 0 0 0.46  0 0 0 0 0.26  0 0 0 0.4 0" />
           </filter>
+          {/* фактура коры: вытянутые радиально грубые волокна + тёмные борозды */}
+          <filter id="pz-bark">
+            <feTurbulence type="fractalNoise" baseFrequency="0.95 0.22" numOctaves="4" seed="31" />
+            <feColorMatrix values="0 0 0 0 0.13  0 0 0 0 0.08  0 0 0 0 0.035  0 0 0 0.85 0" />
+          </filter>
+          <filter id="pz-bark-lite">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85 0.3" numOctaves="3" seed="53" />
+            <feColorMatrix values="0 0 0 0 0.42  0 0 0 0 0.3  0 0 0 0 0.17  0 0 0 0.5 0" />
+          </filter>
           <radialGradient id="pz-sheen" cx="36%" cy="28%" r="70%">
             <stop offset="0%" stopColor="rgba(255,243,216,0.08)" />
             <stop offset="55%" stopColor="rgba(255,243,216,0)" />
@@ -474,20 +483,40 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                     <rect width={VB} height={VB} fill="url(#pz-spec)" />
                   </g>
 
-                  {/* кора — тёмная неровная полоса по краю с радиальными
-                      бороздами-чешуйками; НЕ концентрическое «кольцо» */}
-                  <path d={s.barkBand} fillRule="evenodd" fill="#160C05" opacity={0.97} />
-                  <path d={s.barkBand} fillRule="evenodd" fill="#2A1A0C" opacity={0.5} />
+                  {/* кора — тёмная неровная полоса по краю с грубой фактурой
+                      и радиальными бороздами; НЕ концентрическое «кольцо» */}
+                  <clipPath id={`pz-bark-clip-${i}`} clipPathUnits="userSpaceOnUse">
+                    <path d={s.barkBand} clipRule="evenodd" />
+                  </clipPath>
+                  <path d={s.barkBand} fillRule="evenodd" fill="#180D05" opacity={0.97} />
+                  <g clipPath={`url(#pz-bark-clip-${i})`}>
+                    <rect width={VB} height={VB} fill="#33200F" opacity={0.5} />
+                    {/* светлые волокна-гребни коры */}
+                    <rect width={VB} height={VB} filter="url(#pz-bark-lite)" opacity={0.55} />
+                    {/* глубокие тёмные борозды */}
+                    <rect width={VB} height={VB} filter="url(#pz-bark)" opacity={0.9} />
+                  </g>
+                  {/* радиальные борозды-чешуйки: тёмная щель + светлый гребень */}
                   {s.barkFissures.map((d, k) => (
-                    <path
-                      key={`brk-${k}`}
-                      d={d}
-                      fill="none"
-                      stroke="#0B0502"
-                      strokeWidth={0.9}
-                      strokeLinecap="round"
-                      opacity={0.55}
-                    />
+                    <g key={`brk-${k}`}>
+                      <path
+                        d={d}
+                        fill="none"
+                        stroke="#0A0402"
+                        strokeWidth={1}
+                        strokeLinecap="round"
+                        opacity={0.6}
+                      />
+                      <path
+                        d={d}
+                        fill="none"
+                        stroke="#6B4A28"
+                        strokeWidth={0.4}
+                        strokeLinecap="round"
+                        opacity={0.4}
+                        transform="translate(0.35,0.35)"
+                      />
+                    </g>
                   ))}
                   {/* тёплый кант на границе коры и древесины */}
                   <path d={s.barkInner} fill="none" stroke="#5C3E20" strokeWidth={0.5} opacity={0.4} />
