@@ -7,6 +7,7 @@ import { CategoryPuzzleRow } from '@/components/CategoryPuzzleRow';
 import { SectionTitle } from '@/components/SectionTitle';
 import { HeroSection } from '@/components/HeroSection';
 import { SpotlightCarousel } from '@/components/SpotlightCarousel';
+import { StubCarousel } from '@/components/StubCarousel';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
 import { getLocationAccent } from '@/lib/location-theme';
 
@@ -54,11 +55,17 @@ export default async function LocationHome({
         accent={accent}
       />
 
-      {spotlights.length > 0 && (
+      {/* ВРЕМЕННАЯ ЗАГЛУШКА вместо карусели спотлайтов: чёрные карточки с
+          золотой надписью, крутятся бесконечной петлёй. Вернуть карусель →
+          раскомментировать блок ниже и убрать StubCarousel. */}
+      <section className="pb-6 -mt-6 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw]">
+        <StubCarousel items={['СОЦ СЕТЬ', 'АФИША', 'ВАУ ДИДЖЕЙ']} />
+      </section>
+      {/* {spotlights.length > 0 && (
         <section className="pb-6 -mt-6 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw]">
           <SpotlightCarousel spotlights={spotlights} accent={accent} />
         </section>
-      )}
+      )} */}
 
       {homeCategories.length > 0 && (
         <section className="pb-4">

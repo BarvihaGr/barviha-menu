@@ -95,6 +95,8 @@ interface Slice {
   cracks: string[];
   /** кольцевой «бубль» коры между внешним и внутренним краем (fill-rule evenodd) */
   barkBand: string;
+  /** рваный внешний силуэт коры — бугры/чешуйки торчат наружу */
+  barkOuter: string;
   /** внутренняя кромка коры — тонкий тёплый кант на границе с древесиной */
   barkInner: string;
   /** короткие радиальные борозды-чешуйки поперёк коры */
@@ -176,40 +178,62 @@ function buildSlice(seed: number, shape: number): Slice {
   // Внутренний край коры — те же точки контура, сдвинутые к сердцевине
   // на рваную толщину. Между внешним и внутренним краем заливаем кольцо
   // (fill-rule evenodd) → получается живая полоса коры, а не ровный обвод.
-  const barkBase = 4.6;
-  const inner: Array<[number, number]> = B.map(([x, y]) => {
+  const barkBase = 5.6;
+  // сглаживание массива амплитуд → крупные чешуйки коры, а не острые иглы
+  const smoothAmt = (arr: number[], passes: number) => {
+    let a = arr.slice();
+    for (let p = 0; p < passes; p++) {
+      a = a.map((_, i) => {
+        const prev = a[(i - 1 + a.length) % a.length]!;
+        const next = a[(i + 1) % a.length]!;
+        return (prev + a[i]! * 2 + next) / 4;
+      });
+    }
+    return a;
+  };
+
+  // ВНЕШНИЙ край коры — выталкиваем точки контура НАРУЖУ рваными чешуйками,
+  // чтобы силуэт был бугристый, как настоящая кора (а не гладкий обвод).
+  const outAmt = smoothAmt(
+    B.map(() => rng()),
+    2,
+  );
+  const outer: Array<[number, number]> = B.map(([x, y], i) => {
+    const dx = x - px;
+    const dy = y - py;
+    const len = Math.hypot(dx, dy) || 1;
+    const t = barkBase * (0.25 + outAmt[i]! * 1.0);
+    return [x + (dx / len) * t, y + (dy / len) * t];
+  });
+  // ВНУТРЕННИЙ край коры — рваная граница с древесиной
+  const inAmt = smoothAmt(
+    B.map(() => rng()),
+    2,
+  );
+  const inner: Array<[number, number]> = B.map(([x, y], i) => {
     const dx = px - x;
     const dy = py - y;
     const len = Math.hypot(dx, dy) || 1;
-    const tt = barkBase * (0.55 + rng() * 1.0); // рваная толщина коры
-    return [x + (dx / len) * tt, y + (dy / len) * tt];
+    const t = barkBase * (0.5 + inAmt[i]! * 1.0);
+    return [x + (dx / len) * t, y + (dy / len) * t];
   });
-  const barkInner =
-    inner.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)}`).join(' ') +
-    ' Z';
-  const barkBand = `${outline} ${barkInner}`;
+  const toPath = (pts: Array<[number, number]>) =>
+    pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)}`).join(' ') + ' Z';
+  const barkOuter = toPath(outer);
+  const barkInner = toPath(inner);
+  const barkBand = `${barkOuter} ${barkInner}`;
 
-  // частые короткие штрихи поперёк кромки — чешуйки/борозды коры,
-  // с пропусками и разной глубиной → неровный природный ритм
+  // борозды-чешуйки поперёк ВСЕЙ толщины коры — от внешнего края к внутреннему,
+  // с пропусками → природный неровный ритм
   const barkFissures: string[] = [];
-  for (let i = 0; i < B.length; i += 4) {
-    if (rng() < 0.22) continue; // пропуски
-    const [ox, oy] = B[i]!;
-    const dx = px - ox;
-    const dy = py - oy;
-    const len = Math.hypot(dx, dy) || 1;
-    const ux = dx / len;
-    const uy = dy / len;
-    const out = barkBase * (0.05 + rng() * 0.35); // чуть наружу за кромку
-    const deep = barkBase * (0.9 + rng() * 0.6); // вглубь коры
-    const x0 = ox - ux * out;
-    const y0 = oy - uy * out;
-    const x1 = ox + ux * deep;
-    const y1 = oy + uy * deep;
-    barkFissures.push(`M${x0.toFixed(2)},${y0.toFixed(2)} L${x1.toFixed(2)},${y1.toFixed(2)}`);
+  for (let i = 0; i < B.length; i += 3) {
+    if (rng() < 0.18) continue;
+    const o = outer[i]!;
+    const n = inner[i]!;
+    barkFissures.push(`M${o[0].toFixed(2)},${o[1].toFixed(2)} L${n[0].toFixed(2)},${n[1].toFixed(2)}`);
   }
 
-  return { outline, rings, cracks, barkBand, barkInner, barkFissures };
+  return { outline, rings, cracks, barkBand, barkOuter, barkInner, barkFissures };
 }
 
 /* ───────── резные эмблемы (гравировка по дереву) ─────────
@@ -335,7 +359,7 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
   }, [locationSlug]);
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-1 sm:px-2">
+    <div className="mx-auto w-full max-w-5xl px-1 sm:px-2">
       {/* общие фильтры/градиенты — один раз на документ */}
       <svg width="0" height="0" className="absolute" aria-hidden>
         <defs>
@@ -360,11 +384,11 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
           {/* фактура коры: вытянутые радиально грубые волокна + тёмные борозды */}
           <filter id="pz-bark">
             <feTurbulence type="fractalNoise" baseFrequency="0.95 0.22" numOctaves="4" seed="31" />
-            <feColorMatrix values="0 0 0 0 0.13  0 0 0 0 0.08  0 0 0 0 0.035  0 0 0 0.85 0" />
+            <feColorMatrix values="0 0 0 0 0.22  0 0 0 0 0.13  0 0 0 0 0.06  0 0 0 0.7 0" />
           </filter>
           <filter id="pz-bark-lite">
             <feTurbulence type="fractalNoise" baseFrequency="0.85 0.3" numOctaves="3" seed="53" />
-            <feColorMatrix values="0 0 0 0 0.42  0 0 0 0 0.3  0 0 0 0 0.17  0 0 0 0.5 0" />
+            <feColorMatrix values="0 0 0 0 0.58  0 0 0 0 0.42  0 0 0 0 0.24  0 0 0 0.5 0" />
           </filter>
           <radialGradient id="pz-sheen" cx="36%" cy="28%" r="70%">
             <stop offset="0%" stopColor="rgba(255,243,216,0.08)" />
@@ -483,45 +507,18 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                     <rect width={VB} height={VB} fill="url(#pz-spec)" />
                   </g>
 
-                  {/* кора — тёмная неровная полоса по краю с грубой фактурой
-                      и радиальными бороздами; НЕ концентрическое «кольцо» */}
-                  <clipPath id={`pz-bark-clip-${i}`} clipPathUnits="userSpaceOnUse">
-                    <path d={s.barkBand} clipRule="evenodd" />
-                  </clipPath>
-                  <path d={s.barkBand} fillRule="evenodd" fill="#160C05" opacity={0.97} />
-                  <path d={s.barkBand} fillRule="evenodd" fill="#2A1A0C" opacity={0.5} />
-                  <g clipPath={`url(#pz-bark-clip-${i})`}>
-                    {/* лёгкие волокна-гребни — еле заметно, чтобы не светлить тон */}
-                    <rect width={VB} height={VB} filter="url(#pz-bark-lite)" opacity={0.18} />
-                    {/* глубокие тёмные борозды — основная фактура */}
-                    <rect width={VB} height={VB} filter="url(#pz-bark)" opacity={0.85} />
-                  </g>
-                  {/* радиальные борозды-чешуйки: тёмная щель + светлый гребень */}
-                  {s.barkFissures.map((d, k) => (
-                    <g key={`brk-${k}`}>
-                      <path
-                        d={d}
-                        fill="none"
-                        stroke="#0A0402"
-                        strokeWidth={1}
-                        strokeLinecap="round"
-                        opacity={0.6}
-                      />
-                      <path
-                        d={d}
-                        fill="none"
-                        stroke="#6B4A28"
-                        strokeWidth={0.4}
-                        strokeLinecap="round"
-                        opacity={0.4}
-                        transform="translate(0.35,0.35)"
-                      />
-                    </g>
-                  ))}
-                  {/* тёплый кант на границе коры и древесины */}
-                  <path d={s.barkInner} fill="none" stroke="#5C3E20" strokeWidth={0.5} opacity={0.4} />
-                  {/* тонкий собирающий обвод по самой кромке */}
-                  <path d={s.outline} fill="none" stroke="#0A0503" strokeWidth={1.3} opacity={0.9} />
+                  {/* чистый край спила — без коры (убрана по просьбе):
+                      тонкий тёмный обвод даёт аккуратную кромку, тёплый блик
+                      сверху — лёгкий объём полированного дерева */}
+                  <path d={s.outline} fill="none" stroke="#1A0E05" strokeWidth={1.6} opacity={0.85} />
+                  <path
+                    d={s.outline}
+                    fill="none"
+                    stroke="#7A5230"
+                    strokeWidth={0.6}
+                    opacity={0.4}
+                    transform="translate(0,-0.4)"
+                  />
 
                   {/* резная гравировка + засечная подпись (вырезаны по дереву) */}
                   <g clipPath={`url(#pz-clip-${i})`}>
