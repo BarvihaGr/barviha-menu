@@ -20,7 +20,7 @@ interface Props {
 const VB = 130;
 const CX = 65;
 const CY = 63;
-const RB = 55; // «пожирнее» — спил почти заполняет кадр
+const RB = 52; // «пожирнее» — спил почти заполняет кадр
 
 function hashStr(s: string): number {
   let h = 2166136261 >>> 0;
@@ -45,6 +45,8 @@ function mulberry32(seed: number) {
 interface Slice {
   outline: string;
   rings: Array<{ d: string; opacity: number; width: number; tone: string }>;
+  /** радиальные трещины-усушки от сердцевины наружу — как в настоящем спиле */
+  cracks: string[];
 }
 
 function buildSlice(seed: number): Slice {
@@ -59,13 +61,16 @@ function buildSlice(seed: number): Slice {
   const px = CX + Math.cos(pa) * pr;
   const py = CY + Math.sin(pa) * pr;
 
+  // живой неровный контур спила: низкие гармоники дают крупные «горбы»
+  // и впадины (форма не круг), высокие — мелкую чешую коры по краю.
   const Rout = (a: number) =>
     RB *
     (1 +
-      0.11 * Math.sin(a + ph1) +
-      0.06 * Math.sin(a * 2 + ph2) +
-      0.03 * Math.sin(a * 3 + ph3) +
-      0.018 * Math.sin(a * 5 + ph1 * 1.7));
+      0.13 * Math.sin(a + ph1) +
+      0.075 * Math.sin(a * 2 + ph2) +
+      0.045 * Math.sin(a * 3 + ph3) +
+      0.025 * Math.sin(a * 5 + ph1 * 1.7) +
+      0.015 * Math.sin(a * 7 + ph2 * 0.6));
 
   const STEPS = 120;
   const B: Array<[number, number]> = [];
@@ -106,7 +111,28 @@ function buildSlice(seed: number): Slice {
     });
   }
 
-  return { outline, rings };
+  // радиальные трещины-усушки: расходятся лучами от сердцевины, к краю
+  // слегка виляют и расширяются — характерная примета настоящего спила.
+  const cracks: string[] = [];
+  const crackN = 2 + Math.floor(rng() * 3); // 2–4 шт.
+  for (let c = 0; c < crackN; c++) {
+    const a0 = rng() * Math.PI * 2;
+    const r0 = RB * (0.04 + rng() * 0.08);
+    const r1 = RB * (0.72 + rng() * 0.2);
+    const segs = 7;
+    let d = '';
+    for (let i = 0; i <= segs; i++) {
+      const t = i / segs;
+      const rr = r0 + (r1 - r0) * t;
+      const aa = a0 + (rng() - 0.5) * 0.22 * t; // виляние растёт к краю
+      const x = px + Math.cos(aa) * rr;
+      const y = py + Math.sin(aa) * rr;
+      d += `${i === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)} `;
+    }
+    cracks.push(d.trim());
+  }
+
+  return { outline, rings, cracks };
 }
 
 /**
@@ -155,6 +181,13 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
             <stop offset="0%" stopColor="rgba(255,242,214,0.12)" />
             <stop offset="55%" stopColor="rgba(255,242,214,0)" />
           </radialGradient>
+          {/* объём спила: лёгкий блик по верхнему краю + затемнение снизу —
+              создаёт ощущение скруглённой кромки и реальной толщины */}
+          <linearGradient id="pz-dome" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="rgba(255,238,206,0.14)" />
+            <stop offset="42%" stopColor="rgba(0,0,0,0)" />
+            <stop offset="100%" stopColor="rgba(0,0,0,0.38)" />
+          </linearGradient>
         </defs>
       </svg>
 
@@ -193,6 +226,11 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                   <clipPath id={`pz-clip-${i}`}>
                     <path d={s.outline} />
                   </clipPath>
+
+                  {/* торец спила — тёмная копия контура со сдвигом вниз:
+                      даёт видимую толщину бревна и опору для тени */}
+                  <path d={s.outline} transform="translate(0,3.6)" fill="#160C05" opacity={0.92} />
+
                   <g clipPath={`url(#pz-clip-${i})`}>
                     <rect width={VB} height={VB} fill="url(#pz-bg)" />
                     <rect width={VB} height={VB} filter="url(#pz-mottle)" opacity="0.62" />
@@ -209,7 +247,31 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                         strokeLinejoin="round"
                       />
                     ))}
+                    {/* трещины-усушки поверх колец */}
+                    {s.cracks.map((d, k) => (
+                      <g key={`crk-${k}`}>
+                        <path
+                          d={d}
+                          fill="none"
+                          stroke="#0F0703"
+                          strokeWidth={1}
+                          opacity={0.5}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d={d}
+                          fill="none"
+                          stroke="#5C3E20"
+                          strokeWidth={0.4}
+                          opacity={0.4}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                    ))}
                     <rect width={VB} height={VB} filter="url(#pz-rough)" opacity="0.12" />
+                    <rect width={VB} height={VB} fill="url(#pz-dome)" />
                     <rect width={VB} height={VB} fill="url(#pz-sheen)" />
                   </g>
 
