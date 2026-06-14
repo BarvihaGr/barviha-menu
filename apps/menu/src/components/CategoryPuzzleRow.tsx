@@ -488,13 +488,13 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
                   <clipPath id={`pz-bark-clip-${i}`} clipPathUnits="userSpaceOnUse">
                     <path d={s.barkBand} clipRule="evenodd" />
                   </clipPath>
-                  <path d={s.barkBand} fillRule="evenodd" fill="#180D05" opacity={0.97} />
+                  <path d={s.barkBand} fillRule="evenodd" fill="#160C05" opacity={0.97} />
+                  <path d={s.barkBand} fillRule="evenodd" fill="#2A1A0C" opacity={0.5} />
                   <g clipPath={`url(#pz-bark-clip-${i})`}>
-                    <rect width={VB} height={VB} fill="#33200F" opacity={0.5} />
-                    {/* светлые волокна-гребни коры */}
-                    <rect width={VB} height={VB} filter="url(#pz-bark-lite)" opacity={0.55} />
-                    {/* глубокие тёмные борозды */}
-                    <rect width={VB} height={VB} filter="url(#pz-bark)" opacity={0.9} />
+                    {/* лёгкие волокна-гребни — еле заметно, чтобы не светлить тон */}
+                    <rect width={VB} height={VB} filter="url(#pz-bark-lite)" opacity={0.18} />
+                    {/* глубокие тёмные борозды — основная фактура */}
+                    <rect width={VB} height={VB} filter="url(#pz-bark)" opacity={0.85} />
                   </g>
                   {/* радиальные борозды-чешуйки: тёмная щель + светлый гребень */}
                   {s.barkFissures.map((d, k) => (
