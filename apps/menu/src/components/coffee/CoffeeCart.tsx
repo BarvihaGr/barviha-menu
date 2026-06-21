@@ -53,7 +53,7 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
             <p className="max-w-sm text-[15px] text-[#9b9b9b]">{t('empty')}</p>
             <Link
               href={`/${locationSlug}`}
-              className="rounded-full bg-[#1a1a1a] px-6 py-3.5 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-black cursor-pointer"
+              className="rounded-full bg-[var(--cm-accent)] px-6 py-3.5 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:opacity-90 cursor-pointer"
             >
               {t('browse')}
             </Link>
@@ -90,7 +90,7 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="truncate text-[15px] font-semibold text-[#1a1a1a]">{name}</div>
-                        <div className="mt-0.5 text-[14px] text-[#c49262]">{formatPrice(item.price)}</div>
+                        <div className="mt-0.5 text-[14px] text-[var(--cm-accent)]">{formatPrice(item.price)}</div>
                       </div>
                       <CoffeeQty itemId={entry.itemId} qty={entry.qty} />
                       <button
@@ -129,7 +129,7 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
 function CoffeeQty({ itemId, qty }: { itemId: string; qty: number }) {
   const setQty = useCart((s) => s.setQty);
   return (
-    <div className="inline-flex items-center gap-1 rounded-full bg-[#1a1a1a] px-1.5 py-1.5 text-white">
+    <div className="inline-flex items-center gap-1 rounded-full bg-[var(--cm-accent)] px-1.5 py-1.5 text-white">
       <button
         type="button"
         onClick={() => setQty(itemId, qty - 1)}

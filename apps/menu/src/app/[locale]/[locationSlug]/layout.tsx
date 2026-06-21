@@ -8,7 +8,8 @@ import { FloatingCartButton } from '@/components/FloatingCartButton';
 import { SwipeBack } from '@/components/SwipeBack';
 import { ScrollMemory } from '@/components/ScrollMemory';
 import { getLocationAccent } from '@/lib/location-theme';
-import { isCoffeeDesign, getCoffeeAccent } from '@/lib/coffee-design';
+import { isCoffeeDesign, getCoffeeAccent, coffeeAccentStyle } from '@/lib/coffee-design';
+import { cn } from '@/lib/utils';
 
 export default async function LocationLayout({
   children,
@@ -38,7 +39,10 @@ export default async function LocationLayout({
   const coffee = isCoffeeDesign(location.slug);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div
+      className={cn('flex min-h-screen flex-col', coffee && 'coffee-theme')}
+      style={coffee ? coffeeAccentStyle(location.slug) : undefined}
+    >
       {coffee ? (
         <CoffeeHeader locationSlug={location.slug} locations={locations} />
       ) : (

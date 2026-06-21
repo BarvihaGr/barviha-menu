@@ -28,6 +28,50 @@
   --gold-glow: rgba(196, 146, 98, 0.35);  /* --gold-glow */
 }
 
+/* ── СВЕТЛАЯ ТЕМА Coffeemania (Бауманская) ──
+   Единая белая стилистика для редизайн-локаций. Переопределяем семантические
+   переменные палитры на светлые — и все общие компоненты (плашка-корзина,
+   выпадашки локации/языка, модалки, тосты) автоматически становятся белыми,
+   без правки каждого. Акцент берётся из --cm-accent (фирменный цвет локации). */
+.coffee-theme {
+  --background: #fbfbfa;
+  --background-deep: #ffffff;
+  --card: #f3f2ef;
+  --card-elev: #ffffff;
+  --foreground: #1a1a1a;
+  --cream: #1a1a1a;            /* основной текст → тёмный на белом */
+  --beige: #3a3a3a;
+  --muted: #6b6b6b;
+  --muted-dim: #9b9b9b;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.16);
+  --hair: rgba(0, 0, 0, 0.05);
+  --gold: var(--cm-accent, #c49262);
+  --gold-light: var(--cm-accent, #d8a877);
+  --gold-soft: var(--cm-accent, #a07642);
+  --gold-dark: #b8b3aa;        /* нейтральный (скроллбар и т.п.) */
+  --gold-glow: rgba(0, 0, 0, 0.06);
+
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Гасим тёмный фон body и все декоративные слои, когда на странице
+   светлая тема (любой потомок .coffee-theme). */
+body:has(.coffee-theme) {
+  background: #fbfbfa;
+}
+body:has(.coffee-theme)::before,
+body:has(.coffee-theme)::after {
+  display: none;
+}
+body:has(.coffee-theme) .brush-strokes,
+body:has(.coffee-theme) .bg-sheen,
+body:has(.coffee-theme) .ambient-light,
+body:has(.coffee-theme) .gold-dust {
+  display: none;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-background-deep: var(--background-deep);

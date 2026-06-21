@@ -15,7 +15,7 @@ import { ItemCard } from '@/components/ItemCard';
 import { HookahHologramCard } from '@/components/HookahHologramCard';
 import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
 import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
-import { isCoffeeDesign } from '@/lib/coffee-design';
+import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
 
 export default async function HookahPage({
   params,
@@ -45,7 +45,10 @@ export default async function HookahPage({
   // тот же полноширинный фон, сайдбар категорий и сетка карточек.
   if (isCoffeeDesign(locationSlug)) {
     return (
-      <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]">
+      <div
+        className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]"
+        style={coffeeAccentStyle(locationSlug)}
+      >
         <div className="mx-auto w-full max-w-[1200px] px-4 pb-32 pt-6 sm:px-6 lg:pt-10">
           <div className="lg:grid lg:grid-cols-[210px_1fr] lg:gap-10">
             <CoffeeCategoryNav
