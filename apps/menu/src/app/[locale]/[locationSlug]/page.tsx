@@ -61,9 +61,9 @@ export default async function LocationHome({
       <section className="pb-6 -mt-6 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw]">
         <StubCarousel
           items={[
-            { src: '/spotlight/afisha.webp', alt: 'Афиша — ночь в стиле Barvikha', w: 820, h: 460 },
-            { src: '/spotlight/dj.webp', alt: 'DJ Sander — live DJ-set', w: 818, h: 460 },
-            { src: '/spotlight/soc.webp', alt: 'Мы в социальных сетях', w: 1654, h: 444 },
+            { src: '/spotlight/afisha.webp', alt: 'Афиша — ночь в стиле Barvikha', w: 16, h: 9 },
+            { src: '/spotlight/dj.webp', alt: 'DJ Sander — live DJ-set', w: 16, h: 9 },
+            { src: '/spotlight/soc.webp', alt: 'Мы в социальных сетях', w: 16, h: 9 },
           ]}
         />
       </section>
