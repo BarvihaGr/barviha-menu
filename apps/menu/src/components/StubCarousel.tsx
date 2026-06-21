@@ -8,8 +8,10 @@ export interface StubCard {
   src: string;
   /** Альт для доступности. */
   alt: string;
-  /** Как вписывать: 'cover' для карточек 16:9, 'contain' для широких баннеров. */
-  fit?: 'cover' | 'contain';
+  /** Натуральная ширина картинки (px) — для пропорции слота. */
+  w: number;
+  /** Натуральная высота картинки (px) — для пропорции слота. */
+  h: number;
 }
 
 interface Props {
@@ -109,14 +111,15 @@ export function StubCarousel({ items }: Props) {
       {loop.map((item, i) => (
         <div
           key={`${item.src}-${i}`}
-          className="relative aspect-[16/9] w-[280px] shrink-0 overflow-hidden rounded-2xl bg-[#0a0705] shadow-[0_8px_24px_rgba(0,0,0,0.55)] sm:w-[340px]"
+          className="relative h-[158px] shrink-0 overflow-hidden rounded-2xl bg-[#0a0705] shadow-[0_8px_24px_rgba(0,0,0,0.55)] sm:h-[192px]"
+          style={{ aspectRatio: `${item.w} / ${item.h}` }}
         >
           <Image
             src={item.src}
             alt={item.alt}
             fill
-            sizes="(max-width: 640px) 280px, 340px"
-            className={item.fit === 'contain' ? 'object-contain' : 'object-cover'}
+            sizes="(max-width: 640px) 60vw, 720px"
+            className="object-cover"
           />
         </div>
       ))}
