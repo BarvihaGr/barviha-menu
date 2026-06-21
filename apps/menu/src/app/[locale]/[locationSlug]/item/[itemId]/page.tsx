@@ -9,6 +9,7 @@ import { AddToCartButton } from '@/components/AddToCartButton';
 import { RelatedItemsRail, type RelatedItem } from '@/components/RelatedItemsRail';
 import { ExpandableText } from '@/components/ExpandableText';
 import { ItemPhotoViewer } from '@/components/ItemPhotoViewer';
+import { ItemCloseButton } from '@/components/ItemCloseButton';
 
 export default async function ItemDetailPage({
   params,
@@ -50,8 +51,9 @@ export default async function ItemDetailPage({
               </div>
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+            <ItemCloseButton fallbackHref={`/${locationSlug}`} />
             {item.labels.length > 0 && (
-              <div className="absolute left-4 top-4 flex flex-col gap-1.5 z-10">
+              <div className="absolute left-4 top-16 flex flex-col gap-1.5 z-10">
                 {item.labels.map((l) => (
                   <Badge key={l} label={l} />
                 ))}
