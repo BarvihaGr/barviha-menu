@@ -72,7 +72,7 @@ export function CoffeeItemDetail({
               {capitalize(name)}
             </h1>
             {item.weight && (
-              <div className="mt-2 text-[12px] font-medium uppercase tracking-[0.16em] text-[#c49262]">
+              <div className="mt-2 text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--cm-accent)]">
                 {item.weight} {t('grams')}
               </div>
             )}
@@ -100,7 +100,7 @@ export function CoffeeItemDetail({
                   >
                     <span className="text-[#1a1a1a]">{ing.name}</span>
                     {ing.amount && (
-                      <span className="text-[12px] text-[#c49262] before:mr-1.5 before:text-[#d6c3ad] before:content-['·']">
+                      <span className="text-[12px] text-[var(--cm-accent)] before:mr-1.5 before:text-[#cfcfcf] before:content-['·']">
                         {ing.amount}
                       </span>
                     )}
@@ -304,7 +304,7 @@ function CoffeeExpandableText({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[#c49262] transition-opacity hover:opacity-70 cursor-pointer"
+        className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[var(--cm-accent)] transition-opacity hover:opacity-70 cursor-pointer"
       >
         {open ? lessLabel : moreLabel}
       </button>
@@ -335,7 +335,7 @@ function CoffeeAddButton({
 
   if (qty > 0) {
     return (
-      <div className="inline-flex items-center gap-1 rounded-full bg-[#1a1a1a] px-1.5 py-1.5 text-white">
+      <div className="inline-flex items-center gap-1 rounded-full bg-[var(--cm-accent)] px-1.5 py-1.5 text-white">
         <button
           type="button"
           onClick={() => setQty(itemId, qty - 1)}
@@ -362,7 +362,7 @@ function CoffeeAddButton({
       type="button"
       onClick={firstAdd}
       aria-label={`${addLabel} ${itemName}`}
-      className="inline-flex items-center gap-2 rounded-full bg-[#1a1a1a] px-6 py-3.5 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-black cursor-pointer"
+      className="inline-flex items-center gap-2 rounded-full bg-[var(--cm-accent)] px-6 py-3.5 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:opacity-90 cursor-pointer"
     >
       <Plus size={18} strokeWidth={2.4} />
       {addLabel}
@@ -392,7 +392,7 @@ function CoffeeRelatedRail({
               href={`/${locationSlug}/item/${it.id}`}
               aria-label={it.name}
               title={it.name}
-              className="group relative block aspect-square w-12 shrink-0 overflow-hidden rounded-full border border-[#e6e3dc] bg-[#f3f2ef] transition duration-300 hover:scale-105 hover:border-[#c49262] sm:w-14"
+              className="group relative block aspect-square w-12 shrink-0 overflow-hidden rounded-full border border-[#e6e3dc] bg-[#f3f2ef] transition duration-300 hover:scale-105 hover:border-[var(--cm-accent)] sm:w-14"
             >
               {it.photo ? (
                 <Image

@@ -181,7 +181,7 @@ function Chip({
       className={cn(
         'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 font-[family-name:var(--font-sans)] text-[13px] transition cursor-pointer',
         on
-          ? 'bg-[#1a1a1a] font-medium text-white'
+          ? 'bg-[var(--cm-accent)] font-medium text-white'
           : subtle
             ? 'bg-[#f1f1ef] text-[#6b6b6b] hover:text-[#1a1a1a]'
             : 'bg-[#f1f1ef] text-[#3a3a3a] hover:text-[#1a1a1a]',

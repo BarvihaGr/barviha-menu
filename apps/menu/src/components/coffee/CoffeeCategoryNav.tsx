@@ -34,7 +34,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
                   className={cn(
                     'block rounded-lg px-3 py-2 font-[family-name:var(--font-sans)] text-[15px] leading-snug transition-colors',
                     on
-                      ? 'font-semibold text-[#1a1a1a]'
+                      ? 'font-semibold text-[var(--cm-accent)]'
                       : 'font-normal text-[#8b8b8b] hover:text-[#1a1a1a]',
                   )}
                 >
@@ -58,7 +58,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
                 className={cn(
                   'shrink-0 whitespace-nowrap rounded-full px-4 py-2 font-[family-name:var(--font-sans)] text-[14px] transition-colors',
                   on
-                    ? 'bg-[#1a1a1a] font-medium text-white'
+                    ? 'bg-[var(--cm-accent)] font-medium text-white'
                     : 'bg-[#f1f1ef] text-[#6b6b6b]',
                 )}
               >

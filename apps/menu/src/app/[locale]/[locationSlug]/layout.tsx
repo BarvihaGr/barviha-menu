@@ -8,7 +8,7 @@ import { FloatingCartButton } from '@/components/FloatingCartButton';
 import { SwipeBack } from '@/components/SwipeBack';
 import { ScrollMemory } from '@/components/ScrollMemory';
 import { getLocationAccent } from '@/lib/location-theme';
-import { isCoffeeDesign } from '@/lib/coffee-design';
+import { isCoffeeDesign, getCoffeeAccent } from '@/lib/coffee-design';
 
 export default async function LocationLayout({
   children,
@@ -53,6 +53,7 @@ export default async function LocationLayout({
         address={location.address}
         phone={location.phone ?? null}
         accent={accent}
+        dockAccent={coffee ? getCoffeeAccent(location.slug) : undefined}
       />
       <Toaster />
       <SwipeBack />

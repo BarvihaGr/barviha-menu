@@ -66,7 +66,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
             aria-label={t('toast.addedToCart')}
             className={cnBump(
               bump,
-              'absolute bottom-2.5 right-2.5 grid h-9 w-9 place-items-center rounded-full bg-white text-[#1a1a1a] shadow-[0_2px_10px_rgba(0,0,0,0.12)] opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[#1a1a1a] hover:text-white cursor-pointer',
+              'absolute bottom-2.5 right-2.5 grid h-9 w-9 place-items-center rounded-full bg-white text-[#1a1a1a] shadow-[0_2px_10px_rgba(0,0,0,0.12)] opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[var(--cm-accent)] hover:text-white cursor-pointer',
             )}
           >
             <Plus className="h-5 w-5" strokeWidth={2.4} />
