@@ -19,7 +19,21 @@ export function getCoffeeAccent(slug: string): string {
   return getMetroColor(slug);
 }
 
-/** Инлайн-стиль с выставленной переменной акцента (для корня coffee-страниц). */
+/**
+ * Инлайн-стиль для корня coffee-страниц: выставляет акцент локации и
+ * переопределяет шрифтовые переменные на брендовые (Montserrat для
+ * заголовков, Manrope для текста). Переопределение каскадно действует на всё
+ * поддерево — все coffee-компоненты, использующие var(--font-display) и
+ * var(--font-sans), автоматически получают брендовую типографику, не задевая
+ * остальные локации.
+ */
 export function coffeeAccentStyle(slug: string): React.CSSProperties {
-  return { ['--cm-accent']: getCoffeeAccent(slug) } as React.CSSProperties;
+  return {
+    ['--cm-accent']: getCoffeeAccent(slug),
+    ['--font-display']: 'var(--cm-font-display)',
+    ['--font-sans']: 'var(--cm-font-body)',
+    // Базовый шрифт всего поддерева — чтобы наследуемый текст (без явного
+    // font-family) тоже стал брендовым Manrope, а не унаследовал Inter от body.
+    fontFamily: 'var(--cm-font-body)',
+  } as React.CSSProperties;
 }
