@@ -4,11 +4,20 @@ import { getMetroColor } from './location-theme';
  * Локации, у которых меню рендерится в светлом дизайне Coffeemania
  * (левый сайдбар категорий + воздушная сетка карточек). Блюда — наши.
  */
-export const COFFEE_DESIGN_SLUGS = new Set(['baumanskaia']);
+export const COFFEE_DESIGN_SLUGS = new Set(['baumanskaia', 'domodedovo']);
 
 export function isCoffeeDesign(slug: string): boolean {
   return COFFEE_DESIGN_SLUGS.has(slug);
 }
+
+/**
+ * Ручные переопределения акцента Coffeemania: slug → откуда брать цвет.
+ * Домодедовская вне метро (по умолчанию была бы золотом) — используем
+ * фирменный цвет «Арки» (циан Филёвской линии).
+ */
+const COFFEE_ACCENT_FROM: Record<string, string> = {
+  domodedovo: 'arka',
+};
 
 /**
  * Акцентный цвет светлого дизайна Coffeemania = фирменный цвет локации
@@ -16,7 +25,7 @@ export function isCoffeeDesign(slug: string): boolean {
  * на корне страницы и подхватывается всеми coffee-компонентами.
  */
 export function getCoffeeAccent(slug: string): string {
-  return getMetroColor(slug);
+  return getMetroColor(COFFEE_ACCENT_FROM[slug] ?? slug);
 }
 
 /**
