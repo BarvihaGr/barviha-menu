@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/routing';
 import {
+  pickCategoryName,
   pickItemDescription,
   pickItemName,
   pickMoodDescription,
@@ -12,6 +13,9 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { HookahMoodCard } from '@/components/HookahMoodCard';
 import { ItemCard } from '@/components/ItemCard';
 import { HookahHologramCard } from '@/components/HookahHologramCard';
+import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
+import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
+import { isCoffeeDesign } from '@/lib/coffee-design';
 
 export default async function HookahPage({
   params,
@@ -26,15 +30,46 @@ export default async function HookahPage({
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) notFound();
 
-  const [moods, items] = await Promise.all([
+  const [moods, items, categories] = await Promise.all([
     db.getHookahMoods(),
     db.getMenuItemsForLocation(location.id),
+    db.getCategoriesForLocation(location.id),
   ]);
 
   const hookahCategory = (await db.getCategoryBySlug('hookah'))!;
   const hookahs = items.filter((i) => i.category_id === hookahCategory.id);
   const premium = hookahs.find((i) => i.is_premium) ?? hookahs[0];
   const hits = hookahs.filter((i) => i.id !== premium?.id);
+
+  // Светлый дизайн Coffeemania — Кальяны в едином стиле с Кухней/Баром:
+  // тот же полноширинный фон, сайдбар категорий и сетка карточек.
+  if (isCoffeeDesign(locationSlug)) {
+    return (
+      <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]">
+        <div className="mx-auto w-full max-w-[1200px] px-4 pb-32 pt-6 sm:px-6 lg:pt-10">
+          <div className="lg:grid lg:grid-cols-[210px_1fr] lg:gap-10">
+            <CoffeeCategoryNav
+              categories={categories}
+              currentSlug="hookah"
+              locationSlug={locationSlug}
+              locale={locale as Locale}
+            />
+            <div>
+              <h1 className="mb-6 font-[family-name:var(--font-sans)] text-[26px] font-bold leading-tight tracking-[-0.01em] text-[#1a1a1a] sm:text-[32px]">
+                {pickCategoryName(hookahCategory, locale as Locale)}
+              </h1>
+              <CoffeeMenuList
+                items={hookahs}
+                locationSlug={locationSlug}
+                categorySlug="hookah"
+                realm="hookah"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-10">

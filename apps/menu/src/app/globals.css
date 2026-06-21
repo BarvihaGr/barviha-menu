@@ -393,22 +393,3 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 8px; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* ──────────────────────────────────────────────────────────────────────
-   COFFEEMANIA (Бауманская) — светлая тема меню.
-   Полный «coffeemania.ru»-макет: белый фон, тёмный текст, тёплый акцент.
-   Тёплые токены проекта переопределяем локально, чтобы переиспользуемые
-   компоненты (кнопка корзины) читались на белом фоне.
-   ────────────────────────────────────────────────────────────────────── */
-.cm-light {
-  background: #ffffff;
-  color: #1a1a1a;
-}
-.cm-root {
-  --cream: #1a1a1a;       /* число степпера корзины → тёмное */
-  --muted: #9a9a9a;
-  --muted-dim: #b3b3b3;
-  --gold: #b07a2e;        /* акцент кнопок на белом (контрастнее) */
-  --gold-light: #c79348;
-  color: #1a1a1a;
-}

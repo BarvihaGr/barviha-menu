@@ -50,12 +50,22 @@ export default async function LocationHome({
 
   // Светлый дизайн Coffeemania — чистая главная без видео-героя и плашки-кнопок.
   if (isCoffeeDesign(locationSlug)) {
+    // Репрезентативное фото на каждую категорию (первое блюдо с фото) — для
+    // крупных карточек-плиток на главной.
+    const allItems = await db.getMenuItemsForLocation(location.id);
+    const categoryPhotos: Record<string, string | null> = {};
+    for (const c of homeCategories) {
+      const withPhoto = allItems.find((i) => i.category_id === c.id && i.photo);
+      categoryPhotos[c.slug] = withPhoto?.photo ?? null;
+    }
+
     return (
       <CoffeeHome
         locationSlug={location.slug}
         locationName={locationName}
         locationCity={location.city ?? location.address}
         categories={homeCategories}
+        categoryPhotos={categoryPhotos}
         locale={locale as Locale}
         ctaLabel={tHome('exploreMenu')}
       />

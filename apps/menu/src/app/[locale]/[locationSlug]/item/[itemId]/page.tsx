@@ -11,7 +11,7 @@ import { ExpandableText } from '@/components/ExpandableText';
 import { ItemPhotoViewer } from '@/components/ItemPhotoViewer';
 import { ItemCloseButton } from '@/components/ItemCloseButton';
 import { CoffeeItemDetail } from '@/components/coffee/CoffeeItemDetail';
-import { isCoffeeDesign } from '@/lib/coffee-design';
+import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
 
 export default async function ItemDetailPage({
   params,
@@ -44,7 +44,10 @@ export default async function ItemDetailPage({
   // главная/меню редизайн-локации (Бауманская). Полноширинный светлый фон.
   if (isCoffeeDesign(locationSlug)) {
     return (
-      <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]">
+      <div
+        className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]"
+        style={coffeeAccentStyle(locationSlug)}
+      >
         <div className="mx-auto w-full max-w-[1200px] px-4 pb-32 pt-6 sm:px-6 lg:pt-10">
           <CoffeeItemDetail
             item={item}
