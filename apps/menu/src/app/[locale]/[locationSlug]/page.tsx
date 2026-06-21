@@ -63,28 +63,43 @@ export default async function LocationHome({
         <StubCarousel
           items={[
             {
-              src: '/spotlight/afisha.webp',
               alt: 'Афиша — ночь в стиле Barvikha',
-              w: 16,
-              h: 9,
+              card: {
+                kind: 'afisha',
+                brand: 'BARVIKHA',
+                title: 'Ночь в стиле Barvikha',
+                subtitle: 'Атмосфера роскоши, музыки и безупречного отдыха.',
+                date: '24 мая',
+                time: '22:00',
+                place: locationName,
+              },
               title: 'Ночь в стиле Barvikha',
               subtitle: 'Атмосфера роскоши, музыки и безупречного отдыха.',
               bookingUrl: getBookingUrl(locationSlug),
             },
             {
-              src: '/spotlight/dj.webp',
               alt: 'DJ Sander — live DJ-set',
-              w: 16,
-              h: 9,
+              card: {
+                kind: 'dj',
+                brand: 'BARVIKHA',
+                eyebrow: 'Live · DJ set',
+                name: 'DJ Sander',
+                date: '24 мая',
+                time: '22:00',
+              },
               title: 'DJ Sander — Live DJ-set',
               subtitle: 'Живой сет по выходным. Бронируйте стол заранее.',
               bookingUrl: getBookingUrl(locationSlug),
             },
             {
-              src: '/spotlight/soc.webp',
               alt: 'Мы в социальных сетях',
-              w: 16,
-              h: 9,
+              card: {
+                kind: 'social',
+                brand: 'BARVIKHA',
+                title: 'Мы в социальных сетях',
+                note: 'Актуальные события',
+                socials: ['VK', 'MAX'],
+              },
               title: 'Мы в социальных сетях',
               subtitle: 'Афиша, акции и связь с нами — подписывайтесь.',
               // Заглушки: заменить на реальные ссылки соцсетей по локациям.

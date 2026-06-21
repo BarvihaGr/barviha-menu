@@ -1,20 +1,16 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CalendarCheck, X } from 'lucide-react';
+import { PromoCard, type PromoCardData } from './PromoCard';
 
 export interface StubCard {
-  /** Путь к картинке-карточке в /public. */
-  src: string;
-  /** Альт для доступности. */
+  /** Кодовая карточка-афиша (рисуется в коде, не картинкой). */
+  card: PromoCardData;
+  /** Альт/подпись для доступности. */
   alt: string;
-  /** Натуральная ширина картинки (px) — для пропорции слота. */
-  w: number;
-  /** Натуральная высота картинки (px) — для пропорции слота. */
-  h: number;
   /** Заголовок в модалке (необязательно). */
   title?: string;
   /** Короткая подпись под заголовком в модалке (необязательно). */
@@ -24,6 +20,9 @@ export interface StubCard {
   /** Ссылки на соцсети. Если заданы — в модалке показываем кнопки перехода. */
   links?: Array<{ label: string; href: string }>;
 }
+
+/** Все карточки одного формата — горизонтальный баннер 16:9. */
+const CARD_ASPECT = '16 / 9';
 
 interface Props {
   /** Карточки слева-направо. */
@@ -140,22 +139,16 @@ export function StubCarousel({ items }: Props) {
         {loop.map((item, i) => (
           <button
             type="button"
-            key={`${item.src}-${i}`}
+            key={`${item.alt}-${i}`}
             aria-label={item.title ?? item.alt}
             onClick={() => {
               if (movedRef.current) return; // это был свайп, не тап
               setActive(item);
             }}
-            className="group relative h-[158px] shrink-0 cursor-pointer overflow-hidden rounded-2xl bg-[#0a0705] shadow-[0_8px_24px_rgba(0,0,0,0.55)] transition-transform duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold sm:h-[192px]"
-            style={{ aspectRatio: `${item.w} / ${item.h}` }}
+            className="group relative h-[158px] shrink-0 cursor-pointer overflow-hidden rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition-transform duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold sm:h-[192px]"
+            style={{ aspectRatio: CARD_ASPECT }}
           >
-            <Image
-              src={item.src}
-              alt={item.alt}
-              fill
-              sizes="(max-width: 640px) 60vw, 720px"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
+            <PromoCard card={item.card} />
           </button>
         ))}
       </div>
@@ -183,9 +176,9 @@ export function StubCarousel({ items }: Props) {
                   style={{ transformPerspective: 1400 }}
                   className="fixed left-1/2 top-1/2 z-[90] w-[min(430px,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-gold/40 bg-[#0c0805] shadow-2xl"
                 >
-                  {/* Афиша */}
-                  <div className="relative w-full" style={{ aspectRatio: `${active.w} / ${active.h}` }}>
-                    <Image src={active.src} alt={active.alt} fill sizes="430px" className="object-cover" />
+                  {/* Афиша (кодовая карточка) */}
+                  <div className="relative w-full" style={{ aspectRatio: CARD_ASPECT }}>
+                    <PromoCard card={active.card} />
                   </div>
 
                   <Dialog.Close asChild>
