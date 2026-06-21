@@ -243,7 +243,7 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
                 if (movedRef.current) return; // это был свайп, не тап
                 setActive(s);
               }}
-              className="group relative shrink-0 w-[150px] sm:w-[175px] aspect-square overflow-hidden rounded-xl border border-gold/25 text-left transition-transform duration-300 hover:scale-[1.03] hover:border-gold/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              className="group relative shrink-0 w-[280px] sm:w-[340px] aspect-[16/9] overflow-hidden rounded-2xl border border-gold/25 text-left transition-transform duration-300 hover:scale-[1.03] hover:border-gold/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
               {/* Фон: фото или градиент по акценту */}
               {s.image ? (
@@ -251,7 +251,7 @@ export function SpotlightCarousel({ spotlights, accent }: Props) {
                   src={s.image}
                   alt=""
                   fill
-                  sizes="175px"
+                  sizes="340px"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               ) : (

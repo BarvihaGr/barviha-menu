@@ -411,7 +411,10 @@ export function CategoryPuzzleRow({ items, locationSlug }: Props) {
         </defs>
       </svg>
 
-      <div className="flex items-center justify-center gap-0 pt-5 pb-3 sm:gap-1">
+      {/* На мобиле весь ряд равномерно крупнее на 20% (origin сверху-центр):
+          размер, форма и зазоры между спилами масштабируются вместе →
+          ничего не накладывается. На ≥sm возвращаем 1:1. */}
+      <div className="flex origin-top scale-[1.2] items-center justify-center gap-0 pt-5 pb-3 sm:scale-100 sm:gap-1">
         {items.slice(0, 3).map((it, i) => {
           const s = slices[i % slices.length]!;
           const isHover = hovered === i;

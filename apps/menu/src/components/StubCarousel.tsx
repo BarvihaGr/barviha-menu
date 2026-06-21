@@ -1,10 +1,20 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+
+export interface StubCard {
+  /** Путь к картинке-карточке в /public. */
+  src: string;
+  /** Альт для доступности. */
+  alt: string;
+  /** Как вписывать: 'cover' для карточек 16:9, 'contain' для широких баннеров. */
+  fit?: 'cover' | 'contain';
+}
 
 interface Props {
-  /** Подписи карточек-заглушек слева-направо. */
-  items: string[];
+  /** Карточки слева-направо. */
+  items: StubCard[];
 }
 
 /**
@@ -96,16 +106,18 @@ export function StubCarousel({ items }: Props) {
         pausedRef.current = false;
       }}
     >
-      {loop.map((label, i) => (
+      {loop.map((item, i) => (
         <div
-          key={`${label}-${i}`}
-          className="relative flex aspect-[16/9] w-[280px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gold/35 shadow-[0_8px_24px_rgba(0,0,0,0.55)] sm:w-[340px]"
-          style={{ background: 'linear-gradient(155deg, #1b140d 0%, #0a0705 55%, #000 100%)' }}
+          key={`${item.src}-${i}`}
+          className="relative aspect-[16/9] w-[280px] shrink-0 overflow-hidden rounded-2xl bg-[#0a0705] shadow-[0_8px_24px_rgba(0,0,0,0.55)] sm:w-[340px]"
         >
-          <div className="absolute inset-x-0 top-0 h-[3px] bg-gold/60" />
-          <span className="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-[0.18em] text-gold sm:text-2xl">
-            {label}
-          </span>
+          <Image
+            src={item.src}
+            alt={item.alt}
+            fill
+            sizes="(max-width: 640px) 280px, 340px"
+            className={item.fit === 'contain' ? 'object-contain' : 'object-cover'}
+          />
         </div>
       ))}
     </div>

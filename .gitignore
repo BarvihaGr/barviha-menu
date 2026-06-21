@@ -41,6 +41,7 @@ preview/
 *.orig.bak.*
 
 # Source data folders (kept locally, not in repo)
+_ДАННЫЕ_ДЛЯ_МЕНЮ/00_ИСХОДНИКИ/
 Данные по кухне*
 фото с меню*
 ФУЛЛ ИНФО*
@@ -49,3 +50,6 @@ preview/
 *.mov
 make_palette_doc.py
 _backups/
+
+# Локальные исходники афиш/скриншотов — не в репо
+/афиш*

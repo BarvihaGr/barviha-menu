@@ -59,7 +59,13 @@ export default async function LocationHome({
           золотой надписью, крутятся бесконечной петлёй. Вернуть карусель →
           раскомментировать блок ниже и убрать StubCarousel. */}
       <section className="pb-6 -mt-6 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw]">
-        <StubCarousel items={['СОЦ СЕТЬ', 'АФИША', 'ВАУ ДИДЖЕЙ']} />
+        <StubCarousel
+          items={[
+            { src: '/spotlight/soc.webp', alt: 'Мы в социальных сетях', fit: 'contain' },
+            { src: '/spotlight/afisha.webp', alt: 'Афиша — ночь в стиле Barvikha' },
+            { src: '/spotlight/dj.webp', alt: 'DJ Sander — live DJ-set' },
+          ]}
+        />
       </section>
       {/* {spotlights.length > 0 && (
         <section className="pb-6 -mt-6 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw]">
