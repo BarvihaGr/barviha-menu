@@ -92,7 +92,13 @@ export function FloatingCartButton({ locationSlug, locationName, address, phone,
         style={{ ['--dock-accent' as string]: dockAccent ?? 'var(--gold)' }}
       >
         {/* Слева — Information: адрес + телефон во всплывающей модалке */}
-        <LocationInfoModal locationName={locationName} address={address} phone={phone} accent={accent}>
+        <LocationInfoModal
+          locationName={locationName}
+          address={address}
+          phone={phone}
+          accent={accent}
+          light={Boolean(dockAccent)}
+        >
           <button type="button" className={cn(navItemBase, navItemIdle)} aria-label={t('info')}>
             <Info size={23} />
           </button>
