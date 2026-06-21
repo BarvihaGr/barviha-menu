@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ResolvedMenuItem } from '@barviha/db';
-import { pickItemDescription, pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
+import { pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/routing';
 import { activeSectionsFor } from '@/lib/menu-sections';
 import { cn } from '@/lib/utils';
@@ -101,7 +101,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
               <button
                 type="button"
                 onClick={() => setActive(new Set())}
-                className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[11px] uppercase tracking-[0.18em] text-muted hover:text-gold transition cursor-pointer"
+                className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] text-[#9b9b9b] hover:text-[#1a1a1a] transition cursor-pointer"
               >
                 {tFilters('reset')}
               </button>
@@ -110,20 +110,20 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:gap-x-6 sm:gap-y-9 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 sm:gap-x-7 sm:gap-y-10">
         {filtered.map((item) => (
           <CoffeeItemCard
             key={item.id}
             item={item}
             name={pickItemName(item, locale)}
-            description={pickItemDescription(item, locale)}
+            description={null}
             locationSlug={locationSlug}
           />
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <div className="py-16 text-center text-sm uppercase tracking-[0.2em] text-muted">—</div>
+        <div className="py-16 text-center text-sm tracking-[0.1em] text-[#9b9b9b]">—</div>
       )}
     </div>
   );
@@ -146,12 +146,12 @@ function Chip({
       onClick={onClick}
       aria-pressed={on}
       className={cn(
-        'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 font-[family-name:var(--font-sans)] text-[11px] uppercase tracking-[0.16em] transition cursor-pointer',
+        'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 font-[family-name:var(--font-sans)] text-[13px] transition cursor-pointer',
         on
-          ? 'bg-gold text-[#2A1B11]'
+          ? 'bg-[#1a1a1a] font-medium text-white'
           : subtle
-            ? 'bg-[color:var(--card)] text-muted hover:text-gold'
-            : 'bg-[color:var(--card)] text-gold/80 hover:text-gold',
+            ? 'bg-[#f1f1ef] text-[#6b6b6b] hover:text-[#1a1a1a]'
+            : 'bg-[#f1f1ef] text-[#3a3a3a] hover:text-[#1a1a1a]',
       )}
     >
       {label}

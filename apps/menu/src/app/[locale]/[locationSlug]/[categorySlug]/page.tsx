@@ -7,9 +7,7 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { CategoryItemsList } from '@/components/CategoryItemsList';
 import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
 import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
-
-/** Локации с новым (Coffeemania-style) дизайном меню. */
-const COFFEE_DESIGN_SLUGS = new Set(['baumanskaia']);
+import { isCoffeeDesign } from '@/lib/coffee-design';
 
 export default async function CategoryPage({
   params,
@@ -38,25 +36,32 @@ export default async function CategoryPage({
   const items = allItems.filter((i) => i.category_id === category.id);
   const realm = (category.realm as 'bar' | 'kitchen' | 'hookah') ?? 'kitchen';
 
-  // Новый дизайн (Coffeemania-style) — только для выбранных локаций.
-  if (COFFEE_DESIGN_SLUGS.has(locationSlug)) {
+  // Светлый дизайн Coffeemania — только для выбранных локаций.
+  if (isCoffeeDesign(locationSlug)) {
     return (
-      <div className="flex flex-col">
-        <CoffeeCategoryNav
-          categories={categories}
-          currentSlug={category.slug}
-          locationSlug={locationSlug}
-          locale={locale as Locale}
-        />
-        <h1 className="mb-5 font-[family-name:var(--font-display)] text-2xl font-semibold tracking-[0.01em] text-cream sm:text-3xl">
-          {pickCategoryName(category, locale as Locale)}
-        </h1>
-        <CoffeeMenuList
-          items={items}
-          locationSlug={locationSlug}
-          categorySlug={category.slug}
-          realm={realm}
-        />
+      // Полноширинный светлый фон: выходим за пределы контейнера main на всю ширину вьюпорта.
+      <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]">
+        <div className="mx-auto w-full max-w-[1200px] px-4 pb-32 pt-6 sm:px-6 lg:pt-10">
+          <div className="lg:grid lg:grid-cols-[210px_1fr] lg:gap-10">
+            <CoffeeCategoryNav
+              categories={categories}
+              currentSlug={category.slug}
+              locationSlug={locationSlug}
+              locale={locale as Locale}
+            />
+            <div>
+              <h1 className="mb-6 font-[family-name:var(--font-sans)] text-[26px] font-bold leading-tight tracking-[-0.01em] text-[#1a1a1a] sm:text-[32px]">
+                {pickCategoryName(category, locale as Locale)}
+              </h1>
+              <CoffeeMenuList
+                items={items}
+                locationSlug={locationSlug}
+                categorySlug={category.slug}
+                realm={realm}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
