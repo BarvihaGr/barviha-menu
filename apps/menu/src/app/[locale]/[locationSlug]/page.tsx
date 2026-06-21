@@ -10,6 +10,7 @@ import { SpotlightCarousel } from '@/components/SpotlightCarousel';
 import { StubCarousel } from '@/components/StubCarousel';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
 import { getLocationAccent } from '@/lib/location-theme';
+import { getBookingUrl } from '@/lib/booking';
 
 /** Порядок слотов слева-направо: Кальяны | Кухня | Бар. */
 const HOME_CATEGORIES = ['hookah', 'kitchen', 'bar'] as const;
@@ -61,9 +62,37 @@ export default async function LocationHome({
       <section className="pb-6 -mt-6 relative left-1/2 -translate-x-1/2 w-screen max-w-[100vw]">
         <StubCarousel
           items={[
-            { src: '/spotlight/afisha.webp', alt: 'Афиша — ночь в стиле Barvikha', w: 16, h: 9 },
-            { src: '/spotlight/dj.webp', alt: 'DJ Sander — live DJ-set', w: 16, h: 9 },
-            { src: '/spotlight/soc.webp', alt: 'Мы в социальных сетях', w: 16, h: 9 },
+            {
+              src: '/spotlight/afisha.webp',
+              alt: 'Афиша — ночь в стиле Barvikha',
+              w: 16,
+              h: 9,
+              title: 'Ночь в стиле Barvikha',
+              subtitle: 'Атмосфера роскоши, музыки и безупречного отдыха.',
+              bookingUrl: getBookingUrl(locationSlug),
+            },
+            {
+              src: '/spotlight/dj.webp',
+              alt: 'DJ Sander — live DJ-set',
+              w: 16,
+              h: 9,
+              title: 'DJ Sander — Live DJ-set',
+              subtitle: 'Живой сет по выходным. Бронируйте стол заранее.',
+              bookingUrl: getBookingUrl(locationSlug),
+            },
+            {
+              src: '/spotlight/soc.webp',
+              alt: 'Мы в социальных сетях',
+              w: 16,
+              h: 9,
+              title: 'Мы в социальных сетях',
+              subtitle: 'Афиша, акции и связь с нами — подписывайтесь.',
+              // Заглушки: заменить на реальные ссылки соцсетей по локациям.
+              links: [
+                { label: 'ВКонтакте', href: 'https://vk.com/barvikha_group' },
+                { label: 'MAX', href: '#' },
+              ],
+            },
           ]}
         />
       </section>
