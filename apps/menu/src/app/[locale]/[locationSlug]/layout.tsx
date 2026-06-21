@@ -47,16 +47,13 @@ export default async function LocationLayout({
       <main className="flex-1 mx-auto w-full max-w-[1200px] px-4 sm:px-6 pt-2 pb-32">
         {children}
       </main>
-      {/* Coffeemania — без нижней плашки-кнопок; корзина живёт в шапке. */}
-      {!coffee && (
-        <FloatingCartButton
-          locationSlug={location.slug}
-          locationName={locationName}
-          address={location.address}
-          phone={location.phone ?? null}
-          accent={accent}
-        />
-      )}
+      <FloatingCartButton
+        locationSlug={location.slug}
+        locationName={locationName}
+        address={location.address}
+        phone={location.phone ?? null}
+        accent={accent}
+      />
       <Toaster />
       <SwipeBack />
       <ScrollMemory />
