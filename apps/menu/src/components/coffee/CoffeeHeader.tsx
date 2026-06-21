@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Location } from '@barviha/db';
@@ -22,7 +23,12 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
   const homeHref = `/${locationSlug}`;
   const cartHref = `/${locationSlug}/cart`;
   const t = useTranslations('nav');
-  const count = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
+  const rawCount = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
+  // Корзина приезжает из localStorage только на клиенте — до маунта показываем 0,
+  // чтобы не ловить hydration mismatch на бейдже.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const count = mounted ? rawCount : 0;
 
   return (
     <header className="sticky top-0 z-30 border-b border-[#ececec] bg-white/90 backdrop-blur-md">
