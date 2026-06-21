@@ -28,7 +28,12 @@ export default async function LocationLayout({
   ]);
   if (!location) notFound();
 
-  const accent = getLocationAccent(location.slug, location.brand_color);
+  const coffeeDesign = isCoffeeDesign(location.slug);
+  // Для светлого дизайна акцент = фирменный цвет локации (ветка метро),
+  // чтобы инфо-модалка и плашка совпадали по цвету с остальным UI.
+  const accent = coffeeDesign
+    ? getCoffeeAccent(location.slug)
+    : getLocationAccent(location.slug, location.brand_color);
   const locationName =
     locale === 'en' && location.name_en
       ? location.name_en
@@ -36,7 +41,7 @@ export default async function LocationLayout({
         ? location.name_zh
         : location.name;
 
-  const coffee = isCoffeeDesign(location.slug);
+  const coffee = coffeeDesign;
 
   return (
     <div

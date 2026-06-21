@@ -90,8 +90,9 @@ const METRO_BY_SLUG: Record<string, string> = {
   cska: METRO_LINES.turquoise, // ЦСКА (БКЛ)
   'iugo-zapadnaia': METRO_LINES.red, // Юго-Западная (Сокольническая)
   nevskii: METRO_LINES.spbBlue, // Невский проспект (СПб)
+  domodedovo: METRO_LINES.cyan, // перекрашено под «Арку» (Филёвская, циан)
   // Золотом (вне МСК/СПб или без станции):
-  //   erevan, domodedovo, likerka, maxackala, niznii-novgorod,
+  //   erevan, likerka, maxackala, niznii-novgorod,
   //   penza, rublevka, barvixa-lounge-saratov, taskent
 };
 
