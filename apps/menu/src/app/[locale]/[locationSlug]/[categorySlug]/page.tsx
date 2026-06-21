@@ -5,6 +5,11 @@ import type { Locale } from '@/i18n/routing';
 import { pickCategoryName } from '@/lib/i18n-helpers';
 import { SectionTitle } from '@/components/SectionTitle';
 import { CategoryItemsList } from '@/components/CategoryItemsList';
+import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
+import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
+
+/** Локации с новым (Coffeemania-style) дизайном меню. */
+const COFFEE_DESIGN_SLUGS = new Set(['baumanskaia']);
 
 export default async function CategoryPage({
   params,
@@ -26,9 +31,35 @@ export default async function CategoryPage({
   if (!location) notFound();
   if (!category) notFound();
 
-  const items = (await db.getMenuItemsForLocation(location.id)).filter(
-    (i) => i.category_id === category.id,
-  );
+  const [allItems, categories] = await Promise.all([
+    db.getMenuItemsForLocation(location.id),
+    db.getCategoriesForLocation(location.id),
+  ]);
+  const items = allItems.filter((i) => i.category_id === category.id);
+  const realm = (category.realm as 'bar' | 'kitchen' | 'hookah') ?? 'kitchen';
+
+  // Новый дизайн (Coffeemania-style) — только для выбранных локаций.
+  if (COFFEE_DESIGN_SLUGS.has(locationSlug)) {
+    return (
+      <div className="flex flex-col">
+        <CoffeeCategoryNav
+          categories={categories}
+          currentSlug={category.slug}
+          locationSlug={locationSlug}
+          locale={locale as Locale}
+        />
+        <h1 className="mb-5 font-[family-name:var(--font-display)] text-2xl font-semibold tracking-[0.01em] text-cream sm:text-3xl">
+          {pickCategoryName(category, locale as Locale)}
+        </h1>
+        <CoffeeMenuList
+          items={items}
+          locationSlug={locationSlug}
+          categorySlug={category.slug}
+          realm={realm}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -37,7 +68,7 @@ export default async function CategoryPage({
         items={items}
         locationSlug={locationSlug}
         categorySlug={category.slug}
-        realm={(category.realm as 'bar' | 'kitchen' | 'hookah') ?? 'kitchen'}
+        realm={realm}
       />
     </div>
   );
