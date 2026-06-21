@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { Search, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
@@ -41,6 +42,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   const tFilters = useTranslations('filters');
   const [active, setActive] = useState<Set<FilterKey>>(new Set());
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
 
   const sections: SectionDef[] = useMemo(() => {
     const fromSub = buildFromSub(items, locale);
@@ -59,8 +61,15 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
       const sec = sections.find((s) => s.id === activeSection);
       if (sec) pool = items.filter((i) => sec.itemIds.has(i.id));
     }
-    return applyFilters(pool, active);
-  }, [items, active, activeSection, sections]);
+    pool = applyFilters(pool, active);
+    const q = query.trim().toLowerCase().replace(/ё/g, 'е');
+    if (q) {
+      pool = pool.filter((i) =>
+        pickItemName(i, locale).toLowerCase().replace(/ё/g, 'е').includes(q),
+      );
+    }
+    return pool;
+  }, [items, active, activeSection, sections, query, locale]);
 
   const availableFilters = FILTERS_BY_REALM[realm];
 
@@ -73,6 +82,30 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
 
   return (
     <div>
+      {/* Поиск по блюдам — фирменная строка Coffeemania */}
+      <div className="mb-5">
+        <div className="flex items-center gap-2.5 rounded-2xl bg-[#f3f2ef] px-4 py-3">
+          <Search className="h-[18px] w-[18px] shrink-0 text-[#9b9b9b]" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Введите название блюда"
+            className="w-full bg-transparent font-[family-name:var(--font-sans)] text-[15px] text-[#1a1a1a] placeholder:text-[#9b9b9b] focus:outline-none"
+          />
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery('')}
+              aria-label="Очистить"
+              className="shrink-0 text-[#9b9b9b] hover:text-[#1a1a1a] transition cursor-pointer"
+            >
+              <X className="h-[18px] w-[18px]" />
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* Подсекции — чистые чипы */}
       {sections.length > 1 && (
         <div className="-mx-4 mb-3 overflow-x-auto no-scrollbar sm:mx-0">

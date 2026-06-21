@@ -9,6 +9,8 @@ import { HeroSection } from '@/components/HeroSection';
 import { SpotlightCarousel } from '@/components/SpotlightCarousel';
 import { StubCarousel } from '@/components/StubCarousel';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
+import { CoffeeHome } from '@/components/coffee/CoffeeHome';
+import { isCoffeeDesign } from '@/lib/coffee-design';
 import { getLocationAccent } from '@/lib/location-theme';
 import { getBookingUrl } from '@/lib/booking';
 
@@ -45,6 +47,20 @@ export default async function LocationHome({
       : locale === 'zh' && location.name_zh
         ? location.name_zh
         : location.name;
+
+  // Светлый дизайн Coffeemania — чистая главная без видео-героя и плашки-кнопок.
+  if (isCoffeeDesign(locationSlug)) {
+    return (
+      <CoffeeHome
+        locationSlug={location.slug}
+        locationName={locationName}
+        locationCity={location.city ?? location.address}
+        categories={homeCategories}
+        locale={locale as Locale}
+        ctaLabel={tHome('exploreMenu')}
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col gap-2">

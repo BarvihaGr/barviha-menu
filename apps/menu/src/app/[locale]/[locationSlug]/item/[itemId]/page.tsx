@@ -10,6 +10,8 @@ import { RelatedItemsRail, type RelatedItem } from '@/components/RelatedItemsRai
 import { ExpandableText } from '@/components/ExpandableText';
 import { ItemPhotoViewer } from '@/components/ItemPhotoViewer';
 import { ItemCloseButton } from '@/components/ItemCloseButton';
+import { CoffeeItemDetail } from '@/components/coffee/CoffeeItemDetail';
+import { isCoffeeDesign } from '@/lib/coffee-design';
 
 export default async function ItemDetailPage({
   params,
@@ -37,6 +39,25 @@ export default async function ItemDetailPage({
         .slice(0, 16)
         .map((x) => ({ id: x.id, name: pickItemName(x, locale as Locale), photo: x.photo }))
     : [];
+
+  // Светлый дизайн Coffeemania — детальная карточка в той же эстетике, что
+  // главная/меню редизайн-локации (Бауманская). Полноширинный светлый фон.
+  if (isCoffeeDesign(locationSlug)) {
+    return (
+      <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]">
+        <div className="mx-auto w-full max-w-[1200px] px-4 pb-32 pt-6 sm:px-6 lg:pt-10">
+          <CoffeeItemDetail
+            item={item}
+            name={name}
+            description={description}
+            ingredients={ingredients}
+            related={related}
+            locationSlug={locationSlug}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto flex max-w-4xl gap-3 sm:gap-5">
