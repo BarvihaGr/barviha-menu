@@ -7,7 +7,6 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { CategoryItemsList } from '@/components/CategoryItemsList';
 import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
 import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
-import { CoffeeMenuRail } from '@/components/coffee/CoffeeMenuRail';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
 
 export default async function CategoryPage({
@@ -46,7 +45,7 @@ export default async function CategoryPage({
         style={coffeeAccentStyle(locationSlug)}
       >
         <div className="mx-auto w-full max-w-[1200px] px-4 pr-[62px] pb-32 pt-6 sm:px-6 sm:pr-[68px] lg:pr-6 lg:pt-10">
-          <div className="lg:grid lg:grid-cols-[200px_1fr_84px] lg:gap-8">
+          <div className="lg:grid lg:grid-cols-[200px_1fr] lg:gap-8">
             <CoffeeCategoryNav
               categories={categories}
               currentSlug={category.slug}
@@ -64,7 +63,6 @@ export default async function CategoryPage({
                 realm={realm}
               />
             </div>
-            <CoffeeMenuRail items={items} locationSlug={locationSlug} />
           </div>
         </div>
       </div>
