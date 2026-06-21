@@ -52,7 +52,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
               alt={name}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 260px"
-              className="scale-[1.12] object-cover object-center transition duration-500 group-hover:scale-[1.17]"
+              className="object-cover object-center transition duration-500 group-hover:scale-[1.05]"
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center text-4xl text-[#d8d6d0]">
