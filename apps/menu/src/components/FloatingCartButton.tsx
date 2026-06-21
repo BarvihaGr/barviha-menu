@@ -7,6 +7,7 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { LocationInfoModal } from './LocationInfoModal';
 import { cn } from '@/lib/utils';
+import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
 
 /** Базовые классы пункта плашки — круглая кнопка-иконка (без подписи).
  *  Тап-зоны 48px — уверенно попадать пальцем, но плашка не громоздкая.
@@ -74,6 +75,8 @@ export function FloatingCartButton({ locationSlug, locationName, address, phone,
   const t = useTranslations('nav');
   const pathname = usePathname();
 
+  const coffee = isCoffeeDesign(locationSlug);
+  const modalTheme = coffee ? coffeeAccentStyle(locationSlug) : undefined;
   const homeHref = `/${locationSlug}`;
   const cartHref = `/${locationSlug}/cart`;
   const isCart = pathname.startsWith(cartHref);
@@ -97,7 +100,8 @@ export function FloatingCartButton({ locationSlug, locationName, address, phone,
           address={address}
           phone={phone}
           accent={accent}
-          light={Boolean(dockAccent)}
+          light={coffee}
+          themeStyle={modalTheme}
         >
           <button type="button" className={cn(navItemBase, navItemIdle)} aria-label={t('info')}>
             <Info size={23} />

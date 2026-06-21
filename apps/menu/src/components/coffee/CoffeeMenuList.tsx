@@ -84,21 +84,21 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
     <div>
       {/* Поиск по блюдам — фирменная строка Coffeemania */}
       <div className="mb-5">
-        <div className="flex items-center gap-2.5 rounded-2xl bg-[#f3f2ef] px-4 py-3">
-          <Search className="h-[18px] w-[18px] shrink-0 text-[#9b9b9b]" />
+        <div className="flex items-center gap-2.5 rounded-2xl bg-[var(--cm-surface)] px-4 py-3">
+          <Search className="h-[18px] w-[18px] shrink-0 text-[var(--cm-muted-dim)]" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Введите название блюда"
-            className="w-full bg-transparent font-[family-name:var(--font-sans)] text-[15px] text-[#1a1a1a] placeholder:text-[#9b9b9b] focus:outline-none"
+            className="w-full bg-transparent font-[family-name:var(--font-sans)] text-[15px] text-[var(--cm-text)] placeholder:text-[var(--cm-muted-dim)] focus:outline-none"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery('')}
               aria-label="Очистить"
-              className="shrink-0 text-[#9b9b9b] hover:text-[#1a1a1a] transition cursor-pointer"
+              className="shrink-0 text-[var(--cm-muted-dim)] hover:text-[var(--cm-text)] transition cursor-pointer"
             >
               <X className="h-[18px] w-[18px]" />
             </button>
@@ -134,7 +134,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
               <button
                 type="button"
                 onClick={() => setActive(new Set())}
-                className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] text-[#9b9b9b] hover:text-[#1a1a1a] transition cursor-pointer"
+                className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] text-[var(--cm-muted-dim)] hover:text-[var(--cm-text)] transition cursor-pointer"
               >
                 {tFilters('reset')}
               </button>
@@ -156,7 +156,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
       </div>
 
       {filtered.length === 0 && (
-        <div className="py-16 text-center text-sm tracking-[0.1em] text-[#9b9b9b]">—</div>
+        <div className="py-16 text-center text-sm tracking-[0.1em] text-[var(--cm-muted-dim)]">—</div>
       )}
     </div>
   );
@@ -183,8 +183,8 @@ function Chip({
         on
           ? 'bg-[var(--cm-accent)] font-medium text-white'
           : subtle
-            ? 'bg-[#f1f1ef] text-[#6b6b6b] hover:text-[#1a1a1a]'
-            : 'bg-[#f1f1ef] text-[#3a3a3a] hover:text-[#1a1a1a]',
+            ? 'bg-[var(--cm-surface)] text-[var(--cm-muted)] hover:text-[var(--cm-text)]'
+            : 'bg-[var(--cm-surface)] text-[var(--cm-text-soft)] hover:text-[var(--cm-text)]',
       )}
     >
       {label}

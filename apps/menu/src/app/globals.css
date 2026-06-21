@@ -34,26 +34,30 @@
    выпадашки локации/языка, модалки, тосты) автоматически становятся белыми,
    без правки каждого. Акцент берётся из --cm-accent (фирменный цвет локации). */
 .coffee-theme {
-  --background: #fbfbfa;
-  --background-deep: #ffffff;
-  --card: #f3f2ef;
-  --card-elev: #ffffff;
-  --foreground: #1a1a1a;
-  --cream: #1a1a1a;            /* основной текст → тёмный на белом */
-  --beige: #3a3a3a;
-  --muted: #6b6b6b;
-  --muted-dim: #9b9b9b;
-  --border: rgba(0, 0, 0, 0.08);
-  --border-strong: rgba(0, 0, 0, 0.16);
-  --hair: rgba(0, 0, 0, 0.05);
+  /* Семантические переменные палитры маппятся на токены Coffeemania (--cm-*),
+     которые задаёт coffeeAccentStyle(slug) инлайном. Фолбэки — светлая тема
+     (Бауманская). Домодедово получает бронзовые --cm-* → весь общий обвес
+     (плашка, модалки, выпадашки) автоматически становится бронзовым. */
+  --background: var(--cm-bg, #fbfbfa);
+  --background-deep: var(--cm-bg, #ffffff);
+  --card: var(--cm-surface, #f3f2ef);
+  --card-elev: var(--cm-surface-2, #ffffff);
+  --foreground: var(--cm-text, #1a1a1a);
+  --cream: var(--cm-text, #1a1a1a);
+  --beige: var(--cm-text-soft, #3a3a3a);
+  --muted: var(--cm-muted, #6b6b6b);
+  --muted-dim: var(--cm-muted-dim, #9b9b9b);
+  --border: var(--cm-border, rgba(0, 0, 0, 0.08));
+  --border-strong: var(--cm-border, rgba(0, 0, 0, 0.16));
+  --hair: var(--cm-border, rgba(0, 0, 0, 0.05));
   --gold: var(--cm-accent, #c49262);
   --gold-light: var(--cm-accent, #d8a877);
   --gold-soft: var(--cm-accent, #a07642);
-  --gold-dark: #b8b3aa;        /* нейтральный (скроллбар и т.п.) */
+  --gold-dark: var(--cm-muted-dim, #b8b3aa);
   --gold-glow: rgba(0, 0, 0, 0.06);
 
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--cm-bg, #fbfbfa);
+  color: var(--cm-text, #1a1a1a);
 }
 
 /* Гасим тёмный фон body и все декоративные слои, когда на странице

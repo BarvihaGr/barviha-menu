@@ -73,8 +73,8 @@ function RailBox({
     <div
       className={
         floating
-          ? 'flex flex-col items-center gap-2 rounded-full border border-[#ececec] bg-white/85 p-1.5 shadow-[0_6px_22px_rgba(0,0,0,0.12)] backdrop-blur-md'
-          : 'flex flex-col items-center gap-2 rounded-3xl border border-[#ececec] bg-[#fbfbfa] p-2'
+          ? 'flex flex-col items-center gap-2 rounded-full border border-[var(--cm-border)] bg-[var(--cm-surface-2)]/85 p-1.5 shadow-[0_6px_22px_rgba(0,0,0,0.12)] backdrop-blur-md'
+          : 'flex flex-col items-center gap-2 rounded-3xl border border-[var(--cm-border)] bg-[var(--cm-bg)] p-2'
       }
     >
       <div
@@ -91,7 +91,7 @@ function RailBox({
               href={`/${locationSlug}/item/${it.id}`}
               aria-label={name}
               title={name}
-              className={`group relative block aspect-square ${circle} shrink-0 overflow-hidden rounded-full border border-[#e6e3dc] bg-[#f3f2ef] transition duration-300 hover:scale-105 hover:border-[var(--cm-accent)]`}
+              className={`group relative block aspect-square ${circle} shrink-0 overflow-hidden rounded-full border border-[#e6e3dc] bg-[var(--cm-surface)] transition duration-300 hover:scale-105 hover:border-[var(--cm-accent)]`}
             >
               <Image
                 src={it.photo!}

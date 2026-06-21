@@ -16,9 +16,11 @@ interface Props {
   triggerClassName?: string;
   /** Кастомный триггер. Если передан — используется вместо бейджа с названием. */
   children?: React.ReactNode;
-  /** Светлая тема Coffeemania. Модалка рендерится в портале (вне .coffee-theme),
-   *  поэтому светлую палитру навешиваем прямо на её контент. */
+  /** Тема Coffeemania. Модалка рендерится в портале (вне .coffee-theme),
+   *  поэтому палитру навешиваем прямо на её контент. */
   light?: boolean;
+  /** Полная палитра локации (--cm-* + акцент) для портала. */
+  themeStyle?: React.CSSProperties;
 }
 
 /**
@@ -38,6 +40,7 @@ export function LocationInfoModal({
   triggerClassName,
   children,
   light = false,
+  themeStyle,
 }: Props) {
   const [open, setOpen] = useState(false);
   const t = useTranslations('location');
@@ -83,7 +86,11 @@ export function LocationInfoModal({
                 animate={{ opacity: 1, x: '-50%', y: '-50%', scale: 1 }}
                 exit={{ opacity: 0, x: '-50%', y: 'calc(-50% + 16px)', scale: 0.96 }}
                 transition={{ duration: 0.22, ease: 'easeOut' }}
-                style={light ? ({ ['--cm-accent']: accent } as React.CSSProperties) : undefined}
+                style={
+                  light
+                    ? (themeStyle ?? ({ ['--cm-accent']: accent } as React.CSSProperties))
+                    : undefined
+                }
                 className={cn(
                   'fixed left-1/2 top-1/2 z-[90] w-[min(440px,calc(100vw-2rem))] rounded-sm border border-gold bg-card shadow-2xl',
                   light && 'coffee-theme',

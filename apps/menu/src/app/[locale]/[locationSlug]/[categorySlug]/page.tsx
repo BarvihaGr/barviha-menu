@@ -41,7 +41,7 @@ export default async function CategoryPage({
     return (
       // Полноширинный светлый фон: выходим за пределы контейнера main на всю ширину вьюпорта.
       <div
-        className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]"
+        className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[var(--cm-bg)] text-[var(--cm-text)]"
         style={coffeeAccentStyle(locationSlug)}
       >
         <div className="mx-auto w-full max-w-[1200px] px-4 pr-[62px] pb-32 pt-6 sm:px-6 sm:pr-[68px] lg:pr-6 lg:pt-10">
@@ -53,7 +53,7 @@ export default async function CategoryPage({
               locale={locale as Locale}
             />
             <div className="min-w-0">
-              <h1 className="mb-6 font-[family-name:var(--font-sans)] text-[26px] font-bold leading-tight tracking-[-0.01em] text-[#1a1a1a] sm:text-[32px]">
+              <h1 className="mb-6 font-[family-name:var(--font-sans)] text-[26px] font-bold leading-tight tracking-[-0.01em] text-[var(--cm-text)] sm:text-[32px]">
                 {pickCategoryName(category, locale as Locale)}
               </h1>
               <CoffeeMenuList

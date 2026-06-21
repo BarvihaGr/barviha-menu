@@ -43,9 +43,9 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
     <article className="group flex h-full flex-col">
       <Link
         href={`/${locationSlug}/item/${item.id}`}
-        className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1a1a1a]/20 rounded-[18px]"
+        className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cm-text)]/20 rounded-[18px]"
       >
-        <div className="relative aspect-square w-full overflow-hidden rounded-[18px] bg-[#f3f2ef]">
+        <div className="relative aspect-square w-full overflow-hidden rounded-[18px] bg-[var(--cm-surface)]">
           {item.photo ? (
             <Image
               src={item.photo}
@@ -66,18 +66,18 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
             aria-label={t('toast.addedToCart')}
             className={cnBump(
               bump,
-              'absolute bottom-2.5 right-2.5 grid h-9 w-9 place-items-center rounded-full bg-white text-[#1a1a1a] shadow-[0_2px_10px_rgba(0,0,0,0.12)] opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[var(--cm-accent)] hover:text-white cursor-pointer',
+              'absolute bottom-2.5 right-2.5 grid h-9 w-9 place-items-center rounded-full bg-[var(--cm-surface-2)] text-[var(--cm-text)] shadow-[0_2px_10px_rgba(0,0,0,0.12)] opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-[var(--cm-accent)] hover:text-white cursor-pointer',
             )}
           >
             <Plus className="h-5 w-5" strokeWidth={2.4} />
           </button>
         </div>
 
-        <h3 className="mt-2.5 font-[family-name:var(--font-sans)] text-[14px] font-medium normal-case leading-snug text-[#1a1a1a] line-clamp-2">
+        <h3 className="mt-2.5 font-[family-name:var(--font-sans)] text-[14px] font-medium normal-case leading-snug text-[var(--cm-text)] line-clamp-2">
           {capitalize(name)}
         </h3>
         {meta && (
-          <p className="mt-1 font-[family-name:var(--font-sans)] text-[13px] font-normal text-[#9b9b9b]">
+          <p className="mt-1 font-[family-name:var(--font-sans)] text-[13px] font-normal text-[var(--cm-muted-dim)]">
             {meta}
           </p>
         )}

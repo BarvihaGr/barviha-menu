@@ -35,7 +35,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
                     'block rounded-lg px-3 py-2 font-[family-name:var(--font-sans)] text-[15px] leading-snug transition-colors',
                     on
                       ? 'font-semibold text-[var(--cm-accent)]'
-                      : 'font-normal text-[#8b8b8b] hover:text-[#1a1a1a]',
+                      : 'font-normal text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
                   )}
                 >
                   {pickCategoryName(c, locale)}
@@ -59,7 +59,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
                   'shrink-0 whitespace-nowrap rounded-full px-4 py-2 font-[family-name:var(--font-sans)] text-[14px] transition-colors',
                   on
                     ? 'bg-[var(--cm-accent)] font-medium text-white'
-                    : 'bg-[#f1f1ef] text-[#6b6b6b]',
+                    : 'bg-[var(--cm-surface)] text-[var(--cm-muted)]',
                 )}
               >
                 {pickCategoryName(c, locale)}

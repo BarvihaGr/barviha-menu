@@ -45,7 +45,7 @@ export default async function ItemDetailPage({
   if (isCoffeeDesign(locationSlug)) {
     return (
       <div
-        className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]"
+        className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[var(--cm-bg)] text-[var(--cm-text)]"
         style={coffeeAccentStyle(locationSlug)}
       >
         <div className="mx-auto w-full max-w-[1200px] px-4 pb-32 pt-6 sm:px-6 lg:pt-10">

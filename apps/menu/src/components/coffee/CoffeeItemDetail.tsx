@@ -45,9 +45,9 @@ export function CoffeeItemDetail({
 
   return (
     <div className="mx-auto flex w-full max-w-[1100px] gap-3 sm:gap-6">
-      <article className="min-w-0 flex-1 overflow-hidden rounded-3xl border border-[#ececec] bg-white">
+      <article className="min-w-0 flex-1 overflow-hidden rounded-3xl border border-[var(--cm-border)] bg-[var(--cm-surface-2)]">
         <div className="px-3 pt-3 sm:px-4 sm:pt-4">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-[#f3f2ef]">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-[var(--cm-surface)]">
             {item.photo ? (
               <CoffeePhotoViewer src={item.photo} alt={name} />
             ) : (
@@ -68,7 +68,7 @@ export function CoffeeItemDetail({
 
         <div className="flex flex-col gap-6 p-5 sm:p-8">
           <div>
-            <h1 className="font-[family-name:var(--font-sans)] text-[24px] font-bold leading-tight tracking-[-0.01em] text-[#1a1a1a] sm:text-[32px]">
+            <h1 className="font-[family-name:var(--font-sans)] text-[24px] font-bold leading-tight tracking-[-0.01em] text-[var(--cm-text)] sm:text-[32px]">
               {capitalize(name)}
             </h1>
             {item.weight && (
@@ -89,16 +89,16 @@ export function CoffeeItemDetail({
 
           {ingredients.length > 0 && (
             <div>
-              <div className="mb-4 border-b border-[#ececec] pb-2 text-[11px] uppercase tracking-[0.22em] text-[#9b9b9b]">
+              <div className="mb-4 border-b border-[var(--cm-border)] pb-2 text-[11px] uppercase tracking-[0.22em] text-[var(--cm-muted-dim)]">
                 {t('composition')}
               </div>
               <div className="flex flex-wrap gap-2">
                 {ingredients.map((ing, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-2 rounded-full bg-[#f3f2ef] px-3.5 py-2 text-[13px]"
+                    className="inline-flex items-center gap-2 rounded-full bg-[var(--cm-surface)] px-3.5 py-2 text-[13px]"
                   >
-                    <span className="text-[#1a1a1a]">{ing.name}</span>
+                    <span className="text-[var(--cm-text)]">{ing.name}</span>
                     {ing.amount && (
                       <span className="text-[12px] text-[var(--cm-accent)] before:mr-1.5 before:text-[#cfcfcf] before:content-['·']">
                         {ing.amount}
@@ -112,10 +112,10 @@ export function CoffeeItemDetail({
 
           {item.nutrition && (
             <div>
-              <div className="mb-3 border-b border-[#ececec] pb-2 text-[11px] uppercase tracking-[0.22em] text-[#9b9b9b]">
+              <div className="mb-3 border-b border-[var(--cm-border)] pb-2 text-[11px] uppercase tracking-[0.22em] text-[var(--cm-muted-dim)]">
                 {t('nutrition')}
               </div>
-              <div className="flex items-stretch overflow-hidden rounded-xl border border-[#ececec] bg-[#fbfbfa]">
+              <div className="flex items-stretch overflow-hidden rounded-xl border border-[var(--cm-border)] bg-[var(--cm-bg)]">
                 {(
                   [
                     ['kcal', item.nutrition.kcal],
@@ -126,10 +126,10 @@ export function CoffeeItemDetail({
                 ).map(([key, val], i) => (
                   <div
                     key={key}
-                    className={cn('flex-1 py-3 text-center', i > 0 && 'border-l border-[#ececec]')}
+                    className={cn('flex-1 py-3 text-center', i > 0 && 'border-l border-[var(--cm-border)]')}
                   >
-                    <span className="block text-lg font-semibold text-[#1a1a1a]">{val}</span>
-                    <span className="mt-1 block whitespace-nowrap text-[9px] uppercase tracking-[0.12em] text-[#9b9b9b]">
+                    <span className="block text-lg font-semibold text-[var(--cm-text)]">{val}</span>
+                    <span className="mt-1 block whitespace-nowrap text-[9px] uppercase tracking-[0.12em] text-[var(--cm-muted-dim)]">
                       {t(key)}
                     </span>
                   </div>
@@ -138,8 +138,8 @@ export function CoffeeItemDetail({
             </div>
           )}
 
-          <div className="flex items-center justify-between gap-4 border-t border-[#ececec] pt-5">
-            <div className="text-[26px] font-semibold text-[#1a1a1a] sm:text-[30px]">
+          <div className="flex items-center justify-between gap-4 border-t border-[var(--cm-border)] pt-5">
+            <div className="text-[26px] font-semibold text-[var(--cm-text)] sm:text-[30px]">
               {formatPrice(item.price)}
             </div>
             <CoffeeAddButton itemId={item.id} itemName={name} addLabel={t('addToCart')} />
@@ -156,7 +156,7 @@ export function CoffeeItemDetail({
 function LabelChip({ label }: { label: ItemLabel }) {
   const t = useTranslations('labels');
   return (
-    <span className="rounded-full bg-white/90 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#1a1a1a] shadow-[0_1px_6px_rgba(0,0,0,0.08)] backdrop-blur">
+    <span className="rounded-full bg-[var(--cm-surface-2)]/90 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-[var(--cm-text)] shadow-[0_1px_6px_rgba(0,0,0,0.08)] backdrop-blur">
       {t(label)}
     </span>
   );
@@ -173,7 +173,7 @@ function CoffeeCloseButton({ fallbackHref }: { fallbackHref: string }) {
         if (typeof window !== 'undefined' && window.history.length > 1) router.back();
         else router.push(fallbackHref);
       }}
-      className="absolute left-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#1a1a1a] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition hover:bg-white cursor-pointer"
+      className="absolute left-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/90 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition hover:bg-[var(--cm-surface-2)] cursor-pointer"
     >
       <X size={16} />
     </button>
@@ -201,7 +201,7 @@ function CoffeePhotoViewer({ src, alt }: { src: string; alt: string }) {
             priority
             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
-          <span className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#1a1a1a] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition group-hover:bg-white">
+          <span className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/90 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition group-hover:bg-[var(--cm-surface-2)]">
             <Expand size={16} />
           </span>
         </button>
@@ -216,7 +216,7 @@ function CoffeePhotoViewer({ src, alt }: { src: string; alt: string }) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-[80] bg-[#1a1a1a]/85 backdrop-blur-md"
+                className="fixed inset-0 z-[80] bg-[var(--cm-text)]/85 backdrop-blur-md"
               />
             </Dialog.Overlay>
             <Dialog.Content
@@ -237,7 +237,7 @@ function CoffeePhotoViewer({ src, alt }: { src: string; alt: string }) {
                   <button
                     type="button"
                     aria-label={t('closePhoto')}
-                    className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-[#1a1a1a] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition hover:bg-white cursor-pointer"
+                    className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/90 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition hover:bg-[var(--cm-surface-2)] cursor-pointer"
                   >
                     <X size={20} />
                   </button>
@@ -384,7 +384,7 @@ function CoffeeRelatedRail({
 
   return (
     <aside className="hidden shrink-0 w-[72px] sm:block sm:w-[84px]" aria-label={ariaLabel}>
-      <div className="sticky top-4 flex flex-col items-center gap-2 rounded-3xl border border-[#ececec] bg-[#fbfbfa] p-2">
+      <div className="sticky top-4 flex flex-col items-center gap-2 rounded-3xl border border-[var(--cm-border)] bg-[var(--cm-bg)] p-2">
         <div className="flex max-h-[60vh] flex-col items-center gap-3 overflow-y-auto no-scrollbar [mask-image:linear-gradient(to_bottom,transparent,#000_14px,#000_calc(100%-14px),transparent)]">
           {items.map((it) => (
             <Link
@@ -392,7 +392,7 @@ function CoffeeRelatedRail({
               href={`/${locationSlug}/item/${it.id}`}
               aria-label={it.name}
               title={it.name}
-              className="group relative block aspect-square w-12 shrink-0 overflow-hidden rounded-full border border-[#e6e3dc] bg-[#f3f2ef] transition duration-300 hover:scale-105 hover:border-[var(--cm-accent)] sm:w-14"
+              className="group relative block aspect-square w-12 shrink-0 overflow-hidden rounded-full border border-[#e6e3dc] bg-[var(--cm-surface)] transition duration-300 hover:scale-105 hover:border-[var(--cm-accent)] sm:w-14"
             >
               {it.photo ? (
                 <Image

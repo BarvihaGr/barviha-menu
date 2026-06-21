@@ -39,7 +39,7 @@ export function CoffeeHome({
   return (
     // Полноширинный светлый фон — выходим за пределы контейнера main.
     <div
-      className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]"
+      className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[var(--cm-bg)] text-[var(--cm-text)]"
       style={coffeeAccentStyle(locationSlug)}
     >
       <div className="mx-auto w-full max-w-[1100px] px-4 pb-32 pt-12 sm:px-6 lg:pt-16">
@@ -48,11 +48,11 @@ export function CoffeeHome({
           <p className="font-[family-name:var(--font-display)] text-[12px] font-medium uppercase tracking-[0.34em] text-[color:var(--cm-accent)] sm:text-[13px]">
             Barvikha Group
           </p>
-          <h1 className="mt-3 font-[family-name:var(--font-display)] text-[36px] font-semibold leading-[1.04] tracking-[-0.01em] text-[#1a1a1a] sm:text-[52px]">
+          <h1 className="mt-3 font-[family-name:var(--font-display)] text-[36px] font-semibold leading-[1.04] tracking-[-0.01em] text-[var(--cm-text)] sm:text-[52px]">
             {locationName}
           </h1>
           {locationCity && (
-            <p className="mt-3 font-[family-name:var(--font-sans)] text-[14px] text-[#9b9b9b] sm:text-[15px]">
+            <p className="mt-3 font-[family-name:var(--font-sans)] text-[14px] text-[var(--cm-muted-dim)] sm:text-[15px]">
               {locationCity}
             </p>
           )}
@@ -67,7 +67,7 @@ export function CoffeeHome({
                 <Link
                   key={c.id}
                   href={hrefFor(c.slug)}
-                  className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-3xl bg-[#ece9e3] shadow-[0_4px_24px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-[0_14px_44px_rgba(0,0,0,0.14)] sm:aspect-[3/4]"
+                  className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-3xl bg-[var(--cm-surface)] shadow-[0_4px_24px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-[0_14px_44px_rgba(0,0,0,0.14)] sm:aspect-[3/4]"
                 >
                   {photo ? (
                     <Image
@@ -82,7 +82,7 @@ export function CoffeeHome({
                     <div
                       className="absolute inset-0"
                       style={{
-                        background: 'linear-gradient(150deg, var(--cm-accent) 0%, #1a1a1a 125%)',
+                        background: 'linear-gradient(150deg, var(--cm-accent) 0%, var(--cm-text) 125%)',
                       }}
                     />
                   )}

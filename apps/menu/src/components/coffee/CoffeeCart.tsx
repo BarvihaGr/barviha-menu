@@ -39,18 +39,18 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
   return (
     // Полноширинный светлый фон — выходим за пределы контейнера main.
     <div
-      className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[#fbfbfa] text-[#1a1a1a]"
+      className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[var(--cm-bg)] text-[var(--cm-text)]"
       style={coffeeAccentStyle(locationSlug)}
     >
       <div className="mx-auto w-full max-w-[760px] px-4 pb-32 pt-8 sm:px-6 lg:pt-12">
-        <h1 className="mb-7 text-center font-[family-name:var(--font-sans)] text-[26px] font-bold leading-tight tracking-[-0.01em] text-[#1a1a1a] sm:text-[32px]">
+        <h1 className="mb-7 text-center font-[family-name:var(--font-sans)] text-[26px] font-bold leading-tight tracking-[-0.01em] text-[var(--cm-text)] sm:text-[32px]">
           {t('title')}
         </h1>
 
         {entries.length === 0 ? (
           <div className="flex flex-col items-center gap-5 py-16 text-center">
             <span className="text-6xl text-[#d8d6d0]">◇</span>
-            <p className="max-w-sm text-[15px] text-[#9b9b9b]">{t('empty')}</p>
+            <p className="max-w-sm text-[15px] text-[var(--cm-muted-dim)]">{t('empty')}</p>
             <Link
               href={`/${locationSlug}`}
               className="rounded-full bg-[var(--cm-accent)] px-6 py-3.5 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:opacity-90 cursor-pointer"
@@ -71,9 +71,9 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, x: -30 }}
-                      className="flex items-center gap-4 rounded-2xl border border-[#ececec] bg-white p-3 shadow-[0_1px_8px_rgba(0,0,0,0.03)] sm:p-4"
+                      className="flex items-center gap-4 rounded-2xl border border-[var(--cm-border)] bg-[var(--cm-surface-2)] p-3 shadow-[0_1px_8px_rgba(0,0,0,0.03)] sm:p-4"
                     >
-                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[#f3f2ef]">
+                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[var(--cm-surface)]">
                         {item.photo ? (
                           <Image
                             src={item.photo}
@@ -89,7 +89,7 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
                         )}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="truncate text-[15px] font-semibold text-[#1a1a1a]">{name}</div>
+                        <div className="truncate text-[15px] font-semibold text-[var(--cm-text)]">{name}</div>
                         <div className="mt-0.5 text-[14px] text-[var(--cm-accent)]">{formatPrice(item.price)}</div>
                       </div>
                       <CoffeeQty itemId={entry.itemId} qty={entry.qty} />
@@ -107,14 +107,14 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
               </AnimatePresence>
             </ul>
 
-            <div className="mt-6 flex flex-col gap-4 border-t border-[#ececec] pt-6">
+            <div className="mt-6 flex flex-col gap-4 border-t border-[var(--cm-border)] pt-6">
               <div className="flex items-center justify-between">
-                <span className="text-[12px] uppercase tracking-[0.2em] text-[#9b9b9b]">
+                <span className="text-[12px] uppercase tracking-[0.2em] text-[var(--cm-muted-dim)]">
                   {t('subtotal')}
                 </span>
-                <span className="text-[28px] font-semibold text-[#1a1a1a]">{formatPrice(total)}</span>
+                <span className="text-[28px] font-semibold text-[var(--cm-text)]">{formatPrice(total)}</span>
               </div>
-              <p className="text-center text-[11px] uppercase leading-relaxed tracking-[0.15em] text-[#9b9b9b]">
+              <p className="text-center text-[11px] uppercase leading-relaxed tracking-[0.15em] text-[var(--cm-muted-dim)]">
                 {t('submitDescription')}
               </p>
             </div>

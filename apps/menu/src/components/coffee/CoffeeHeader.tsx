@@ -22,13 +22,13 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
 
   return (
     <header
-      className="sticky top-0 z-30 border-b border-[#ececec] bg-white/90 backdrop-blur-md"
+      className="sticky top-0 z-30 border-b border-[var(--cm-border)] bg-[var(--cm-surface-2)]/90 backdrop-blur-md"
       style={coffeeAccentStyle(locationSlug)}
     >
       <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
         <Link
           href={homeHref}
-          className="font-[family-name:var(--font-display)] text-[15px] font-semibold uppercase tracking-[0.22em] text-[#1a1a1a] sm:text-[17px] cursor-pointer"
+          className="font-[family-name:var(--font-display)] text-[15px] font-semibold uppercase tracking-[0.22em] text-[var(--cm-text)] sm:text-[17px] cursor-pointer"
           aria-label="BARVIKHA GROUP"
         >
           BARVIKHA<span className="text-[var(--cm-accent)]"> GROUP</span>
