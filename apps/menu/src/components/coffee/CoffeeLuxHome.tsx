@@ -34,7 +34,10 @@ export function CoffeeLuxHome({
 }: Props) {
   return (
     <div
-      className="relative left-1/2 right-1/2 -mx-[50vw] -mt-2 flex min-h-[100svh] w-screen flex-col bg-[var(--cm-bg)] text-[var(--cm-text)]"
+      // Ровно один экран без скролла: высота = видимый экран минус хедер.
+      // -mt-2/-mb-32 гасят паддинги <main>, чтобы фон-видео доходило до краёв,
+      // а контент центрировался во весь экран и на телефоне, и на компьютере.
+      className="relative left-1/2 right-1/2 -mx-[50vw] -mt-2 -mb-32 flex h-[calc(100svh-60px)] w-screen flex-col overflow-hidden bg-[var(--cm-bg)] text-[var(--cm-text)] sm:h-[calc(100svh-64px)]"
       style={coffeeAccentStyle(locationSlug)}
     >
       {/* Фон — крутящееся видео интерьера «Арки» + затемнение для воздуха

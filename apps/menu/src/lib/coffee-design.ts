@@ -6,7 +6,7 @@ import { getMetroColor } from './location-theme';
  * Палитра у каждой своя (см. COFFEE_PALETTE): Бауманская — светлая,
  * Домодедово — тёмная бронза в цветокоре «Арки».
  */
-export const COFFEE_DESIGN_SLUGS = new Set(['baumanskaia', 'domodedovo', 'erevan']);
+export const COFFEE_DESIGN_SLUGS = new Set(['baumanskaia', 'domodedovo', 'erevan', 'kievskaia']);
 
 export function isCoffeeDesign(slug: string): boolean {
   return COFFEE_DESIGN_SLUGS.has(slug);
@@ -18,7 +18,7 @@ export function isCoffeeDesign(slug: string): boolean {
  *                Restaurant & Bar»). Ереван.
  *  - 'default' — воздушные плитки-категории. Бауманская, Домодедово.
  */
-const LUX_HOME_SLUGS = new Set(['erevan']);
+const LUX_HOME_SLUGS = new Set(['erevan', 'kievskaia']);
 
 export function coffeeHomeVariant(slug: string): 'lux' | 'default' {
   return LUX_HOME_SLUGS.has(slug) ? 'lux' : 'default';
@@ -34,6 +34,7 @@ const COFFEE_ACCENT_FROM: Record<string, string> = {};
 const COFFEE_ACCENT: Record<string, string> = {
   domodedovo: '#C49262', // бронза-золото «Арки» (тёмный цветокор)
   erevan: '#B89B6A', // приглушённое золото «дорогого минимализма»
+  kievskaia: '#9B896A', // тёмное золото-бронза (ТЗ Киевская)
 };
 
 /**
@@ -103,10 +104,29 @@ const LUX_PALETTE: CoffeePalette = {
   '--cm-photo-veil': 'transparent',
 };
 
+/**
+ * Тёмный люкс по ТЗ «Киевская»: фон #111111, поверхности #171717,
+ * текст #F6F3ED (слоновая кость), золото #9B896A. Минимализм, премиум.
+ */
+const KIEV_PALETTE: CoffeePalette = {
+  '--cm-bg': '#111111',
+  '--cm-surface': '#171717',
+  '--cm-surface-2': '#1e1e1e',
+  '--cm-text': '#f6f3ed',
+  '--cm-text-soft': '#d9d3c7',
+  '--cm-muted': 'rgba(246, 243, 237, 0.56)',
+  '--cm-muted-dim': 'rgba(246, 243, 237, 0.36)',
+  '--cm-border': 'rgba(155, 137, 106, 0.22)',
+  '--cm-logo-invert': '0',
+  '--cm-photo': 'contrast(1.05) saturate(0.97)',
+  '--cm-photo-veil': 'transparent',
+};
+
 /** slug → палитра. Нет в карте → светлая. */
 const COFFEE_PALETTE: Record<string, CoffeePalette> = {
   domodedovo: BRONZE_PALETTE,
   erevan: LUX_PALETTE,
+  kievskaia: KIEV_PALETTE,
 };
 
 /**
@@ -117,10 +137,10 @@ const COFFEE_PALETTE: Record<string, CoffeePalette> = {
  */
 export function coffeeAccentStyle(slug: string): React.CSSProperties {
   const palette = COFFEE_PALETTE[slug] ?? LIGHT_PALETTE;
-  // Ереван — заголовки на бесплатном Cormorant SC (аналог Canela, как у «Арки»);
-  // остальные coffee-точки сохраняют брендовый Raleway (--cm-font-display).
+  // Lux-локации (Ереван, Киевская) — заголовки на Cormorant SC (аналог Canela,
+  // как у «Арки»); остальные coffee-точки сохраняют брендовый --cm-font-display.
   const displayFont =
-    slug === 'erevan'
+    coffeeHomeVariant(slug) === 'lux'
       ? "'Cormorant SC', 'Cormorant Garamond', var(--cm-font-display)"
       : 'var(--cm-font-display)';
   return {

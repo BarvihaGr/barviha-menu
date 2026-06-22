@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown, Expand, Minus, Plus, X } from 'lucide-react';
+import { Expand, Minus, Plus, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ItemLabel, ResolvedMenuItem } from '@barviha/db';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -38,14 +38,13 @@ export function CoffeeItemDetail({
   name,
   description,
   ingredients,
-  related,
   locationSlug,
 }: Props) {
   const t = useTranslations('item');
 
   return (
-    <div className="mx-auto flex w-full max-w-[1100px] gap-3 sm:gap-6">
-      <article className="min-w-0 flex-1 overflow-hidden rounded-3xl border border-[var(--cm-border)] bg-[var(--cm-surface-2)]">
+    <div className="mx-auto w-full max-w-[680px]">
+      <article className="min-w-0 overflow-hidden rounded-3xl border border-[var(--cm-border)] bg-[var(--cm-surface-2)]">
         <div className="px-3 pt-3 sm:px-4 sm:pt-4">
           <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-[var(--cm-surface)]">
             {item.photo ? (
@@ -146,8 +145,6 @@ export function CoffeeItemDetail({
           </div>
         </div>
       </article>
-
-      <CoffeeRelatedRail items={related} locationSlug={locationSlug} ariaLabel={t('related')} />
     </div>
   );
 }
@@ -298,7 +295,7 @@ function CoffeeExpandableText({
           {text}
         </p>
         {!open && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[var(--cm-bg)] to-transparent" />
         )}
       </div>
       <button
@@ -367,57 +364,6 @@ function CoffeeAddButton({
       <Plus size={18} strokeWidth={2.4} />
       {addLabel}
     </button>
-  );
-}
-
-/** Узкая боковая лента кружков «из этой же категории». */
-function CoffeeRelatedRail({
-  items,
-  locationSlug,
-  ariaLabel,
-}: {
-  items: RelatedItem[];
-  locationSlug: string;
-  ariaLabel: string;
-}) {
-  if (items.length === 0) return null;
-
-  return (
-    <aside className="hidden shrink-0 w-[72px] sm:block sm:w-[84px]" aria-label={ariaLabel}>
-      <div className="sticky top-4 flex flex-col items-center gap-2 rounded-3xl border border-[var(--cm-border)] bg-[var(--cm-bg)] p-2">
-        <div className="flex max-h-[60vh] flex-col items-center gap-3 overflow-y-auto no-scrollbar [mask-image:linear-gradient(to_bottom,transparent,#000_14px,#000_calc(100%-14px),transparent)]">
-          {items.map((it) => (
-            <Link
-              key={it.id}
-              href={`/${locationSlug}/item/${it.id}`}
-              aria-label={it.name}
-              title={it.name}
-              className="group relative block aspect-square w-12 shrink-0 overflow-hidden rounded-full border border-[#e6e3dc] bg-[var(--cm-surface)] transition duration-300 hover:scale-105 hover:border-[var(--cm-accent)] sm:w-14"
-            >
-              {it.photo ? (
-                <Image
-                  src={it.photo}
-                  alt={it.name}
-                  fill
-                  sizes="56px"
-                  className="object-cover transition duration-500 group-hover:scale-110"
-                />
-              ) : (
-                <span className="absolute inset-0 flex items-center justify-center text-xl text-[#d8d6d0]">
-                  ◍
-                </span>
-              )}
-            </Link>
-          ))}
-        </div>
-
-        {items.length > 4 && (
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[#bdbdbd]">
-            <ChevronDown size={15} strokeWidth={2} />
-          </span>
-        )}
-      </div>
-    </aside>
   );
 }
 

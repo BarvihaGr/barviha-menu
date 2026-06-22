@@ -153,6 +153,9 @@ body:has(.coffee-theme) .gold-dust {
 
 html {
   scroll-behavior: smooth;
+  /* Никогда не допускаем горизонтальный скролл (full-bleed/fixed-элементы на
+     узких экранах). clip не создаёт скролл-контейнер → sticky не ломается. */
+  overflow-x: clip;
 }
 
 html,

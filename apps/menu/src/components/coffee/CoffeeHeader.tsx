@@ -26,10 +26,10 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
       className="sticky top-0 z-30 border-b border-[var(--cm-border)] bg-[var(--cm-surface-2)]/90 backdrop-blur-md"
       style={coffeeAccentStyle(locationSlug)}
     >
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-6">
         <Link
           href={homeHref}
-          className="flex items-center gap-2.5 cursor-pointer"
+          className="flex min-w-0 items-center gap-2.5 cursor-pointer"
           aria-label="Barvikha Group"
         >
           <Image
@@ -38,21 +38,22 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
             width={150}
             height={93}
             priority
-            className="h-8 w-auto sm:h-9"
+            className="h-8 w-auto shrink-0 sm:h-9"
           />
-          {/* Рядом с деревом — вордмарк BARVIKHA GROUP (на светлом фоне инвертируется) */}
+          {/* Вордмарк BARVIKHA GROUP — прячем на узких экранах (телефон), чтобы
+              шапка не вылезала за вьюпорт; на ≥sm показываем. */}
           <Image
             src="/logo.png"
             alt="Barvikha Group"
             width={427}
             height={57}
             priority
-            className="h-[15px] w-auto sm:h-[17px]"
+            className="hidden h-[15px] w-auto sm:block sm:h-[17px]"
             style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
           />
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <LocationSwitcher locations={locations} currentSlug={locationSlug} />
           <LangSwitch />
         </div>

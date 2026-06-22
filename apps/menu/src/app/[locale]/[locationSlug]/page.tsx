@@ -51,19 +51,12 @@ export default async function LocationHome({
 
   // Lux-дизайн «дорогой минимализм» (Ереван) — тёмный hero c бронью и меню.
   if (isCoffeeDesign(locationSlug) && coffeeHomeVariant(locationSlug) === 'lux') {
-    const menuCat =
-      homeCategories.find((c) => c.slug === 'kitchen') ?? homeCategories[0] ?? null;
-    const menuHref = menuCat
-      ? menuCat.slug === 'hookah'
-        ? `/${location.slug}/hookah`
-        : `/${location.slug}/${menuCat.slug}`
-      : `/${location.slug}`;
     return (
       <CoffeeLuxHome
         locationSlug={location.slug}
         locationName={locationName}
         locationCity={location.city ?? location.address}
-        menuHref={menuHref}
+        menuHref={`/${location.slug}/menu`}
         menuLabel={tHome('menu')}
         locale={locale as Locale}
         socials={[]}

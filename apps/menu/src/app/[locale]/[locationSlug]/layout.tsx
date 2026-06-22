@@ -3,12 +3,18 @@ import { setRequestLocale } from 'next-intl/server';
 import { getClient } from '@barviha/db';
 import { LocationHeader } from '@/components/LocationHeader';
 import { CoffeeHeader } from '@/components/coffee/CoffeeHeader';
+import { LuxBottomNav } from '@/components/coffee/LuxBottomNav';
 import { Toaster } from '@/components/Toaster';
 import { FloatingCartButton } from '@/components/FloatingCartButton';
 import { SwipeBack } from '@/components/SwipeBack';
 import { ScrollMemory } from '@/components/ScrollMemory';
 import { getLocationAccent } from '@/lib/location-theme';
-import { isCoffeeDesign, getCoffeeAccent, coffeeAccentStyle } from '@/lib/coffee-design';
+import {
+  isCoffeeDesign,
+  getCoffeeAccent,
+  coffeeAccentStyle,
+  coffeeHomeVariant,
+} from '@/lib/coffee-design';
 import { cn } from '@/lib/utils';
 
 export default async function LocationLayout({
@@ -42,6 +48,8 @@ export default async function LocationLayout({
         : location.name;
 
   const coffee = coffeeDesign;
+  // Lux-локации (Ереван, Киевская) — нижняя навигация на 4 таба вместо плашки.
+  const lux = coffee && coffeeHomeVariant(location.slug) === 'lux';
 
   return (
     <div
@@ -56,14 +64,18 @@ export default async function LocationLayout({
       <main className="flex-1 mx-auto w-full max-w-[1200px] px-4 sm:px-6 pt-2 pb-32">
         {children}
       </main>
-      <FloatingCartButton
-        locationSlug={location.slug}
-        locationName={locationName}
-        address={location.address}
-        phone={location.phone ?? null}
-        accent={accent}
-        dockAccent={coffee ? getCoffeeAccent(location.slug) : undefined}
-      />
+      {lux ? (
+        <LuxBottomNav locationSlug={location.slug} />
+      ) : (
+        <FloatingCartButton
+          locationSlug={location.slug}
+          locationName={locationName}
+          address={location.address}
+          phone={location.phone ?? null}
+          accent={accent}
+          dockAccent={coffee ? getCoffeeAccent(location.slug) : undefined}
+        />
+      )}
       <Toaster />
       <SwipeBack />
       <ScrollMemory />
