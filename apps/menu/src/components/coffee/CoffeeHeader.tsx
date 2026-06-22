@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
@@ -28,10 +29,27 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
       <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
         <Link
           href={homeHref}
-          className="font-[family-name:var(--font-display)] text-[15px] font-semibold uppercase tracking-[0.22em] text-[var(--cm-text)] sm:text-[17px] cursor-pointer"
-          aria-label="BARVIKHA GROUP"
+          className="flex items-center gap-2.5 cursor-pointer"
+          aria-label="Barvikha Group"
         >
-          BARVIKHA<span className="text-[var(--cm-accent)]"> GROUP</span>
+          <Image
+            src="/locations/arka/logo-tree.png"
+            alt="Барвиха"
+            width={150}
+            height={93}
+            priority
+            className="h-8 w-auto sm:h-9"
+          />
+          {/* Рядом с деревом — вордмарк BARVIKHA GROUP (на светлом фоне инвертируется) */}
+          <Image
+            src="/logo.png"
+            alt="Barvikha Group"
+            width={427}
+            height={57}
+            priority
+            className="h-[15px] w-auto sm:h-[17px]"
+            style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
+          />
         </Link>
 
         <div className="flex items-center gap-2">

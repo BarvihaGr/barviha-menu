@@ -10,7 +10,8 @@ import { SpotlightCarousel } from '@/components/SpotlightCarousel';
 import { StubCarousel } from '@/components/StubCarousel';
 import { AnnouncementBanner } from '@/components/AnnouncementBanner';
 import { CoffeeHome } from '@/components/coffee/CoffeeHome';
-import { isCoffeeDesign } from '@/lib/coffee-design';
+import { CoffeeLuxHome } from '@/components/coffee/CoffeeLuxHome';
+import { isCoffeeDesign, coffeeHomeVariant } from '@/lib/coffee-design';
 import { getLocationAccent } from '@/lib/location-theme';
 import { getBookingUrl } from '@/lib/booking';
 
@@ -47,6 +48,28 @@ export default async function LocationHome({
       : locale === 'zh' && location.name_zh
         ? location.name_zh
         : location.name;
+
+  // Lux-дизайн «дорогой минимализм» (Ереван) — тёмный hero c бронью и меню.
+  if (isCoffeeDesign(locationSlug) && coffeeHomeVariant(locationSlug) === 'lux') {
+    const menuCat =
+      homeCategories.find((c) => c.slug === 'kitchen') ?? homeCategories[0] ?? null;
+    const menuHref = menuCat
+      ? menuCat.slug === 'hookah'
+        ? `/${location.slug}/hookah`
+        : `/${location.slug}/${menuCat.slug}`
+      : `/${location.slug}`;
+    return (
+      <CoffeeLuxHome
+        locationSlug={location.slug}
+        locationName={locationName}
+        locationCity={location.city ?? location.address}
+        menuHref={menuHref}
+        menuLabel={tHome('menu')}
+        locale={locale as Locale}
+        socials={[]}
+      />
+    );
+  }
 
   // Светлый дизайн Coffeemania — чистая главная без видео-героя и плашки-кнопок.
   if (isCoffeeDesign(locationSlug)) {

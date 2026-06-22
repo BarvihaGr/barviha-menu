@@ -53,3 +53,11 @@ _backups/
 
 # Локальные исходники афиш/скриншотов — не в репо
 /афиш*
+
+# Локальное приложение Fontstand (не часть проекта)
+/Fontstand.app/
+Fontstand_*.zip
+
+# Временные страницы подбора шрифта
+apps/menu/public/font-test.html
+apps/menu/public/fonts-arka*.html

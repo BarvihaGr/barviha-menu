@@ -6,10 +6,22 @@ import { getMetroColor } from './location-theme';
  * Палитра у каждой своя (см. COFFEE_PALETTE): Бауманская — светлая,
  * Домодедово — тёмная бронза в цветокоре «Арки».
  */
-export const COFFEE_DESIGN_SLUGS = new Set(['baumanskaia', 'domodedovo']);
+export const COFFEE_DESIGN_SLUGS = new Set(['baumanskaia', 'domodedovo', 'erevan']);
 
 export function isCoffeeDesign(slug: string): boolean {
   return COFFEE_DESIGN_SLUGS.has(slug);
+}
+
+/**
+ * Вариант главной для coffee-локации:
+ *  - 'lux'     — дорогой тёмный минимализм (hero c деревом, бронь, «Lounge
+ *                Restaurant & Bar»). Ереван.
+ *  - 'default' — воздушные плитки-категории. Бауманская, Домодедово.
+ */
+const LUX_HOME_SLUGS = new Set(['erevan']);
+
+export function coffeeHomeVariant(slug: string): 'lux' | 'default' {
+  return LUX_HOME_SLUGS.has(slug) ? 'lux' : 'default';
 }
 
 /**
@@ -21,6 +33,7 @@ const COFFEE_ACCENT_FROM: Record<string, string> = {};
 /** Прямой цвет акцента для отдельных coffee-локаций (перебивает ветку метро). */
 const COFFEE_ACCENT: Record<string, string> = {
   domodedovo: '#C49262', // бронза-золото «Арки» (тёмный цветокор)
+  erevan: '#B89B6A', // приглушённое золото «дорогого минимализма»
 };
 
 /**
@@ -45,6 +58,11 @@ const LIGHT_PALETTE: CoffeePalette = {
   '--cm-muted': '#6b6b6b',
   '--cm-muted-dim': '#9b9b9b',
   '--cm-border': '#ececec',
+  // Белый вордмарк-лого (logo.png) на светлом фоне инвертируется в тёмный.
+  '--cm-logo-invert': '1',
+  // Единый цветокор фото блюд: лёгкая нормализация, без вуали (светлый фон).
+  '--cm-photo': 'contrast(1.03) saturate(1.03)',
+  '--cm-photo-veil': 'transparent',
 };
 
 /** Тёмная бронзовая палитра в цветокоре «Арки» — Домодедово. */
@@ -57,11 +75,38 @@ const BRONZE_PALETTE: CoffeePalette = {
   '--cm-muted': 'rgba(241, 217, 176, 0.66)',
   '--cm-muted-dim': 'rgba(241, 217, 176, 0.45)',
   '--cm-border': 'rgba(196, 146, 98, 0.22)',
+  // Тёмный фон — белый вордмарк-лого остаётся белым (без инверсии).
+  '--cm-logo-invert': '0',
+  // Единый цветокор: лёгкий тёплый грейд (экспозиция выровнена в самих файлах).
+  '--cm-photo': 'contrast(1.04) saturate(1.04)',
+  '--cm-photo-veil': 'transparent',
+};
+
+/**
+ * Дорогой тёмный минимализм (≈чёрный #111111 + кремовый текст, золото очень
+ * дозированно). Ереван. Концепт: «luxury hospitality first».
+ */
+const LUX_PALETTE: CoffeePalette = {
+  '--cm-bg': '#111111',
+  '--cm-surface': '#181818',
+  '--cm-surface-2': '#202020',
+  '--cm-text': '#f4f0ea',
+  '--cm-text-soft': '#cfc9bd',
+  '--cm-muted': 'rgba(244, 240, 234, 0.58)',
+  '--cm-muted-dim': 'rgba(244, 240, 234, 0.38)',
+  '--cm-border': 'rgba(184, 155, 106, 0.18)',
+  // Тёмный фон — белый вордмарк-лого остаётся белым (без инверсии).
+  '--cm-logo-invert': '0',
+  // Единый «дорогой» цветокор: лёгкий контраст без вуали (экспозиция
+  // выровнена в самих файлах — нормализация средней яркости).
+  '--cm-photo': 'contrast(1.05) saturate(0.97)',
+  '--cm-photo-veil': 'transparent',
 };
 
 /** slug → палитра. Нет в карте → светлая. */
 const COFFEE_PALETTE: Record<string, CoffeePalette> = {
   domodedovo: BRONZE_PALETTE,
+  erevan: LUX_PALETTE,
 };
 
 /**
@@ -72,10 +117,16 @@ const COFFEE_PALETTE: Record<string, CoffeePalette> = {
  */
 export function coffeeAccentStyle(slug: string): React.CSSProperties {
   const palette = COFFEE_PALETTE[slug] ?? LIGHT_PALETTE;
+  // Ереван — заголовки на бесплатном Cormorant SC (аналог Canela, как у «Арки»);
+  // остальные coffee-точки сохраняют брендовый Raleway (--cm-font-display).
+  const displayFont =
+    slug === 'erevan'
+      ? "'Cormorant SC', 'Cormorant Garamond', var(--cm-font-display)"
+      : 'var(--cm-font-display)';
   return {
     ['--cm-accent']: getCoffeeAccent(slug),
     ...palette,
-    ['--font-display']: 'var(--cm-font-display)',
+    ['--font-display']: displayFont,
     ['--font-sans']: 'var(--cm-font-body)',
     // Базовый шрифт всего поддерева — чтобы наследуемый текст (без явного
     // font-family) тоже стал брендовым Manrope, а не унаследовал Inter от body.
