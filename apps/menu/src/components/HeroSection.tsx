@@ -80,7 +80,7 @@ export function HeroSection({
   }, [shouldLoadVideo]);
 
   return (
-    <section className="relative -mt-28 sm:-mt-20 -mb-8 h-[56svh] min-h-[340px] overflow-hidden left-1/2 -translate-x-1/2 w-screen max-w-none">
+    <section className="relative isolate z-[1] -mt-28 sm:-mt-20 -mb-8 h-[56svh] min-h-[340px] overflow-hidden left-1/2 -translate-x-1/2 w-screen max-w-none">
       {/* Placeholder пока грузится постер */}
       <div className="absolute inset-0 bg-[#2A1B11]" />
 
@@ -93,6 +93,7 @@ export function HeroSection({
           priority
           sizes="(max-width: 1024px) 100vw, 1560px"
           className={`object-cover object-center transition-opacity duration-500 ${videoReady ? 'opacity-0' : 'opacity-100'} ken-burns`}
+          style={{ filter: 'brightness(1.08) saturate(1.15) contrast(1.04)' }}
         />
       )}
 
