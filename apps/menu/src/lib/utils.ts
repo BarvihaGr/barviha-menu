@@ -17,18 +17,26 @@ export interface ParsedIngredient {
 const AMOUNT_RE =
   /^(.+?)\s+(\d+(?:[.,]\d+)?\s*(?:мл|г|кг|шт|ст\.?\s*л|ч\.?\s*л|двойн[ыйаяое]+|капл[яеи]+|ml|g|kg|pcs))$/i;
 
+// Strips stray brackets, dots, commas from edges of raw ingredient strings
+// that appear in unprocessed DB composition fields, e.g. "(соль" or "масло.".
+const JUNK_EDGE_RE = /^[\s().,]+|[\s().,]+$/g;
+
+function sanitize(s: string): string {
+  return s.replace(JUNK_EDGE_RE, '').trim();
+}
+
 export function parseIngredient(raw: string): ParsedIngredient {
-  const trimmed = raw.trim();
-  const m = trimmed.match(AMOUNT_RE);
-  if (m && m[1] && m[2]) return { name: m[1].trim(), amount: m[2].trim() };
-  return { name: trimmed, amount: null };
+  const clean = sanitize(raw);
+  if (!clean) return { name: '', amount: null };
+  const m = clean.match(AMOUNT_RE);
+  if (m && m[1] && m[2]) return { name: sanitize(m[1]), amount: m[2].trim() };
+  return { name: clean, amount: null };
 }
 
 export function parseIngredients(composition: string | null): ParsedIngredient[] {
   if (!composition) return [];
   return composition
     .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .map(parseIngredient);
+    .map(parseIngredient)
+    .filter((ing) => ing.name.length > 0);
 }

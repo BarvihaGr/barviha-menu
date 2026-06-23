@@ -46,26 +46,31 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
         </ul>
       </nav>
 
-      {/* Мобайл: горизонтальная лента */}
-      <nav className="-mx-4 mb-2 overflow-x-auto no-scrollbar sm:-mx-6 lg:hidden">
-        <div className="flex gap-1 px-4 sm:px-6">
-          {categories.map((c) => {
-            const on = c.slug === currentSlug;
-            return (
-              <Link
-                key={c.id}
-                href={hrefFor(c.slug)}
-                className={cn(
-                  'shrink-0 whitespace-nowrap rounded-full px-4 py-2 font-[family-name:var(--font-sans)] text-[14px] transition-colors',
-                  on
-                    ? 'bg-[var(--cm-accent)] font-medium text-white'
-                    : 'bg-[var(--cm-surface)] text-[var(--cm-muted)]',
-                )}
-              >
-                {pickCategoryName(c, locale)}
-              </Link>
-            );
-          })}
+      {/* Мобайл: горизонтальная лента. Залипает под шапкой при скролле.
+          Высота шапки ≈68px (py-3.5 + h-10 logo) мобайл,
+          ≈72px (py-3.5 + h-11 logo) sm → top смещён соответственно. */}
+      <nav className="sticky top-[67px] z-20 -mx-4 mb-3 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/80 backdrop-blur-md sm:-mx-6 sm:top-[71px] lg:hidden">
+        <div className="overflow-x-auto no-scrollbar">
+          <div className="flex gap-2 px-4 py-2.5 sm:px-6">
+            {categories.map((c) => {
+              const on = c.slug === currentSlug;
+              return (
+                <Link
+                  key={c.id}
+                  href={hrefFor(c.slug)}
+                  aria-current={on ? 'page' : undefined}
+                  className={cn(
+                    'shrink-0 whitespace-nowrap rounded-full border px-4 py-2 font-[family-name:var(--font-sans)] text-[14px] transition-all duration-300 ease-out',
+                    on
+                      ? 'border-transparent bg-[var(--cm-accent)] font-medium text-white shadow-[0_2px_12px_-4px_var(--cm-accent)]'
+                      : 'border-[var(--cm-border)] bg-[var(--cm-surface)]/60 text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
+                  )}
+                >
+                  {pickCategoryName(c, locale)}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </nav>
     </>

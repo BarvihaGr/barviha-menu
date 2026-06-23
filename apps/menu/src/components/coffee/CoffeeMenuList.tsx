@@ -106,38 +106,59 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
         </div>
       </div>
 
-      {/* Подсекции — чистые чипы */}
-      {sections.length > 1 && (
-        <div className="-mx-4 mb-3 overflow-x-auto no-scrollbar sm:mx-0">
-          <div className="flex gap-2 px-4 sm:px-0">
-            <Chip label={tSections('all')} on={activeSection === null} onClick={() => setActiveSection(null)} />
-            {sections.map((s) => (
-              <Chip
-                key={s.id}
-                label={s.label}
-                on={activeSection === s.id}
-                onClick={() => setActiveSection(s.id)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Sticky chip bar: подсекции + фильтры.
+          Мобайл/sm: прилипает под шапкой (≈60/64px) + под горизонтальным
+          навом категорий (≈57px) → top-[117px]/top-[121px].
+          Десктоп lg+: статичный, вертикальный нав категорий в сайдбаре. */}
+      {(sections.length > 1 || availableFilters.length > 0) && (
+        <div
+          className={cn(
+            'sticky top-[124px] z-[15] -mx-4 mb-4',
+            'sm:-mx-6 sm:top-[128px]',
+            'lg:static lg:mx-0 lg:mb-0',
+          )}
+        >
+          <div className="border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/95 backdrop-blur-md lg:border-0 lg:bg-transparent lg:backdrop-blur-none">
+            {/* Подсекции */}
+            {sections.length > 1 && (
+              <div className="overflow-x-auto no-scrollbar">
+                <div className="flex gap-2 px-4 pt-2.5 pb-2 sm:px-6 lg:px-0 lg:mb-3">
+                  <Chip label={tSections('all')} on={activeSection === null} onClick={() => setActiveSection(null)} />
+                  {sections.map((s) => (
+                    <Chip
+                      key={s.id}
+                      label={s.label}
+                      on={activeSection === s.id}
+                      onClick={() => setActiveSection(s.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
 
-      {/* Фильтры — инлайн-чипы, мгновенное переключение */}
-      {availableFilters.length > 0 && (
-        <div className="-mx-4 mb-6 overflow-x-auto no-scrollbar sm:mx-0">
-          <div className="flex gap-2 px-4 sm:px-0">
-            {availableFilters.map((f) => (
-              <Chip key={f} label={tFilters(f)} on={active.has(f)} onClick={() => toggleFilter(f)} subtle />
-            ))}
-            {active.size > 0 && (
-              <button
-                type="button"
-                onClick={() => setActive(new Set())}
-                className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] text-[var(--cm-muted-dim)] hover:text-[var(--cm-text)] transition cursor-pointer"
-              >
-                {tFilters('reset')}
-              </button>
+            {/* Фильтры */}
+            {availableFilters.length > 0 && (
+              <div className="overflow-x-auto no-scrollbar">
+                <div
+                  className={cn(
+                    'flex gap-2 px-4 sm:px-6 lg:px-0',
+                    sections.length > 1 ? 'pb-2.5' : 'py-2.5',
+                  )}
+                >
+                  {availableFilters.map((f) => (
+                    <Chip key={f} label={tFilters(f)} on={active.has(f)} onClick={() => toggleFilter(f)} subtle />
+                  ))}
+                  {active.size > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setActive(new Set())}
+                      className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] text-[var(--cm-muted-dim)] hover:text-[var(--cm-text)] transition cursor-pointer"
+                    >
+                      {tFilters('reset')}
+                    </button>
+                  )}
+                </div>
+              </div>
             )}
           </div>
         </div>
