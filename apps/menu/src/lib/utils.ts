@@ -14,15 +14,19 @@ export interface ParsedIngredient {
   amount: string | null;
 }
 
+// гр? matches both "г" and "гр" (both appear in DB data)
 const AMOUNT_RE =
-  /^(.+?)\s+(\d+(?:[.,]\d+)?\s*(?:мл|г|кг|шт|ст\.?\s*л|ч\.?\s*л|двойн[ыйаяое]+|капл[яеи]+|ml|g|kg|pcs))$/i;
+  /^(.+?)\s+(\d+(?:[.,]\d+)?\s*(?:мл|гр?|кг|шт|ст\.?\s*л|ч\.?\s*л|двойн[ыйаяое]+|капл[яеи]+|ml|g|kg|pcs))$/i;
 
-// Strips stray brackets, dots, commas from edges of raw ingredient strings
-// that appear in unprocessed DB composition fields, e.g. "(соль" or "масло.".
+// Strips junk punctuation from the edges of an ingredient token.
 const JUNK_EDGE_RE = /^[\s().,]+|[\s().,]+$/g;
 
 function sanitize(s: string): string {
-  return s.replace(JUNK_EDGE_RE, '').trim();
+  return s
+    .replace(JUNK_EDGE_RE, '')   // strip leading/trailing junk first
+    .replace(/[()]/g, '')        // remove any surviving lone brackets (unmatched)
+    .replace(/\s{2,}/g, ' ')    // collapse double spaces left by bracket removal
+    .trim();
 }
 
 export function parseIngredient(raw: string): ParsedIngredient {
@@ -35,8 +39,18 @@ export function parseIngredient(raw: string): ParsedIngredient {
 
 export function parseIngredients(composition: string | null): ParsedIngredient[] {
   if (!composition) return [];
-  return composition
-    .split(',')
-    .map(parseIngredient)
-    .filter((ing) => ing.name.length > 0);
+  return (
+    composition
+      // Remove closed parenthetical groups BEFORE splitting so that
+      // "(мед, горчица столовая)" doesn't fracture into broken tokens.
+      // Unmatched lone brackets are handled later in sanitize().
+      .replace(/\([^)]*\)/g, '')
+      // Strip dish-weight suffixes like ". 338 гр" or ", 250 г" that
+      // appear after parenthetical groups are removed. These are total
+      // weights, not ingredient amounts, so we don't want them in chips.
+      .replace(/[.,]\s*\d+(?:[.,]\d+)?\s*(?:гр?|кг|мл)\b\.?/gi, '')
+      .split(',')
+      .map(parseIngredient)
+      .filter((ing) => ing.name.length > 0)
+  );
 }

@@ -29,19 +29,24 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
       <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-6">
         <Link
           href={homeHref}
-          className="flex min-w-0 items-center cursor-pointer"
-          aria-label="Barvikha Group Since 2017"
+          className="flex min-w-0 items-center gap-2.5 cursor-pointer"
+          aria-label="Barvikha Group"
         >
-          {/* Единый логотип: дерево + «BARVIKHA GROUP / SINCE 2017».
-              На тёмном фоне (kievskaia/lux) — золото + белый текст.
-              На светлом (baumanskaia) — invert(1) делает текст чёрным. */}
           <Image
-            src="/logo-barvikha.png"
-            alt="Barvikha Group Since 2017"
-            width={2270}
-            height={1983}
+            src="/locations/arka/logo-tree.png"
+            alt="Барвиха"
+            width={150}
+            height={93}
             priority
-            className="h-10 w-auto shrink-0 sm:h-11"
+            className="h-8 w-auto shrink-0 sm:h-9"
+          />
+          <Image
+            src="/logo.png"
+            alt="Barvikha Group"
+            width={427}
+            height={57}
+            priority
+            className="hidden h-[15px] w-auto sm:block sm:h-[17px]"
             style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
           />
         </Link>

@@ -113,8 +113,8 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
       {(sections.length > 1 || availableFilters.length > 0) && (
         <div
           className={cn(
-            'sticky top-[124px] z-[15] -mx-4 mb-4',
-            'sm:-mx-6 sm:top-[128px]',
+            'sticky top-[117px] z-[15] -mx-4 mb-4',
+            'sm:-mx-6 sm:top-[121px]',
             'lg:static lg:mx-0 lg:mb-0',
           )}
         >

@@ -49,7 +49,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
       {/* Мобайл: горизонтальная лента. Залипает под шапкой при скролле.
           Высота шапки ≈68px (py-3.5 + h-10 logo) мобайл,
           ≈72px (py-3.5 + h-11 logo) sm → top смещён соответственно. */}
-      <nav className="sticky top-[67px] z-20 -mx-4 mb-3 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/80 backdrop-blur-md sm:-mx-6 sm:top-[71px] lg:hidden">
+      <nav className="sticky top-[59px] z-20 -mx-4 mb-3 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/80 backdrop-blur-md sm:-mx-6 sm:top-[63px] lg:hidden">
         <div className="overflow-x-auto no-scrollbar">
           <div className="flex gap-2 px-4 py-2.5 sm:px-6">
             {categories.map((c) => {
