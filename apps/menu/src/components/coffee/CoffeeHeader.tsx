@@ -32,21 +32,23 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
           className="flex min-w-0 items-center gap-2.5 cursor-pointer"
           aria-label="Barvikha Group"
         >
+          {/* Дерево: только sm+ — на мобайле места не хватает рядом с вордмарком */}
           <Image
             src="/locations/arka/logo-tree.png"
             alt="Барвиха"
             width={150}
             height={93}
             priority
-            className="h-8 w-auto shrink-0 sm:h-9"
+            className="hidden h-9 w-auto shrink-0 sm:block"
           />
+          {/* Вордмарк "BARVIKHA GROUP SINCE 2017": всегда виден */}
           <Image
             src="/logo-since2017.png"
             alt="Barvikha Group Since 2017"
             width={427}
             height={57}
             priority
-            className="h-[16px] w-auto sm:h-[21px]"
+            className="h-[14px] w-auto sm:h-[20px]"
             style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
           />
         </Link>
