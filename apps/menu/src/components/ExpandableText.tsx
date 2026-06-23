@@ -24,20 +24,5 @@ export function ExpandableText({
   const rest = text.slice(preview.length).trim();
   const hasMore = rest.length > 0;
 
-  return (
-    <div>
-      <p className={className}>
-        {open ? text : preview}
-      </p>
-      {hasMore && (
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="mt-1.5 text-[11px] uppercase tracking-[0.2em] text-gold transition-opacity hover:opacity-70"
-        >
-          {open ? t('less') : t('more')}
-        </button>
-      )}
-    </div>
-  );
+  return <p className={className}>{preview}</p>;
 }
