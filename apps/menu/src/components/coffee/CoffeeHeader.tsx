@@ -46,7 +46,7 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
             width={427}
             height={57}
             priority
-            className="h-[14px] w-auto sm:h-[18px]"
+            className="h-[16px] w-auto sm:h-[21px]"
             style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
           />
         </Link>
