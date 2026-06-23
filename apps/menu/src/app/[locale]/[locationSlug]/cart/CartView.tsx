@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect } from 'react';
 import { Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
@@ -29,6 +30,14 @@ export function CartView({ allItems, locationSlug }: Props) {
       return item ? { entry, item } : null;
     })
     .filter((x): x is { entry: typeof cart.items[number]; item: ResolvedMenuItem } => x !== null);
+
+  useEffect(() => {
+    const validIds = new Set(allItems.map((i) => i.id));
+    cart.items
+      .filter((e) => !validIds.has(e.itemId))
+      .forEach((e) => cart.remove(e.itemId));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const total = entries.reduce((sum, { entry, item }) => sum + entry.qty * item.price, 0);
 
