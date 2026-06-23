@@ -37,7 +37,7 @@ export function CoffeeLuxMenu({ locationSlug, categories, locale }: Props) {
       style={coffeeAccentStyle(locationSlug)}
     >
       <div className="mx-auto w-full max-w-[680px] px-6 pb-32 pt-10 sm:pt-14">
-        <h1 className="mb-8 font-[family-name:var(--font-display)] text-[34px] font-light uppercase tracking-[0.14em] text-[var(--cm-text)] sm:mb-10 sm:text-[44px]">
+        <h1 className="mb-8 font-[family-name:var(--font-sans)] text-[34px] font-light uppercase tracking-[0.14em] text-[var(--cm-text)] sm:mb-10 sm:text-[44px]">
           Меню
         </h1>
 
@@ -52,7 +52,7 @@ export function CoffeeLuxMenu({ locationSlug, categories, locale }: Props) {
                 className="group flex items-center justify-between gap-4 border-b border-[var(--cm-border)] py-6 transition-colors sm:py-7"
               >
                 <div className="min-w-0">
-                  <h2 className="font-[family-name:var(--font-display)] text-[26px] font-light leading-tight tracking-[0.01em] text-[var(--cm-text)] transition-colors group-hover:text-[color:var(--cm-accent)] sm:text-[32px]">
+                  <h2 className="font-[family-name:var(--font-sans)] text-[26px] font-light leading-tight tracking-[0.06em] text-[var(--cm-text)] transition-colors group-hover:text-[color:var(--cm-accent)] sm:text-[32px]">
                     {title}
                   </h2>
                   {subtitle && (

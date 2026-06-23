@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import type { Locale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
@@ -17,6 +16,14 @@ interface Props {
   socials?: { label: string; href: string }[];
 }
 
+/** Подзаголовок hero — общий для всех lux-локаций. */
+const HERO_SUBTITLE = 'Lounge Restaurant & Bar';
+
+/** Адрес под названием. Берём из данных локации, иначе — ручной фолбэк по slug. */
+const LUX_ADDRESS: Record<string, string> = {
+  kievskaia: 'ул. Киевская, 2',
+};
+
 /**
  * Главная в стиле «дорогой минимализм» (концепт Coffeemania × Барвиха):
  * полноэкранный тёмный hero c фото интерьера, дерево-бренд сверху, крупное
@@ -28,10 +35,12 @@ interface Props {
 export function CoffeeLuxHome({
   locationSlug,
   locationName,
+  locationCity,
   menuHref,
   menuLabel,
   socials = [],
 }: Props) {
+  const address = LUX_ADDRESS[locationSlug] ?? locationCity;
   return (
     <div
       // Ровно один экран без скролла: высота = видимый экран минус хедер.
@@ -59,29 +68,36 @@ export function CoffeeLuxHome({
 
       {/* Контент hero — только крупное дерево по центру + кнопка «Меню» */}
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-12 px-6 pt-8 pb-28 text-center">
-        {/* Дерево + название локации — по центру */}
-        <div className="flex flex-col items-center gap-5">
-          <Image
-            src="/locations/arka/logo-tree.png"
-            alt="Барвиха"
-            width={760}
-            height={472}
-            priority
-            sizes="(max-width: 640px) 80vw, 460px"
-            className="h-52 w-auto sm:h-72"
-          />
-          <h1 className="font-[family-name:var(--font-display)] text-[48px] font-light uppercase leading-[0.95] tracking-[0.12em] text-[var(--cm-text)] sm:text-[72px]">
-            {locationName}
-          </h1>
+        {/* Дерево + название + сабтайтл + адрес — строго по центральной оси */}
+        <div className="flex flex-col items-center gap-5 sm:gap-6">
+          <div className="flex flex-col items-center gap-2.5 sm:gap-3">
+            <h1 className="font-[family-name:var(--font-display)] text-[44px] font-light uppercase leading-[0.95] tracking-[0.12em] text-[var(--cm-text)] sm:text-[72px]">
+              {locationName}
+            </h1>
+            <p className="font-[family-name:var(--font-display)] text-[13px] uppercase tracking-[0.34em] text-[var(--cm-text-soft)] sm:text-[15px]">
+              {HERO_SUBTITLE}
+            </p>
+            {address && (
+              <p className="font-[family-name:var(--font-sans)] text-[12px] tracking-[0.14em] text-[var(--cm-muted)] sm:text-[13px]">
+                {address}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Первичное действие — открыть меню */}
         <div className="flex w-full max-w-[360px] flex-col gap-3">
           <Link
             href={menuHref}
-            className="flex h-[52px] items-center justify-center rounded-[14px] bg-[color:var(--cm-accent)] font-[family-name:var(--font-display)] text-[13px] font-light uppercase tracking-[0.28em] text-[#111111] transition-all duration-300 ease-out hover:opacity-95 hover:shadow-[0_0_22px_-6px_var(--cm-accent)] focus-visible:shadow-[0_0_26px_-4px_var(--cm-accent)] focus-visible:outline-none active:scale-[0.985] active:shadow-[0_0_36px_-2px_var(--cm-accent)] active:brightness-[1.06] cursor-pointer"
+            className="group flex h-[52px] items-center justify-center gap-3 rounded-[14px] border border-white/20 bg-white/[0.02] font-[family-name:var(--font-display)] text-[13px] font-light uppercase tracking-[0.28em] text-white backdrop-blur-[2px] transition-all duration-300 ease-out hover:border-white/40 hover:bg-white/[0.07] focus-visible:border-white/40 focus-visible:outline-none active:scale-[0.985] active:bg-white/[0.1] cursor-pointer"
           >
             {menuLabel}
+            <span
+              aria-hidden
+              className="text-[15px] leading-none transition-transform duration-300 ease-out group-hover:translate-x-1"
+            >
+              →
+            </span>
           </Link>
         </div>
 
