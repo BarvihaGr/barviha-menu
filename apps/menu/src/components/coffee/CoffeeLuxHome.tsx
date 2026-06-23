@@ -60,14 +60,14 @@ export function CoffeeLuxHome({
           preload="metadata"
           poster="/locations/arka/poster.jpg"
           className="h-full w-full object-cover"
-          style={{ filter: 'brightness(1.45) saturate(1.35) contrast(1.06)' }}
+          style={{ filter: 'brightness(0.75) saturate(1.15) contrast(1.04)' }}
         >
           <source src="/locations/arka/hero.mp4" type="video/mp4" />
         </video>
         {/* Нижний переход в фон страницы */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--cm-bg)] to-transparent" />
         {/* Скрим под текстом — радиальный, только в центре, фото открыто по краям */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_60%,rgba(0,0,0,0.52)_0%,transparent_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_55%,rgba(0,0,0,0.68)_0%,rgba(0,0,0,0.28)_100%)]" />
       </div>
 
       {/* Контент hero — только крупное дерево по центру + кнопка «Меню» */}
