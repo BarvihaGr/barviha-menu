@@ -82,7 +82,7 @@ export function HeroSection({
   return (
     <section className="relative -mt-28 sm:-mt-20 -mb-8 h-[56svh] min-h-[340px] overflow-hidden left-1/2 -translate-x-1/2 w-screen max-w-none">
       {/* Фон-плейсхолдер: градиент + постер (показывается мгновенно) */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#453324] via-[#2A1B11] to-[#1B110A]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#8C7464] via-[#6B5242] to-[#584030]" />
       {poster && (
         <Image
           src={poster}
@@ -90,7 +90,7 @@ export function HeroSection({
           fill
           priority
           sizes="(max-width: 1024px) 100vw, 1560px"
-          className={`object-cover transition-opacity duration-500 ${videoReady ? 'opacity-0' : 'opacity-90'} ken-burns`}
+          className={`object-cover transition-opacity duration-500 ${videoReady ? 'opacity-0' : 'opacity-100'} ken-burns`}
         />
       )}
 
