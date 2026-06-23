@@ -105,6 +105,7 @@ export function HeroSection({
           animate={videoReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.08 }}
           transition={{ duration: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0 h-full w-full object-cover object-center"
+          style={{ filter: 'brightness(1.08) saturate(1.15) contrast(1.04)' }}
           src={videoSrc}
           poster={poster ?? undefined}
           autoPlay
