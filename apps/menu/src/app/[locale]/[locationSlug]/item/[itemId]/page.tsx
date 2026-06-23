@@ -66,7 +66,7 @@ export default async function ItemDetailPage({
     <div className="mx-auto flex max-w-4xl gap-3 sm:gap-5">
       <article className="min-w-0 flex-1 overflow-hidden rounded-3xl border border-[color:var(--border)] bg-card">
         <div className="px-3 pt-3 sm:px-4 sm:pt-4">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-gradient-to-br from-[#453324] to-[#2A1B11]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-gradient-to-br from-[#453324] to-[#2A1B11]">
             {item.photo ? (
               <ItemPhotoViewer src={item.photo} alt={name} />
             ) : (
