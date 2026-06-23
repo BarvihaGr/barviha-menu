@@ -105,19 +105,18 @@ const LUX_PALETTE: CoffeePalette = {
 };
 
 /**
- * Светлый люкс «Киевская»: светлый ржавый брауни.
- * Фон #D4956A (тёплый ржавый брауни), поверхности темнее/светлее для слоёв,
- * текст очень тёмный коричневый, золото #9B7A50.
+ * Светлый люкс «Киевская»: слоновая кость + тёплый брауни.
+ * Фон #F2EAE0, поверхности #EAE0D4, текст тёмно-коричневый, золото #9B7A50.
  */
 const KIEV_PALETTE: CoffeePalette = {
-  '--cm-bg': '#D4956A',
-  '--cm-surface': '#C88A5E',
-  '--cm-surface-2': '#DDA878',
-  '--cm-text': '#1A0A04',
-  '--cm-text-soft': '#3C200E',
-  '--cm-muted': 'rgba(26, 10, 4, 0.58)',
-  '--cm-muted-dim': 'rgba(26, 10, 4, 0.36)',
-  '--cm-border': 'rgba(100, 58, 24, 0.22)',
+  '--cm-bg': '#F2EAE0',
+  '--cm-surface': '#E8DDD0',
+  '--cm-surface-2': '#FFFFFF',
+  '--cm-text': '#2A1A0E',
+  '--cm-text-soft': '#4A3426',
+  '--cm-muted': 'rgba(42, 26, 14, 0.55)',
+  '--cm-muted-dim': 'rgba(42, 26, 14, 0.35)',
+  '--cm-border': 'rgba(155, 122, 80, 0.22)',
   '--cm-logo-invert': '1',
   '--cm-photo': 'contrast(1.04) saturate(1.06)',
   '--cm-photo-veil': 'transparent',

@@ -4,6 +4,7 @@ import { getClient } from '@barviha/db';
 import { LocationHeader } from '@/components/LocationHeader';
 import { CoffeeHeader } from '@/components/coffee/CoffeeHeader';
 import { LuxBottomNav } from '@/components/coffee/LuxBottomNav';
+import { KievThemeProvider } from '@/components/coffee/KievThemeProvider';
 import { Toaster } from '@/components/Toaster';
 import { FloatingCartButton } from '@/components/FloatingCartButton';
 import { SwipeBack } from '@/components/SwipeBack';
@@ -50,12 +51,10 @@ export default async function LocationLayout({
   const coffee = coffeeDesign;
   // Lux-локации (Ереван, Киевская) — нижняя навигация на 4 таба вместо плашки.
   const lux = coffee && coffeeHomeVariant(location.slug) === 'lux';
+  const isKiev = location.slug === 'kievskaia';
 
-  return (
-    <div
-      className={cn('flex min-h-screen flex-col', coffee && 'coffee-theme')}
-      style={coffee ? coffeeAccentStyle(location.slug) : undefined}
-    >
+  const inner = (
+    <>
       {coffee ? (
         <CoffeeHeader locationSlug={location.slug} locations={locations} />
       ) : (
@@ -80,6 +79,15 @@ export default async function LocationLayout({
       <Toaster />
       <SwipeBack />
       <ScrollMemory />
+    </>
+  );
+
+  return (
+    <div
+      className={cn('flex min-h-screen flex-col', coffee && 'coffee-theme')}
+      style={coffee ? coffeeAccentStyle(location.slug) : undefined}
+    >
+      {isKiev ? <KievThemeProvider>{inner}</KievThemeProvider> : inner}
     </div>
   );
 }

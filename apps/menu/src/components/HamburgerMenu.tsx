@@ -9,6 +9,7 @@ import type { Location } from '@barviha/db';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
 import { getMetroColor } from '@/lib/location-theme';
+import { useKievTheme } from '@/store/kievTheme';
 import { cn } from '@/lib/utils';
 
 const LANG_LABEL: Record<Locale, string> = {
@@ -34,9 +35,16 @@ interface Props {
    * Нужны, потому что панель рендерится через Radix Portal вне .coffee-theme.
    */
   themeStyle?: React.CSSProperties;
+  /** Показывать переключатель палитры (только Киевская) */
+  showPalettePicker?: boolean;
 }
 
-export function HamburgerMenu({ locationSlug, locations, variant = 'dark', themeStyle }: Props) {
+const PALETTE_OPTIONS = [
+  { id: 'ivory' as const, label: 'Слоновая кость', swatch: '#F2EAE0', swatchBorder: '#D4C4A8' },
+  { id: 'arka'  as const, label: 'Арка',           swatch: '#6B5242', swatchBorder: '#8C7464' },
+];
+
+export function HamburgerMenu({ locationSlug, locations, variant = 'dark', themeStyle, showPalettePicker }: Props) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState('');
   const locale = useLocale() as Locale;
@@ -44,7 +52,11 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
   const router = useRouter();
   const tLoc = useTranslations('location');
 
-  const isDark = variant === 'dark';
+  const kievVariant = useKievTheme((s) => s.variant);
+  const setKievVariant = useKievTheme((s) => s.setVariant);
+
+  // Панель адаптируется: если выбрана Арка — тёмные токены
+  const isDark = variant === 'dark' || (showPalettePicker === true && kievVariant === 'arka');
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase().replace(/ё/g, 'е');
@@ -185,6 +197,45 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                   </div>
 
                   <div className={cn('mx-5 border-t shrink-0', D.divider)} />
+
+                  {/* ── Палитра (только Киевская) ── */}
+                  {showPalettePicker && (
+                    <>
+                      <div className="px-5 pt-5 pb-4 shrink-0">
+                        <p className={D.label}>Палитра</p>
+                        <div className="flex gap-2">
+                          {PALETTE_OPTIONS.map((opt) => {
+                            const active = kievVariant === opt.id;
+                            return (
+                              <button
+                                key={opt.id}
+                                type="button"
+                                onClick={() => setKievVariant(opt.id)}
+                                className={cn(
+                                  'flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] font-medium transition cursor-pointer',
+                                  active
+                                    ? isDark
+                                      ? 'border-gold text-gold bg-gold/12'
+                                      : 'border-[var(--cm-accent,#9B7A50)] text-[var(--cm-accent,#9B7A50)] bg-[var(--cm-accent,#9B7A50)]/10'
+                                    : isDark
+                                      ? 'border-white/12 text-muted hover:border-gold/45 hover:text-cream/80'
+                                      : 'border-[#dedad5] text-[#888] hover:border-[var(--cm-accent,#9B7A50)]/50 hover:text-[#333]',
+                                )}
+                              >
+                                <span
+                                  className="inline-block h-3 w-3 rounded-full border"
+                                  style={{ background: opt.swatch, borderColor: opt.swatchBorder }}
+                                />
+                                {opt.label}
+                                {active && <Check size={11} strokeWidth={2.5} />}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <div className={cn('mx-5 border-t shrink-0', D.divider)} />
+                    </>
+                  )}
 
                   {/* ── Локация ── */}
                   <div className="flex flex-col min-h-0 flex-1 px-5 pt-4 pb-3">

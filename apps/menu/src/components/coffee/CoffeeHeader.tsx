@@ -49,6 +49,7 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
           locations={locations}
           variant="coffee"
           themeStyle={{ ['--cm-accent' as string]: getCoffeeAccent(locationSlug) }}
+          showPalettePicker={locationSlug === 'kievskaia'}
         />
       </div>
     </header>
