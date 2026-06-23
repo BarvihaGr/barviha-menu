@@ -58,7 +58,7 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
         </div>
         <div className="flex items-center justify-between gap-3 p-4 sm:p-5">
           <div className="min-w-0">
-            <h3 className="font-[family-name:var(--font-sans)] text-[14px] sm:text-[15px] font-light tracking-[0.08em] text-cream leading-snug line-clamp-2">
+            <h3 className="font-[family-name:var(--font-sans)] text-[15px] font-light tracking-[0.03em] text-cream leading-[1.3] line-clamp-2">
               {name}
             </h3>
             {teaser && (

@@ -81,7 +81,10 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
           </button>
         </div>
 
-        <h3 className="mt-2.5 font-[family-name:var(--font-sans)] text-[14px] font-medium normal-case leading-snug text-[var(--cm-text)] line-clamp-2">
+        <h3
+          className="mt-2.5 text-[15px] font-light normal-case leading-[1.3] tracking-[0.03em] text-[var(--cm-text)] line-clamp-2"
+          style={{ fontFamily: "'Jost', sans-serif" }}
+        >
           {capitalize(name)}
         </h3>
         {meta && (
