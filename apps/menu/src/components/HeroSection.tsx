@@ -81,8 +81,10 @@ export function HeroSection({
 
   return (
     <section className="relative -mt-28 sm:-mt-20 -mb-8 h-[56svh] min-h-[340px] overflow-hidden left-1/2 -translate-x-1/2 w-screen max-w-none">
-      {/* Фон-плейсхолдер: градиент + постер (показывается мгновенно) */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#8C7464] via-[#6B5242] to-[#584030]" />
+      {/* Placeholder пока грузится постер */}
+      <div className="absolute inset-0 bg-[#2A1B11]" />
+
+      {/* Постер — полная яркость, без фильтров, object-center */}
       {poster && (
         <Image
           src={poster}
@@ -90,17 +92,18 @@ export function HeroSection({
           fill
           priority
           sizes="(max-width: 1024px) 100vw, 1560px"
-          className={`object-cover transition-opacity duration-500 ${videoReady ? 'opacity-0' : 'opacity-100'} ken-burns`}
+          className={`object-cover object-center transition-opacity duration-500 ${videoReady ? 'opacity-0' : 'opacity-100'} ken-burns`}
         />
       )}
 
+      {/* Видео — полная яркость */}
       {videoSrc && shouldLoadVideo && (
         <motion.video
           ref={videoRef}
           initial={{ opacity: 0, scale: 1.08 }}
           animate={videoReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.08 }}
           transition={{ duration: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover object-center"
           src={videoSrc}
           poster={poster ?? undefined}
           autoPlay
@@ -112,21 +115,20 @@ export function HeroSection({
         />
       )}
 
-      {/* Акцентная вуаль локации */}
-      <div
-        className="absolute inset-0 opacity-5 pointer-events-none"
-        style={{ background: `radial-gradient(circle at 50% 35%, ${accent}, transparent 60%)` }}
-      />
-      {/* Только нижний плавный переход в фон страницы — безрамочное видео */}
-      <div className="absolute inset-x-0 bottom-0 h-20 sm:h-28 bg-gradient-to-t from-[var(--background)] to-transparent pointer-events-none" />
+      {/* Smart-градиент: снизу тёмный → прозрачный в центре и наверху.
+          Текст читается, фото «дышит» — без сплошного overlay. */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
+      {/* Тонкая вуаль сверху под шапку навигации */}
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
+      {/* Плавный переход в цвет страницы снизу */}
+      <div className="absolute inset-x-0 bottom-0 h-16 sm:h-24 bg-gradient-to-t from-[var(--background)] to-transparent pointer-events-none" />
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-16 pb-4 text-center">
-        {/* Логотип — кинематографичный entrance (scale + slight rotate + glow burst) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.7, rotate: -6 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          style={{ filter: 'drop-shadow(0 4px 24px rgba(0,0,0,0.6))' }}
+          style={{ filter: 'drop-shadow(0 4px 24px rgba(0,0,0,0.7))' }}
         >
           <Image
             src="/locations/arka/logo-tree.png"
@@ -138,11 +140,13 @@ export function HeroSection({
           />
         </motion.div>
 
-        {/* Название локации — буква за буквой (stagger) */}
         {locationName && (
           <motion.h1
-            className="font-[family-name:var(--font-display)] text-[1.45rem] sm:text-[2.3rem] font-semibold tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.7)] -mt-3"
-            style={{ color: '#E5C490' }}
+            className="font-[family-name:var(--font-display)] text-[1.45rem] sm:text-[2.3rem] font-semibold tracking-wide -mt-3"
+            style={{
+              color: '#E5C490',
+              textShadow: '0px 4px 10px rgba(0,0,0,0.6), 0px 1px 3px rgba(0,0,0,0.8)',
+            }}
             initial="hidden"
             animate="visible"
             variants={{
@@ -170,11 +174,14 @@ export function HeroSection({
           </motion.h1>
         )}
 
-        {/* Адрес — slide-up fade с финальной задержкой */}
         {locationCity && (
           <motion.span
             className="text-[9px] sm:text-[11px] uppercase tracking-[0.3em]"
-            style={{ color: '#E5C490', opacity: 0.85 }}
+            style={{
+              color: '#E5C490',
+              opacity: 0.9,
+              textShadow: '0px 2px 8px rgba(0,0,0,0.7)',
+            }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.2, ease: 'easeOut' }}

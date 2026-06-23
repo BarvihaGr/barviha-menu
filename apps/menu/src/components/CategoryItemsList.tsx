@@ -127,6 +127,7 @@ export function CategoryItemsList({
           {filtered.map((item, i) => (
             <motion.div
               key={item.id}
+              className="h-full"
               initial={{ opacity: 0, scale: 0.93, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.14, ease: 'easeIn' } }}

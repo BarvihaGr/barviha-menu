@@ -49,18 +49,18 @@ export function ItemCard({ item, name, locationSlug }: Props) {
         </div>
 
         {/* Контент */}
-        <div className="flex flex-col flex-1 p-3 sm:p-4 pt-2.5">
+        <div className="flex flex-col flex-1 justify-between p-3 sm:p-4 pt-2.5 gap-2">
 
-          {/* Название — максимум 2 строки */}
-          <h3 className="text-[13px] sm:text-[14px] font-light tracking-[0.02em] text-cream leading-snug line-clamp-2">
+          {/* Название — ФИКСИРОВАННАЯ высота на 2 строки:
+              13px × leading-snug(1.375) × 2 = ~36px → h-9
+              14px × leading-snug(1.375) × 2 = ~38.5px → sm:h-10
+              Это гарантирует одинаковую позицию цены во всех карточках. */}
+          <h3 className="h-9 sm:h-10 overflow-hidden text-[13px] sm:text-[14px] font-light tracking-[0.02em] text-cream leading-snug line-clamp-2">
             {name}
           </h3>
 
-          {/* Спейсер — прижимает футер вниз */}
-          <div className="flex-1 min-h-[6px]" />
-
           {/* Футер: цена слева, кнопка справа — строго на одной оси */}
-          <div className="flex items-center justify-between w-full mt-1 gap-2">
+          <div className="flex items-center justify-between w-full gap-2">
             <span className="text-[13px] sm:text-[14px] font-medium text-gold leading-none shrink-0">
               {formatPrice(item.price)}
             </span>
