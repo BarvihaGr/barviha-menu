@@ -10,14 +10,9 @@ import type { Locale } from '@/i18n/routing';
 import { activeSectionsFor } from '@/lib/menu-sections';
 import { cn } from '@/lib/utils';
 import { applyFilters, type FilterKey, type FilterRealm } from '../FilterBar';
+import { FilterDrawer } from '../FilterDrawer';
+import { coffeeAccentStyle } from '@/lib/coffee-design';
 import { CoffeeItemCard } from './CoffeeItemCard';
-
-/** Фильтры по реалму (как в FilterBar, локально — без поповера). */
-const FILTERS_BY_REALM: Record<FilterRealm, FilterKey[]> = {
-  bar: ['noAlcohol', 'withAlcohol', 'withIce', 'sparkling', 'sweet'],
-  kitchen: ['spicy', 'vegan', 'withMeat', 'noMeat', 'salty', 'sweet'],
-  hookah: [],
-};
 
 interface SectionDef {
   id: string;
@@ -32,19 +27,17 @@ interface Props {
   realm?: FilterRealm;
 }
 
-/**
- * Список меню в стиле Coffeemania: чистые инлайн-чипы подсекций и фильтров
- * (мгновенное переключение, без поповера) + воздушная сетка единообразных
- * карточек. Только для редизайн-локации (Бауманская).
- */
 export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kitchen' }: Props) {
   const locale = useLocale() as Locale;
   const tSections = useTranslations('sections');
-  const tFilters = useTranslations('filters');
   const tSearch = useTranslations('search');
   const [active, setActive] = useState<Set<FilterKey>>(new Set());
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+
+  // Стиль темы — прокидывается в портал FilterDrawer, чтобы --cm-* переменные
+  // были доступны внутри Dialog (который рендерится вне .coffee-theme дерева).
+  const themeStyle = coffeeAccentStyle(locationSlug);
 
   const sections: SectionDef[] = useMemo(() => {
     const fromSub = buildFromSub(items, locale);
@@ -67,22 +60,13 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
     const q = query.trim();
     if (q) pool = searchItems(pool, q, pool.length).map((r) => r.item);
     return pool;
-  }, [items, active, activeSection, sections, query, locale]);
-
-  const availableFilters = FILTERS_BY_REALM[realm];
-
-  const toggleFilter = (key: FilterKey) => {
-    const next = new Set(active);
-    if (next.has(key)) next.delete(key);
-    else next.add(key);
-    setActive(next);
-  };
+  }, [items, active, activeSection, sections, query]);
 
   return (
     <div>
-      {/* Поиск по блюдам — фирменная строка Coffeemania */}
-      <div className="mb-5">
-        <div className="flex items-center gap-2.5 rounded-2xl bg-[var(--cm-surface)] px-4 py-3">
+      {/* Поиск + кнопка фильтров в одной строке */}
+      <div className="mb-5 flex items-center gap-2">
+        <div className="flex flex-1 items-center gap-2.5 rounded-2xl bg-[var(--cm-surface)] px-4 py-3">
           <Search className="h-[18px] w-[18px] shrink-0 text-[var(--cm-muted-dim)]" />
           <input
             type="text"
@@ -103,13 +87,16 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
             </button>
           )}
         </div>
+        <FilterDrawer
+          active={active}
+          onChange={setActive}
+          realm={realm}
+          themeStyle={themeStyle}
+        />
       </div>
 
-      {/* Sticky chip bar: подсекции + фильтры.
-          Мобайл/sm: прилипает под шапкой (≈60/64px) + под горизонтальным
-          навом категорий (≈57px) → top-[117px]/top-[121px].
-          Десктоп lg+: статичный, вертикальный нав категорий в сайдбаре. */}
-      {(sections.length > 1 || availableFilters.length > 0) && (
+      {/* Sticky chip bar: только подсекции (фильтры переехали в drawer) */}
+      {sections.length > 1 && (
         <div
           className={cn(
             'sticky top-[117px] z-[15] -mx-4 mb-4',
@@ -118,47 +105,23 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
           )}
         >
           <div className="border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/95 backdrop-blur-md lg:border-0 lg:bg-transparent lg:backdrop-blur-none">
-            {/* Подсекции */}
-            {sections.length > 1 && (
-              <div className="overflow-x-auto no-scrollbar">
-                <div className="flex gap-2 px-4 pt-2.5 pb-2 sm:px-6 lg:px-0 lg:mb-3">
-                  <Chip label={tSections('all')} on={activeSection === null} onClick={() => setActiveSection(null)} />
-                  {sections.map((s) => (
-                    <Chip
-                      key={s.id}
-                      label={s.label}
-                      on={activeSection === s.id}
-                      onClick={() => setActiveSection(s.id)}
-                    />
-                  ))}
-                </div>
+            <div className="overflow-x-auto no-scrollbar">
+              <div className="flex gap-2 px-4 pt-2.5 pb-2 sm:px-6 lg:px-0 lg:mb-3">
+                <Chip
+                  label={tSections('all')}
+                  on={activeSection === null}
+                  onClick={() => setActiveSection(null)}
+                />
+                {sections.map((s) => (
+                  <Chip
+                    key={s.id}
+                    label={s.label}
+                    on={activeSection === s.id}
+                    onClick={() => setActiveSection(s.id)}
+                  />
+                ))}
               </div>
-            )}
-
-            {/* Фильтры */}
-            {availableFilters.length > 0 && (
-              <div className="overflow-x-auto no-scrollbar">
-                <div
-                  className={cn(
-                    'flex gap-2 px-4 sm:px-6 lg:px-0',
-                    sections.length > 1 ? 'pb-2.5' : 'py-2.5',
-                  )}
-                >
-                  {availableFilters.map((f) => (
-                    <Chip key={f} label={tFilters(f)} on={active.has(f)} onClick={() => toggleFilter(f)} subtle />
-                  ))}
-                  {active.size > 0 && (
-                    <button
-                      type="button"
-                      onClick={() => setActive(new Set())}
-                      className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] text-[var(--cm-muted-dim)] hover:text-[var(--cm-text)] transition cursor-pointer"
-                    >
-                      {tFilters('reset')}
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
+            </div>
           </div>
         </div>
       )}
@@ -187,17 +150,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   );
 }
 
-function Chip({
-  label,
-  on,
-  onClick,
-  subtle = false,
-}: {
-  label: string;
-  on: boolean;
-  onClick: () => void;
-  subtle?: boolean;
-}) {
+function Chip({ label, on, onClick }: { label: string; on: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
@@ -207,9 +160,7 @@ function Chip({
         'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 font-[family-name:var(--font-sans)] text-[13px] transition cursor-pointer',
         on
           ? 'bg-[var(--cm-accent)] font-medium text-white'
-          : subtle
-            ? 'bg-[var(--cm-surface)] text-[var(--cm-muted)] hover:text-[var(--cm-text)]'
-            : 'bg-[var(--cm-surface)] text-[var(--cm-text-soft)] hover:text-[var(--cm-text)]',
+          : 'bg-[var(--cm-surface)] text-[var(--cm-text-soft)] hover:text-[var(--cm-text)]',
       )}
     >
       {label}
@@ -217,7 +168,6 @@ function Chip({
   );
 }
 
-/** Группировка по item.sub (как в CategoryItemsList). */
 function buildFromSub(items: ResolvedMenuItem[], locale: Locale): SectionDef[] {
   const order: string[] = [];
   const map = new Map<string, SectionDef>();

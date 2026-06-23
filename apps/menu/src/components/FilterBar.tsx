@@ -20,23 +20,22 @@ export type FilterKey =
 /** Раздел определяет какие фильтры доступны. */
 export type FilterRealm = 'bar' | 'kitchen' | 'hookah';
 
-/**
- * Только ключевые диетические свойства — не больше 3 чипов,
- * чтобы не перегружать строку. Остальные (salty/sweet/withMeat)
- * убраны как редко используемые.
- */
-const FILTERS_BY_REALM: Record<FilterRealm, FilterKey[]> = {
-  bar: ['noAlcohol', 'withAlcohol', 'withIce'],
-  kitchen: ['spicy', 'vegan', 'noMeat'],
+export const FILTERS_BY_REALM: Record<FilterRealm, FilterKey[]> = {
+  bar: ['noAlcohol', 'withAlcohol', 'withIce', 'sparkling'],
+  kitchen: ['spicy', 'vegan', 'noMeat', 'withMeat', 'sweet'],
   hookah: [],
 };
 
 const MEAT_RE =
   /говяд|телятин|свинин|бекон|курин|утк|утин|ростбиф|брезаол|тартар|стейк|рибай|бургер|котлет|ветчин|карбонад|колбас|сосис|лосось|тунец|рыб|креветк|кальмар|мидии|осьминог|форель/i;
-const SALT_RE =
-  /соль|солён|соленый|каперс|олив|маслин|маринован|бекон|сыр|пармезан|брынз|анчоус|икр/i;
+
+// Для вкусовых фильтров (sweet/salty) ищем только в названии и описании —
+// НЕ в составе. В составе почти любого блюда есть «соль» или «сахар»
+// как технологический ингредиент, что даёт ложные срабатывания (оливье = сладкое).
 const SWEET_RE =
-  /сладк|мёд|мед|сироп|сахар|шокол|карамел|варен|джем|ваниль|ягод|клубник|малин|вишн|персик|ананас|банан|кокос|маршмел|пастил|мороже|тирамис|чизкей|медовик|сорбе|десерт|тарт|кокос|кленов/i;
+  /сладк|карамел|медов|шокол|тирамис|чизкей|мороже|десерт|ягодн|клубничн|малинов|ваниль|сорбе/i;
+const SALT_RE =
+  /солён|соленый|пикант|умами|копчён/i;
 
 /** Применить выбранные фильтры к списку блюд. */
 export function applyFilters(
@@ -48,6 +47,8 @@ export function applyFilters(
     const composition = (i.composition || '').toLowerCase();
     const description = (i.description || '').toLowerCase();
     const haystack = composition + ' ' + description + ' ' + i.name.toLowerCase();
+    // Для вкусовых фильтров — только название + описание (без состава)
+    const tasteHaystack = description + ' ' + i.name.toLowerCase();
     const labels = i.labels as ItemLabel[];
 
     if (active.has('noAlcohol') && i.is_alcoholic) return false;
@@ -59,8 +60,8 @@ export function applyFilters(
       return false;
     if (active.has('withMeat') && !MEAT_RE.test(haystack)) return false;
     if (active.has('noMeat') && MEAT_RE.test(haystack)) return false;
-    if (active.has('salty') && !SALT_RE.test(haystack)) return false;
-    if (active.has('sweet') && !SWEET_RE.test(haystack)) return false;
+    if (active.has('salty') && !SALT_RE.test(tasteHaystack)) return false;
+    if (active.has('sweet') && !SWEET_RE.test(tasteHaystack)) return false;
     return true;
   });
 }
@@ -71,11 +72,6 @@ interface Props {
   realm?: FilterRealm;
 }
 
-/**
- * Компактная строка фильтров: видимые чипы-капсулы вместо поповера.
- * Максимум 3 фильтра на раздел — ряд не переполняется на 360px.
- * Горизонтальный свайп на мобиле через overflow-x: auto.
- */
 export function FilterBar({ active, onChange, realm = 'kitchen' }: Props) {
   const t = useTranslations('filters');
   const available = FILTERS_BY_REALM[realm];

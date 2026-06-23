@@ -88,24 +88,17 @@ export function CoffeeItemDetail({
 
           {ingredients.length > 0 && (
             <div>
-              <div className="mb-4 border-b border-[var(--cm-border)] pb-2 text-[11px] uppercase tracking-[0.22em] text-[var(--cm-muted-dim)]">
+              <div className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[var(--cm-muted-dim)]">
                 {t('composition')}
               </div>
-              <div className="flex flex-wrap gap-2">
+              <p className="text-[13px] leading-relaxed text-[var(--cm-muted)]">
                 {ingredients.map((ing, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-2 rounded-full bg-[var(--cm-surface)] px-3.5 py-2 text-[13px]"
-                  >
-                    <span className="text-[var(--cm-text)]">{ing.name}</span>
-                    {ing.amount && (
-                      <span className="text-[12px] text-[var(--cm-accent)] before:mr-1.5 before:text-[#cfcfcf] before:content-['·']">
-                        {ing.amount}
-                      </span>
-                    )}
+                  <span key={idx}>
+                    {ing.name}
+                    {idx < ingredients.length - 1 ? ', ' : ''}
                   </span>
                 ))}
-              </div>
+              </p>
             </div>
           )}
 
@@ -263,50 +256,19 @@ function CoffeePhotoViewer({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-/** Длинное описание с плавным затуханием и кнопкой «Читать дальше». */
+/** Описание — только первое предложение, без кнопок. Кратко и по факту. */
 function CoffeeExpandableText({
   text,
   className = '',
-  moreLabel,
-  lessLabel,
-  threshold = 180,
 }: {
   text: string;
   className?: string;
-  moreLabel: string;
-  lessLabel: string;
+  moreLabel?: string;
+  lessLabel?: string;
   threshold?: number;
 }) {
-  const [open, setOpen] = useState(false);
-  const long = text.length > threshold;
-
-  if (!long) return <p className={className}>{text}</p>;
-
-  return (
-    <div>
-      <div className="relative">
-        <p
-          className={cn(
-            className,
-            'overflow-hidden transition-all duration-300',
-            open ? 'max-h-[1200px]' : 'max-h-[4.8em]',
-          )}
-        >
-          {text}
-        </p>
-        {!open && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[var(--cm-bg)] to-transparent" />
-        )}
-      </div>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="mt-2 text-[11px] uppercase tracking-[0.18em] text-[var(--cm-accent)] transition-opacity hover:opacity-70 cursor-pointer"
-      >
-        {open ? lessLabel : moreLabel}
-      </button>
-    </div>
-  );
+  const first = text.match(/^.+?[.!?…](\s|$)/)?.[0]?.trim() ?? text;
+  return <p className={className}>{first}</p>;
 }
 
 /** Тёмная кнопка «Добавить» со степпером (стиль чёрных пилюль Coffeemania). */

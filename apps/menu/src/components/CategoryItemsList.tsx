@@ -10,7 +10,8 @@ import type { Locale } from '@/i18n/routing';
 import { activeSectionsFor } from '@/lib/menu-sections';
 import { searchItems } from '@/lib/search';
 import { ItemCard } from './ItemCard';
-import { FilterBar, applyFilters, type FilterKey, type FilterRealm } from './FilterBar';
+import { applyFilters, type FilterKey, type FilterRealm } from './FilterBar';
+import { FilterDrawer } from './FilterDrawer';
 import { SectionTabs } from './SectionTabs';
 
 interface Props {
@@ -81,28 +82,33 @@ export function CategoryItemsList({
   return (
     <div className="flex flex-col gap-4">
 
-      {/* ── Строка поиска ── */}
-      <div className="relative flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 focus-within:border-gold/50 transition-colors duration-200">
-        <Search size={14} className="shrink-0 text-gold/50" />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={tSearch('placeholder')}
-          className="flex-1 min-w-0 bg-transparent text-[13px] text-foreground placeholder:text-muted/60 outline-none"
-          aria-label={tSearch('placeholder')}
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck={false}
-        />
-        {query && (
-          <button
-            type="button"
-            onClick={() => setQuery('')}
-            className="shrink-0 text-muted hover:text-gold transition cursor-pointer"
-            aria-label="clear"
-          >
-            <X size={14} />
-          </button>
+      {/* ── Поиск + кнопка фильтров в одной строке ── */}
+      <div className="flex items-center gap-2">
+        <div className="relative flex flex-1 items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 focus-within:border-gold/50 transition-colors duration-200">
+          <Search size={14} className="shrink-0 text-gold/50" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={tSearch('placeholder')}
+            className="flex-1 min-w-0 bg-transparent text-[13px] text-foreground placeholder:text-muted/60 outline-none"
+            aria-label={tSearch('placeholder')}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+          />
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery('')}
+              className="shrink-0 text-muted hover:text-gold transition cursor-pointer"
+              aria-label="clear"
+            >
+              <X size={14} />
+            </button>
+          )}
+        </div>
+        {showFilters && (
+          <FilterDrawer active={active} onChange={setActive} realm={realm} />
         )}
       </div>
 
@@ -113,12 +119,6 @@ export function CategoryItemsList({
           active={activeSection}
           onChange={setActiveSection}
         />
-      )}
-
-      {/* ── Фильтры по свойствам (Острое / Веган / Без мяса) ──
-           Визуально легче SectionTabs: другая насыщенность, меньший шрифт. */}
-      {showFilters && (
-        <FilterBar active={active} onChange={setActive} realm={realm} />
       )}
 
       {/* ── Сетка блюд с плавным enter/exit ── */}
