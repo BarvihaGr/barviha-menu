@@ -41,12 +41,12 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
             className="h-8 w-auto shrink-0 sm:h-9"
           />
           <Image
-            src="/logo.png"
-            alt="Barvikha Group"
+            src="/logo-since2017.png"
+            alt="Barvikha Group Since 2017"
             width={427}
             height={57}
             priority
-            className="hidden h-[15px] w-auto sm:block sm:h-[17px]"
+            className="h-[14px] w-auto sm:h-[18px]"
             style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
           />
         </Link>
