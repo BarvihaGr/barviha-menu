@@ -59,11 +59,13 @@ export function CoffeeLuxHome({
           playsInline
           preload="metadata"
           poster="/locations/arka/poster.jpg"
-          className="h-full w-full object-cover opacity-55"
+          className="h-full w-full object-cover"
+          style={{ filter: 'brightness(1.15) saturate(1.2) contrast(1.05)' }}
         >
           <source src="/locations/arka/hero.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--cm-bg)]/85 via-[var(--cm-bg)]/55 to-[var(--cm-bg)]" />
+        {/* Только нижний переход в контент — верх и центр открыты */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--cm-bg)] to-transparent" />
       </div>
 
       {/* Контент hero — только крупное дерево по центру + кнопка «Меню» */}
