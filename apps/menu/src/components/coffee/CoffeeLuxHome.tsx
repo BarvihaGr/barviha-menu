@@ -64,23 +64,34 @@ export function CoffeeLuxHome({
         >
           <source src="/locations/arka/hero.mp4" type="video/mp4" />
         </video>
-        {/* Только нижний переход в контент — верх и центр открыты */}
+        {/* Нижний переход в фон страницы */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--cm-bg)] to-transparent" />
+        {/* Скрим под текстом — радиальный, только в центре, фото открыто по краям */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_60%,rgba(0,0,0,0.52)_0%,transparent_100%)]" />
       </div>
 
       {/* Контент hero — только крупное дерево по центру + кнопка «Меню» */}
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-12 px-6 pt-8 pb-28 text-center">
-        {/* Дерево + название + сабтайтл + адрес — строго по центральной оси */}
+        {/* Название + сабтайтл + адрес */}
         <div className="flex flex-col items-center gap-5 sm:gap-6">
           <div className="flex flex-col items-center gap-2.5 sm:gap-3">
-            <h1 className="font-[family-name:var(--font-display)] text-[44px] font-light uppercase leading-[0.95] tracking-[0.12em] text-[var(--cm-text)] sm:text-[72px]">
+            <h1
+              className="font-[family-name:var(--font-display)] text-[44px] font-light uppercase leading-[0.95] tracking-[0.12em] text-white sm:text-[72px]"
+              style={{ textShadow: '0 2px 24px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.9)' }}
+            >
               {locationName}
             </h1>
-            <p className="font-[family-name:var(--font-display)] text-[13px] uppercase tracking-[0.34em] text-[var(--cm-text-soft)] sm:text-[15px]">
+            <p
+              className="font-[family-name:var(--font-display)] text-[13px] uppercase tracking-[0.34em] text-white/80 sm:text-[15px]"
+              style={{ textShadow: '0 1px 12px rgba(0,0,0,0.8)' }}
+            >
               {HERO_SUBTITLE}
             </p>
             {address && (
-              <p className="font-[family-name:var(--font-sans)] text-[12px] tracking-[0.14em] text-[var(--cm-muted)] sm:text-[13px]">
+              <p
+                className="font-[family-name:var(--font-sans)] text-[12px] tracking-[0.14em] text-white/65 sm:text-[13px]"
+                style={{ textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}
+              >
                 {address}
               </p>
             )}
@@ -91,7 +102,7 @@ export function CoffeeLuxHome({
         <div className="flex w-full max-w-[360px] flex-col gap-3">
           <Link
             href={menuHref}
-            className="group flex h-[52px] items-center justify-center gap-3 rounded-[14px] border border-white/20 bg-white/[0.02] font-[family-name:var(--font-display)] text-[13px] font-light uppercase tracking-[0.28em] text-white backdrop-blur-[2px] transition-all duration-300 ease-out hover:border-white/40 hover:bg-white/[0.07] focus-visible:border-white/40 focus-visible:outline-none active:scale-[0.985] active:bg-white/[0.1] cursor-pointer"
+            className="group flex h-[52px] items-center justify-center gap-3 rounded-[14px] border border-[#C4A882]/50 bg-[#8B6644]/35 font-[family-name:var(--font-display)] text-[13px] font-light uppercase tracking-[0.28em] text-[#F5EAD8] backdrop-blur-[8px] transition-all duration-300 ease-out hover:border-[#C4A882]/80 hover:bg-[#8B6644]/55 focus-visible:outline-none active:scale-[0.985] cursor-pointer"
           >
             {menuLabel}
             <span
