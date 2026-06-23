@@ -57,7 +57,7 @@ export function CoffeeLuxHome({
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           poster="/locations/arka/poster.jpg"
           className="h-full w-full object-cover opacity-55"
         >
