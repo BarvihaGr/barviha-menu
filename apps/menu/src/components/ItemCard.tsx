@@ -15,19 +15,15 @@ interface Props {
   index?: number;
 }
 
-export function ItemCard({ item, name, description, locationSlug, index = 0 }: Props) {
-  // На карточке — короткий тизер: первое предложение описания (ёмкое, «вкусовое»),
-  // а не обрезка абзаца на полуслове. Полный текст — на детальной странице.
-  const teaser = description
-    ? (description.match(/^.*?[.!?…](\s|$)/)?.[0] ?? description).trim()
-    : null;
+export function ItemCard({ item, name, locationSlug }: Props) {
   return (
-    <article>
+    <article className="h-full">
       <Link
         href={`/${locationSlug}/item/${item.id}`}
-        className="group block h-full overflow-hidden rounded-3xl border border-[color:var(--border)] bg-card transition hover:-translate-y-1 hover:border-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
+        className="group flex flex-col h-full overflow-hidden rounded-3xl border border-[color:var(--border)] bg-card transition hover:-translate-y-1 hover:border-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
       >
-        <div className="relative m-2.5 mb-0 aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-[#453324] to-[#2A1B11]">
+        {/* Фото */}
+        <div className="relative m-2.5 mb-0 aspect-[4/3] shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-[#453324] to-[#2A1B11]">
           {item.photo ? (
             <Image
               src={item.photo}
@@ -42,7 +38,7 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
               ◈
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
           {item.labels.length > 0 && (
             <div className="absolute left-3 top-3 flex flex-col gap-1.5 z-10">
               {item.labels.slice(0, 2).map((label) => (
@@ -51,21 +47,18 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
             </div>
           )}
         </div>
-        <div className="flex items-center justify-between gap-3 p-4 sm:p-5">
-          <div className="min-w-0">
-            <h3 className="text-[15px] font-light tracking-[0.03em] text-cream leading-[1.3] line-clamp-2">
-              {name}
-            </h3>
-            {teaser && (
-              <p className="mt-1 text-[11px] sm:text-xs font-light leading-snug text-muted line-clamp-2">
-                {teaser}
-              </p>
-            )}
-            <span className="mt-1.5 block text-base sm:text-lg font-medium text-gold">
+
+        {/* Контент — название сверху, цена+кнопка всегда снизу */}
+        <div className="flex flex-col flex-1 justify-between gap-2 p-3 sm:p-4 pt-2.5">
+          <h3 className="text-[13px] sm:text-[14px] font-light tracking-[0.02em] text-cream leading-snug line-clamp-2">
+            {name}
+          </h3>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[13px] sm:text-[15px] font-medium text-gold leading-none">
               {formatPrice(item.price)}
             </span>
+            <AddToCartButton itemId={item.id} itemName={name} className="shrink-0" />
           </div>
-          <AddToCartButton itemId={item.id} itemName={name} className="shrink-0" />
         </div>
       </Link>
     </article>
