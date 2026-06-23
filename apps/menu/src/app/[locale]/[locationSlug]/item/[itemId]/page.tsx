@@ -88,7 +88,7 @@ export default async function ItemDetailPage({
 
         <div className="flex flex-col gap-6 p-6 sm:p-8">
           <div>
-            <h1 className="menu-title text-2xl sm:text-3xl text-cream leading-tight">
+            <h1 className="font-[family-name:var(--font-sans)] text-2xl sm:text-3xl font-light tracking-[0.03em] text-cream leading-tight">
               {name}
             </h1>
             {item.weight && (
