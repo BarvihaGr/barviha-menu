@@ -34,7 +34,7 @@ const COFFEE_ACCENT_FROM: Record<string, string> = {};
 const COFFEE_ACCENT: Record<string, string> = {
   domodedovo: '#C49262', // бронза-золото «Арки» (тёмный цветокор)
   erevan: '#B89B6A', // приглушённое золото «дорогого минимализма»
-  kievskaia: '#9B896A', // тёмное золото-бронза (ТЗ Киевская)
+  kievskaia: '#9B7A50', // тёплое золото на светлом фоне
 };
 
 /**
@@ -105,20 +105,20 @@ const LUX_PALETTE: CoffeePalette = {
 };
 
 /**
- * Тёмный люкс по ТЗ «Киевская»: фон #111111, поверхности #171717,
- * текст #F6F3ED (слоновая кость), золото #9B896A. Минимализм, премиум.
+ * Светлый люкс «Киевская»: слоновая кость + тёплый брауни.
+ * Фон #F2EAE0, поверхности #EAE0D4, текст тёмно-коричневый, золото #9B7A50.
  */
 const KIEV_PALETTE: CoffeePalette = {
-  '--cm-bg': '#1c1c1c',
-  '--cm-surface': '#242424',
-  '--cm-surface-2': '#2b2b2b',
-  '--cm-text': '#f6f3ed',
-  '--cm-text-soft': '#d9d3c7',
-  '--cm-muted': 'rgba(246, 243, 237, 0.56)',
-  '--cm-muted-dim': 'rgba(246, 243, 237, 0.36)',
-  '--cm-border': 'rgba(155, 137, 106, 0.22)',
-  '--cm-logo-invert': '0',
-  '--cm-photo': 'contrast(1.05) saturate(0.97)',
+  '--cm-bg': '#F2EAE0',
+  '--cm-surface': '#E8DDD0',
+  '--cm-surface-2': '#FFFFFF',
+  '--cm-text': '#2A1A0E',
+  '--cm-text-soft': '#4A3426',
+  '--cm-muted': 'rgba(42, 26, 14, 0.55)',
+  '--cm-muted-dim': 'rgba(42, 26, 14, 0.35)',
+  '--cm-border': 'rgba(155, 122, 80, 0.22)',
+  '--cm-logo-invert': '1',
+  '--cm-photo': 'contrast(1.04) saturate(1.06)',
   '--cm-photo-veil': 'transparent',
 };
 
