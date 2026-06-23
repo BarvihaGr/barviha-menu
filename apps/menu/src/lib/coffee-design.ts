@@ -109,9 +109,9 @@ const LUX_PALETTE: CoffeePalette = {
  * текст #F6F3ED (слоновая кость), золото #9B896A. Минимализм, премиум.
  */
 const KIEV_PALETTE: CoffeePalette = {
-  '--cm-bg': '#111111',
-  '--cm-surface': '#171717',
-  '--cm-surface-2': '#1e1e1e',
+  '--cm-bg': '#1c1c1c',
+  '--cm-surface': '#242424',
+  '--cm-surface-2': '#2b2b2b',
   '--cm-text': '#f6f3ed',
   '--cm-text-soft': '#d9d3c7',
   '--cm-muted': 'rgba(246, 243, 237, 0.56)',

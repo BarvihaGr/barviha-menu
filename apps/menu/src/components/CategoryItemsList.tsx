@@ -2,10 +2,13 @@
 
 import { useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
+import { Search, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { pickItemDescription, pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/routing';
-import { activeSectionsFor, SECTIONS_BY_CATEGORY } from '@/lib/menu-sections';
+import { activeSectionsFor } from '@/lib/menu-sections';
+import { searchItems } from '@/lib/search';
 import { ItemCard } from './ItemCard';
 import { FilterBar, applyFilters, type FilterKey, type FilterRealm } from './FilterBar';
 import { SectionTabs } from './SectionTabs';
@@ -13,7 +16,6 @@ import { SectionTabs } from './SectionTabs';
 interface Props {
   items: ResolvedMenuItem[];
   locationSlug: string;
-  /** Slug категории — нужен для подсекций (если sub-полей у items нет). */
   categorySlug?: string;
   showFilters?: boolean;
   realm?: FilterRealm;
@@ -34,16 +36,13 @@ export function CategoryItemsList({
 }: Props) {
   const locale = useLocale() as Locale;
   const tSections = useTranslations('sections');
+  const tSearch = useTranslations('search');
+  const tFilters = useTranslations('filters');
+
   const [active, setActive] = useState<Set<FilterKey>>(new Set());
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
 
-  /**
-   * Сборка списка подсекций:
-   *  1) Если хоть у одного item есть field `sub` — группируем по нему
-   *     (источник истины — БД, label берётся из subLabel).
-   *  2) Иначе fallback — статичный `SECTIONS_BY_CATEGORY` по item.id
-   *     (наш ручной маппинг из lib/menu-sections.ts).
-   */
   const sections: SectionDef[] = useMemo(() => {
     const fromSub = buildFromSub(items, locale);
     if (fromSub.length > 0) return fromSub;
@@ -56,58 +55,121 @@ export function CategoryItemsList({
   }, [items, categorySlug, tSections, locale]);
 
   const filtered = useMemo(() => {
+    // 1. Подсекция (Салаты / Закуски / …)
     let pool = items;
     if (activeSection) {
       const sec = sections.find((s) => s.id === activeSection);
       if (sec) pool = items.filter((i) => sec.itemIds.has(i.id));
     }
-    return applyFilters(pool, active);
-  }, [items, active, activeSection, sections]);
+    // 2. Свойства блюда (Острое / Веган / Без мяса)
+    pool = applyFilters(pool, active);
+    // 3. Текстовый поиск (по названию, описанию, составу + синонимы)
+    const q = query.trim();
+    if (q) pool = searchItems(pool, q, pool.length).map((r) => r.item);
+    return pool;
+  }, [items, active, activeSection, sections, query]);
 
-  // SectionTabs ждёт MenuSection — простой адаптер.
   const tabSections = sections.map((s) => ({
     id: s.id,
-    i18nKey: s.id, // не используем i18n в табе, label передаём явно
+    i18nKey: s.id,
     itemIds: [...s.itemIds],
     label: s.label,
   }));
 
+  const isFiltering = active.size > 0 || query.trim().length > 0;
+
   return (
-    <div>
-      {sections.length > 1 && (
-        <div className="mb-4">
-          <SectionTabs
-            sections={tabSections}
-            active={activeSection}
-            onChange={setActiveSection}
-          />
-        </div>
-      )}
-      {showFilters && (
-        <div className="mb-5">
-          <FilterBar active={active} onChange={setActive} realm={realm} />
-        </div>
-      )}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
-        {filtered.map((item, i) => (
-          <ItemCard
-            key={item.id}
-            item={item}
-            name={pickItemName(item, locale)}
-            description={pickItemDescription(item, locale)}
-            locationSlug={locationSlug}
-            index={i}
-          />
-        ))}
+    <div className="flex flex-col gap-4">
+
+      {/* ── Строка поиска ── */}
+      <div className="relative flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 focus-within:border-gold/50 transition-colors duration-200">
+        <Search size={14} className="shrink-0 text-gold/50" />
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder={tSearch('placeholder')}
+          className="flex-1 min-w-0 bg-transparent text-[13px] text-foreground placeholder:text-muted/60 outline-none"
+          aria-label={tSearch('placeholder')}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
+        />
+        {query && (
+          <button
+            type="button"
+            onClick={() => setQuery('')}
+            className="shrink-0 text-muted hover:text-gold transition cursor-pointer"
+            aria-label="clear"
+          >
+            <X size={14} />
+          </button>
+        )}
       </div>
-      {filtered.length === 0 && (
-        <div className="py-16 text-center text-sm uppercase tracking-[0.2em] text-muted">—</div>
+
+      {/* ── Подсекции (Салаты / Закуски / Супы / …) ── */}
+      {sections.length > 1 && (
+        <SectionTabs
+          sections={tabSections}
+          active={activeSection}
+          onChange={setActiveSection}
+        />
       )}
+
+      {/* ── Фильтры по свойствам (Острое / Веган / Без мяса) ──
+           Визуально легче SectionTabs: другая насыщенность, меньший шрифт. */}
+      {showFilters && (
+        <FilterBar active={active} onChange={setActive} realm={realm} />
+      )}
+
+      {/* ── Сетка блюд с плавным enter/exit ── */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
+        <AnimatePresence mode="popLayout">
+          {filtered.map((item, i) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, scale: 0.93, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.14, ease: 'easeIn' } }}
+              transition={{
+                duration: 0.24,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: Math.min(i * 0.028, 0.24),
+              }}
+            >
+              <ItemCard
+                item={item}
+                name={pickItemName(item, locale)}
+                description={pickItemDescription(item, locale)}
+                locationSlug={locationSlug}
+                index={0}
+              />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+
+      {/* ── Пустое состояние ── */}
+      <AnimatePresence>
+        {filtered.length === 0 && (
+          <motion.div
+            key="empty"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22 }}
+            className="py-16 text-center"
+          >
+            <div className="mb-2 text-2xl text-muted/30">◈</div>
+            <p className="text-xs uppercase tracking-[0.22em] text-muted">
+              {isFiltering ? tFilters('emptyFilters') : '—'}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-/** Группировка по field item.sub. Возвращает [] если ни у кого нет sub. */
 function buildFromSub(items: ResolvedMenuItem[], locale: Locale): SectionDef[] {
   const order: string[] = [];
   const map = new Map<string, SectionDef>();

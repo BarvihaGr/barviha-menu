@@ -53,7 +53,8 @@
     "salty": "Salty",
     "sweet": "Sweet",
     "reset": "Reset",
-    "close": "Done"
+    "close": "Done",
+    "emptyFilters": "No dishes match the selected filters"
   },
   "sections": {
     "all": "All",

@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import { formatPrice } from '@/lib/utils';
@@ -23,11 +22,7 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
     ? (description.match(/^.*?[.!?…](\s|$)/)?.[0] ?? description).trim()
     : null;
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: Math.min(index * 0.04, 0.4), duration: 0.4, ease: 'easeOut' }}
-    >
+    <article>
       <Link
         href={`/${locationSlug}/item/${item.id}`}
         className="group block h-full overflow-hidden rounded-3xl border border-[color:var(--border)] bg-card transition hover:-translate-y-1 hover:border-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
@@ -73,6 +68,6 @@ export function ItemCard({ item, name, description, locationSlug, index = 0 }: P
           <AddToCartButton itemId={item.id} itemName={name} className="shrink-0" />
         </div>
       </Link>
-    </motion.article>
+    </article>
   );
 }
