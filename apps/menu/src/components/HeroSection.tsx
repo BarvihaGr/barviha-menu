@@ -115,13 +115,8 @@ export function HeroSection({
         />
       )}
 
-      {/* Smart-градиент: снизу тёмный → прозрачный в центре и наверху.
-          Текст читается, фото «дышит» — без сплошного overlay. */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
-      {/* Тонкая вуаль сверху под шапку навигации */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
-      {/* Плавный переход в цвет страницы снизу */}
-      <div className="absolute inset-x-0 bottom-0 h-16 sm:h-24 bg-gradient-to-t from-[var(--background)] to-transparent pointer-events-none" />
+      {/* Нижний переход в страницу — чистый чёрный без мутного коричневого */}
+      <div className="absolute inset-x-0 bottom-0 h-20 sm:h-28 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-16 pb-4 text-center">
         <motion.div
