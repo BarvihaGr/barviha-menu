@@ -93,7 +93,7 @@ export function HeroSection({
           priority
           sizes="(max-width: 1024px) 100vw, 1560px"
           className={`object-cover object-center transition-opacity duration-500 ${videoReady ? 'opacity-0' : 'opacity-100'} ken-burns`}
-          style={{ filter: 'brightness(1.08) saturate(1.15) contrast(1.04)' }}
+          style={{ filter: 'brightness(1.3) saturate(1.6) contrast(1.08)' }}
         />
       )}
 
@@ -105,7 +105,7 @@ export function HeroSection({
           animate={videoReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.08 }}
           transition={{ duration: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0 h-full w-full object-cover object-center"
-          style={{ filter: 'brightness(1.08) saturate(1.15) contrast(1.04)' }}
+          style={{ filter: 'brightness(1.3) saturate(1.6) contrast(1.08)' }}
           src={videoSrc}
           poster={poster ?? undefined}
           autoPlay
@@ -117,8 +117,8 @@ export function HeroSection({
         />
       )}
 
-      {/* Нижний переход в страницу — чистый чёрный без мутного коричневого */}
-      <div className="absolute inset-x-0 bottom-0 h-20 sm:h-28 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
+      {/* Минимальный нижний переход — не закрывает фото */}
+      <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 px-6 pt-16 pb-4 text-center">
         <motion.div
