@@ -5,6 +5,7 @@ import { Home, Info, ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
+import type { Location } from '@barviha/db';
 import { LocationInfoModal } from './LocationInfoModal';
 import { cn } from '@/lib/utils';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
@@ -59,6 +60,8 @@ interface Props {
   phone: string | null;
   /** Акцентный цвет локации — для полосы в модалке инфо. */
   accent: string;
+  /** Все локации для переключения внутри модалки инфо. */
+  locations?: Location[];
   /** Цвет иконок/активного пункта плашки. По умолчанию — фирменное золото;
    *  для светлого дизайна Coffeemania прокидываем акцент локации. */
   dockAccent?: string;
@@ -70,7 +73,7 @@ interface Props {
  * во всплывающей модалке), по центру Домик (главная локации), справа Корзина.
  * Активный пункт — акцентным цветом (--dock-accent).
  */
-export function FloatingCartButton({ locationSlug, locationName, address, phone, accent, dockAccent }: Props) {
+export function FloatingCartButton({ locationSlug, locationName, address, phone, accent, locations, dockAccent }: Props) {
   const count = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
   const t = useTranslations('nav');
   const pathname = usePathname();
@@ -100,6 +103,8 @@ export function FloatingCartButton({ locationSlug, locationName, address, phone,
           address={address}
           phone={phone}
           accent={accent}
+          locations={locations}
+          currentSlug={locationSlug}
           light={coffee}
           themeStyle={modalTheme}
         >

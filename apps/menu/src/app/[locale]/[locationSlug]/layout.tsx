@@ -59,7 +59,7 @@ export default async function LocationLayout({
       {coffee ? (
         <CoffeeHeader locationSlug={location.slug} locations={locations} />
       ) : (
-        <LocationHeader locationSlug={location.slug} locations={locations} />
+        <LocationHeader locationSlug={location.slug} />
       )}
       <main className="flex-1 mx-auto w-full max-w-[1200px] px-4 sm:px-6 pt-2 pb-32">
         {children}
@@ -73,6 +73,7 @@ export default async function LocationLayout({
           address={location.address}
           phone={location.phone ?? null}
           accent={accent}
+          locations={locations}
           dockAccent={coffee ? getCoffeeAccent(location.slug) : undefined}
         />
       )}

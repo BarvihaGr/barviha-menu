@@ -4,14 +4,27 @@ import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MapPin, Phone, X, Navigation } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import type { Location } from '@barviha/db';
+import { Link } from '@/i18n/navigation';
+import { getMetroColor } from '@/lib/location-theme';
 import { cn } from '@/lib/utils';
+
+function locName(l: Location, locale: string): string {
+  if (locale === 'en' && l.name_en) return l.name_en;
+  if (locale === 'zh' && l.name_zh) return l.name_zh;
+  return l.name;
+}
 
 interface Props {
   locationName: string;
   address: string | null;
   phone: string | null;
   accent: string;
+  /** Список всех локаций для переключения внутри модалки. */
+  locations?: Location[];
+  /** Слаг текущей локации (подсвечивается в списке). */
+  currentSlug?: string;
   /** Что показывать в роли триггера — кнопка-бейдж в хедере. */
   triggerClassName?: string;
   /** Кастомный триггер. Если передан — используется вместо бейджа с названием. */
@@ -37,6 +50,8 @@ export function LocationInfoModal({
   address,
   phone,
   accent,
+  locations,
+  currentSlug,
   triggerClassName,
   children,
   light = false,
@@ -44,6 +59,7 @@ export function LocationInfoModal({
 }: Props) {
   const [open, setOpen] = useState(false);
   const t = useTranslations('location');
+  const locale = useLocale();
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -120,6 +136,42 @@ export function LocationInfoModal({
                 </div>
 
                 <div className="px-6 pb-6 pt-3 flex flex-col gap-3">
+                  {locations && locations.length > 1 && currentSlug && (
+                    <div>
+                      <div className="mb-2 text-[9px] uppercase tracking-[0.25em] text-muted">
+                        {t('switch')}
+                      </div>
+                      <div className="flex flex-col max-h-[160px] overflow-y-auto -mx-1 rounded-sm">
+                        {[...locations]
+                          .sort((a, b) => locName(a, locale).localeCompare(locName(b, locale)))
+                          .map((l) => {
+                            const color = getMetroColor(l.slug);
+                            const isCurrent = l.slug === currentSlug;
+                            return (
+                              <Dialog.Close asChild key={l.id}>
+                                <Link
+                                  href={`/${l.slug}`}
+                                  className={cn(
+                                    'flex items-center gap-2.5 rounded-sm px-3 py-2 text-xs transition hover:bg-black/20 border-l-2',
+                                    isCurrent ? 'text-gold' : 'text-foreground',
+                                  )}
+                                  style={{ borderLeftColor: isCurrent ? accent : 'transparent' }}
+                                >
+                                  <span
+                                    className="inline-block h-2 w-2 rounded-full shrink-0"
+                                    style={{ background: color, boxShadow: isCurrent ? `0 0 6px ${color}` : undefined }}
+                                  />
+                                  <span className="flex-1 truncate">{locName(l, locale)}</span>
+                                  {l.city && l.city !== locName(l, locale) && (
+                                    <span className="text-[10px] text-muted shrink-0">{l.city}</span>
+                                  )}
+                                </Link>
+                              </Dialog.Close>
+                            );
+                          })}
+                      </div>
+                    </div>
+                  )}
                   {address ? (
                     <a
                       href={yandexDirectionsUrl(address)}
