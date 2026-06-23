@@ -51,8 +51,8 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
                 alt={name}
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 260px"
-                style={{ filter: 'var(--cm-photo, none)' }}
-                className="object-cover object-center transition duration-500 group-hover:scale-[1.05]"
+                style={{ filter: 'var(--cm-photo, none)', objectPosition: 'center 35%' }}
+                className="object-cover scale-[1.08] transition duration-500 group-hover:scale-[1.13]"
               />
               <div
                 className="pointer-events-none absolute inset-0"
