@@ -23,7 +23,8 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
   const t = useTranslations();
   const [bump, setBump] = useState(false);
 
-  const meta = [item.weight, formatPrice(item.price)].filter(Boolean).join(' / ');
+  const weightStr = item.weight != null ? `${item.weight}г` : null;
+  const meta = [weightStr, formatPrice(item.price)].filter(Boolean).join(' / ');
 
   const addToCart = (e: React.MouseEvent) => {
     e.preventDefault();
