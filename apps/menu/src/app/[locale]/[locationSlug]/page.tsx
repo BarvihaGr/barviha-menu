@@ -111,7 +111,7 @@ export default async function LocationHome({
                 brand: 'BARVIKHA',
                 title: 'Ночь в стиле Barvikha',
                 subtitle: 'Атмосфера роскоши, музыки и безупречного отдыха.',
-                date: '24 мая',
+                date: 'ПТ · СБ',
                 time: '22:00',
                 place: locationName,
               },
@@ -126,7 +126,7 @@ export default async function LocationHome({
                 brand: 'BARVIKHA',
                 eyebrow: 'Live · DJ set',
                 name: 'DJ Sander',
-                date: '24 мая',
+                date: 'ПТ · СБ',
                 time: '22:00',
               },
               title: 'DJ Sander — Live DJ-set',
@@ -140,14 +140,12 @@ export default async function LocationHome({
                 brand: 'BARVIKHA',
                 title: 'Мы в социальных сетях',
                 note: 'Актуальные события',
-                socials: ['VK', 'MAX'],
+                socials: ['VK'],
               },
               title: 'Мы в социальных сетях',
               subtitle: 'Афиша, акции и связь с нами — подписывайтесь.',
-              // Заглушки: заменить на реальные ссылки соцсетей по локациям.
               links: [
                 { label: 'ВКонтакте', href: 'https://vk.com/barvikha_group' },
-                { label: 'MAX', href: '#' },
               ],
             },
           ]}

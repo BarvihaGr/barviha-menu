@@ -6,7 +6,7 @@ import { useState } from 'react';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, capitalizeRu } from '@/lib/utils';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 
@@ -71,7 +71,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
           <button
             type="button"
             onClick={addToCart}
-            aria-label={t('toast.addedToCart')}
+            aria-label={`${t('item.addToCart')} ${name}`}
             className={cnBump(
               bump,
               'absolute bottom-2.5 right-2.5 grid h-9 w-9 place-items-center rounded-full bg-[var(--cm-surface-2)] text-[var(--cm-text)] shadow-[0_2px_10px_rgba(0,0,0,0.12)] transition-all duration-200 hover:bg-[var(--cm-accent)] hover:text-white cursor-pointer [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:translate-y-1 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-hover:translate-y-0',
@@ -85,7 +85,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
           className="mt-2.5 text-[15px] font-light normal-case leading-[1.3] tracking-[0.03em] text-[var(--cm-text)] line-clamp-2"
           style={{ fontFamily: "'Jost', sans-serif" }}
         >
-          {capitalize(name)}
+          {capitalizeRu(name)}
         </h3>
         {meta && (
           <p className="mt-1 font-[family-name:var(--font-sans)] text-[13px] font-normal text-[var(--cm-muted-dim)]">
@@ -100,11 +100,4 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
 /** Лёгкий «толчок» кнопки при добавлении в корзину. */
 function cnBump(active: boolean, base: string): string {
   return active ? `${base} scale-90` : base;
-}
-
-/** Названия в данных капсом — приводим к человеческому виду. */
-function capitalize(s: string): string {
-  if (!s) return s;
-  const lower = s.toLocaleLowerCase('ru');
-  return lower.charAt(0).toLocaleUpperCase('ru') + lower.slice(1);
 }

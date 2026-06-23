@@ -8,7 +8,7 @@ import { Expand, Minus, Plus, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ItemLabel, ResolvedMenuItem } from '@barviha/db';
 import { Link, useRouter } from '@/i18n/navigation';
-import { formatPrice, cn } from '@/lib/utils';
+import { formatPrice, cn, capitalizeRu } from '@/lib/utils';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import type { RelatedItem } from '@/components/RelatedItemsRail';
@@ -68,7 +68,7 @@ export function CoffeeItemDetail({
         <div className="flex flex-col gap-6 p-5 sm:p-8">
           <div>
             <h1 className="font-[family-name:var(--font-sans)] text-[24px] font-bold leading-tight tracking-[-0.01em] text-[var(--cm-text)] sm:text-[32px]">
-              {capitalize(name)}
+              {capitalizeRu(name)}
             </h1>
             {item.weight && (
               <div className="mt-2 text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--cm-accent)]">
@@ -367,9 +367,3 @@ function CoffeeAddButton({
   );
 }
 
-/** Названия в данных капсом — приводим к человеческому виду. */
-function capitalize(s: string): string {
-  if (!s) return s;
-  const lower = s.toLocaleLowerCase('ru');
-  return lower.charAt(0).toLocaleUpperCase('ru') + lower.slice(1);
-}

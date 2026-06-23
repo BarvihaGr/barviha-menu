@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Search, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
-import { pickItemDescription, pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
+import { pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/routing';
 import { activeSectionsFor } from '@/lib/menu-sections';
 import { searchItems } from '@/lib/search';
@@ -140,9 +140,7 @@ export function CategoryItemsList({
               <ItemCard
                 item={item}
                 name={pickItemName(item, locale)}
-                description={pickItemDescription(item, locale)}
                 locationSlug={locationSlug}
-                index={0}
               />
             </motion.div>
           ))}

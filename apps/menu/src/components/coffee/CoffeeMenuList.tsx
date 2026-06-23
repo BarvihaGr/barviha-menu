@@ -5,6 +5,7 @@ import { Search, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
+import { searchItems } from '@/lib/search';
 import type { Locale } from '@/i18n/routing';
 import { activeSectionsFor } from '@/lib/menu-sections';
 import { cn } from '@/lib/utils';
@@ -40,6 +41,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   const locale = useLocale() as Locale;
   const tSections = useTranslations('sections');
   const tFilters = useTranslations('filters');
+  const tSearch = useTranslations('search');
   const [active, setActive] = useState<Set<FilterKey>>(new Set());
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [query, setQuery] = useState('');
@@ -62,12 +64,8 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
       if (sec) pool = items.filter((i) => sec.itemIds.has(i.id));
     }
     pool = applyFilters(pool, active);
-    const q = query.trim().toLowerCase().replace(/ё/g, 'е');
-    if (q) {
-      pool = pool.filter((i) =>
-        pickItemName(i, locale).toLowerCase().replace(/ё/g, 'е').includes(q),
-      );
-    }
+    const q = query.trim();
+    if (q) pool = searchItems(pool, q, pool.length).map((r) => r.item);
     return pool;
   }, [items, active, activeSection, sections, query, locale]);
 
@@ -90,7 +88,8 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Введите название блюда"
+            placeholder={tSearch('placeholder')}
+            aria-label={tSearch('placeholder')}
             className="w-full bg-transparent font-[family-name:var(--font-sans)] text-[15px] text-[var(--cm-text)] placeholder:text-[var(--cm-muted-dim)] focus:outline-none"
           />
           {query && (
@@ -177,7 +176,12 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
       </div>
 
       {filtered.length === 0 && (
-        <div className="py-16 text-center text-sm tracking-[0.1em] text-[var(--cm-muted-dim)]">—</div>
+        <div className="py-16 text-center">
+          <div className="mb-2 text-2xl text-[var(--cm-muted-dim)]/40">◍</div>
+          <p className="text-xs uppercase tracking-[0.2em] text-[var(--cm-muted-dim)]">
+            {tSearch('noResults')}
+          </p>
+        </div>
       )}
     </div>
   );

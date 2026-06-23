@@ -130,9 +130,7 @@ export default async function HookahPage({
                 key={item.id}
                 item={item}
                 name={pickItemName(item, locale as Locale)}
-                description={pickItemDescription(item, locale as Locale)}
                 locationSlug={locationSlug}
-                index={i}
               />
             ))}
           </div>

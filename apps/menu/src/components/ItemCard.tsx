@@ -10,9 +10,7 @@ import { AddToCartButton } from './AddToCartButton';
 interface Props {
   item: ResolvedMenuItem;
   name: string;
-  description: string | null;
   locationSlug: string;
-  index?: number;
 }
 
 export function ItemCard({ item, name, locationSlug }: Props) {

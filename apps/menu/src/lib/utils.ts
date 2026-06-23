@@ -37,6 +37,13 @@ export function parseIngredient(raw: string): ParsedIngredient {
   return { name: clean, amount: null };
 }
 
+/** Названия в данных капсом — приводим к человеческому виду (первая буква заглавная). */
+export function capitalizeRu(s: string): string {
+  if (!s) return s;
+  const lower = s.toLocaleLowerCase('ru');
+  return lower.charAt(0).toLocaleUpperCase('ru') + lower.slice(1);
+}
+
 export function parseIngredients(composition: string | null): ParsedIngredient[] {
   if (!composition) return [];
   return (
