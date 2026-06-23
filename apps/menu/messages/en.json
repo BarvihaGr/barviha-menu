@@ -95,7 +95,9 @@
     "submitDescription": "Show this screen to your waiter when they come by",
     "qty": "Qty",
     "remove": "Remove",
-    "addNote": "Note…"
+    "addNote": "Note…",
+    "clearAll": "Clear",
+    "showWaiter": "Show to waiter"
   },
   "hookah": {
     "title": "Hookah",

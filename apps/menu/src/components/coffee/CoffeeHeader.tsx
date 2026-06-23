@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
-import { coffeeAccentStyle } from '@/lib/coffee-design';
+import { coffeeAccentStyle, getCoffeeAccent } from '@/lib/coffee-design';
 import { HamburgerMenu } from '../HamburgerMenu';
 
 interface Props {
@@ -44,7 +44,12 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
           />
         </Link>
 
-        <HamburgerMenu locationSlug={locationSlug} locations={locations} variant="coffee" />
+        <HamburgerMenu
+          locationSlug={locationSlug}
+          locations={locations}
+          variant="coffee"
+          themeStyle={{ ['--cm-accent' as string]: getCoffeeAccent(locationSlug) }}
+        />
       </div>
     </header>
   );

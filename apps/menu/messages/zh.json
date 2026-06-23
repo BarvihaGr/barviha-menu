@@ -94,7 +94,9 @@
     "submitDescription": "服務員到來時請出示此頁面",
     "qty": "數量",
     "remove": "移除",
-    "addNote": "備註…"
+    "addNote": "備註…",
+    "clearAll": "清除",
+    "showWaiter": "给服务员看"
   },
   "hookah": {
     "title": "水煙",
