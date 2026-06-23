@@ -60,7 +60,7 @@ export function CoffeeLuxHome({
           preload="metadata"
           poster="/locations/arka/poster.jpg"
           className="h-full w-full object-cover"
-          style={{ filter: 'brightness(1.15) saturate(1.2) contrast(1.05)' }}
+          style={{ filter: 'brightness(1.45) saturate(1.35) contrast(1.06)' }}
         >
           <source src="/locations/arka/hero.mp4" type="video/mp4" />
         </video>
