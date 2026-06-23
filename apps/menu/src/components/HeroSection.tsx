@@ -112,11 +112,9 @@ export function HeroSection({
         />
       )}
 
-      {/* Лёгкое затемнение только под текстом — никаких боковых/верхних рамок */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/25 via-transparent to-transparent pointer-events-none" />
       {/* Акцентная вуаль локации */}
       <div
-        className="absolute inset-0 opacity-10 pointer-events-none"
+        className="absolute inset-0 opacity-5 pointer-events-none"
         style={{ background: `radial-gradient(circle at 50% 35%, ${accent}, transparent 60%)` }}
       />
       {/* Только нижний плавный переход в фон страницы — безрамочное видео */}

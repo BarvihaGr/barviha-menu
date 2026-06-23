@@ -22,8 +22,8 @@ export function ItemCard({ item, name, locationSlug }: Props) {
         href={`/${locationSlug}/item/${item.id}`}
         className="group flex flex-col h-full overflow-hidden rounded-3xl border border-[color:var(--border)] bg-card transition hover:-translate-y-1 hover:border-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold cursor-pointer"
       >
-        {/* Фото */}
-        <div className="relative m-2.5 mb-0 aspect-[4/3] shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-[#453324] to-[#2A1B11]">
+        {/* Фото — фиксированная пропорция */}
+        <div className="relative m-2.5 mb-0 aspect-[4/3] w-[calc(100%-20px)] shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-[#453324] to-[#2A1B11]">
           {item.photo ? (
             <Image
               src={item.photo}
@@ -48,17 +48,25 @@ export function ItemCard({ item, name, locationSlug }: Props) {
           )}
         </div>
 
-        {/* Контент — название сверху, цена+кнопка всегда снизу */}
-        <div className="flex flex-col flex-1 justify-between gap-2 p-3 sm:p-4 pt-2.5">
+        {/* Контент */}
+        <div className="flex flex-col flex-1 p-3 sm:p-4 pt-2.5">
+
+          {/* Название — максимум 2 строки */}
           <h3 className="text-[13px] sm:text-[14px] font-light tracking-[0.02em] text-cream leading-snug line-clamp-2">
             {name}
           </h3>
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[13px] sm:text-[15px] font-medium text-gold leading-none">
+
+          {/* Спейсер — прижимает футер вниз */}
+          <div className="flex-1 min-h-[6px]" />
+
+          {/* Футер: цена слева, кнопка справа — строго на одной оси */}
+          <div className="flex items-center justify-between w-full mt-1 gap-2">
+            <span className="text-[13px] sm:text-[14px] font-medium text-gold leading-none shrink-0">
               {formatPrice(item.price)}
             </span>
             <AddToCartButton itemId={item.id} itemName={name} className="shrink-0" />
           </div>
+
         </div>
       </Link>
     </article>
