@@ -4,20 +4,13 @@ import Image from 'next/image';
 import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
-import { LangSwitch } from '../LangSwitch';
-import { LocationSwitcher } from '../LocationSwitcher';
+import { HamburgerMenu } from '../HamburgerMenu';
 
 interface Props {
   locationSlug: string;
   locations: Location[];
 }
 
-/**
- * Белая шапка в стиле Coffeemania (только для редизайн-локаций): тёмный
- * wordmark-лого слева, справа — выбор локации и языка. Лёгкая нижняя граница,
- * sticky. Фирменная палитра gold у контролов читается и на белом. Корзина
- * живёт в нижней плавающей плашке (FloatingCartButton).
- */
 export function CoffeeHeader({ locationSlug, locations }: Props) {
   const homeHref = `/${locationSlug}`;
 
@@ -32,7 +25,6 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
           className="flex min-w-0 items-center gap-2.5 cursor-pointer"
           aria-label="Barvikha Group"
         >
-          {/* Дерево: только sm+ — на мобайле места не хватает рядом с вордмарком */}
           <Image
             src="/locations/arka/logo-tree.png"
             alt="Барвиха"
@@ -41,7 +33,6 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
             priority
             className="hidden h-9 w-auto shrink-0 sm:block"
           />
-          {/* Вордмарк "BARVIKHA GROUP SINCE 2017": всегда виден */}
           <Image
             src="/logo-since2017.png"
             alt="Barvikha Group Since 2017"
@@ -53,10 +44,7 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
           />
         </Link>
 
-        <div className="flex shrink-0 items-center gap-2">
-          <LocationSwitcher locations={locations} currentSlug={locationSlug} />
-          <LangSwitch />
-        </div>
+        <HamburgerMenu locationSlug={locationSlug} locations={locations} variant="coffee" />
       </div>
     </header>
   );

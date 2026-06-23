@@ -59,7 +59,7 @@ export default async function LocationLayout({
       {coffee ? (
         <CoffeeHeader locationSlug={location.slug} locations={locations} />
       ) : (
-        <LocationHeader locationSlug={location.slug} />
+        <LocationHeader locationSlug={location.slug} locations={locations} />
       )}
       <main className="flex-1 mx-auto w-full max-w-[1200px] px-4 sm:px-6 pt-2 pb-32">
         {children}
