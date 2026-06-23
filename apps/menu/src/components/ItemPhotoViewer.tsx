@@ -35,8 +35,8 @@ export function ItemPhotoViewer({ src, alt }: Props) {
             fill
             sizes="(max-width: 768px) 100vw, 768px"
             priority
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-            style={{ filter: 'brightness(0.85) saturate(0.9)' }}
+            className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            style={{ filter: 'brightness(0.9) saturate(0.95)' }}
           />
           {/* Подсказка «увеличить» */}
           <span className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white/90 backdrop-blur-sm transition group-hover:border-gold group-hover:text-gold">
