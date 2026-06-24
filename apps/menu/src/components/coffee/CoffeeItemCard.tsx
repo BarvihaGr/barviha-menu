@@ -77,7 +77,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
             className="text-[14px] sm:text-[15px] font-light normal-case leading-[1.35] tracking-[0.02em] text-[var(--cm-text)] overflow-hidden"
             style={{ fontFamily: "'Jost', sans-serif", maxHeight: 'calc(1.35em * 2)' }}
           >
-            {capitalizeRu(name)}
+            {capitalizeRu(name.replace(/,.*$/, ''))}
           </h3>
 
           {/* Футер: цена слева, кнопка «+» справа — строго на одной оси */}
