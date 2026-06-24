@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils';
 import { applyFilters, type FilterKey, type FilterRealm } from '../FilterBar';
 import { FilterDrawer } from '../FilterDrawer';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
+import { useKievTheme } from '@/store/kievTheme';
+import { KIEV_PALETTES } from './KievThemeProvider';
 import { CoffeeItemCard } from './CoffeeItemCard';
 
 interface SectionDef {
@@ -35,9 +37,12 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [query, setQuery] = useState('');
 
-  // Стиль темы — прокидывается в портал FilterDrawer, чтобы --cm-* переменные
-  // были доступны внутри Dialog (который рендерится вне .coffee-theme дерева).
-  const themeStyle = coffeeAccentStyle(locationSlug);
+  const kievVariant = useKievTheme((s) => s.variant);
+  // Стиль темы для портала FilterDrawer. Для Киевской — динамический (текущая палитра),
+  // для остальных — статичный из coffeeAccentStyle.
+  const themeStyle = locationSlug === 'kievskaia'
+    ? { ...coffeeAccentStyle(locationSlug), ...(KIEV_PALETTES[kievVariant] as React.CSSProperties) }
+    : coffeeAccentStyle(locationSlug);
 
   const sections: SectionDef[] = useMemo(() => {
     const fromSub = buildFromSub(items, locale);

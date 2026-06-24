@@ -22,7 +22,7 @@ export type FilterRealm = 'bar' | 'kitchen' | 'hookah' | 'desserts';
 
 export const FILTERS_BY_REALM: Record<FilterRealm, FilterKey[]> = {
   bar: ['noAlcohol', 'withAlcohol', 'withIce', 'sparkling'],
-  kitchen: ['spicy', 'vegan', 'noMeat', 'withMeat'],
+  kitchen: ['spicy', 'vegan', 'noMeat', 'withMeat', 'sweet'],
   hookah: [],
   desserts: ['sweet'],
 };
@@ -30,13 +30,13 @@ export const FILTERS_BY_REALM: Record<FilterRealm, FilterKey[]> = {
 const MEAT_RE =
   /говяд|телятин|свинин|бекон|курин|утк|утин|ростбиф|брезаол|тартар|стейк|рибай|бургер|котлет|ветчин|карбонад|колбас|сосис|лосось|тунец|рыб|креветк|кальмар|мидии|осьминог|форель/i;
 
-// Для вкусовых фильтров (sweet/salty) ищем только в названии и описании —
-// НЕ в составе. В составе почти любого блюда есть «соль» или «сахар»
-// как технологический ингредиент, что даёт ложные срабатывания (оливье = сладкое).
-// ягодн/клубничн/малинов убраны: они встречаются в несладких блюдах («ягодный соус» в бургере),
-// что давало ложные срабатывания. Десерты надёжно распознаются по названию (тирамис, чизкей, медов).
+// Специфические ключевые слова настоящих десертов и шоколадных снеков.
+// «сладк», «медов», «десерт» убраны: они часто встречаются в описаниях несладких
+// блюд («сладкий соус sweet chili», «десертного настроения», «медово-горчичный»),
+// что давало ложные срабатывания. Используем sub==='desserts' как основную проверку,
+// а regex — только как резерв для сладких снеков (шоколадный миндаль, вафли в шоколаде).
 const SWEET_RE =
-  /сладк|карамел|медов|шокол|тирамис|чизкей|мороже|десерт|ваниль|сорбе/i;
+  /шокол|тирамис|чизкей|мороже|карамел|ваниль|сорбе|медовик|торт|фондан|пирожн|зефир|мармелад/i;
 const SALT_RE =
   /солён|соленый|пикант|умами|копчён/i;
 
@@ -64,7 +64,9 @@ export function applyFilters(
     if (active.has('withMeat') && !MEAT_RE.test(haystack)) return false;
     if (active.has('noMeat') && MEAT_RE.test(haystack)) return false;
     if (active.has('salty') && !SALT_RE.test(tasteHaystack)) return false;
-    if (active.has('sweet') && !SWEET_RE.test(tasteHaystack)) return false;
+    // Основная проверка: sub==='desserts' надёжно ловит десерты без ложных срабатываний.
+    // Резерв SWEET_RE: ловит сладкие снеки (шоколадный миндаль, вафли в шоколаде).
+    if (active.has('sweet') && i.sub !== 'desserts' && !SWEET_RE.test(tasteHaystack)) return false;
     return true;
   });
 }

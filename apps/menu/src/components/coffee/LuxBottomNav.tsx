@@ -5,6 +5,8 @@ import { Home, BookOpen, MapPin, ShoppingBag } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
+import { useKievTheme } from '@/store/kievTheme';
+import { KIEV_PALETTES } from './KievThemeProvider';
 import { cn } from '@/lib/utils';
 
 interface Props {
@@ -20,6 +22,11 @@ interface Props {
 export function LuxBottomNav({ locationSlug }: Props) {
   const pathname = usePathname();
   const base = `/${locationSlug}`;
+  const kievVariant = useKievTheme((s) => s.variant);
+  // Для Киевской — динамический стиль на основе текущей палитры
+  const navStyle = locationSlug === 'kievskaia'
+    ? { ...coffeeAccentStyle(locationSlug), ...KIEV_PALETTES[kievVariant] }
+    : coffeeAccentStyle(locationSlug);
 
   // Счётчик корзины — из localStorage только на клиенте (guard от hydration).
   const rawCount = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
@@ -57,7 +64,7 @@ export function LuxBottomNav({ locationSlug }: Props) {
 
   return (
     <nav
-      style={coffeeAccentStyle(locationSlug)}
+      style={navStyle}
       className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--cm-border)] bg-[var(--cm-bg)]/95 backdrop-blur-md"
     >
       <div

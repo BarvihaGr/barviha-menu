@@ -1,9 +1,13 @@
 'use client';
 
+'use client';
+
 import Image from 'next/image';
 import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import { coffeeAccentStyle, getCoffeeAccent } from '@/lib/coffee-design';
+import { useKievTheme } from '@/store/kievTheme';
+import { KIEV_PALETTES } from './KievThemeProvider';
 import { HamburgerMenu } from '../HamburgerMenu';
 
 interface Props {
@@ -13,11 +17,21 @@ interface Props {
 
 export function CoffeeHeader({ locationSlug, locations }: Props) {
   const homeHref = `/${locationSlug}`;
+  const kievVariant = useKievTheme((s) => s.variant);
+  // Для Киевской — динамический стиль (сливается база + текущая палитра)
+  const kievPalette = KIEV_PALETTES[kievVariant] as React.CSSProperties;
+  const headerStyle = locationSlug === 'kievskaia'
+    ? { ...coffeeAccentStyle(locationSlug), ...kievPalette }
+    : coffeeAccentStyle(locationSlug);
+  // themeStyle для HamburgerMenu портала — акцент + палитра Киевской
+  const portalStyle: React.CSSProperties = locationSlug === 'kievskaia'
+    ? { ['--cm-accent' as string]: getCoffeeAccent(locationSlug), ...kievPalette }
+    : { ['--cm-accent' as string]: getCoffeeAccent(locationSlug) };
 
   return (
     <header
       className="sticky top-0 z-30 border-b border-[var(--cm-border)] bg-[var(--cm-surface-2)]/90 backdrop-blur-md"
-      style={coffeeAccentStyle(locationSlug)}
+      style={headerStyle}
     >
       <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-6">
         <Link
@@ -48,7 +62,7 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
           locationSlug={locationSlug}
           locations={locations}
           variant="coffee"
-          themeStyle={{ ['--cm-accent' as string]: getCoffeeAccent(locationSlug) }}
+          themeStyle={portalStyle}
           showPalettePicker={locationSlug === 'kievskaia'}
         />
       </div>

@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useKievTheme } from '@/store/kievTheme';
 
-const PALETTES = {
+export const KIEV_PALETTES = {
   ivory: {
     '--cm-bg': '#F2EAE0',
     '--cm-surface': '#E8DDD0',
@@ -32,27 +32,34 @@ export function KievThemeProvider({ children }: { children: React.ReactNode }) {
   const variant = useKievTheme((s) => s.variant);
 
   useEffect(() => {
-    const palette = PALETTES[variant];
+    const palette = KIEV_PALETTES[variant];
 
-    // Перезаписываем CSS-переменные прямо на .coffee-theme div
-    // (server-rendered inline style, background-color: var(--cm-bg) живёт там же)
+    // На .coffee-theme div — основные CSS vars (для контента внутри дерева)
     const el = document.querySelector('.coffee-theme') as HTMLElement | null;
     if (el) {
       Object.entries(palette).forEach(([k, v]) => el.style.setProperty(k, v));
     }
 
-    // body:has(.coffee-theme) тоже ставит фон — перебиваем
+    // На :root — для порталов Radix (HamburgerMenu, FilterDrawer),
+    // header и LuxBottomNav с их собственными inline-style
+    Object.entries(palette).forEach(([k, v]) =>
+      document.documentElement.style.setProperty(k, v),
+    );
+
     const bodyBg = variant === 'arka' ? '#584030' : '#F2EAE0';
     document.body.style.setProperty('background', bodyBg);
 
     return () => {
+      Object.keys(palette).forEach((k) =>
+        document.documentElement.style.removeProperty(k),
+      );
       document.body.style.removeProperty('background');
     };
   }, [variant]);
 
   // display:contents → vars наследуются детьми (порталы получают через themeStyle)
   return (
-    <div style={PALETTES[variant] as React.CSSProperties} className="contents">
+    <div style={KIEV_PALETTES[variant] as React.CSSProperties} className="contents">
       {children}
     </div>
   );
