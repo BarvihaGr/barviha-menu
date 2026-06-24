@@ -74,7 +74,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
             bottom-0 даёт одинаковую Y-позицию у всех. */}
         <div className="relative flex-1 pt-2.5 pb-[40px]">
           <h3
-            className="text-[14px] sm:text-[15px] font-light normal-case leading-[1.35] tracking-[0.02em] text-[var(--cm-text)] line-clamp-2"
+            className="text-[14px] sm:text-[15px] font-light normal-case leading-[1.35] tracking-[0.02em] text-[var(--cm-text)] line-clamp-1"
             style={{ fontFamily: "'Jost', sans-serif" }}
           >
             {capitalizeRu(name)}
