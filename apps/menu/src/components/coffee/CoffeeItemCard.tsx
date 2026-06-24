@@ -74,10 +74,10 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
             bottom-0 даёт одинаковую Y-позицию у всех. */}
         <div className="relative flex-1 pt-2.5 pb-[40px]">
           <h3
-            className="text-[14px] sm:text-[15px] font-light normal-case leading-[1.35] tracking-[0.02em] text-[var(--cm-text)] overflow-hidden whitespace-nowrap"
-            style={{ fontFamily: "'Jost', sans-serif" }}
+            className="text-[14px] sm:text-[15px] font-light normal-case leading-[1.35] tracking-[0.02em] text-[var(--cm-text)] overflow-hidden"
+            style={{ fontFamily: "'Jost', sans-serif", maxHeight: 'calc(1.35em * 2)' }}
           >
-            {capitalizeRu(shortName(name))}
+            {capitalizeRu(name)}
           </h3>
 
           {/* Футер: цена слева, кнопка «+» справа — строго на одной оси */}
@@ -111,23 +111,3 @@ function cnBump(active: boolean, base: string): string {
   return active ? `${base} scale-90` : base;
 }
 
-const PREP_SPLIT = /^(.{5,}?)\s+(?:с|со|в|на|к|о|у|по|за|из|от|до|при|для|или|а|но)\s/i;
-
-/**
- * Обрезает длинное название по первому предлогу.
- * «Оливье со слабосоленым лососем» → «Оливье»
- * «Классический цезарь с креветками» → «Классический цезарь»
- * Если предлогов нет — по слову до 24 символов.
- */
-function shortName(n: string, max = 24): string {
-  if (n.length <= max) return n;
-  const m = n.match(PREP_SPLIT);
-  const base = m?.[1];
-  if (base && base.length >= 4) return base.replace(/[,\-–—;:]+$/, '');
-  const cut = n.slice(0, max);
-  const lastSpace = cut.lastIndexOf(' ');
-  const trimmed = lastSpace > 8 ? cut.slice(0, lastSpace) : cut;
-  return trimmed
-    .replace(/[\s,]+(?:с|со|и|в|на|к|о|у|по|за|из|от|до|при|для|или|а|но)$/i, '')
-    .replace(/[,\-–—;:]+$/, '');
-}
