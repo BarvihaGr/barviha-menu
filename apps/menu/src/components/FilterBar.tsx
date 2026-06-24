@@ -55,7 +55,8 @@ export function applyFilters(
     if (active.has('spicy') && !labels.includes('spicy')) return false;
     if (active.has('vegan') && !labels.includes('vegan')) return false;
     if (active.has('withIce') && !/лёд|лед|ice/i.test(haystack)) return false;
-    if (active.has('sparkling') && !/игрист|содов|тоник|просекко|шампан|sparkling/i.test(haystack))
+    // tasteHaystack (без состава): содов/тоник — ингредиенты коктейлей, не признак игристого
+    if (active.has('sparkling') && !/игрист|просекко|шампан|sparkling|cava|кава/i.test(tasteHaystack))
       return false;
     if (active.has('withMeat') && !MEAT_RE.test(haystack)) return false;
     if (active.has('noMeat') && MEAT_RE.test(haystack)) return false;
