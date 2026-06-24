@@ -94,6 +94,7 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
     id: it.id,
     name: (it.sub === 'pizza' && !/^пицц/i.test(it.name) ? `Пицца ${it.name}` : it.name)
       .replace(/,.*$/, '')
+      .replace(/\s+с\s+(?:\w+\s+)?котлетой\b.+$/i, '')
       .replace(/\s+и\s+(?:\w+\s+)*соусом\s*$/i, '')
       .trim(),
     description: it.description,
