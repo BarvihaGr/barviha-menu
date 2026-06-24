@@ -111,13 +111,22 @@ function cnBump(active: boolean, base: string): string {
   return active ? `${base} scale-90` : base;
 }
 
-const TRAILING_PREP = /[\s,]+(?:с|и|в|на|к|о|у|по|за|из|от|до|при|для|или|а|но)$/i;
+const PREP_SPLIT = /^(.{5,}?)\s+(?:с|со|в|на|к|о|у|по|за|из|от|до|при|для|или|а|но)\s/i;
 
-/** Обрезает название по границе слова не длиннее ~24 символов, без многоточия и висячих предлогов. */
+/**
+ * Обрезает длинное название по первому предлогу.
+ * «Оливье со слабосоленым лососем» → «Оливье»
+ * «Классический цезарь с креветками» → «Классический цезарь»
+ * Если предлогов нет — по слову до 24 символов.
+ */
 function shortName(n: string, max = 24): string {
   if (n.length <= max) return n;
+  const m = n.match(PREP_SPLIT);
+  if (m && m[1].length >= 4) return m[1].replace(/[,\-–—;:]+$/, '');
   const cut = n.slice(0, max);
   const lastSpace = cut.lastIndexOf(' ');
   const trimmed = lastSpace > 8 ? cut.slice(0, lastSpace) : cut;
-  return trimmed.replace(TRAILING_PREP, '');
+  return trimmed
+    .replace(/[\s,]+(?:с|со|и|в|на|к|о|у|по|за|из|от|до|при|для|или|а|но)$/i, '')
+    .replace(/[,\-–—;:]+$/, '');
 }
