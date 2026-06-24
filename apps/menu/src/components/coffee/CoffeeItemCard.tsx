@@ -74,10 +74,10 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
             bottom-0 даёт одинаковую Y-позицию у всех. */}
         <div className="relative flex-1 pt-2.5 pb-[40px]">
           <h3
-            className="text-[14px] sm:text-[15px] font-light normal-case leading-[1.35] tracking-[0.02em] text-[var(--cm-text)] line-clamp-1"
+            className="text-[14px] sm:text-[15px] font-light normal-case leading-[1.35] tracking-[0.02em] text-[var(--cm-text)] overflow-hidden whitespace-nowrap"
             style={{ fontFamily: "'Jost', sans-serif" }}
           >
-            {capitalizeRu(name)}
+            {capitalizeRu(shortName(name))}
           </h3>
 
           {/* Футер: цена слева, кнопка «+» справа — строго на одной оси */}
@@ -109,4 +109,12 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
 
 function cnBump(active: boolean, base: string): string {
   return active ? `${base} scale-90` : base;
+}
+
+/** Обрезает название по границе слова не длиннее ~28 символов, без многоточия. */
+function shortName(n: string, max = 28): string {
+  if (n.length <= max) return n;
+  const cut = n.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return lastSpace > 8 ? cut.slice(0, lastSpace) : cut;
 }
