@@ -92,7 +92,11 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
   const r = (n: number | null | undefined) => (n == null ? 0 : Math.round(n));
   return {
     id: it.id,
-    name: (it.sub === 'pizza' && !/^пицц/i.test(it.name) ? `Пицца ${it.name}` : it.name)
+    name: (it.sub === 'pizza' && !/^пицц/i.test(it.name)
+        ? `Пицца ${it.name}`
+        : it.sub === 'milkshake' && !/milkshake|коктейль/i.test(it.name)
+        ? `Молочный коктейль ${it.name}`
+        : it.name)
       .replace(/,.*$/, '')
       .replace(/\s+с\s+(?:\w+\s+)?котлетой\b.+$/i, '')
       .replace(/\s+и\s+(?:\w+\s+)*соусом\s*$/i, '')
