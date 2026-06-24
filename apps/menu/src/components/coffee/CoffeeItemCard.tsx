@@ -111,10 +111,13 @@ function cnBump(active: boolean, base: string): string {
   return active ? `${base} scale-90` : base;
 }
 
-/** Обрезает название по границе слова не длиннее ~28 символов, без многоточия. */
-function shortName(n: string, max = 28): string {
+const TRAILING_PREP = /[\s,]+(?:с|и|в|на|к|о|у|по|за|из|от|до|при|для|или|а|но)$/i;
+
+/** Обрезает название по границе слова не длиннее ~24 символов, без многоточия и висячих предлогов. */
+function shortName(n: string, max = 24): string {
   if (n.length <= max) return n;
   const cut = n.slice(0, max);
   const lastSpace = cut.lastIndexOf(' ');
-  return lastSpace > 8 ? cut.slice(0, lastSpace) : cut;
+  const trimmed = lastSpace > 8 ? cut.slice(0, lastSpace) : cut;
+  return trimmed.replace(TRAILING_PREP, '');
 }
