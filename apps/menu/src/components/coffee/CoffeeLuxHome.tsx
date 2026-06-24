@@ -1,6 +1,7 @@
 import type { Locale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
+import { AutoPlayVideo } from './AutoPlayVideo';
 
 interface Props {
   locationSlug: string;
@@ -52,18 +53,12 @@ export function CoffeeLuxHome({
       {/* Фон — крутящееся видео интерьера «Арки» + затемнение для воздуха
           и читаемости. Постер-кадр как фолбэк до загрузки/при ошибке. */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
+        <AutoPlayVideo
+          src="/locations/arka/hero.mp4"
           poster="/locations/arka/poster.jpg"
           className="h-full w-full object-cover"
           style={{ filter: 'brightness(1.0) saturate(1.25) contrast(1.05)' }}
-        >
-          <source src="/locations/arka/hero.mp4" type="video/mp4" />
-        </video>
+        />
         {/* Нижний переход в фон страницы */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--cm-bg)] to-transparent" />
         {/* Скрим под текстом — радиальный, только в центре, фото открыто по краям */}
