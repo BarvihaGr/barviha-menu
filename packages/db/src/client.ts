@@ -92,7 +92,7 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
   const r = (n: number | null | undefined) => (n == null ? 0 : Math.round(n));
   return {
     id: it.id,
-    name: it.name,
+    name: it.sub === 'pizza' && !/^пицц/i.test(it.name) ? `Пицца ${it.name}` : it.name,
     description: it.description,
     photo: PHOTOS[it.id] ?? null,
     composition: it.composition,
