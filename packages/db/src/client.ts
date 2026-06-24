@@ -46,7 +46,7 @@ function getLocationById(id: string): Location | undefined {
 const SUB_LABEL = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.label]));
 const SUB_ORDER = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.order]));
 
-const REALM_NAME: Record<Realm, string> = { kitchen: 'Кухня', bar: 'Бар', hookah: 'Кальяны' };
+const REALM_NAME: Record<Realm, string> = { kitchen: 'Кухня', bar: 'Бар', hookah: 'Кальяны', desserts: 'Десерты' };
 const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
 
 // Временно показываем ТОЛЬКО позиции, у которых есть фото (по просьбе:

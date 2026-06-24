@@ -143,8 +143,8 @@ export interface Category {
   name_en?: string;
   name_zh?: string;
   name_hy?: string;
-  /** Верхний «мир» меню: кухня / бар / кальяны. Для группировки разделов. */
-  realm?: 'kitchen' | 'bar' | 'hookah';
+  /** Верхний «мир» меню: кухня / бар / кальяны / десерты. Для группировки разделов. */
+  realm?: 'kitchen' | 'bar' | 'hookah' | 'desserts';
   parent_id: UUID | null;
   sort_order: number;
 }

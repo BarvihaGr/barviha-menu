@@ -18,12 +18,13 @@ export type FilterKey =
   | 'sweet';
 
 /** Раздел определяет какие фильтры доступны. */
-export type FilterRealm = 'bar' | 'kitchen' | 'hookah';
+export type FilterRealm = 'bar' | 'kitchen' | 'hookah' | 'desserts';
 
 export const FILTERS_BY_REALM: Record<FilterRealm, FilterKey[]> = {
   bar: ['noAlcohol', 'withAlcohol', 'withIce', 'sparkling'],
-  kitchen: ['spicy', 'vegan', 'noMeat', 'withMeat', 'sweet'],
+  kitchen: ['spicy', 'vegan', 'noMeat', 'withMeat'],
   hookah: [],
+  desserts: ['sweet'],
 };
 
 const MEAT_RE =
@@ -32,8 +33,10 @@ const MEAT_RE =
 // Для вкусовых фильтров (sweet/salty) ищем только в названии и описании —
 // НЕ в составе. В составе почти любого блюда есть «соль» или «сахар»
 // как технологический ингредиент, что даёт ложные срабатывания (оливье = сладкое).
+// ягодн/клубничн/малинов убраны: они встречаются в несладких блюдах («ягодный соус» в бургере),
+// что давало ложные срабатывания. Десерты надёжно распознаются по названию (тирамис, чизкей, медов).
 const SWEET_RE =
-  /сладк|карамел|медов|шокол|тирамис|чизкей|мороже|десерт|ягодн|клубничн|малинов|ваниль|сорбе/i;
+  /сладк|карамел|медов|шокол|тирамис|чизкей|мороже|десерт|ваниль|сорбе/i;
 const SALT_RE =
   /солён|соленый|пикант|умами|копчён/i;
 

@@ -34,7 +34,7 @@ export default async function CategoryPage({
     db.getCategoriesForLocation(location.id),
   ]);
   const items = allItems.filter((i) => i.category_id === category.id);
-  const realm = (category.realm as 'bar' | 'kitchen' | 'hookah') ?? 'kitchen';
+  const realm = (category.realm as 'bar' | 'kitchen' | 'hookah' | 'desserts') ?? 'kitchen';
 
   // Светлый дизайн Coffeemania — только для выбранных локаций.
   if (isCoffeeDesign(locationSlug)) {

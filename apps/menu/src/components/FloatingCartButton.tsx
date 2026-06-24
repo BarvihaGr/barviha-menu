@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Home, Info, ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -74,7 +75,10 @@ interface Props {
  * Активный пункт — акцентным цветом (--dock-accent).
  */
 export function FloatingCartButton({ locationSlug, locationName, address, phone, accent, locations, dockAccent }: Props) {
-  const count = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
+  const rawCount = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const count = mounted ? rawCount : 0;
   const t = useTranslations('nav');
   const pathname = usePathname();
 

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
@@ -26,6 +27,16 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
   const t = useTranslations('cart');
   const locale = useLocale() as Locale;
   const cart = useCart();
+
+  // Удаляем из store позиции, которых больше нет в меню этой локации.
+  // Без этого badge (LuxBottomNav) показывает устаревший счётчик, а корзина — пустой экран.
+  useEffect(() => {
+    const validIds = new Set(allItems.map((i) => i.id));
+    cart.items
+      .filter((e) => !validIds.has(e.itemId))
+      .forEach((e) => cart.remove(e.itemId));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const entries = cart.items
     .map((entry) => {

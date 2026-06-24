@@ -1,5 +1,5 @@
 // Типы для автогенерированного меню (menu-generated.ts).
-export type Realm = 'kitchen' | 'bar' | 'hookah';
+export type Realm = 'kitchen' | 'bar' | 'hookah' | 'desserts';
 
 export interface GenKbju {
   weight: number | null;
