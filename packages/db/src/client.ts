@@ -18,11 +18,23 @@ import type {
   Announcement,
   Category,
   HookahMood,
+  ItemLabel,
   Location,
   ResolvedMenuItem,
   Spotlight,
   Table,
 } from './types';
+
+const SPICY_RE = /остр[ыоеаяийё]|перец.{0,5}чили|чили.{0,5}перц|халапень|кайенн|спайси|spicy|кимчи|васаби|жгуч/i;
+const VEGAN_RE = /\bвеган\b|\bvegan\b/i;
+
+function detectLabels(it: GenItem): ItemLabel[] {
+  const text = [it.name, it.description, it.composition].filter(Boolean).join(' ');
+  const labels: ItemLabel[] = [];
+  if (SPICY_RE.test(text)) labels.push('spicy');
+  if (VEGAN_RE.test(text)) labels.push('vegan');
+  return labels;
+}
 
 export interface BarvihaClient {
   getAllLocations(): Promise<Location[]>;
@@ -88,7 +100,7 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
     price,
     // Только число (граммы). Единицу подставляет UI по локали — см. item page (t('grams')).
     weight: kb && kb.weight != null ? `${kb.weight}` : null,
-    labels: [],
+    labels: detectLabels(it),
     is_available: true,
     is_premium: false,
     is_alcoholic: it.realm === 'bar' && ALCOHOL_SUBS.has(it.sub),
