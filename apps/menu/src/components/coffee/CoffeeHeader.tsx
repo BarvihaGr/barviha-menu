@@ -30,7 +30,7 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
 
   return (
     <header
-      className="sticky top-0 z-30 border-b border-[var(--cm-border)] bg-[var(--cm-surface-2)]/90 backdrop-blur-md"
+      className="sticky top-0 z-30 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/95 backdrop-blur-md"
       style={headerStyle}
     >
       <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-6">

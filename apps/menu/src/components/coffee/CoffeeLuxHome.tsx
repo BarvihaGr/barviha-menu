@@ -1,3 +1,7 @@
+'use client';
+
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import type { Locale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
@@ -6,128 +10,103 @@ import { AutoPlayVideo } from './AutoPlayVideo';
 interface Props {
   locationSlug: string;
   locationName: string;
-  /** Адрес/город под названием (если есть). */
   locationCity: string | null;
-  /** Первая категория меню — для кнопки «Меню». */
   menuHref: string;
-  /** Подпись кнопки «Меню». */
   menuLabel: string;
   locale: Locale;
-  /** Соцсети для футера (минимально — VK · Telegram). */
   socials?: { label: string; href: string }[];
 }
 
-/** Подзаголовок hero — общий для всех lux-локаций. */
-const HERO_SUBTITLE = 'Lounge Restaurant & Bar';
 
-/** Адрес под названием. Берём из данных локации, иначе — ручной фолбэк по slug. */
-const LUX_ADDRESS: Record<string, string> = {
-  kievskaia: 'ул. Киевская, 2',
-};
-
-/**
- * Главная в стиле «дорогой минимализм» (концепт Coffeemania × Барвиха):
- * полноэкранный тёмный hero c фото интерьера, дерево-бренд сверху, крупное
- * название филиала тонким сан-серифом, «Lounge Restaurant & Bar», адрес и две
- * первичные кнопки — Забронировать стол / Меню. Соцсети — только в подвале.
- * Золото (--cm-accent) появляется дозированно: дерево, активная кнопка, акценты.
- * Только для lux-локаций (Ереван).
- */
 export function CoffeeLuxHome({
   locationSlug,
   locationName,
   locationCity,
   menuHref,
   menuLabel,
-  socials = [],
 }: Props) {
-  const address = LUX_ADDRESS[locationSlug] ?? locationCity;
+  const style = coffeeAccentStyle(locationSlug);
+
   return (
     <div
-      // Ровно один экран без скролла: высота = видимый экран минус хедер.
-      // -mt-2/-mb-32 гасят паддинги <main>, чтобы фон-видео доходило до краёв,
-      // а контент центрировался во весь экран и на телефоне, и на компьютере.
-      className="relative left-1/2 right-1/2 -mx-[50vw] -mt-2 -mb-32 flex h-[calc(100svh-60px)] w-screen flex-col overflow-hidden bg-[var(--cm-bg)] text-[var(--cm-text)] sm:h-[calc(100svh-64px)]"
-      style={coffeeAccentStyle(locationSlug)}
+      className="relative left-1/2 right-1/2 -mx-[50vw] -mt-2 -mb-32 w-screen overflow-x-hidden"
+      style={style}
     >
-      {/* Фон — крутящееся видео интерьера «Арки» + затемнение для воздуха
-          и читаемости. Постер-кадр как фолбэк до загрузки/при ошибке. */}
-      <div className="absolute inset-0">
-        <AutoPlayVideo
-          src="/locations/arka/hero.mp4"
-          poster="/locations/arka/poster.jpg"
-          className="h-full w-full object-cover"
-          style={{ filter: 'brightness(1.0) saturate(1.25) contrast(1.05)' }}
-        />
-        {/* Нижний переход в фон страницы */}
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--cm-bg)] to-transparent" />
-        {/* Скрим под текстом — радиальный, только в центре, фото открыто по краям */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_65%_at_50%_55%,rgba(0,0,0,0.58)_0%,rgba(0,0,0,0.15)_100%)]" />
-      </div>
+      {/* ── ГЕРОЙ (полный экран) ──────────────────────────────── */}
+      <section className="relative flex h-[100svh] w-full flex-col overflow-hidden">
 
-      {/* Контент hero — только крупное дерево по центру + кнопка «Меню» */}
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-12 px-6 pt-8 pb-28 text-center">
-        {/* Название + сабтайтл + адрес */}
-        <div className="flex flex-col items-center gap-5 sm:gap-6">
-          <div className="flex flex-col items-center gap-2.5 sm:gap-3">
-            <h1
-              className="font-[family-name:var(--font-display)] text-[44px] font-light uppercase leading-[0.95] tracking-[0.12em] text-white sm:text-[72px]"
-              style={{ textShadow: '0 2px 24px rgba(0,0,0,0.7), 0 1px 4px rgba(0,0,0,0.9)' }}
-            >
-              {locationName}
-            </h1>
-            <p
-              className="font-[family-name:var(--font-display)] text-[13px] uppercase tracking-[0.34em] text-white/80 sm:text-[15px]"
-              style={{ textShadow: '0 1px 12px rgba(0,0,0,0.8)' }}
-            >
-              {HERO_SUBTITLE}
-            </p>
-            {address && (
-              <p
-                className="font-[family-name:var(--font-sans)] text-[12px] tracking-[0.14em] text-white/65 sm:text-[13px]"
-                style={{ textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}
-              >
-                {address}
-              </p>
-            )}
-          </div>
+        {/* Видео-фон */}
+        <div className="absolute inset-0">
+          <AutoPlayVideo
+            src="/locations/arka/hero.mp4"
+            poster="/locations/arka/poster.jpg"
+            className="h-full w-full object-cover"
+            style={{ filter: 'brightness(0.72) saturate(1.1)' }}
+          />
+          {/* Нижний фейд в цвет страницы */}
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[var(--cm-bg)] to-transparent" />
+          {/* Верхний скрим */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent" />
         </div>
 
-        {/* Первичное действие — открыть меню */}
-        <div className="flex w-full max-w-[360px] flex-col gap-3">
-          <Link
-            href={menuHref}
-            className="group flex h-[52px] items-center justify-center gap-3 rounded-[14px] border border-[#C4A882]/50 bg-[#8B6644]/35 font-[family-name:var(--font-display)] text-[13px] font-light uppercase tracking-[0.28em] text-[#F5EAD8] backdrop-blur-[8px] transition-all duration-300 ease-out hover:border-[#C4A882]/80 hover:bg-[#8B6644]/55 focus-visible:outline-none active:scale-[0.985] cursor-pointer"
+        {/* Контент героя */}
+        <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-12 px-6 pt-8 pb-28 text-center">
+
+          {/* Логотип + название */}
+          <motion.div
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            className="flex flex-col items-center gap-4"
           >
-            {menuLabel}
-            <span
-              aria-hidden
-              className="text-[15px] leading-none transition-transform duration-300 ease-out group-hover:translate-x-1"
-            >
-              →
-            </span>
-          </Link>
-        </div>
+            <Image
+              src="/logo-barvikha.png"
+              alt="Barvikha"
+              width={72}
+              height={72}
+              className="drop-shadow-lg"
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
+            <div>
+              <h1
+                className="font-[family-name:var(--font-display)] text-[52px] font-light uppercase leading-none tracking-[0.1em] text-white sm:text-[72px]"
+                style={{ textShadow: '0 2px 20px rgba(0,0,0,0.6)' }}
+              >
+                {locationName}
+              </h1>
+              <p
+                className="mt-2 font-[family-name:var(--font-display)] text-[13px] uppercase tracking-[0.3em] text-white/75"
+                style={{ textShadow: '0 1px 10px rgba(0,0,0,0.7)' }}
+              >
+                Lounge Restaurant & Bar
+              </p>
+              {locationCity && (
+                <p className="mt-1 text-[12px] tracking-[0.15em] text-white/55">
+                  {locationCity}
+                </p>
+              )}
+            </div>
+          </motion.div>
 
-        {/* Соцсети — только в подвале, дозированно */}
-        {socials.length > 0 && (
-          <div className="flex items-center gap-4 font-[family-name:var(--font-sans)] text-[12px] uppercase tracking-[0.2em] text-[var(--cm-muted)]">
-            {socials.map((s, i) => (
-              <span key={s.label} className="flex items-center gap-4">
-                {i > 0 && <span className="text-[var(--cm-muted-dim)]">·</span>}
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition hover:text-[color:var(--cm-accent)] cursor-pointer"
-                >
-                  {s.label}
-                </a>
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
+          {/* Кнопки — одна сейчас, место под будущие */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="flex w-full max-w-[340px] flex-col gap-3"
+          >
+            <Link
+              href={menuHref}
+              className="group flex h-[52px] items-center justify-center gap-3 rounded-[14px] border border-white/35 bg-white/15 font-[family-name:var(--font-display)] text-[13px] font-light uppercase tracking-[0.28em] text-white backdrop-blur-[10px] transition-all duration-300 ease-out hover:border-white/55 hover:bg-white/25 focus-visible:outline-none active:scale-[0.985] cursor-pointer"
+            >
+              {menuLabel}
+              <span className="text-[15px] leading-none transition-transform duration-300 ease-out group-hover:translate-x-1" aria-hidden>→</span>
+            </Link>
+            {/* Место под будущие кнопки */}
+          </motion.div>
+        </div>
+      </section>
+
     </div>
   );
 }

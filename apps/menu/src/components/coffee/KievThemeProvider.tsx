@@ -5,14 +5,14 @@ import { useKievTheme } from '@/store/kievTheme';
 
 export const KIEV_PALETTES = {
   ivory: {
-    '--cm-bg': '#F2EAE0',
-    '--cm-surface': '#E8DDD0',
-    '--cm-surface-2': '#FFFFFF',
-    '--cm-text': '#2A1A0E',
-    '--cm-text-soft': '#4A3426',
-    '--cm-muted': 'rgba(42, 26, 14, 0.55)',
-    '--cm-muted-dim': 'rgba(42, 26, 14, 0.35)',
-    '--cm-border': 'rgba(155, 122, 80, 0.22)',
+    '--cm-bg': '#F0EAE0',
+    '--cm-surface': '#E4D9CC',
+    '--cm-surface-2': '#D9CCBD',
+    '--cm-text': '#3C2210',
+    '--cm-text-soft': '#6B4A28',
+    '--cm-muted': 'rgba(60, 34, 16, 0.52)',
+    '--cm-muted-dim': 'rgba(60, 34, 16, 0.36)',
+    '--cm-border': 'rgba(140, 101, 64, 0.18)',
     '--cm-logo-invert': '1',
   },
   arka: {
@@ -46,7 +46,7 @@ export function KievThemeProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.style.setProperty(k, v),
     );
 
-    const bodyBg = variant === 'arka' ? '#584030' : '#F2EAE0';
+    const bodyBg = variant === 'arka' ? '#584030' : '#F0EAE0';
     document.body.style.setProperty('background', bodyBg);
 
     return () => {
