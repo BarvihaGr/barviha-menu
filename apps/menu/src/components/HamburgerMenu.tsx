@@ -153,19 +153,17 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                   ...(themeStyle ?? {}),
                 }}
               >
-                {/* Шапка */}
-                <div className={cn('flex items-center justify-end px-5 pt-5 pb-4 border-b shrink-0', D.divider)}>
-                  <Dialog.Title className="sr-only">Навигация</Dialog.Title>
-                  <Dialog.Close asChild>
-                    <button
-                      type="button"
-                      aria-label="Закрыть"
-                      className={cn('flex h-8 w-8 items-center justify-center rounded-full transition cursor-pointer', D.closeBtn)}
-                    >
-                      <X size={17} />
-                    </button>
-                  </Dialog.Close>
-                </div>
+                {/* Крестик — абсолютный, без отдельной полосы */}
+                <Dialog.Title className="sr-only">Навигация</Dialog.Title>
+                <Dialog.Close asChild>
+                  <button
+                    type="button"
+                    aria-label="Закрыть"
+                    className={cn('absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full transition cursor-pointer z-10', D.closeBtn)}
+                  >
+                    <X size={17} />
+                  </button>
+                </Dialog.Close>
 
                 {/* Скроллируемое тело */}
                 <div className="flex flex-col flex-1 min-h-0 overflow-y-auto">
