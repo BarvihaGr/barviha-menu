@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import type { Locale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
@@ -59,14 +58,6 @@ export function CoffeeLuxHome({
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             className="flex flex-col items-center gap-4"
           >
-            <Image
-              src="/logo-barvikha.png"
-              alt="Barvikha"
-              width={72}
-              height={72}
-              className="drop-shadow-lg"
-              style={{ filter: 'brightness(0) invert(1)' }}
-            />
             <div>
               <h1
                 className="font-[family-name:var(--font-display)] text-[52px] font-light uppercase leading-none tracking-[0.1em] text-white sm:text-[72px]"
