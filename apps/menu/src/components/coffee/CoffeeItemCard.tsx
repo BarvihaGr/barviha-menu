@@ -94,7 +94,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
               aria-label={`${t('item.addToCart')} ${displayName}`}
               className={cnBump(
                 bump,
-                'shrink-0 grid h-8 w-8 place-items-center rounded-full bg-[var(--cm-accent)] text-white shadow-sm transition-all duration-200 active:scale-90 cursor-pointer',
+                'shrink-0 grid h-8 w-8 place-items-center rounded-full bg-[var(--cm-accent)] text-[var(--cm-text)] shadow-sm transition-all duration-200 active:scale-90 cursor-pointer',
               )}
             >
               <Plus className="h-4 w-4" strokeWidth={2.2} />

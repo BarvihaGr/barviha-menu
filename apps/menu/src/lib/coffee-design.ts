@@ -34,7 +34,7 @@ const COFFEE_ACCENT_FROM: Record<string, string> = {};
 const COFFEE_ACCENT: Record<string, string> = {
   domodedovo: '#C49262', // бронза-золото «Арки» (тёмный цветокор)
   erevan: '#B89B6A', // приглушённое золото «дорогого минимализма»
-  kievskaia: '#9B7A50', // тёплое золото на светлом фоне
+  kievskaia: '#C4A96A', // бренд: слоновая кость / песочно-бежевый (#DBC278 тёмная версия)
 };
 
 /**
@@ -109,16 +109,16 @@ const LUX_PALETTE: CoffeePalette = {
  * Фон #F2EAE0, поверхности #EAE0D4, текст тёмно-коричневый, золото #9B7A50.
  */
 const KIEV_PALETTE: CoffeePalette = {
-  '--cm-bg': '#F2EAE0',
-  '--cm-surface': '#E8DDD0',
-  '--cm-surface-2': '#FFFFFF',
-  '--cm-text': '#2A1A0E',
-  '--cm-text-soft': '#4A3426',
-  '--cm-muted': 'rgba(42, 26, 14, 0.55)',
-  '--cm-muted-dim': 'rgba(42, 26, 14, 0.35)',
-  '--cm-border': 'rgba(155, 122, 80, 0.22)',
+  '--cm-bg': '#F0EAE0',
+  '--cm-surface': '#E4D9CC',
+  '--cm-surface-2': '#D9CCBD',
+  '--cm-text': '#3C2210',
+  '--cm-text-soft': '#6B4A28',
+  '--cm-muted': 'rgba(60, 34, 16, 0.52)',
+  '--cm-muted-dim': 'rgba(60, 34, 16, 0.36)',
+  '--cm-border': 'rgba(140, 101, 64, 0.18)',
   '--cm-logo-invert': '1',
-  '--cm-photo': 'contrast(1.04) saturate(1.06)',
+  '--cm-photo': 'contrast(1.03) saturate(1.05)',
   '--cm-photo-veil': 'transparent',
 };
 
