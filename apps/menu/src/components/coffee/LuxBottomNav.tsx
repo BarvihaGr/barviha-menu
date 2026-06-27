@@ -40,7 +40,7 @@ export function LuxBottomNav({ locationSlug }: Props) {
       key: 'menu',
       label: 'Меню',
       icon: BookOpen,
-      href: `${base}/menu`,
+      href: `${base}/kitchen`,
       match: (p: string) => p.startsWith(`${base}/menu`) || isCategoryPath(p, base),
       badge: 0,
     },

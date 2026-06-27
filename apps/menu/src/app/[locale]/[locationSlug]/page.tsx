@@ -56,7 +56,7 @@ export default async function LocationHome({
         locationSlug={location.slug}
         locationName={locationName}
         locationCity={location.city ?? location.address}
-        menuHref={`/${location.slug}/menu`}
+        menuHref={`/${location.slug}/kitchen`}
         menuLabel={tHome('menu')}
         locale={locale as Locale}
         socials={[]}
