@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
@@ -23,8 +24,8 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
   const t = useTranslations();
   const [bump, setBump] = useState(false);
 
+  const displayName = capitalizeRu(name.replace(/,.*$/, ''));
   const weightStr = item.weight != null ? `${item.weight} г` : null;
-  const meta = [weightStr, formatPrice(item.price)].filter(Boolean).join(' / ');
 
   const addToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -36,78 +37,75 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
   };
 
   return (
-    <article className="group flex h-full flex-col">
-      {/* Link — flex-col h-full чтобы контент тянулся и цена всегда снизу */}
+    <motion.article
+      className="group flex flex-col"
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-30px' }}
+      transition={{ duration: 0.38, ease: [0.25, 0.1, 0.25, 1] }}
+    >
       <Link
         href={`/${locationSlug}/item/${item.id}`}
-        className="relative flex flex-col h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cm-text)]/20"
+        className="flex flex-col h-full focus:outline-none"
       >
-        {/* Фото */}
-        <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-[18px] bg-[var(--cm-surface)]">
+        {/* Квадратное фото */}
+        <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[var(--cm-surface)]">
           {item.photo ? (
-            <>
-              <Image
-                src={item.photo}
-                alt={name}
-                fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 260px"
-                style={{ filter: 'var(--cm-photo, none)', objectPosition: 'center 35%' }}
-                className="object-cover scale-[1.08] transition duration-500 group-hover:scale-[1.13]"
-              />
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{ background: 'var(--cm-photo-veil, transparent)' }}
-              />
-            </>
+            <Image
+              src={item.photo}
+              alt={displayName}
+              fill
+              sizes="(max-width: 640px) 50vw, 33vw"
+              style={{ filter: 'var(--cm-photo, none)', objectPosition: 'center 35%' }}
+              className="object-cover transition duration-500 group-hover:scale-[1.05]"
+            />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-4xl text-[#d8d6d0]">
+            <div className="absolute inset-0 flex items-center justify-center text-3xl text-[var(--cm-muted-dim)]">
               ◍
             </div>
           )}
         </div>
 
-        {/* Текстовый блок.
-            position:relative — для absolute-футера.
-            pb-[40px] — защита: название не залезет под цену/кнопку.
-            Футер absolute bottom-0: всегда на одной высоте.
-            В CSS grid все карточки ряда одинаковой высоты →
-            bottom-0 даёт одинаковую Y-позицию у всех. */}
-        <div className="relative flex-1 pt-2.5 pb-[40px]">
+        {/* Инфо под фото */}
+        <div className="flex flex-col flex-1 pt-2.5 pb-1">
+          {/* Название */}
           <h3
-            className="text-[14px] sm:text-[15px] font-light normal-case leading-[1.35] tracking-[0.02em] text-[var(--cm-text)] overflow-hidden"
-            style={{ fontFamily: "'Jost', sans-serif", maxHeight: 'calc(1.35em * 2)' }}
+            className="text-[13.5px] font-medium leading-[1.3] text-[var(--cm-text)] overflow-hidden"
+            style={{ maxHeight: 'calc(1.3em * 2)' }}
           >
-            {capitalizeRu(name.replace(/,.*$/, ''))}
+            {displayName}
           </h3>
 
-          {/* Футер: цена слева, кнопка «+» справа — строго на одной оси */}
-          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between gap-2">
-            {meta ? (
-              <p className="font-[family-name:var(--font-sans)] text-[12.5px] sm:text-[13px] font-normal leading-none text-[var(--cm-muted-dim)]">
-                {meta}
-              </p>
-            ) : (
-              <span />
-            )}
+          {/* Вес + цена + кнопка */}
+          <div className="mt-auto flex items-center justify-between gap-1 pt-2">
+            <div className="flex flex-col leading-none">
+              {/* Строка веса — всегда занимает место (h-[15px]), цена всегда на одной высоте */}
+              <span className="block h-[15px] text-[11px] text-[var(--cm-muted)]">
+                {weightStr ?? ''}
+              </span>
+              <span className="text-[14px] font-semibold text-[var(--cm-accent)]">
+                {formatPrice(item.price)}
+              </span>
+            </div>
+
             <button
               type="button"
               onClick={addToCart}
-              aria-label={`${t('item.addToCart')} ${name}`}
+              aria-label={`${t('item.addToCart')} ${displayName}`}
               className={cnBump(
                 bump,
-                'shrink-0 grid h-8 w-8 place-items-center rounded-full bg-[var(--cm-surface)] text-[var(--cm-text)] shadow-sm transition-all duration-200 hover:bg-[var(--cm-accent)] hover:text-white cursor-pointer',
+                'shrink-0 grid h-8 w-8 place-items-center rounded-full bg-[var(--cm-accent)] text-white shadow-sm transition-all duration-200 active:scale-90 cursor-pointer',
               )}
             >
-              <Plus className="h-4 w-4" strokeWidth={2.4} />
+              <Plus className="h-4 w-4" strokeWidth={2.2} />
             </button>
           </div>
         </div>
       </Link>
-    </article>
+    </motion.article>
   );
 }
 
 function cnBump(active: boolean, base: string): string {
   return active ? `${base} scale-90` : base;
 }
-
