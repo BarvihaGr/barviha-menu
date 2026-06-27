@@ -154,10 +154,8 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                 }}
               >
                 {/* Шапка */}
-                <div className={cn('flex items-center justify-between px-5 pt-5 pb-4 border-b shrink-0', D.divider)}>
-                  <Dialog.Title className={cn('text-[10px] font-semibold uppercase', D.title)}>
-                    МЕНЮ
-                  </Dialog.Title>
+                <div className={cn('flex items-center justify-end px-5 pt-5 pb-4 border-b shrink-0', D.divider)}>
+                  <Dialog.Title className="sr-only">Навигация</Dialog.Title>
                   <Dialog.Close asChild>
                     <button
                       type="button"
@@ -198,44 +196,6 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
 
                   <div className={cn('mx-5 border-t shrink-0', D.divider)} />
 
-                  {/* ── Палитра (только Киевская) ── */}
-                  {showPalettePicker && (
-                    <>
-                      <div className="px-5 pt-5 pb-4 shrink-0">
-                        <p className={D.label}>Палитра</p>
-                        <div className="flex gap-2">
-                          {PALETTE_OPTIONS.map((opt) => {
-                            const active = kievVariant === opt.id;
-                            return (
-                              <button
-                                key={opt.id}
-                                type="button"
-                                onClick={() => setKievVariant(opt.id)}
-                                className={cn(
-                                  'flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] font-medium transition cursor-pointer',
-                                  active
-                                    ? isDark
-                                      ? 'border-gold text-gold bg-gold/12'
-                                      : 'border-[var(--cm-accent,#9B7A50)] text-[var(--cm-accent,#9B7A50)] bg-[var(--cm-accent,#9B7A50)]/10'
-                                    : isDark
-                                      ? 'border-white/12 text-muted hover:border-gold/45 hover:text-cream/80'
-                                      : 'border-[#dedad5] text-[#888] hover:border-[var(--cm-accent,#9B7A50)]/50 hover:text-[#333]',
-                                )}
-                              >
-                                <span
-                                  className="inline-block h-3 w-3 rounded-full border"
-                                  style={{ background: opt.swatch, borderColor: opt.swatchBorder }}
-                                />
-                                {opt.label}
-                                {active && <Check size={11} strokeWidth={2.5} />}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                      <div className={cn('mx-5 border-t shrink-0', D.divider)} />
-                    </>
-                  )}
 
                   {/* ── Локация ── */}
                   <div className="flex flex-col min-h-0 flex-1 px-5 pt-4 pb-3">
@@ -261,8 +221,8 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                     {/* Список локаций */}
                     <div className="overflow-y-auto flex-1 -mx-1">
                       {filtered.map((l) => {
-                        const accent = getMetroColor(l.slug);
                         const active = l.slug === locationSlug;
+                        const accent = getMetroColor(l.slug);
                         return (
                           <Link
                             key={l.id}
@@ -275,13 +235,6 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                             )}
                             style={{ borderLeftColor: active ? accent : 'transparent' }}
                           >
-                            <span
-                              className="inline-block h-2 w-2 shrink-0 rounded-full"
-                              style={{
-                                background: accent,
-                                boxShadow: active ? `0 0 5px ${accent}` : 'none',
-                              }}
-                            />
                             <span className="flex-1 truncate leading-tight">
                               {locName(l, locale)}
                             </span>
