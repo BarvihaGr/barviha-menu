@@ -3,6 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Metadata, Viewport } from 'next';
 import { routing } from '@/i18n/routing';
+import { SplashScreen } from '@/components/SplashScreen';
 import '../globals.css';
 
 export const metadata: Metadata = {
@@ -45,7 +46,9 @@ export default async function LocaleLayout({
         <div className="ambient-light" aria-hidden="true" />
         {/* Золотая пыль: редкие мерцающие крупинки, медленно плывут вверх. */}
         <div className="gold-dust" aria-hidden="true" />
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <SplashScreen>{children}</SplashScreen>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
