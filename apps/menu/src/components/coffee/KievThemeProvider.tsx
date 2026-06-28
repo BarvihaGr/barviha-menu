@@ -13,7 +13,7 @@ export const KIEV_PALETTES = {
     '--cm-muted': 'rgba(60, 34, 16, 0.52)',
     '--cm-muted-dim': 'rgba(60, 34, 16, 0.36)',
     '--cm-border': 'rgba(140, 101, 64, 0.18)',
-    '--cm-logo-invert': '1',
+    '--cm-logo-invert': '0',
   },
   arka: {
     '--cm-bg': '#6B5242',
@@ -24,7 +24,7 @@ export const KIEV_PALETTES = {
     '--cm-muted': 'rgba(244, 233, 213, 0.62)',
     '--cm-muted-dim': 'rgba(244, 233, 213, 0.38)',
     '--cm-border': 'rgba(196, 146, 98, 0.14)',
-    '--cm-logo-invert': '0',
+    '--cm-logo-invert': '1',
   },
 } as const;
 

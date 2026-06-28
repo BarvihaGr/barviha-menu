@@ -7,10 +7,6 @@ import { coffeeAccentStyle, getCoffeeAccent } from '@/lib/coffee-design';
 import { useKievTheme } from '@/store/kievTheme';
 import { KIEV_PALETTES } from './KievThemeProvider';
 import { HamburgerMenu } from '../HamburgerMenu';
-import { useLocale } from 'next-intl';
-import { usePathname, useRouter } from '@/i18n/navigation';
-import { routing, type Locale } from '@/i18n/routing';
-import { cn } from '@/lib/utils';
 
 interface Props {
   locationSlug: string;
@@ -20,52 +16,82 @@ interface Props {
 export function CoffeeHeader({ locationSlug, locations }: Props) {
   const homeHref = `/${locationSlug}`;
   const kievVariant = useKievTheme((s) => s.variant);
-  const locale = useLocale() as Locale;
-  const pathname = usePathname();
-  const router = useRouter();
-  const LANG_LABELS: Record<Locale, string> = { ru: 'RU', en: 'EN', zh: '中', hy: 'ՀՅ' };
-  // Для Киевской — динамический стиль (сливается база + текущая палитра)
   const kievPalette = KIEV_PALETTES[kievVariant] as React.CSSProperties;
   const headerStyle = locationSlug === 'kievskaia'
     ? { ...coffeeAccentStyle(locationSlug), ...kievPalette }
     : coffeeAccentStyle(locationSlug);
-  // themeStyle для HamburgerMenu портала — акцент + палитра Киевской
   const portalStyle: React.CSSProperties = locationSlug === 'kievskaia'
     ? { ['--cm-accent' as string]: getCoffeeAccent(locationSlug), ...kievPalette }
     : { ['--cm-accent' as string]: getCoffeeAccent(locationSlug) };
 
   return (
     <header
-      className="sticky top-0 z-30 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/95 backdrop-blur-md"
+      className="sticky top-0 z-30 overflow-hidden border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/95 backdrop-blur-md"
       style={headerStyle}
     >
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-6">
+      {/* Золотистые волны */}
+      <style>{`
+        @keyframes bvWave1 { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+        @keyframes bvWave2 { 0%{transform:translateX(-50%)} 100%{transform:translateX(0)} }
+        @keyframes bvWave3 { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+      `}</style>
+      <div className="pointer-events-none absolute inset-0">
+        {/* Волна 1 — медленная, широкая */}
+        <svg
+          className="absolute bottom-0 h-full"
+          style={{ width: '200%', animation: 'bvWave1 26s linear infinite' }}
+          viewBox="0 0 1440 56"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,28 C120,56 240,0 360,28 C480,56 600,0 720,28 C840,56 960,0 1080,28 C1200,56 1320,0 1440,28 L1440,56 L0,56 Z"
+            fill="rgba(197,168,128,0.10)"
+          />
+        </svg>
+        {/* Волна 2 — средняя, в обратную сторону */}
+        <svg
+          className="absolute bottom-0 h-full"
+          style={{ width: '200%', animation: 'bvWave2 18s linear infinite' }}
+          viewBox="0 0 1440 56"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,38 C160,14 320,50 480,32 C640,14 800,50 960,32 C1120,14 1280,50 1440,32 L1440,56 L0,56 Z"
+            fill="rgba(197,168,128,0.07)"
+          />
+        </svg>
+        {/* Волна 3 — тонкая, быстрая */}
+        <svg
+          className="absolute bottom-0 h-full"
+          style={{ width: '200%', animation: 'bvWave3 12s linear infinite' }}
+          viewBox="0 0 1440 56"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,44 C90,28 180,56 270,40 C360,24 450,52 540,38 C630,24 720,52 810,40 C900,28 990,50 1080,42 C1170,34 1260,48 1440,40 L1440,56 L0,56 Z"
+            fill="rgba(197,168,128,0.05)"
+          />
+        </svg>
+      </div>
+
+      <div className="relative mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-6">
         <Link
           href={homeHref}
-          className="flex min-w-0 items-center gap-2.5 cursor-pointer"
+          className="flex min-w-0 items-center cursor-pointer"
           aria-label="Barvikha Group"
         >
           <Image
-            src="/logo-barvikha.png"
-            alt="Барвиха"
-            width={150}
-            height={93}
-            priority
-            className="hidden h-9 w-auto shrink-0 sm:block"
-            style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
-          />
-          <Image
-            src="/logo-since2017.png"
+            src="/logo.png"
             alt="Barvikha Group Since 2017"
             width={427}
             height={57}
             priority
-            className="h-[14px] w-auto sm:h-[20px]"
+            className="h-[24px] w-auto sm:h-[30px]"
             style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
           />
         </Link>
 
-<HamburgerMenu
+        <HamburgerMenu
           locationSlug={locationSlug}
           locations={locations}
           variant="coffee"

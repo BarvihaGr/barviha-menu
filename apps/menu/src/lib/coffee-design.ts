@@ -59,8 +59,8 @@ const LIGHT_PALETTE: CoffeePalette = {
   '--cm-muted': '#6b6b6b',
   '--cm-muted-dim': '#9b9b9b',
   '--cm-border': '#ececec',
-  // Белый вордмарк-лого (logo.png) на светлом фоне инвертируется в тёмный.
-  '--cm-logo-invert': '1',
+  // Тёмный вордмарк-лого (logo.png) на светлом фоне — без инверсии.
+  '--cm-logo-invert': '0',
   // Единый цветокор фото блюд: лёгкая нормализация, без вуали (светлый фон).
   '--cm-photo': 'contrast(1.03) saturate(1.03)',
   '--cm-photo-veil': 'transparent',
@@ -76,8 +76,8 @@ const BRONZE_PALETTE: CoffeePalette = {
   '--cm-muted': 'rgba(241, 217, 176, 0.66)',
   '--cm-muted-dim': 'rgba(241, 217, 176, 0.45)',
   '--cm-border': 'rgba(196, 146, 98, 0.22)',
-  // Тёмный фон — белый вордмарк-лого остаётся белым (без инверсии).
-  '--cm-logo-invert': '0',
+  // Тёмный фон — тёмный вордмарк инвертируем в белый.
+  '--cm-logo-invert': '1',
   // Единый цветокор: лёгкий тёплый грейд (экспозиция выровнена в самих файлах).
   '--cm-photo': 'contrast(1.04) saturate(1.04)',
   '--cm-photo-veil': 'transparent',
@@ -96,8 +96,8 @@ const LUX_PALETTE: CoffeePalette = {
   '--cm-muted': 'rgba(244, 240, 234, 0.58)',
   '--cm-muted-dim': 'rgba(244, 240, 234, 0.38)',
   '--cm-border': 'rgba(184, 155, 106, 0.18)',
-  // Тёмный фон — белый вордмарк-лого остаётся белым (без инверсии).
-  '--cm-logo-invert': '0',
+  // Тёмный фон — тёмный вордмарк инвертируем в белый.
+  '--cm-logo-invert': '1',
   // Единый «дорогой» цветокор: лёгкий контраст без вуали (экспозиция
   // выровнена в самих файлах — нормализация средней яркости).
   '--cm-photo': 'contrast(1.05) saturate(0.97)',
@@ -117,7 +117,7 @@ const KIEV_PALETTE: CoffeePalette = {
   '--cm-muted': 'rgba(60, 34, 16, 0.52)',
   '--cm-muted-dim': 'rgba(60, 34, 16, 0.36)',
   '--cm-border': 'rgba(140, 101, 64, 0.18)',
-  '--cm-logo-invert': '1',
+  '--cm-logo-invert': '0',
   '--cm-photo': 'contrast(1.03) saturate(1.05)',
   '--cm-photo-veil': 'transparent',
 };
