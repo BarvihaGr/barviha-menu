@@ -65,26 +65,7 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
           />
         </Link>
 
-        {/* Компактный переключатель языков — всегда виден */}
-        <div className="flex items-center gap-1 rounded-full border border-[var(--cm-border)] bg-[var(--cm-surface)] px-1 py-1">
-          {(routing.locales as readonly Locale[]).map((l) => (
-            <button
-              key={l}
-              type="button"
-              onClick={() => router.replace(pathname, { locale: l })}
-              className={cn(
-                'h-7 min-w-[28px] rounded-full px-2 text-[11px] font-medium transition-all duration-200 cursor-pointer',
-                l === locale
-                  ? 'bg-[color:var(--cm-accent)] text-white shadow-sm'
-                  : 'text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
-              )}
-            >
-              {LANG_LABELS[l]}
-            </button>
-          ))}
-        </div>
-
-        <HamburgerMenu
+<HamburgerMenu
           locationSlug={locationSlug}
           locations={locations}
           variant="coffee"
