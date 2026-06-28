@@ -1,3 +1,6 @@
+'use client';
+
+import { Wifi } from 'lucide-react';
 import { Phone, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
 
@@ -6,6 +9,7 @@ interface Props {
   phone: string | null;
   address: string | null;
   hours: string;
+  wifi?: { ssid: string; password: string };
 }
 
 /** Маршрут «от меня» до адреса на Яндекс.Картах. */
@@ -18,7 +22,13 @@ function directionsUrl(address: string): string {
  * «лейбл / значение» c тонкими золотыми иконками, мини-карта и ссылка
  * «Как добраться». Тёмный люкс-минимализм.
  */
-export function CoffeeLuxContacts({ locationSlug, phone, address, hours }: Props) {
+// Wi-Fi для Киевской — заменить на реальные данные
+const LOCATION_WIFI: Record<string, { ssid: string; password: string }> = {
+  kievskaia: { ssid: 'Barvikha_Kiev', password: 'barvikha2024' },
+};
+
+export function CoffeeLuxContacts({ locationSlug, phone, address, hours, wifi }: Props) {
+  const wifiData = wifi ?? LOCATION_WIFI[locationSlug];
   const rows = [
     phone
       ? { icon: Phone, label: 'Телефон', value: phone, href: `tel:${phone.replace(/[^+\d]/g, '')}` }
@@ -72,6 +82,29 @@ export function CoffeeLuxContacts({ locationSlug, phone, address, hours }: Props
             );
           })}
         </div>
+
+        {/* Wi-Fi */}
+        {wifiData && (
+          <a
+            href={`WIFI:T:WPA;S:${wifiData.ssid};P:${wifiData.password};;`}
+            className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-[var(--cm-border)] bg-[var(--cm-surface)] px-5 py-4 transition-colors hover:bg-[var(--cm-surface-2)] cursor-pointer"
+          >
+            <div className="flex items-center gap-4">
+              <Wifi size={20} strokeWidth={1.5} className="text-[color:var(--cm-accent)]" />
+              <div>
+                <div className="font-[family-name:var(--font-sans)] text-[12px] uppercase tracking-[0.18em] text-[var(--cm-muted)]">
+                  Бесплатный Wi-Fi
+                </div>
+                <div className="mt-0.5 font-[family-name:var(--font-sans)] text-[15px] text-[var(--cm-text)]">
+                  {wifiData.ssid}
+                </div>
+              </div>
+            </div>
+            <span className="font-[family-name:var(--font-sans)] text-[13px] text-[color:var(--cm-accent)]">
+              Подключиться →
+            </span>
+          </a>
+        )}
 
         {/* Мини-карта + как добраться */}
         <div className="mt-8 overflow-hidden rounded-2xl border border-[var(--cm-border)] bg-[var(--cm-surface)]">

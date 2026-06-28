@@ -34,7 +34,7 @@ const COFFEE_ACCENT_FROM: Record<string, string> = {};
 const COFFEE_ACCENT: Record<string, string> = {
   domodedovo: '#C49262', // бронза-золото «Арки» (тёмный цветокор)
   erevan: '#B89B6A', // приглушённое золото «дорогого минимализма»
-  kievskaia: '#C4A96A', // бренд: слоновая кость / песочно-бежевый (#DBC278 тёмная версия)
+  kievskaia: '#C5A880', // брендбук: матовое золото / шампань (приглушённый люкс)
 };
 
 /**

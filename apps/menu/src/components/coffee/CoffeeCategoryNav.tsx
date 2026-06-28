@@ -32,7 +32,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
                 <Link
                   href={hrefFor(c.slug)}
                   className={cn(
-                    'block rounded-lg px-3 py-2 font-[family-name:var(--font-sans)] text-[15px] leading-snug transition-colors',
+                    'block rounded-lg px-3 py-2 font-[family-name:var(--font-sans)] text-[15px] leading-snug transition-all duration-200 active:scale-[0.96]',
                     on
                       ? 'font-semibold text-[var(--cm-accent)]'
                       : 'font-normal text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
@@ -60,9 +60,9 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
                   href={hrefFor(c.slug)}
                   aria-current={on ? 'page' : undefined}
                   className={cn(
-                    'shrink-0 whitespace-nowrap rounded-full border px-4 py-2 font-[family-name:var(--font-sans)] text-[14px] transition-all duration-300 ease-out',
+                    'shrink-0 whitespace-nowrap rounded-full border px-4 py-2 font-[family-name:var(--font-sans)] text-[14px] transition-all duration-200 ease-out active:scale-[0.94]',
                     on
-                      ? 'border-transparent bg-[var(--cm-accent)] font-medium text-white shadow-[0_2px_12px_-4px_var(--cm-accent)]'
+                      ? 'border-transparent bg-[var(--cm-accent)] font-medium text-[var(--cm-bg)] shadow-[0_2px_14px_-4px_var(--cm-accent)]'
                       : 'border-[var(--cm-border)] bg-[var(--cm-surface)]/60 text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
                   )}
                 >

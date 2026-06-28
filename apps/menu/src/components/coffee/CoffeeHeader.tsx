@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import Image from 'next/image';
 import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
@@ -9,6 +7,10 @@ import { coffeeAccentStyle, getCoffeeAccent } from '@/lib/coffee-design';
 import { useKievTheme } from '@/store/kievTheme';
 import { KIEV_PALETTES } from './KievThemeProvider';
 import { HamburgerMenu } from '../HamburgerMenu';
+import { useLocale } from 'next-intl';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { routing, type Locale } from '@/i18n/routing';
+import { cn } from '@/lib/utils';
 
 interface Props {
   locationSlug: string;
@@ -18,6 +20,10 @@ interface Props {
 export function CoffeeHeader({ locationSlug, locations }: Props) {
   const homeHref = `/${locationSlug}`;
   const kievVariant = useKievTheme((s) => s.variant);
+  const locale = useLocale() as Locale;
+  const pathname = usePathname();
+  const router = useRouter();
+  const LANG_LABELS: Record<Locale, string> = { ru: 'RU', en: 'EN', zh: '中', hy: 'ՀՅ' };
   // Для Киевской — динамический стиль (сливается база + текущая палитра)
   const kievPalette = KIEV_PALETTES[kievVariant] as React.CSSProperties;
   const headerStyle = locationSlug === 'kievskaia'
@@ -40,12 +46,13 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
           aria-label="Barvikha Group"
         >
           <Image
-            src="/locations/arka/logo-tree.png"
+            src="/logo-barvikha.png"
             alt="Барвиха"
             width={150}
             height={93}
             priority
             className="hidden h-9 w-auto shrink-0 sm:block"
+            style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
           />
           <Image
             src="/logo-since2017.png"
@@ -57,6 +64,25 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
             style={{ filter: 'invert(var(--cm-logo-invert, 0))' }}
           />
         </Link>
+
+        {/* Компактный переключатель языков — всегда виден */}
+        <div className="flex items-center gap-1 rounded-full border border-[var(--cm-border)] bg-[var(--cm-surface)] px-1 py-1">
+          {(routing.locales as readonly Locale[]).map((l) => (
+            <button
+              key={l}
+              type="button"
+              onClick={() => router.replace(pathname, { locale: l })}
+              className={cn(
+                'h-7 min-w-[28px] rounded-full px-2 text-[11px] font-medium transition-all duration-200 cursor-pointer',
+                l === locale
+                  ? 'bg-[color:var(--cm-accent)] text-white shadow-sm'
+                  : 'text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
+              )}
+            >
+              {LANG_LABELS[l]}
+            </button>
+          ))}
+        </div>
 
         <HamburgerMenu
           locationSlug={locationSlug}

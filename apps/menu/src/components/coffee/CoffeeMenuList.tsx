@@ -149,9 +149,9 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
                   type="button"
                   onClick={() => jumpTo(s.id)}
                   className={cn(
-                    'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 font-[family-name:var(--font-sans)] text-[13px] transition-all duration-200 cursor-pointer',
+                    'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 font-[family-name:var(--font-sans)] text-[13px] transition-all duration-200 cursor-pointer active:scale-[0.93]',
                     activeSection === s.id
-                      ? 'bg-[var(--cm-accent)] font-semibold text-white shadow-sm'
+                      ? 'bg-[var(--cm-accent)] font-semibold text-[var(--cm-bg)] shadow-sm'
                       : 'bg-[var(--cm-surface)] text-[var(--cm-text-soft)] hover:text-[var(--cm-text)]',
                   )}
                 >
@@ -185,7 +185,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
             >
               {/* Заголовок секции */}
               {hasMultipleSections && s.label && (
-                <h2 className="mb-4 font-[family-name:var(--font-display)] text-[20px] font-light tracking-[0.05em] text-[var(--cm-text)] opacity-85">
+                <h2 className="mb-5 font-[family-name:var(--font-display)] text-[22px] font-light tracking-[0.08em] text-[var(--cm-text)] uppercase">
                   {s.label}
                 </h2>
               )}

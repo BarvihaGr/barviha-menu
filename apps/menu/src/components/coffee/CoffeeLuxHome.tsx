@@ -1,10 +1,13 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useSearchParams } from 'next/navigation';
 import type { Locale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
 import { AutoPlayVideo } from './AutoPlayVideo';
+import { useToast } from '@/store/toast';
 
 interface Props {
   locationSlug: string;
@@ -25,6 +28,16 @@ export function CoffeeLuxHome({
   menuLabel,
 }: Props) {
   const style = coffeeAccentStyle(locationSlug);
+  const searchParams = useSearchParams();
+  const tableNum = searchParams.get('table');
+  const push = useToast((s) => s.push);
+
+  const callStaff = (role: 'waiter' | 'hookah') => {
+    const label = role === 'waiter' ? 'официанта' : 'кальянщика';
+    const msg = tableNum ? `Вызов ${label} — стол №${tableNum}` : `Вызов ${label}`;
+    push(msg, 'success');
+    // TODO: отправить в Telegram-бот: POST /api/call-staff { role, table: tableNum }
+  };
 
   return (
     <div
@@ -105,6 +118,7 @@ export function CoffeeLuxHome({
                 </motion.span>
               </Link>
             </motion.div>
+
           </motion.div>
         </div>
       </section>
