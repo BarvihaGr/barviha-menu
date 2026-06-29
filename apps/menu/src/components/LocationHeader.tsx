@@ -28,8 +28,8 @@ export function LocationHeader({ locationSlug, locations }: Props) {
             <path
               d="M0 38 C150 14 450 62 600 38 C750 14 1050 62 1200 38"
               stroke="#E5C490"
-              strokeWidth="2.8"
-              strokeOpacity="0.7"
+              strokeWidth="1.5"
+              strokeOpacity="0.28"
             />
           </svg>
         </div>
@@ -42,8 +42,8 @@ export function LocationHeader({ locationSlug, locations }: Props) {
             <path
               d="M0 26 C150 50 450 2 600 26 C750 50 1050 2 1200 26"
               stroke="#C49262"
-              strokeWidth="2"
-              strokeOpacity="0.6"
+              strokeWidth="1.2"
+              strokeOpacity="0.22"
             />
           </svg>
         </div>
@@ -56,8 +56,8 @@ export function LocationHeader({ locationSlug, locations }: Props) {
             <path
               d="M0 32 C100 12 300 52 400 32 C500 12 700 52 800 32"
               stroke="#D4A86A"
-              strokeWidth="1.4"
-              strokeOpacity="0.45"
+              strokeWidth="1"
+              strokeOpacity="0.18"
             />
           </svg>
         </div>
