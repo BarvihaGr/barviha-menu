@@ -8,21 +8,22 @@ import Image from 'next/image';
 // ─── Ring geometry ─────────────────────────────────────────
 const CX = 150;
 const CY = 150;
-const R1 = 68;    // inner  — ярче всего
-const R2 = 96;    // middle — sparkle бежит по нему
-const R3 = 126;   // outer  — с засечками как циферблат
+const R1 = 68;    // inner   — ярче всего
+const R2 = 96;    // middle  — sparkle бежит
+const R3 = 126;   // outer   — с засечками
+const R4 = 143;   // accent  — пунктир, медленно вращается
 const C1 = 2 * Math.PI * R1;
 const C2 = 2 * Math.PI * R2;
 const C3 = 2 * Math.PI * R3;
 
 // ─── Palette ────────────────────────────────────────────────
-const BG     = '#0A0806';                      // глубокий эспрессо-чёрный
-const GOLD   = '#C5A880';                      // шампанское золото
-const GOLD_B = '#E8D5A3';                      // яркое золото
-const GOLD_D = 'rgba(197,168,128,0.12)';       // направляющие круги
-const CREAM  = '#D8CEC0';                      // фон медальона
+const BG     = '#0A0806';
+const GOLD   = '#C5A880';
+const GOLD_B = '#E8D5A3';
+const GOLD_D = 'rgba(197,168,128,0.09)';
+const CREAM  = '#D8CEC0';
 
-// ─── Particles (детерминированные — нет hydration mismatch) ─
+// ─── Particles ──────────────────────────────────────────────
 const PARTICLES = [
   { l:  6, dl: 0.4, dr: 4.8, s: 1.5 },
   { l: 14, dl: 1.8, dr: 3.9, s: 1   },
@@ -42,8 +43,8 @@ const PARTICLES = [
   { l: 88, dl: 0.8, dr: 4.5, s: 1.5 },
 ];
 
-// Засечки на внешнем кольце (как циферблат часов)
-const TICK_ANGLES = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
+// 24 засечки с тремя уровнями (major / medium / minor)
+const TICK_ANGLES = Array.from({ length: 24 }, (_, i) => i * 15);
 const TITLE_CHARS = 'BARVIKHA'.split('');
 
 let splashShown = false;
@@ -63,10 +64,10 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
 
     const ts = [
       setTimeout(() => setPhase(1), 300),   // кольца + логотип
-      setTimeout(() => setPhase(2), 2000),  // буквы заголовка каскадом
-      setTimeout(() => setPhase(3), 3000),  // тэглайн
-      setTimeout(() => setPhase(4), 4000),  // iris-close
-      setTimeout(() => setShow(false), 5200),
+      setTimeout(() => setPhase(2), 2200),  // буквы
+      setTimeout(() => setPhase(3), 3200),  // тэглайн
+      setTimeout(() => setPhase(4), 4500),  // iris-close
+      setTimeout(() => setShow(false), 5700),
     ];
     return () => ts.forEach(clearTimeout);
   }, [pathname]);
@@ -79,7 +80,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
         <div
           className="fixed inset-0 z-[9999] overflow-hidden"
           style={{
-            background: BG,
+            background: `radial-gradient(ellipse 55% 55% at 50% 50%, #130F0A 0%, ${BG} 100%)`,
             clipPath:   phase >= 4 ? 'circle(0% at 50% 50%)' : 'circle(150% at 50% 50%)',
             transition: phase >= 4
               ? 'clip-path 1.2s cubic-bezier(0.4, 0, 0.2, 1)'
@@ -95,14 +96,23 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
             }
           `}</style>
 
-          {/* Дышащее центральное золотое свечение */}
+          {/* Тёмная виньетка — взгляд фокусируется на центре */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(ellipse 65% 65% at 50% 50%, transparent 35%, rgba(0,0,0,0.7) 100%)',
+            }}
+          />
+
+          {/* Дышащее центральное свечение */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(ellipse 62% 56% at 50% 50%, rgba(197,168,128,0.15) 0%, transparent 70%)',
+                'radial-gradient(ellipse 50% 46% at 50% 50%, rgba(197,168,128,0.2) 0%, transparent 70%)',
             }}
-            animate={{ opacity: phase >= 1 && phase < 4 ? [0.78, 1, 0.78] : 0.78 }}
+            animate={{ opacity: phase >= 1 && phase < 4 ? [0.65, 1, 0.65] : 0.65 }}
             transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
           />
 
@@ -127,22 +137,41 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* ──── Основной контент ──────────────────────────── */}
-          {/* Кольца всегда по центру — текст абсолютно, не сдвигает layout */}
           <div className="absolute inset-0 flex items-center justify-center select-none">
 
-            {/* Блок с тремя кольцами и логотипом */}
+            {/* Блок с кольцами и логотипом */}
             <div style={{ position: 'relative', width: 300, height: 300 }}>
               <motion.svg
                 width="300" height="300" viewBox="0 0 300 300"
                 fill="none"
                 className="absolute inset-0"
               >
-                {/* Направляющие круги */}
+                {/* Направляющие */}
                 <circle cx={CX} cy={CY} r={R1} stroke={GOLD_D} strokeWidth="0.5" />
                 <circle cx={CX} cy={CY} r={R2} stroke={GOLD_D} strokeWidth="0.5" />
                 <circle cx={CX} cy={CY} r={R3} stroke={GOLD_D} strokeWidth="0.5" />
 
-                {/* Внутреннее кольцо — ярче всего, рисуется первым */}
+                {/* Пунктирное акцентное кольцо — медленно вращается как безель */}
+                <motion.circle
+                  cx={CX} cy={CY} r={R4}
+                  stroke={GOLD}
+                  strokeWidth="0.6"
+                  fill="none"
+                  strokeDasharray="3 13"
+                  style={{ transformOrigin: '50% 50%' }}
+                  initial={{ opacity: 0 }}
+                  animate={
+                    phase >= 1
+                      ? { opacity: 0.4, rotate: 360 }
+                      : { opacity: 0,   rotate: 0   }
+                  }
+                  transition={{
+                    opacity: { delay: 0.7, duration: 1.4, ease: 'easeOut' },
+                    rotate:  { delay: 0.7, duration: 100, ease: 'linear', repeat: Infinity },
+                  }}
+                />
+
+                {/* Внутреннее кольцо */}
                 <motion.circle
                   cx={CX} cy={CY} r={R1}
                   stroke={GOLD_B} strokeWidth="1.5" fill="none"
@@ -154,7 +183,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                   transition={{ duration: 1.2, delay: 0, ease: [0.4, 0, 0.2, 1] }}
                 />
 
-                {/* Среднее кольцо — в обратную сторону */}
+                {/* Среднее кольцо */}
                 <motion.circle
                   cx={CX} cy={CY} r={R2}
                   stroke={GOLD} strokeWidth="1" fill="none"
@@ -166,7 +195,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                   transition={{ duration: 1.5, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
                 />
 
-                {/* Внешнее кольцо — самое тонкое, медленнее всех */}
+                {/* Внешнее кольцо */}
                 <motion.circle
                   cx={CX} cy={CY} r={R3}
                   stroke={GOLD} strokeWidth="0.75" fill="none"
@@ -178,24 +207,38 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                   transition={{ duration: 1.8, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 />
 
-                {/* Sonar-волна — радиальный импульс от внутреннего кольца */}
+                {/* Сонар-волна 1 */}
                 {phase >= 1 && phase < 4 && (
                   <motion.circle
                     cx={CX} cy={CY}
                     fill="none"
                     stroke={GOLD_B}
-                    strokeWidth="3"
-                    initial={{ r: R1, opacity: 0.25 }}
-                    animate={{ r: [R1, R1 + 48], opacity: [0.25, 0] }}
-                    transition={{ repeat: Infinity, duration: 4.0, delay: 1.8, ease: 'easeOut' }}
+                    strokeWidth="2"
+                    initial={{ r: R1, opacity: 0.3 }}
+                    animate={{ r: [R1, R1 + 54], opacity: [0.3, 0] }}
+                    transition={{ repeat: Infinity, duration: 3.8, delay: 1.8, ease: 'easeOut' }}
                   />
                 )}
 
-                {/* Засечки как у циферблата */}
+                {/* Сонар-волна 2 (со смещением — создаёт ритм) */}
+                {phase >= 1 && phase < 4 && (
+                  <motion.circle
+                    cx={CX} cy={CY}
+                    fill="none"
+                    stroke={GOLD}
+                    strokeWidth="1.2"
+                    initial={{ r: R1, opacity: 0.2 }}
+                    animate={{ r: [R1, R1 + 54], opacity: [0.2, 0] }}
+                    transition={{ repeat: Infinity, duration: 3.8, delay: 3.7, ease: 'easeOut' }}
+                  />
+                )}
+
+                {/* Засечки — 24 штуки, три уровня */}
                 {phase >= 1 && TICK_ANGLES.map((angle, i) => {
-                  const rad = (angle - 90) * Math.PI / 180;
-                  const isMajor = i % 3 === 0;
-                  const len = isMajor ? 8 : 4;
+                  const rad      = (angle - 90) * Math.PI / 180;
+                  const isMajor  = i % 6 === 0;
+                  const isMedium = i % 3 === 0 && !isMajor;
+                  const len      = isMajor ? 9 : isMedium ? 5 : 3;
                   return (
                     <motion.line
                       key={angle}
@@ -203,11 +246,11 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                       y1={CY + R3 * Math.sin(rad)}
                       x2={CX + (R3 + len) * Math.cos(rad)}
                       y2={CY + (R3 + len) * Math.sin(rad)}
-                      stroke={GOLD}
-                      strokeWidth={isMajor ? '1' : '0.5'}
+                      stroke={isMajor ? GOLD_B : GOLD}
+                      strokeWidth={isMajor ? '1.2' : isMedium ? '0.7' : '0.45'}
                       initial={{ opacity: 0 }}
-                      animate={{ opacity: isMajor ? 0.7 : 0.35 }}
-                      transition={{ delay: 1.5 + i * 0.04, duration: 0.4 }}
+                      animate={{ opacity: isMajor ? 0.85 : isMedium ? 0.5 : 0.28 }}
+                      transition={{ delay: 1.35 + i * 0.025, duration: 0.4 }}
                     />
                   );
                 })}
@@ -265,6 +308,31 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                 />
               )}
 
+              {/* Burst-волна когда монетка встала на место */}
+              {phase >= 1 && (
+                <motion.div
+                  style={{
+                    position:     'absolute',
+                    top: '50%', left: '50%',
+                    width:        120,
+                    height:       120,
+                    marginTop:    -60,
+                    marginLeft:   -60,
+                    borderRadius: '50%',
+                    border:       '1.5px solid rgba(197,168,128,0.8)',
+                    pointerEvents: 'none',
+                  }}
+                  initial={{ scale: 1,   opacity: 0 }}
+                  animate={{ scale: 1.95, opacity: [0, 0.75, 0] }}
+                  transition={{
+                    delay:   2.05,
+                    duration: 1.4,
+                    ease:    'easeOut',
+                    opacity: { times: [0, 0.07, 1] },
+                  }}
+                />
+              )}
+
               {/* Логотип — медальон с золотым свечением */}
               <div
                 className="absolute inset-0 flex items-center justify-center"
@@ -288,8 +356,8 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                     position:     'relative',
                     background:   CREAM,
                     boxShadow:    `0 0 0 1px rgba(197,168,128,0.5),
-                                   0 0 28px rgba(197,168,128,0.35),
-                                   0 0 70px rgba(197,168,128,0.1)`,
+                                   0 0 28px rgba(197,168,128,0.38),
+                                   0 0 80px rgba(197,168,128,0.12)`,
                   }}>
                     <Image
                       src="/logo-arka.png"
@@ -315,7 +383,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
               </div>
             </div>
 
-            {/* Текстовый блок — абсолютно, не влияет на позицию колец */}
+            {/* Текстовый блок — абсолютно, не сдвигает кольца */}
             <AnimatePresence>
               {phase >= 2 && phase < 4 && (
                 <motion.div
@@ -356,7 +424,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                     />
                   </div>
 
-                  {/* Название — буква за буквой каскадом */}
+                  {/* BARVIKHA — буква за буквой */}
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '0.28em' }}>
                     {TITLE_CHARS.map((char, i) => (
                       <motion.span
@@ -370,13 +438,13 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                         }}
                         style={{
                           fontFamily:   "'Cormorant SC', 'Cormorant Garamond', Georgia, serif",
-                          fontSize:      24,
+                          fontSize:      28,
                           fontWeight:    600,
                           color:         GOLD_B,
                           letterSpacing: '0.05em',
                           textTransform: 'uppercase',
                           lineHeight:    1,
-                          textShadow:   '0 0 22px rgba(232,213,163,0.55), 0 0 6px rgba(232,213,163,0.3)',
+                          textShadow:   '0 0 24px rgba(232,213,163,0.6), 0 0 8px rgba(232,213,163,0.35)',
                         }}
                       >
                         {char}
@@ -386,22 +454,35 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
 
                   {/* Тэглайн */}
                   {phase >= 3 && (
-                    <motion.p
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 0.55, y: 0 }}
-                      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-                      style={{
-                        fontFamily:   "'Cormorant SC', 'Cormorant Garamond', Georgia, serif",
-                        fontSize:      8.5,
-                        fontWeight:    400,
-                        color:         GOLD,
-                        letterSpacing: '0.45em',
-                        textTransform: 'uppercase',
-                        marginTop:     12,
-                      }}
-                    >
-                      Since · 2017
-                    </motion.p>
+                    <>
+                      <motion.div
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={{ scaleX: 1,  opacity: 0.3 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        style={{
+                          height:     '0.5px',
+                          width:      90,
+                          background: GOLD,
+                          margin:     '10px auto 8px',
+                        }}
+                      />
+                      <motion.p
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 0.55, y: 0 }}
+                        transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                        style={{
+                          fontFamily:   "'Cormorant SC', 'Cormorant Garamond', Georgia, serif",
+                          fontSize:      8.5,
+                          fontWeight:    400,
+                          color:         GOLD,
+                          letterSpacing: '0.45em',
+                          textTransform: 'uppercase',
+                          marginTop:     0,
+                        }}
+                      >
+                        Since · 2017
+                      </motion.p>
+                    </>
                   )}
                 </motion.div>
               )}
