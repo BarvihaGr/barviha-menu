@@ -187,18 +187,19 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                 />
               )}
 
-              {/* Дерево — крутится при появлении */}
-              <div className="absolute inset-0 flex items-center justify-center">
+              {/* Дерево — вращается как монетка (rotateY) при появлении */}
+              {/* perspective на родителе обязателен для 3D-эффекта */}
+              <div className="absolute inset-0 flex items-center justify-center" style={{ perspective: '600px' }}>
                 <motion.div
-                  // НЕТ overflow-hidden здесь — прямоугольник при повороте даёт углы
                   style={{ position: 'relative', width: 112, height: 112 }}
-                  initial={{ opacity: 0, scale: 0.07, rotate: 360 }}
+                  initial={{ opacity: 0, scale: 0.2, rotateY: 720 }}
                   animate={
                     phase >= 1
-                      ? { opacity: 1, scale: 1, rotate: 0 }
-                      : { opacity: 0, scale: 0.07, rotate: 360 }
+                      ? { opacity: 1, scale: 1, rotateY: 0 }
+                      : { opacity: 0, scale: 0.2, rotateY: 720 }
                   }
-                  transition={{ duration: 1.0, ease: [0.34, 1.08, 0.64, 1] }}
+                  // чуть дольше — монетке нужно время замедлиться и лечь
+                  transition={{ duration: 1.3, ease: [0.34, 1.05, 0.64, 1] }}
                 >
                   {/* Круговой клип — круг при любом угле поворота = никаких углов */}
                   <div style={{
