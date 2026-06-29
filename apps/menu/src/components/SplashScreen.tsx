@@ -9,12 +9,11 @@ import Image from 'next/image';
 const R    = 88;
 const CIRC = 2 * Math.PI * R; // stroke-dasharray длина
 
-// ─── Цвета ────────────────────────────────────────────────────────────────────
-const BG_DARK = '#2A1A0F';                       // Layer 3 — сплэш (тёмный старт)
-const OVERLAY = 'rgba(42, 26, 15, 0.58)';        // Layer 2 — затемняет сайт под сплэшем
-const RING_C  = '#C5A880';                        // золото кольца
-const RING_D  = 'rgba(197,168,128,0.15)';         // направляющий круг (бледный)
-const TEXT_C  = 'rgba(244,233,213,0.82)';         // кремовый текст на тёмном
+// ─── Цвета (светлая тема — точь-в-точь Киевская) ────────────────────────────
+const BG_DARK = '#D8CEC0';                        // совпадает с --cm-bg Киевской
+const RING_C  = '#C5A880';                        // шампанское золото
+const RING_D  = 'rgba(197,168,128,0.2)';          // направляющий круг
+const TEXT_C  = '#6B4A28';                        // тёмно-коричневый текст
 
 // ─── Частицы: детерминированные (нет random → нет hydration mismatch) ─────────
 const PARTICLES = [
@@ -68,21 +67,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
       {/* ─── Layer 1: сайт (нормальный поток) ─────────────────────────────── */}
       {children}
 
-      {/* ─── Layer 2: тёмный оверлей — затемняет сайт во время сплэша ──────── */}
-      <AnimatePresence>
-        {show === true && (
-          <motion.div
-            key="overlay"
-            className="fixed inset-0 z-[9998] pointer-events-none"
-            style={{ background: OVERLAY, backdropFilter: 'blur(3px)' }}
-            initial={{ opacity: 1 }}
-            animate={{ opacity: phase >= 3 ? 0 : 1 }}
-            exit={{ opacity: 0 }}
-            // cubic-bezier(0.25, 1, 0.5, 1) — быстрый старт, мягкий финиш
-            transition={{ duration: 0.9, ease: [0.25, 1, 0.5, 1] }}
-          />
-        )}
-      </AnimatePresence>
+      {/* Layer 2 не нужен — фон сплэша совпадает с сайтом */}
 
       {/* ─── Layer 3: сплэш ───────────────────────────────────────────────── */}
       {show === true && (
@@ -111,7 +96,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(ellipse 55% 55% at 50% 50%, rgba(197,168,128,0.1) 0%, transparent 70%)',
+                'radial-gradient(ellipse 55% 55% at 50% 50%, rgba(197,168,128,0.18) 0%, transparent 70%)',
             }}
           />
 
@@ -220,8 +205,8 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                     width={112} height={112}
                     priority
                     className="object-contain"
-                    // Тёплый белый на тёмном фоне
-                    style={{ filter: 'brightness(0) invert(1) sepia(0.15) saturate(1.4)' }}
+                    // multiply: белый фон PNG совпадает с bg → невидим, золото остаётся
+                    style={{ mixBlendMode: 'multiply' }}
                   />
 
                   {/* Shimmer — световой блик скользит по логотипу после появления */}
