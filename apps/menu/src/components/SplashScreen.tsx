@@ -32,7 +32,10 @@ const PARTICLES = [
   { l: 86, dl: 0.9, dr: 3.7, s: 1   },
 ];
 
-const STORAGE_KEY = 'bvh_splash_kiev';
+// Переменная в памяти JS-модуля:
+// — сбрасывается при hard refresh / новой вкладке (JS перезагружается)
+// — сохраняется при клиентской навигации внутри приложения
+let splashShown = false;
 
 export function SplashScreen({ children }: { children: React.ReactNode }) {
   const [phase, setPhase] = useState(0);
@@ -40,10 +43,11 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!pathname.includes('kievskaia') || sessionStorage.getItem(STORAGE_KEY)) {
+    if (!pathname.includes('kievskaia') || splashShown) {
       setShow(false);
       return;
     }
+    splashShown = true;
     setShow(true);
 
     const ts = [
@@ -54,10 +58,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
       // phase 3 → iris-close: clip-path circle(150%→0%) + overlay fade + сайт "выходит вперёд"
       setTimeout(() => setPhase(3), 2700),
       // unmount — к этому моменту clip-path уже 0%, сплэш невидим
-      setTimeout(() => {
-        sessionStorage.setItem(STORAGE_KEY, '1');
-        setShow(false);
-      }, 3750),
+      setTimeout(() => setShow(false), 3750),
     ];
     return () => ts.forEach(clearTimeout);
   }, [pathname]);
@@ -224,7 +225,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                       }}
                       initial={{ x: '-130%' }}
                       animate={{ x: '130%' }}
-                      transition={{ delay: 1.15, duration: 0.85, ease: 'easeInOut' }}
+                      transition={{ delay: 1.4, duration: 0.85, ease: 'easeInOut' }}
                     />
                   </div>
                 </motion.div>
