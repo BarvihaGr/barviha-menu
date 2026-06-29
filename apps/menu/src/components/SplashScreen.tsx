@@ -189,38 +189,44 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
               {/* Дерево — крутится при появлении */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <motion.div
-                  className="relative overflow-hidden"
+                  // НЕТ overflow-hidden здесь — прямоугольник при повороте даёт углы
+                  style={{ position: 'relative', width: 112, height: 112 }}
                   initial={{ opacity: 0, scale: 0.07, rotate: 360 }}
                   animate={
                     phase >= 1
                       ? { opacity: 1, scale: 1, rotate: 0 }
                       : { opacity: 0, scale: 0.07, rotate: 360 }
                   }
-                  // cubic-bezier(0.34, 1.08, 0.64, 1) = упругий spring без лишних колебаний
                   transition={{ duration: 1.0, ease: [0.34, 1.08, 0.64, 1] }}
                 >
-                  <Image
-                    src="/logo-arka.png"
-                    alt="Barvikha"
-                    width={112} height={112}
-                    priority
-                    className="object-contain"
-                    // multiply: белый фон PNG совпадает с bg → невидим, золото остаётся
-                    style={{ mixBlendMode: 'multiply' }}
-                  />
+                  {/* Круговой клип — круг при любом угле поворота = никаких углов */}
+                  <div style={{
+                    width: '100%', height: '100%',
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    position: 'relative',
+                  }}>
+                    <Image
+                      src="/logo-arka.png"
+                      alt="Barvikha"
+                      width={112} height={112}
+                      priority
+                      className="object-contain w-full h-full"
+                      style={{ mixBlendMode: 'multiply' }}
+                    />
 
-                  {/* Shimmer — световой блик скользит по логотипу после появления */}
-                  <motion.div
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        'linear-gradient(110deg, transparent 20%, rgba(255,248,220,0.42) 50%, transparent 80%)',
-                    }}
-                    initial={{ x: '-130%' }}
-                    animate={{ x: '130%' }}
-                    // стартует через ~200ms после окончания spin
-                    transition={{ delay: 1.15, duration: 0.85, ease: 'easeInOut' }}
-                  />
+                    {/* Shimmer — тоже обрезан кругом, выглядит как блик на медальоне */}
+                    <motion.div
+                      className="absolute inset-0"
+                      style={{
+                        background:
+                          'linear-gradient(110deg, transparent 20%, rgba(255,248,220,0.45) 50%, transparent 80%)',
+                      }}
+                      initial={{ x: '-130%' }}
+                      animate={{ x: '130%' }}
+                      transition={{ delay: 1.15, duration: 0.85, ease: 'easeInOut' }}
+                    />
+                  </div>
                 </motion.div>
               </div>
             </motion.div>
