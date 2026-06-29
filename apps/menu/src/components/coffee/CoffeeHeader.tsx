@@ -33,48 +33,33 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
       <style>{`
         @keyframes bvWave1 { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
         @keyframes bvWave2 { 0%{transform:translateX(-50%)} 100%{transform:translateX(0)} }
-        @keyframes bvWave3 { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
       `}</style>
       <div className="pointer-events-none absolute inset-0">
-        {/* Волна 1 — медленная, широкая */}
         <svg
           className="absolute bottom-0 h-full"
-          style={{ width: '200%', animation: 'bvWave1 26s linear infinite' }}
+          style={{ width: '200%', animation: 'bvWave1 55s linear infinite' }}
           viewBox="0 0 1440 56"
           preserveAspectRatio="none"
         >
           <path
-            d="M0,28 C120,56 240,0 360,28 C480,56 600,0 720,28 C840,56 960,0 1080,28 C1200,56 1320,0 1440,28 L1440,56 L0,56 Z"
-            fill="rgba(197,168,128,0.10)"
+            d="M0,36 C240,56 480,16 720,36 C960,56 1200,16 1440,36 L1440,56 L0,56 Z"
+            fill="rgba(197,168,128,0.045)"
           />
         </svg>
-        {/* Волна 2 — средняя, в обратную сторону */}
         <svg
           className="absolute bottom-0 h-full"
-          style={{ width: '200%', animation: 'bvWave2 18s linear infinite' }}
+          style={{ width: '200%', animation: 'bvWave2 40s linear infinite' }}
           viewBox="0 0 1440 56"
           preserveAspectRatio="none"
         >
           <path
-            d="M0,38 C160,14 320,50 480,32 C640,14 800,50 960,32 C1120,14 1280,50 1440,32 L1440,56 L0,56 Z"
-            fill="rgba(197,168,128,0.07)"
-          />
-        </svg>
-        {/* Волна 3 — тонкая, быстрая */}
-        <svg
-          className="absolute bottom-0 h-full"
-          style={{ width: '200%', animation: 'bvWave3 12s linear infinite' }}
-          viewBox="0 0 1440 56"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0,44 C90,28 180,56 270,40 C360,24 450,52 540,38 C630,24 720,52 810,40 C900,28 990,50 1080,42 C1170,34 1260,48 1440,40 L1440,56 L0,56 Z"
-            fill="rgba(197,168,128,0.05)"
+            d="M0,44 C360,28 720,52 1080,36 C1260,28 1380,46 1440,42 L1440,56 L0,56 Z"
+            fill="rgba(197,168,128,0.03)"
           />
         </svg>
       </div>
 
-      <div className="relative mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-6">
+      <div className="relative mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 py-2 sm:gap-3 sm:px-6">
         <Link
           href={homeHref}
           className="flex min-w-0 items-center cursor-pointer"
