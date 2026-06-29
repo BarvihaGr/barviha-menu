@@ -127,9 +127,10 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* ──── Основной контент ──────────────────────────── */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center select-none">
+          {/* Кольца всегда по центру — текст абсолютно, не сдвигает layout */}
+          <div className="absolute inset-0 flex items-center justify-center select-none">
 
-            {/* Блок с тремя кольцами и логотипом — iris-close сам закроет, не анимируем */}
+            {/* Блок с тремя кольцами и логотипом */}
             <div style={{ position: 'relative', width: 300, height: 300 }}>
               <motion.svg
                 width="300" height="300" viewBox="0 0 300 300"
@@ -314,7 +315,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
               </div>
             </div>
 
-            {/* Текстовый блок */}
+            {/* Текстовый блок — абсолютно, не влияет на позицию колец */}
             <AnimatePresence>
               {phase >= 2 && phase < 4 && (
                 <motion.div
@@ -322,10 +323,16 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                   animate={{ opacity: 1 }}
                   exit={{    opacity: 0 }}
                   transition={{ duration: 0.8 }}
-                  style={{ marginTop: 26, textAlign: 'center' }}
+                  style={{
+                    position:  'absolute',
+                    top:       'calc(50% + 154px)',
+                    left:      0,
+                    right:     0,
+                    textAlign: 'center',
+                  }}
                 >
                   {/* Декоративные линии + ромб */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginBottom: 14 }}>
                     <motion.div
                       style={{
                         height:     '0.5px',
