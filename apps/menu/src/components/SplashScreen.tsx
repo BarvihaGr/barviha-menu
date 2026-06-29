@@ -5,41 +5,52 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 
-// ─── Ring geometry ────────────────────────────────────────────────────────────
-const R    = 88;
-const CIRC = 2 * Math.PI * R; // stroke-dasharray длина
+// ─── Ring geometry ─────────────────────────────────────────
+const CX = 150;
+const CY = 150;
+const R1 = 68;    // inner  — ярче всего
+const R2 = 96;    // middle — sparkle бежит по нему
+const R3 = 126;   // outer  — с засечками как циферблат
+const C1 = 2 * Math.PI * R1;
+const C2 = 2 * Math.PI * R2;
+const C3 = 2 * Math.PI * R3;
 
-// ─── Цвета (светлая тема — точь-в-точь Киевская) ────────────────────────────
-const BG_DARK = '#D8CEC0';                        // совпадает с --cm-bg Киевской
-const RING_C  = '#C5A880';                        // шампанское золото
-const RING_D  = 'rgba(197,168,128,0.2)';          // направляющий круг
-const TEXT_C  = '#6B4A28';                        // тёмно-коричневый текст
+// ─── Palette ────────────────────────────────────────────────
+const BG     = '#0A0806';                      // глубокий эспрессо-чёрный
+const GOLD   = '#C5A880';                      // шампанское золото
+const GOLD_B = '#E8D5A3';                      // яркое золото
+const GOLD_D = 'rgba(197,168,128,0.12)';       // направляющие круги
+const CREAM  = '#D8CEC0';                      // фон медальона
 
-// ─── Частицы: детерминированные (нет random → нет hydration mismatch) ─────────
+// ─── Particles (детерминированные — нет hydration mismatch) ─
 const PARTICLES = [
-  { l:  7, dl: 0.1, dr: 3.4, s: 2   },
-  { l: 16, dl: 1.2, dr: 2.8, s: 1.5 },
-  { l: 27, dl: 0.5, dr: 3.6, s: 2.5 },
-  { l: 36, dl: 1.9, dr: 3.0, s: 1   },
-  { l: 45, dl: 0.3, dr: 2.7, s: 2   },
-  { l: 54, dl: 1.0, dr: 3.5, s: 1.5 },
-  { l: 63, dl: 0.7, dr: 2.6, s: 2   },
-  { l: 72, dl: 1.5, dr: 3.2, s: 1.5 },
-  { l: 81, dl: 0.2, dr: 2.9, s: 2   },
-  { l: 91, dl: 1.7, dr: 3.3, s: 1   },
-  { l: 21, dl: 2.1, dr: 3.0, s: 1.5 },
-  { l: 59, dl: 0.4, dr: 2.5, s: 2.5 },
-  { l: 86, dl: 0.9, dr: 3.7, s: 1   },
+  { l:  6, dl: 0.4, dr: 4.8, s: 1.5 },
+  { l: 14, dl: 1.8, dr: 3.9, s: 1   },
+  { l: 23, dl: 0.7, dr: 4.5, s: 2   },
+  { l: 31, dl: 2.2, dr: 4.2, s: 1.5 },
+  { l: 40, dl: 0.3, dr: 5.0, s: 1   },
+  { l: 49, dl: 1.4, dr: 4.1, s: 2   },
+  { l: 58, dl: 0.9, dr: 4.7, s: 1   },
+  { l: 67, dl: 1.9, dr: 3.8, s: 2   },
+  { l: 76, dl: 0.5, dr: 4.4, s: 1.5 },
+  { l: 85, dl: 1.6, dr: 4.9, s: 1   },
+  { l: 93, dl: 0.2, dr: 4.3, s: 2   },
+  { l: 18, dl: 2.5, dr: 3.7, s: 1.5 },
+  { l: 36, dl: 0.6, dr: 4.6, s: 1   },
+  { l: 53, dl: 1.2, dr: 5.1, s: 2   },
+  { l: 71, dl: 2.0, dr: 4.0, s: 1   },
+  { l: 88, dl: 0.8, dr: 4.5, s: 1.5 },
 ];
 
-// Переменная в памяти JS-модуля:
-// — сбрасывается при hard refresh / новой вкладке (JS перезагружается)
-// — сохраняется при клиентской навигации внутри приложения
+// Засечки на внешнем кольце (как циферблат часов)
+const TICK_ANGLES = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
+const TITLE_CHARS = 'BARVIKHA'.split('');
+
 let splashShown = false;
 
 export function SplashScreen({ children }: { children: React.ReactNode }) {
   const [phase, setPhase] = useState(0);
-  const [show, setShow]   = useState<boolean | null>(null);
+  const [show,  setShow]  = useState<boolean | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -51,211 +62,305 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
     setShow(true);
 
     const ts = [
-      // phase 1 → дерево крутится + кольцо рисуется (cubic-bezier spring)
-      setTimeout(() => setPhase(1), 350),
-      // phase 2 → текст
-      setTimeout(() => setPhase(2), 1800),
-      // phase 3 → iris-close: clip-path circle(150%→0%) + overlay fade + сайт "выходит вперёд"
-      setTimeout(() => setPhase(3), 2700),
-      // unmount — к этому моменту clip-path уже 0%, сплэш невидим
-      setTimeout(() => setShow(false), 3750),
+      setTimeout(() => setPhase(1), 250),   // кольца + логотип
+      setTimeout(() => setPhase(2), 1850),  // буквы заголовка каскадом
+      setTimeout(() => setPhase(3), 2750),  // тэглайн
+      setTimeout(() => setPhase(4), 3650),  // iris-close
+      setTimeout(() => setShow(false), 4700),
     ];
     return () => ts.forEach(clearTimeout);
   }, [pathname]);
 
   return (
     <>
-      {/* ─── Layer 1: сайт (нормальный поток) ─────────────────────────────── */}
       {children}
 
-      {/* Layer 2 не нужен — фон сплэша совпадает с сайтом */}
-
-      {/* ─── Layer 3: сплэш ───────────────────────────────────────────────── */}
       {show === true && (
         <div
           className="fixed inset-0 z-[9999] overflow-hidden"
           style={{
-            background: BG_DARK,
-            // IRIS CLOSE: clip-path circle сжимается к точке — GPU-accelerated,
-            // никакого width/height. cubic-bezier(0.25, 1, 0.5, 1) = premium easing
-            clipPath:   phase >= 3 ? 'circle(0% at 50% 50%)' : 'circle(150% at 50% 50%)',
-            transition: phase >= 3 ? 'clip-path 0.9s cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
+            background: BG,
+            clipPath:   phase >= 4 ? 'circle(0% at 50% 50%)' : 'circle(150% at 50% 50%)',
+            transition: phase >= 4
+              ? 'clip-path 1.0s cubic-bezier(0.76, 0, 0.24, 1)'
+              : 'none',
           }}
         >
-          {/* CSS-анимация частиц */}
           <style>{`
             @keyframes bvParticle {
-              0%   { transform: translateY(0);       opacity: 0;    }
-              12%  {                                  opacity: 0.82; }
-              88%  {                                  opacity: 0.22; }
-              100% { transform: translateY(-100vh);  opacity: 0;    }
+              0%   { transform: translateY(0);      opacity: 0;    }
+              12%  {                                 opacity: 0.45; }
+              88%  {                                 opacity: 0.12; }
+              100% { transform: translateY(-100vh); opacity: 0;    }
             }
           `}</style>
 
-          {/* Мягкое золотое свечение в центре */}
+          {/* Мягкое центральное золотое свечение */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(ellipse 55% 55% at 50% 50%, rgba(197,168,128,0.18) 0%, transparent 70%)',
+                'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(197,168,128,0.09) 0%, transparent 70%)',
             }}
           />
 
-          {/* Золотые частицы (только transform → 60fps гарантировано) */}
+          {/* Золотые частицы */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {PARTICLES.map((p, i) => (
               <div
                 key={i}
                 style={{
-                  position: 'absolute',
-                  left:   `${p.l}%`,
-                  bottom: 0,
-                  width:  p.s,
-                  height: p.s,
+                  position:     'absolute',
+                  left:         `${p.l}%`,
+                  bottom:       0,
+                  width:        p.s,
+                  height:       p.s,
                   borderRadius: '50%',
-                  background:  RING_C,
-                  boxShadow:   `0 0 ${p.s * 2.5}px ${p.s}px rgba(197,168,128,0.6)`,
-                  animation:   `bvParticle ${p.dr}s ${p.dl}s infinite ease-in`,
+                  background:   GOLD,
+                  boxShadow:    `0 0 ${p.s * 3}px ${p.s * 1.5}px rgba(197,168,128,0.4)`,
+                  animation:    `bvParticle ${p.dr}s ${p.dl}s infinite ease-in`,
                 }}
               />
             ))}
           </div>
 
-          {/* ── Центральный контент ─────────────────────────────────────────── */}
+          {/* ──── Основной контент ──────────────────────────── */}
           <div className="absolute inset-0 flex flex-col items-center justify-center select-none">
 
-            {/* Логотип + кольцо — уходит при phase 3 */}
+            {/* Блок с тремя кольцами и логотипом */}
             <motion.div
-              className="relative"
-              style={{ width: 200, height: 200 }}
-              animate={phase >= 3 ? { opacity: 0, scale: 0.88 } : { opacity: 1, scale: 1 }}
-              transition={{ duration: 0.45, ease: [0.4, 0, 1, 1] }}
+              style={{ position: 'relative', width: 300, height: 300 }}
+              animate={phase >= 4 ? { opacity: 0, scale: 0.9 } : { opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 1, 1] }}
             >
-              {/* Кольцо SVG + glow после прорисовки */}
               <motion.svg
-                className="absolute inset-0"
-                width="200" height="200" viewBox="0 0 200 200"
+                width="300" height="300" viewBox="0 0 300 300"
                 fill="none"
-                animate={
-                  phase >= 1 && phase < 3
-                    ? { filter: 'drop-shadow(0 0 7px rgba(197,168,128,0.75))' }
-                    : { filter: 'drop-shadow(0 0 0px rgba(197,168,128,0))' }
-                }
-                // glow появляется когда кольцо почти дорисовано
-                transition={{ duration: 0.8, delay: phase >= 1 ? 1.1 : 0 }}
+                className="absolute inset-0"
               >
-                {/* Направляющий круг */}
-                <circle cx="100" cy="100" r={R} stroke={RING_D} strokeWidth="1" />
+                {/* Направляющие круги */}
+                <circle cx={CX} cy={CY} r={R1} stroke={GOLD_D} strokeWidth="0.5" />
+                <circle cx={CX} cy={CY} r={R2} stroke={GOLD_D} strokeWidth="0.5" />
+                <circle cx={CX} cy={CY} r={R3} stroke={GOLD_D} strokeWidth="0.5" />
 
-                {/* Кольцо рисуется stroke-dashoffset → 0 */}
+                {/* Внутреннее кольцо — ярче всего, рисуется первым */}
                 <motion.circle
-                  cx="100" cy="100" r={R}
-                  stroke={RING_C} strokeWidth="1.5" fill="none"
+                  cx={CX} cy={CY} r={R1}
+                  stroke={GOLD_B} strokeWidth="1.5" fill="none"
                   strokeLinecap="round"
-                  strokeDasharray={CIRC}
-                  transform="rotate(-90 100 100)"
-                  initial={{ strokeDashoffset: CIRC }}
-                  animate={{ strokeDashoffset: phase >= 1 ? 0 : CIRC }}
-                  // cubic-bezier(0.4, 0, 0.2, 1) — Material-style smooth
-                  transition={{ duration: 1.3, ease: [0.4, 0, 0.2, 1] }}
+                  strokeDasharray={C1}
+                  transform={`rotate(-90 ${CX} ${CY})`}
+                  initial={{ strokeDashoffset: C1 }}
+                  animate={{ strokeDashoffset: phase >= 1 ? 0 : C1 }}
+                  transition={{ duration: 1.2, delay: 0, ease: [0.4, 0, 0.2, 1] }}
                 />
+
+                {/* Среднее кольцо — в обратную сторону */}
+                <motion.circle
+                  cx={CX} cy={CY} r={R2}
+                  stroke={GOLD} strokeWidth="1" fill="none"
+                  strokeLinecap="round"
+                  strokeDasharray={C2}
+                  transform={`rotate(90 ${CX} ${CY})`}
+                  initial={{ strokeDashoffset: C2 }}
+                  animate={{ strokeDashoffset: phase >= 1 ? 0 : C2 }}
+                  transition={{ duration: 1.5, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
+                />
+
+                {/* Внешнее кольцо — самое тонкое, медленнее всех */}
+                <motion.circle
+                  cx={CX} cy={CY} r={R3}
+                  stroke={GOLD} strokeWidth="0.75" fill="none"
+                  strokeLinecap="round"
+                  strokeDasharray={C3}
+                  transform={`rotate(-90 ${CX} ${CY})`}
+                  initial={{ strokeDashoffset: C3 }}
+                  animate={{ strokeDashoffset: phase >= 1 ? 0 : C3 }}
+                  transition={{ duration: 1.8, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                />
+
+                {/* Засечки как у циферблата */}
+                {phase >= 1 && TICK_ANGLES.map((angle, i) => {
+                  const rad = (angle - 90) * Math.PI / 180;
+                  const isMajor = i % 3 === 0;
+                  const len = isMajor ? 8 : 4;
+                  return (
+                    <motion.line
+                      key={angle}
+                      x1={CX + R3 * Math.cos(rad)}
+                      y1={CY + R3 * Math.sin(rad)}
+                      x2={CX + (R3 + len) * Math.cos(rad)}
+                      y2={CY + (R3 + len) * Math.sin(rad)}
+                      stroke={GOLD}
+                      strokeWidth={isMajor ? '1' : '0.5'}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: isMajor ? 0.7 : 0.35 }}
+                      transition={{ delay: 1.5 + i * 0.04, duration: 0.4 }}
+                    />
+                  );
+                })}
               </motion.svg>
 
-              {/* Sparkle — яркая точка мчится по кольцу после прорисовки */}
+              {/* Sparkle — мчится по среднему кольцу */}
               {phase >= 1 && (
                 <motion.div
                   style={{
-                    position: 'absolute',
-                    width: 5, height: 5,
+                    position:     'absolute',
+                    width: 4, height: 4,
                     borderRadius: '50%',
-                    background: 'rgba(255,248,220,0.98)',
-                    boxShadow: '0 0 10px 4px rgba(197,168,128,0.9)',
-                    top:  '50%', left: '50%',
-                    marginTop:  -R - 2,  // на вершине кольца
-                    marginLeft: -2.5,
-                    // pivot = центр кольца (R+2 пикселя вниз от точки)
-                    transformOrigin: `2.5px ${R + 2}px`,
+                    background:   GOLD_B,
+                    boxShadow:    `0 0 10px 4px rgba(232,213,163,0.9)`,
+                    top:  '50%',
+                    left: '50%',
+                    marginTop:  -(R2 + 1.5),
+                    marginLeft: -2,
+                    transformOrigin: `2px ${R2 + 1.5}px`,
                   }}
                   initial={{ rotate: 0, opacity: 0 }}
                   animate={{ rotate: 360, opacity: [0, 1, 1, 0] }}
                   transition={{
-                    duration: 0.75,
-                    delay:    1.35,  // после прорисовки кольца
+                    duration: 0.82,
+                    delay:    1.3,
                     ease:     'easeInOut',
-                    opacity:  { times: [0, 0.08, 0.92, 1] },
+                    opacity:  { times: [0, 0.07, 0.93, 1] },
                   }}
                 />
               )}
 
-              {/* Дерево — вращается как монетка (rotateY) при появлении */}
-              {/* perspective на родителе обязателен для 3D-эффекта */}
-              <div className="absolute inset-0 flex items-center justify-center" style={{ perspective: '600px' }}>
+              {/* Логотип — медальон с золотым свечением */}
+              <div
+                className="absolute inset-0 flex items-center justify-center"
+                style={{ perspective: '700px' }}
+              >
                 <motion.div
-                  style={{ position: 'relative', width: 112, height: 112 }}
-                  initial={{ opacity: 0, scale: 0.2, rotateY: 720 }}
+                  style={{ position: 'relative', width: 120, height: 120 }}
+                  initial={{ opacity: 0, rotateY: 540, scale: 0.2 }}
                   animate={
                     phase >= 1
-                      ? { opacity: 1, scale: 1, rotateY: 0 }
-                      : { opacity: 0, scale: 0.2, rotateY: 720 }
+                      ? { opacity: 1, rotateY: 0, scale: 1 }
+                      : { opacity: 0, rotateY: 540, scale: 0.2 }
                   }
-                  // чуть дольше — монетке нужно время замедлиться и лечь
-                  transition={{ duration: 1.3, ease: [0.34, 1.05, 0.64, 1] }}
+                  transition={{ duration: 1.4, ease: [0.34, 1.05, 0.64, 1] }}
                 >
-                  {/* Круговой клип — круг при любом угле поворота = никаких углов */}
                   <div style={{
-                    width: '100%', height: '100%',
+                    width:        '100%',
+                    height:       '100%',
                     borderRadius: '50%',
-                    overflow: 'hidden',
-                    position: 'relative',
+                    overflow:     'hidden',
+                    position:     'relative',
+                    background:   CREAM,
+                    boxShadow:    `0 0 0 1px rgba(197,168,128,0.5),
+                                   0 0 28px rgba(197,168,128,0.35),
+                                   0 0 70px rgba(197,168,128,0.1)`,
                   }}>
                     <Image
                       src="/logo-arka.png"
                       alt="Barvikha"
-                      width={112} height={112}
+                      width={120} height={120}
                       priority
                       className="object-contain w-full h-full"
                       style={{ mixBlendMode: 'multiply' }}
                     />
-
-                    {/* Shimmer — тоже обрезан кругом, выглядит как блик на медальоне */}
+                    {/* Shimmer — блик на медальоне */}
                     <motion.div
                       className="absolute inset-0"
                       style={{
                         background:
-                          'linear-gradient(110deg, transparent 20%, rgba(255,248,220,0.45) 50%, transparent 80%)',
+                          'linear-gradient(110deg, transparent 20%, rgba(255,248,220,0.52) 50%, transparent 80%)',
                       }}
                       initial={{ x: '-130%' }}
                       animate={{ x: '130%' }}
-                      transition={{ delay: 1.4, duration: 0.85, ease: 'easeInOut' }}
+                      transition={{ delay: 1.45, duration: 0.9, ease: 'easeInOut' }}
                     />
                   </div>
                 </motion.div>
               </div>
             </motion.div>
 
-            {/* Подпись — кремовый текст на тёмном */}
+            {/* Текстовый блок */}
             <AnimatePresence>
-              {phase >= 2 && phase < 3 && (
-                <motion.p
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1,   y: 0  }}
-                  exit={{    opacity: 0,   y: -10 }}
-                  transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-                  style={{
-                    fontFamily:    "'Cormorant SC', 'Cormorant Garamond', Georgia, serif",
-                    fontSize:       10,
-                    fontWeight:     500,
-                    color:          TEXT_C,
-                    letterSpacing: '0.3em',
-                    textTransform: 'uppercase',
-                    marginTop:      22,
-                  }}
+              {phase >= 2 && phase < 4 && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{    opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
+                  style={{ marginTop: 26, textAlign: 'center' }}
                 >
-                  Barvikha Group · Since 2017
-                </motion.p>
+                  {/* Декоративные линии + ромб */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
+                    <motion.div
+                      style={{
+                        height:     '0.5px',
+                        width:      60,
+                        background: `linear-gradient(to right, transparent, ${GOLD})`,
+                      }}
+                      initial={{ scaleX: 0, transformOrigin: 'right' }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.75, delay: 0.1 }}
+                    />
+                    <span style={{ color: GOLD, fontSize: 6.5, opacity: 0.75, lineHeight: 1 }}>◆</span>
+                    <motion.div
+                      style={{
+                        height:     '0.5px',
+                        width:      60,
+                        background: `linear-gradient(to left, transparent, ${GOLD})`,
+                      }}
+                      initial={{ scaleX: 0, transformOrigin: 'left' }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.75, delay: 0.1 }}
+                    />
+                  </div>
+
+                  {/* Название — буква за буквой каскадом */}
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '0.28em' }}>
+                    {TITLE_CHARS.map((char, i) => (
+                      <motion.span
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1,  y: 0  }}
+                        transition={{
+                          delay:    0.07 * i,
+                          duration: 0.55,
+                          ease:     [0.4, 0, 0.2, 1],
+                        }}
+                        style={{
+                          fontFamily:   "'Cormorant SC', 'Cormorant Garamond', Georgia, serif",
+                          fontSize:      24,
+                          fontWeight:    600,
+                          color:         GOLD_B,
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                          lineHeight:    1,
+                        }}
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                  </div>
+
+                  {/* Тэглайн */}
+                  {phase >= 3 && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 0.55, y: 0 }}
+                      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                      style={{
+                        fontFamily:   "'Cormorant SC', 'Cormorant Garamond', Georgia, serif",
+                        fontSize:      8.5,
+                        fontWeight:    400,
+                        color:         GOLD,
+                        letterSpacing: '0.45em',
+                        textTransform: 'uppercase',
+                        marginTop:     12,
+                      }}
+                    >
+                      Since · 2017
+                    </motion.p>
+                  )}
+                </motion.div>
               )}
             </AnimatePresence>
-
           </div>
         </div>
       )}
