@@ -109,9 +109,9 @@ const LUX_PALETTE: CoffeePalette = {
  * Фон #F2EAE0, поверхности #EAE0D4, текст тёмно-коричневый, золото #9B7A50.
  */
 const KIEV_PALETTE: CoffeePalette = {
-  '--cm-bg': '#F0EAE0',
-  '--cm-surface': '#E4D9CC',
-  '--cm-surface-2': '#D9CCBD',
+  '--cm-bg': '#E6DDD1',
+  '--cm-surface': '#D9CEBC',
+  '--cm-surface-2': '#CEBFAA',
   '--cm-text': '#3C2210',
   '--cm-text-soft': '#6B4A28',
   '--cm-muted': 'rgba(60, 34, 16, 0.52)',
