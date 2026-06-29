@@ -129,12 +129,8 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
           {/* ──── Основной контент ──────────────────────────── */}
           <div className="absolute inset-0 flex flex-col items-center justify-center select-none">
 
-            {/* Блок с тремя кольцами и логотипом */}
-            <motion.div
-              style={{ position: 'relative', width: 300, height: 300 }}
-              animate={phase >= 4 ? { opacity: 0, scale: 0.95 } : { opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, ease: [0.4, 0, 0.6, 1] }}
-            >
+            {/* Блок с тремя кольцами и логотипом — iris-close сам закроет, не анимируем */}
+            <div style={{ position: 'relative', width: 300, height: 300 }}>
               <motion.svg
                 width="300" height="300" viewBox="0 0 300 300"
                 fill="none"
@@ -271,17 +267,17 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
               {/* Логотип — медальон с золотым свечением */}
               <div
                 className="absolute inset-0 flex items-center justify-center"
-                style={{ perspective: '700px' }}
+                style={{ perspective: '1200px' }}
               >
                 <motion.div
                   style={{ position: 'relative', width: 120, height: 120 }}
-                  initial={{ opacity: 0, rotateY: 360, scale: 0.3 }}
+                  initial={{ opacity: 0, rotateY: 180 }}
                   animate={
                     phase >= 1
-                      ? { opacity: 1, rotateY: 0, scale: 1 }
-                      : { opacity: 0, rotateY: 360, scale: 0.3 }
+                      ? { opacity: 1, rotateY: 0 }
+                      : { opacity: 0, rotateY: 180 }
                   }
-                  transition={{ duration: 1.6, ease: [0.25, 0.8, 0.35, 1] }}
+                  transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <div style={{
                     width:        '100%',
@@ -311,12 +307,12 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                       }}
                       initial={{ x: '-130%' }}
                       animate={{ x: '130%' }}
-                      transition={{ delay: 1.45, duration: 0.9, ease: 'easeInOut' }}
+                      transition={{ delay: 1.85, duration: 1.0, ease: 'easeInOut' }}
                     />
                   </div>
                 </motion.div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Текстовый блок */}
             <AnimatePresence>
@@ -324,8 +320,8 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{    opacity: 0, y: -6 }}
-                  transition={{ duration: 0.6 }}
+                  exit={{    opacity: 0 }}
+                  transition={{ duration: 0.8 }}
                   style={{ marginTop: 26, textAlign: 'center' }}
                 >
                   {/* Декоративные линии + ромб */}
