@@ -95,13 +95,15 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
             }
           `}</style>
 
-          {/* Мягкое центральное золотое свечение */}
-          <div
+          {/* Дышащее центральное золотое свечение */}
+          <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(ellipse 60% 55% at 50% 50%, rgba(197,168,128,0.09) 0%, transparent 70%)',
+                'radial-gradient(ellipse 62% 56% at 50% 50%, rgba(197,168,128,0.15) 0%, transparent 70%)',
             }}
+            animate={{ opacity: phase >= 1 && phase < 4 ? [0.65, 1, 0.65] : 0.65 }}
+            transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }}
           />
 
           {/* Золотые частицы */}
@@ -179,6 +181,19 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                   transition={{ duration: 1.8, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 />
 
+                {/* Sonar-волна — радиальный импульс от внутреннего кольца */}
+                {phase >= 1 && phase < 4 && (
+                  <motion.circle
+                    cx={CX} cy={CY}
+                    fill="none"
+                    stroke={GOLD_B}
+                    strokeWidth="3"
+                    initial={{ r: R1, opacity: 0.4 }}
+                    animate={{ r: [R1, R1 + 44], opacity: [0.4, 0] }}
+                    transition={{ repeat: Infinity, duration: 2.6, delay: 1.6, ease: 'easeOut' }}
+                  />
+                )}
+
                 {/* Засечки как у циферблата */}
                 {phase >= 1 && TICK_ANGLES.map((angle, i) => {
                   const rad = (angle - 90) * Math.PI / 180;
@@ -223,6 +238,32 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                     delay:    1.3,
                     ease:     'easeInOut',
                     opacity:  { times: [0, 0.07, 0.93, 1] },
+                  }}
+                />
+              )}
+
+              {/* Второй sparkle — по внешнему кольцу, в обратную сторону */}
+              {phase >= 1 && (
+                <motion.div
+                  style={{
+                    position:     'absolute',
+                    width: 3, height: 3,
+                    borderRadius: '50%',
+                    background:   GOLD_B,
+                    boxShadow:    `0 0 8px 3px rgba(232,213,163,0.8)`,
+                    top:  '50%',
+                    left: '50%',
+                    marginTop:  -(R3 + 0.75),
+                    marginLeft: -1.5,
+                    transformOrigin: `1.5px ${R3 + 0.75}px`,
+                  }}
+                  initial={{ rotate: 0, opacity: 0 }}
+                  animate={{ rotate: -360, opacity: [0, 0.9, 0.9, 0] }}
+                  transition={{
+                    duration: 1.1,
+                    delay:    1.9,
+                    ease:     'easeInOut',
+                    opacity:  { times: [0, 0.06, 0.94, 1] },
                   }}
                 />
               )}
@@ -332,6 +373,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                           letterSpacing: '0.05em',
                           textTransform: 'uppercase',
                           lineHeight:    1,
+                          textShadow:   '0 0 22px rgba(232,213,163,0.55), 0 0 6px rgba(232,213,163,0.3)',
                         }}
                       >
                         {char}
