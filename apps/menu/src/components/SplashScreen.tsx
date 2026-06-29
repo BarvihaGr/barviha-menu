@@ -62,11 +62,11 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
     setShow(true);
 
     const ts = [
-      setTimeout(() => setPhase(1), 250),   // кольца + логотип
-      setTimeout(() => setPhase(2), 1850),  // буквы заголовка каскадом
-      setTimeout(() => setPhase(3), 2750),  // тэглайн
-      setTimeout(() => setPhase(4), 3650),  // iris-close
-      setTimeout(() => setShow(false), 4700),
+      setTimeout(() => setPhase(1), 300),   // кольца + логотип
+      setTimeout(() => setPhase(2), 2000),  // буквы заголовка каскадом
+      setTimeout(() => setPhase(3), 3000),  // тэглайн
+      setTimeout(() => setPhase(4), 4000),  // iris-close
+      setTimeout(() => setShow(false), 5200),
     ];
     return () => ts.forEach(clearTimeout);
   }, [pathname]);
@@ -82,7 +82,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
             background: BG,
             clipPath:   phase >= 4 ? 'circle(0% at 50% 50%)' : 'circle(150% at 50% 50%)',
             transition: phase >= 4
-              ? 'clip-path 1.0s cubic-bezier(0.76, 0, 0.24, 1)'
+              ? 'clip-path 1.2s cubic-bezier(0.4, 0, 0.2, 1)'
               : 'none',
           }}
         >
@@ -102,8 +102,8 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
               background:
                 'radial-gradient(ellipse 62% 56% at 50% 50%, rgba(197,168,128,0.15) 0%, transparent 70%)',
             }}
-            animate={{ opacity: phase >= 1 && phase < 4 ? [0.65, 1, 0.65] : 0.65 }}
-            transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }}
+            animate={{ opacity: phase >= 1 && phase < 4 ? [0.78, 1, 0.78] : 0.78 }}
+            transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
           />
 
           {/* Золотые частицы */}
@@ -132,8 +132,8 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
             {/* Блок с тремя кольцами и логотипом */}
             <motion.div
               style={{ position: 'relative', width: 300, height: 300 }}
-              animate={phase >= 4 ? { opacity: 0, scale: 0.9 } : { opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease: [0.4, 0, 1, 1] }}
+              animate={phase >= 4 ? { opacity: 0, scale: 0.95 } : { opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, ease: [0.4, 0, 0.6, 1] }}
             >
               <motion.svg
                 width="300" height="300" viewBox="0 0 300 300"
@@ -188,9 +188,9 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                     fill="none"
                     stroke={GOLD_B}
                     strokeWidth="3"
-                    initial={{ r: R1, opacity: 0.4 }}
-                    animate={{ r: [R1, R1 + 44], opacity: [0.4, 0] }}
-                    transition={{ repeat: Infinity, duration: 2.6, delay: 1.6, ease: 'easeOut' }}
+                    initial={{ r: R1, opacity: 0.25 }}
+                    animate={{ r: [R1, R1 + 48], opacity: [0.25, 0] }}
+                    transition={{ repeat: Infinity, duration: 4.0, delay: 1.8, ease: 'easeOut' }}
                   />
                 )}
 
@@ -275,13 +275,13 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
               >
                 <motion.div
                   style={{ position: 'relative', width: 120, height: 120 }}
-                  initial={{ opacity: 0, rotateY: 540, scale: 0.2 }}
+                  initial={{ opacity: 0, rotateY: 360, scale: 0.3 }}
                   animate={
                     phase >= 1
                       ? { opacity: 1, rotateY: 0, scale: 1 }
-                      : { opacity: 0, rotateY: 540, scale: 0.2 }
+                      : { opacity: 0, rotateY: 360, scale: 0.3 }
                   }
-                  transition={{ duration: 1.4, ease: [0.34, 1.05, 0.64, 1] }}
+                  transition={{ duration: 1.6, ease: [0.25, 0.8, 0.35, 1] }}
                 >
                   <div style={{
                     width:        '100%',
@@ -324,8 +324,8 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{    opacity: 0, y: -10 }}
-                  transition={{ duration: 0.4 }}
+                  exit={{    opacity: 0, y: -6 }}
+                  transition={{ duration: 0.6 }}
                   style={{ marginTop: 26, textAlign: 'center' }}
                 >
                   {/* Декоративные линии + ромб */}
@@ -358,12 +358,12 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                     {TITLE_CHARS.map((char, i) => (
                       <motion.span
                         key={i}
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1,  y: 0  }}
                         transition={{
-                          delay:    0.07 * i,
-                          duration: 0.55,
-                          ease:     [0.4, 0, 0.2, 1],
+                          delay:    0.06 * i,
+                          duration: 0.7,
+                          ease:     [0.25, 0.1, 0.25, 1],
                         }}
                         style={{
                           fontFamily:   "'Cormorant SC', 'Cormorant Garamond', Georgia, serif",
