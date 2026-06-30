@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 // ─── Palette ───────────────────────────────────────────────
 const BG       = '#070605';
@@ -238,6 +239,12 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                     </>
                   )}
 
+                  {/* ── Набросок ветвей растворяется, когда проявляется настоящий герб ── */}
+                  <motion.g
+                    initial={{ opacity: 1 }}
+                    animate={phase >= 1 ? { opacity: 0 } : { opacity: 1 }}
+                    transition={{ delay: 1.9, duration: 0.9, ease: 'easeInOut' }}
+                  >
                   {/* ── Ствол ── */}
                   <motion.path
                     d={TRUNK_D} stroke="url(#barkGrad)" strokeWidth="3.4" strokeLinecap="round" fill="none"
@@ -310,7 +317,27 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                       ))}
                     </motion.g>
                   )}
+                  </motion.g>
                 </svg>
+
+                {/* ── Настоящий герб Barvikha — проявляется на месте наброска ── */}
+                <motion.div
+                  className="absolute pointer-events-none overflow-hidden"
+                  style={{ width: 232, height: 150, top: '50%', left: '50%', marginTop: -108, marginLeft: -116 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={phase >= 1 ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+                  transition={{ delay: 1.95, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {/* кроп: в исходном файле под кроной зашит белый текст-лого — обрезаем его,
+                      у нас уже есть собственный золотой заголовок ниже */}
+                  <Image
+                    src="/logo-arka.png" alt="Barvikha" fill priority
+                    style={{
+                      objectFit: 'cover', objectPosition: '50% 0%',
+                      filter: 'drop-shadow(0 0 22px rgba(197,168,128,0.4)) drop-shadow(0 0 4px rgba(240,223,176,0.5))',
+                    }}
+                  />
+                </motion.div>
               </motion.div>
             </motion.div>
 
