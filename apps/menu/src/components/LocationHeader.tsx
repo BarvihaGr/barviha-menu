@@ -14,18 +14,17 @@ export function LocationHeader({ locationSlug, locations }: Props) {
 
   return (
     <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="mx-auto grid max-w-[1200px] items-center grid-cols-[1fr_auto_1fr] px-4 sm:px-6 py-3">
-        <div />
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-4 sm:px-6 py-3.5">
 
-        <Link href={homeHref} className="flex flex-col items-center text-center cursor-pointer" aria-label="Barvikha Group">
+        <Link href={homeHref} className="flex flex-col cursor-pointer" aria-label="Barvikha Group">
           <span
             style={{
               fontFamily: "'Cormorant SC', 'Cormorant Garamond', serif",
-              fontSize: 15,
-              fontWeight: 500,
-              letterSpacing: '0.18em',
+              fontSize: 22,
+              fontWeight: 600,
+              letterSpacing: '0.14em',
               color: 'var(--foreground)',
-              lineHeight: 1.2,
+              lineHeight: 1.15,
             }}
           >
             BARVIKHA GROUP
@@ -33,19 +32,17 @@ export function LocationHeader({ locationSlug, locations }: Props) {
           <span
             style={{
               fontSize: 9,
-              letterSpacing: '0.26em',
+              letterSpacing: '0.28em',
               color: 'var(--muted)',
-              marginTop: 3,
+              marginTop: 2,
               fontFamily: 'Inter, sans-serif',
             }}
           >
-            — SINCE 2017 —
+            SINCE 2017
           </span>
         </Link>
 
-        <div className="flex justify-end">
-          <HamburgerMenu locationSlug={locationSlug} locations={locations} variant="dark" />
-        </div>
+        <HamburgerMenu locationSlug={locationSlug} locations={locations} variant="dark" />
       </div>
     </header>
   );
