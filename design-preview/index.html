@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Barvikha — концепт меню (превью)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ============ 1. ЦВЕТОВАЯ СХЕМА / ПЕРЕМЕННЫЕ ============ */
+  :root{
+    --color-bg:#F5E6D3;
+    --color-bg-alt:#F2DCC8;
+    --color-primary:#2C0A00;
+    --color-primary-deep:#1A0500;
+    --color-text:#2C0A00;
+    --color-text-muted:#6B4A3E;
+    --color-text-on-dark:#F5E6D3;
+    --color-accent-line:#8B2E1F;
+    --color-border:rgba(44,10,0,0.12);
+    --color-shadow:rgba(44,10,0,0.08);
+    --color-card-bg:#FFFFFF;
+
+    --font-serif:'Cormorant Garamond', Georgia, serif;
+    --font-sans:'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --radius-lg:16px;
+    --radius-pill:999px;
+    --radius-sm:8px;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ background:var(--color-bg); color:var(--color-text); font-family:var(--font-sans); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  body{ min-height:100vh; padding-bottom:calc(64px + env(safe-area-inset-bottom)); }
+  button{ font-family:inherit; cursor:pointer; }
+  img{ display:block; max-width:100%; }
+  ::-webkit-scrollbar{ display:none; }
+
+  .brand-serif{ font-family:var(--font-serif); }
+
+  /* ============ 3. SPLASH SCREEN ============ */
+  #splash{
+    position:fixed; inset:0; z-index:9999;
+    background:var(--color-bg);
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity 500ms ease-out;
+  }
+  #splash.splash-out{ opacity:0; }
+  #splash.splash-gone{ display:none; }
+
+  .drop{
+    position:absolute; top:-80px; left:50%;
+    width:40px; height:56px;
+    transform:translateX(-50%);
+    color:var(--color-primary);
+    animation:dropFall 900ms cubic-bezier(0.55,0.055,0.675,0.19) forwards;
+  }
+  @keyframes dropFall{
+    0%   { top:-80px; transform:translateX(-50%) scaleX(1) scaleY(1); }
+    86%  { top:calc(50% - 28px); transform:translateX(-50%) scaleX(1) scaleY(1); }
+    100% { top:calc(50% - 28px); transform:translateX(-50%) scaleX(1.15) scaleY(0.7); }
+  }
+  .drop.drop-hide{ animation:none; opacity:0; transform:translateX(-50%) scale(0.6); transition:opacity 200ms ease-in, transform 200ms ease-in; }
+
+  .splash-ring{
+    position:absolute; left:50%; top:50%; width:10px; height:10px; border-radius:50%;
+    border:1.5px solid var(--color-primary); opacity:0; transform:translate(-50%,-50%) scale(1);
+  }
+  .splash-ring.ring-play{ opacity:0.5; animation:ringPulse 500ms ease-out forwards; }
+  @keyframes ringPulse{ 0%{ opacity:0.5; transform:translate(-50%,-50%) scale(1); } 100%{ opacity:0; transform:translate(-50%,-50%) scale(9); } }
+
+  .tree-wrap{ position:relative; width:210px; height:131px; opacity:0; transition:opacity 60ms; }
+  .tree-wrap.tree-show{ opacity:1; }
+  .tree-wrap img{
+    width:100%; height:100%; object-fit:contain;
+    clip-path:inset(100% 0% 0% 0%);
+    transition:clip-path 1200ms cubic-bezier(0.22,1,0.36,1);
+  }
+  .tree-wrap.tree-grow img{ clip-path:inset(0% 0% 0% 0%); }
+
+  .splash-word{
+    position:absolute; top:calc(50% + 80px); left:0; right:0; text-align:center;
+    opacity:0; transition:opacity 500ms ease-in-out;
+  }
+  .splash-word.word-show{ opacity:1; }
+  .splash-word .brand-line{ font-family:var(--font-serif); font-weight:600; font-size:20px; letter-spacing:0.15em; text-transform:uppercase; color:var(--color-primary); }
+  .splash-word .since-line{ font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--color-text-muted); margin-top:6px; }
+
+  #demo-replay{
+    position:fixed; right:14px; z-index:10000; opacity:0.55;
+    background:var(--color-primary); color:var(--color-text-on-dark);
+    border:none; border-radius:var(--radius-pill); font-size:11px; padding:6px 12px;
+    top:calc(env(safe-area-inset-top, 0px) + 10px);
+  }
+  #demo-replay:hover{ opacity:1; }
+
+  /* ============ 4. HEADER ============ */
+  header.site-header{
+    padding:20px 16px 16px; text-align:center;
+    background:var(--color-bg);
+    border-bottom:1px solid var(--color-border);
+  }
+  header.site-header .logo-icon{ height:40px; width:auto; margin:0 auto; display:block; object-fit:contain; }
+  header.site-header .brand-name{ font-family:var(--font-serif); font-size:22px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; margin-top:8px; }
+  header.site-header .since{ font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--color-text-muted); margin-top:4px; }
+  header.site-header .tagline{ font-family:var(--font-serif); font-style:italic; font-weight:400; font-size:13px; color:var(--color-text-muted); margin-top:6px; }
+
+  /* ============ 6.1 ОСНОВНЫЕ ТАБЫ ============ */
+  .tabs-row{ display:flex; gap:8px; padding:12px 16px; overflow-x:auto; scrollbar-width:none; }
+  .tab-pill{
+    flex-shrink:0; padding:10px 20px; border-radius:var(--radius-pill); border:none;
+    font-size:14px; font-weight:500; background:var(--color-bg-alt); color:var(--color-text);
+    transition:background 180ms ease-out, color 180ms ease-out;
+  }
+  .tab-pill.active{ background:var(--color-primary); color:var(--color-text-on-dark); }
+
+  /* ============ 6.2 ПОИСК ============ */
+  .search-row{ display:flex; align-items:center; height:48px; margin:16px; border-radius:var(--radius-pill); background:var(--color-bg-alt); }
+  .search-row svg{ flex-shrink:0; margin-left:16px; width:20px; height:20px; color:var(--color-primary); }
+  .search-row input{
+    flex:1; border:none; background:transparent; font-size:14px; padding:0 12px; color:var(--color-text); outline:none;
+  }
+  .search-row input::placeholder{ color:var(--color-text-muted); }
+  .filter-btn{
+    display:flex; align-items:center; gap:6px; border:none; background:transparent; font-size:14px;
+    color:var(--color-text); padding:0 16px; height:48px; border-left:1px solid var(--color-border);
+    transition:opacity 150ms ease-out;
+  }
+  .filter-btn:active{ opacity:0.6; }
+  .filter-btn svg{ width:18px; height:18px; color:var(--color-primary); }
+
+  /* ============ 6.3 ПОДКАТЕГОРИИ ============ */
+  .subtabs-row{ display:flex; gap:8px; padding:0 16px; margin:8px 0 16px; overflow-x:auto; scrollbar-width:none; }
+  .subtab-pill{
+    flex-shrink:0; padding:8px 16px; border-radius:var(--radius-pill); border:none;
+    font-size:13px; font-weight:500; background:var(--color-bg-alt); color:var(--color-text);
+    transition:background 180ms ease-out, color 180ms ease-out;
+  }
+  .subtab-pill.active{ background:var(--color-primary); color:var(--color-text-on-dark); }
+
+  /* ============ 6.4 ЗАГОЛОВОК РАЗДЕЛА ============ */
+  .section-title-block{ padding:0 16px; margin-bottom:16px; }
+  .section-title-block h2{ font-size:24px; font-weight:700; text-transform:uppercase; }
+  .section-title-block .accent-line{ width:40px; height:3px; background:var(--color-accent-line); border-radius:2px; margin-top:8px; }
+
+  /* ============ 6.5 КАРТОЧКИ ============ */
+  .card-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:0 16px; margin-bottom:24px; }
+  .item-card{ background:var(--color-card-bg); border-radius:var(--radius-lg); overflow:hidden; box-shadow:0 2px 12px var(--color-shadow); }
+  .item-card .photo{ position:relative; width:100%; aspect-ratio:1/1; overflow:hidden; }
+  .item-card .photo img{ width:100%; height:100%; object-fit:cover; }
+  .item-card .body{ padding:12px; }
+  .item-card .name{
+    font-size:16px; font-weight:600; line-height:1.25; min-height:40px;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .item-card .meta{ font-size:13px; color:var(--color-text-muted); margin-top:4px; }
+  .item-card .row-bottom{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+  .item-card .price{ font-size:16px; font-weight:700; color:var(--color-primary); }
+  .add-btn{
+    width:36px; height:36px; border-radius:50%; border:none; background:var(--color-primary);
+    color:var(--color-text-on-dark); box-shadow:0 4px 10px rgba(44,10,0,0.25);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform 150ms ease-out;
+  }
+  .add-btn:active{ transform:scale(0.9); }
+  .add-btn svg{ width:18px; height:18px; }
+
+  /* ============ 5. FOOTER ============ */
+  footer.site-footer{
+    text-align:center; padding:32px 16px; background:var(--color-bg); border-top:1px solid var(--color-border);
+    margin-bottom:16px;
+  }
+  footer.site-footer .logo-icon{ height:32px; width:auto; margin:0 auto; display:block; object-fit:contain; }
+  footer.site-footer .brand-name{ font-family:var(--font-serif); font-size:16px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; margin-top:8px; }
+  footer.site-footer .since{ font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--color-text-muted); margin-top:4px; }
+  footer.site-footer .tagline{ font-family:var(--font-serif); font-style:italic; font-size:12px; color:var(--color-text-muted); margin-top:6px; }
+
+  /* ============ 7. НИЖНЯЯ НАВИГАЦИЯ ============ */
+  nav.bottom-nav{
+    position:fixed; left:0; right:0; bottom:0; z-index:100; height:64px;
+    padding-bottom:env(safe-area-inset-bottom);
+    background:var(--color-bg); border-top:1px solid var(--color-border);
+    box-shadow:0 -4px 16px var(--color-shadow);
+    display:flex;
+  }
+  nav.bottom-nav .nav-item{
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+    background:none; border:none; color:var(--color-text-muted); font-size:11px;
+    transition:color 150ms ease-out;
+  }
+  nav.bottom-nav .nav-item svg{ width:24px; height:24px; }
+  nav.bottom-nav .nav-item.active{ color:var(--color-primary); font-weight:600; }
+  nav.bottom-nav .nav-item.center{ position:relative; }
+  nav.bottom-nav .nav-item.center .center-btn{
+    position:absolute; top:-12px; width:56px; height:56px; border-radius:50%;
+    background:var(--color-primary); color:var(--color-text-on-dark);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 12px rgba(44,10,0,0.3);
+  }
+  nav.bottom-nav .nav-item.center span{ margin-top:34px; }
+  nav.bottom-nav .nav-item .badge{
+    position:absolute; top:2px; right:calc(50% - 20px); min-width:16px; height:16px; padding:0 3px;
+    background:var(--color-accent-line); color:var(--color-text-on-dark); border-radius:var(--radius-pill);
+    font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ============ 8. АДАПТИВ ============ */
+  @media (min-width:768px){
+    .card-grid{ grid-template-columns:repeat(3,1fr); }
+  }
+  @media (min-width:1024px){
+    .card-grid{ grid-template-columns:repeat(4,1fr); }
+    main, header.site-header, footer.site-footer{ max-width:1200px; margin-left:auto; margin-right:auto; }
+  }
+
+  #app{ opacity:0; transition:opacity 500ms ease-in; }
+  #app.app-show{ opacity:1; }
+</style>
+</head>
+<body>
+
+  <button id="demo-replay" title="Только для этого превью — не часть ТЗ">↻ повторить сплэш</button>
+
+  <!-- ============ SPLASH ============ -->
+  <div id="splash">
+    <svg class="splash-ring" id="splashRing" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4"/></svg>
+
+    <svg class="drop" id="drop" viewBox="0 0 40 56">
+      <path fill="currentColor" d="M20 0 C32 17 40 33 40 40 C40 49.4 31.05 56 20 56 C8.95 56 0 49.4 0 40 C0 33 8 17 20 0 Z"/>
+    </svg>
+
+    <div class="tree-wrap" id="treeWrap">
+      <img src="../apps/menu/public/locations/arka/logo-tree.png" alt="Barvikha" />
+    </div>
+
+    <div class="splash-word" id="splashWord">
+      <div class="brand-line">Barvikha Group</div>
+      <div class="since-line">Since 2017</div>
+    </div>
+  </div>
+
+  <!-- ============ APP ============ -->
+  <div id="app">
+
+    <header class="site-header">
+      <img class="logo-icon" src="../apps/menu/public/locations/arka/logo-tree.png" alt="Barvikha" />
+      <div class="brand-name">Barvikha Group</div>
+      <div class="since">Since 2017</div>
+      <div class="tagline">Barvikha Lounge</div>
+    </header>
+
+    <main>
+      <div class="tabs-row" id="mainTabs"></div>
+      <div class="search-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="searchInput" type="text" placeholder="Поиск: блюда, напитки, кальяны" />
+        <button class="filter-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+          Фильтры
+        </button>
+      </div>
+      <div class="subtabs-row" id="subTabs"></div>
+
+      <div class="section-title-block">
+        <h2 id="sectionTitle">Салаты</h2>
+        <div class="accent-line"></div>
+      </div>
+
+      <div class="card-grid" id="cardGrid"></div>
+    </main>
+
+    <footer class="site-footer">
+      <img class="logo-icon" src="../apps/menu/public/locations/arka/logo-tree.png" alt="Barvikha" />
+      <div class="brand-name">Barvikha Group</div>
+      <div class="since">Since 2017</div>
+      <div class="tagline">Barvikha Lounge</div>
+    </footer>
+  </div>
+
+  <!-- ============ BOTTOM NAV ============ -->
+  <nav class="bottom-nav">
+    <button class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <span>Главная</span>
+    </button>
+    <button class="nav-item center">
+      <span class="center-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </span>
+      <span>Меню</span>
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20.8 4.6c-1.8-1.5-4.5-1.3-6.1.4L12 7.7 9.3 5c-1.6-1.7-4.3-1.9-6.1-.4-2 1.7-2.1 4.8-.3 6.6L12 21l9.1-9.8c1.8-1.8 1.7-4.9-.3-6.6z"/></svg>
+      <span>Контакты</span>
+    </button>
+    <button class="nav-item" id="cartNav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="9" cy="21" r="1.2"/><circle cx="18" cy="21" r="1.2"/><path d="M3 4h2l2.6 12.5a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"/></svg>
+      <span>Корзина</span>
+      <span class="badge" id="cartBadge" style="display:none;">0</span>
+    </button>
+  </nav>
+
+<script>
+  /* ============ ДАННЫЕ (демо-контент) ============ */
+  const IMG = p => "../apps/menu/public/menu/" + p;
+
+  const DATA = {
+    kitchen: {
+      label: "Кухня",
+      subcats: [
+        { id:"salads", label:"Салаты", title:"Салаты", items:[
+          { name:"Цезарь классический с курицей", meta:"250 г", price:590, img:IMG("kitchen-salads-klassicheskii-cezar-s-kuricei.webp") },
+          { name:"Тартар из говядины классический", meta:"200 г", price:890, img:IMG("kitchen-salads-tar-tar-iz-goviadiny-klassicheskii.webp") },
+          { name:"Руккола с креветками, клубникой и пармезаном", meta:"220 г", price:790, img:IMG("kitchen-salads-rukkola-s-krevetkami-klubnikoi-i-syrom-parmezan.webp") },
+          { name:"Салат с печёной свёклой и копчёной уткой", meta:"200 г", price:690, img:IMG("kitchen-salads-salat-s-pechenoi-svekloi-i-kopchenoi-utkoi.webp") },
+        ]},
+        { id:"rolls", label:"Роллы", title:"Роллы", items:[
+          { name:"Ролл Барвиха", meta:"260 г", price:890, img:IMG("kitchen-rolls-roll-barviha.webp") },
+          { name:"Ролл Филадельфия", meta:"240 г", price:690, img:IMG("kitchen-rolls-roll-filadelfiia.webp") },
+          { name:"Ролл Калифорния с лососем", meta:"250 г", price:650, img:IMG("kitchen-rolls-roll-kaliforniia-s-lososem.webp") },
+          { name:"Ролл с опалённым лососем и апельсином", meta:"230 г", price:790, img:IMG("kitchen-rolls-roll-opalenyi-losos-s-apelsinom.webp") },
+        ]},
+        { id:"desserts", label:"Десерты", title:"Десерты", items:[
+          { name:"Медовик", meta:"130 г", price:390, img:IMG("kitchen-desserts-medovik.webp") },
+          { name:"Тирамису", meta:"140 г", price:420, img:IMG("kitchen-desserts-tiramisu.webp") },
+          { name:"Чизкейк клубничный", meta:"120 г", price:410, img:IMG("kitchen-desserts-chizkeik-klubnichnyi.webp") },
+          { name:"Шоколадный фондан", meta:"110 г", price:450, img:IMG("kitchen-desserts-shokoladnyi-fondan.webp") },
+        ]},
+      ]
+    },
+    bar: {
+      label: "Бар",
+      subcats: [
+        { id:"cocktails", label:"Коктейли", title:"Коктейли", items:[
+          { name:"Мохито", meta:"300 мл", price:690, img:IMG("bar-cocktails-mojito.webp") },
+          { name:"Олд Фэшн", meta:"200 мл", price:890, img:IMG("bar-cocktails-old-fashioned.webp") },
+          { name:"Космополитен", meta:"200 мл", price:790, img:IMG("bar-cocktails-cosmopolitan.webp") },
+          { name:"Негрони", meta:"180 мл", price:790, img:IMG("bar-cocktails-negroni.webp") },
+        ]},
+        { id:"wine", label:"Вино", title:"Вино", items:[
+          { name:"Moët & Chandon Brut Impérial", meta:"бокал 150 мл", price:1200, img:IMG("bar-wine-moet-chandon-brut-imperial.webp") },
+          { name:"Nipozzano Chianti Rufina Riserva", meta:"бокал 150 мл", price:890, img:IMG("bar-wine-nipozzano-frescobaldi-chianti-rufina-reserva.webp") },
+          { name:"Jean-Marc Brocard Chablis", meta:"бокал 150 мл", price:950, img:IMG("bar-wine-jean-marc-brocard-chablis.webp") },
+          { name:"Luigi Bosca Malbec", meta:"бокал 150 мл", price:690, img:IMG("bar-wine-luigi-bosca-malbec.webp") },
+        ]},
+        { id:"coffee", label:"Кофе", title:"Кофе", items:[
+          { name:"Капучино", meta:"200 мл", price:290, img:IMG("bar-coffee-kapuchino.webp") },
+          { name:"Латте", meta:"250 мл", price:320, img:IMG("bar-coffee-latte.webp") },
+          { name:"Раф", meta:"250 мл", price:350, img:IMG("bar-coffee-raf.webp") },
+          { name:"Американо", meta:"150 мл", price:250, img:IMG("bar-coffee-amerikano.webp") },
+        ]},
+      ]
+    },
+    hookah: {
+      label: "Кальяны",
+      subcats: [
+        { id:"classic", label:"Классика", title:"Кальяны", items:[
+          { name:"Old Money", meta:"60 мин", price:3200, img:IMG("hookah-hookah-old-money.webp") },
+          { name:"Dolce Vita", meta:"60 мин", price:2900, img:IMG("hookah-hookah-dolce-vita.webp") },
+          { name:"Black Edition", meta:"60 мин", price:3400, img:IMG("hookah-hookah-black-edition.webp") },
+          { name:"Tropicana Mama", meta:"60 мин", price:2700, img:IMG("hookah-hookah-tropicana-mama.webp") },
+          { name:"Berry Blast", meta:"60 мин", price:2600, img:IMG("hookah-hookah-berry-blast.webp") },
+          { name:"Paradise", meta:"60 мин", price:2800, img:IMG("hookah-hookah-paradise.webp") },
+        ]},
+      ]
+    }
+  };
+
+  let activeTab = "kitchen";
+  let activeSub = "salads";
+  let cartCount = 0;
+
+  function renderMainTabs(){
+    const el = document.getElementById("mainTabs");
+    el.innerHTML = "";
+    Object.keys(DATA).forEach(key => {
+      const btn = document.createElement("button");
+      btn.className = "tab-pill" + (key === activeTab ? " active" : "");
+      btn.textContent = DATA[key].label;
+      btn.onclick = () => {
+        activeTab = key;
+        activeSub = DATA[key].subcats[0].id;
+        renderMainTabs(); renderSubTabs(); renderCards();
+      };
+      el.appendChild(btn);
+    });
+  }
+
+  function renderSubTabs(){
+    const el = document.getElementById("subTabs");
+    el.innerHTML = "";
+    DATA[activeTab].subcats.forEach(sc => {
+      const btn = document.createElement("button");
+      btn.className = "subtab-pill" + (sc.id === activeSub ? " active" : "");
+      btn.textContent = sc.label;
+      btn.onclick = () => { activeSub = sc.id; renderSubTabs(); renderCards(); };
+      el.appendChild(btn);
+    });
+  }
+
+  function renderCards(){
+    const sub = DATA[activeTab].subcats.find(s => s.id === activeSub);
+    document.getElementById("sectionTitle").textContent = sub.title;
+    const query = document.getElementById("searchInput").value.trim().toLowerCase();
+    const items = sub.items.filter(it => it.name.toLowerCase().includes(query));
+    const grid = document.getElementById("cardGrid");
+    grid.innerHTML = "";
+    items.forEach(it => {
+      const card = document.createElement("div");
+      card.className = "item-card";
+      card.innerHTML = `
+        <div class="photo"><img src="${it.img}" alt="${it.name}" loading="lazy"/></div>
+        <div class="body">
+          <div class="name">${it.name}</div>
+          <div class="meta">${it.meta}</div>
+          <div class="row-bottom">
+            <div class="price">${it.price} ₽</div>
+            <button class="add-btn" aria-label="Добавить">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>`;
+      card.querySelector(".add-btn").onclick = () => {
+        cartCount++;
+        const badge = document.getElementById("cartBadge");
+        badge.textContent = cartCount;
+        badge.style.display = "flex";
+      };
+      grid.appendChild(card);
+    });
+  }
+
+  document.getElementById("searchInput").addEventListener("input", renderCards);
+
+  renderMainTabs();
+  renderSubTabs();
+  renderCards();
+
+  /* ============ SPLASH SCREEN LOGIC ============ */
+  function runSplash(){
+    const splash = document.getElementById("splash");
+    const drop = document.getElementById("drop");
+    const ring = document.getElementById("splashRing");
+    const treeWrap = document.getElementById("treeWrap");
+    const word = document.getElementById("splashWord");
+    const app = document.getElementById("app");
+
+    // Этап 1: капля падает — 0..900мс (см. @keyframes dropFall)
+
+    // Этап 2: 900..1200мс — капля исчезает, дерево (пока не проросшее) появляется
+    setTimeout(() => {
+      drop.classList.add("drop-hide");
+      ring.classList.add("ring-play");
+      treeWrap.classList.add("tree-show");
+    }, 900);
+
+    // Этап 3: 1200..2400мс — дерево «прорастает» снизу вверх (clip-path reveal)
+    setTimeout(() => {
+      treeWrap.classList.add("tree-grow");
+      word.classList.add("word-show");
+    }, 1200);
+
+    // Этап 4: 2400..3000мс — сплэш гаснет, контент проявляется
+    setTimeout(() => {
+      splash.classList.add("splash-out");
+      app.classList.add("app-show");
+    }, 2400);
+
+    setTimeout(() => {
+      splash.classList.add("splash-gone");
+    }, 3000);
+  }
+
+  function skipSplash(){
+    document.getElementById("splash").classList.add("splash-gone");
+    document.getElementById("app").classList.add("app-show");
+  }
+
+  if (sessionStorage.getItem("bvSplashShown")) {
+    skipSplash();
+  } else {
+    sessionStorage.setItem("bvSplashShown", "1");
+    runSplash();
+  }
+
+  // Кнопка для превью — сбрасывает флаг и перезапускает анимацию (не часть ТЗ, только для удобства ревью)
+  document.getElementById("demo-replay").onclick = () => {
+    sessionStorage.removeItem("bvSplashShown");
+    location.reload();
+  };
+</script>
+</body>
+</html>

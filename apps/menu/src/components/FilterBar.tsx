@@ -99,8 +99,8 @@ export function FilterBar({ active, onChange, realm = 'kitchen' }: Props) {
             className={cn(
               'shrink-0 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[11px] uppercase tracking-[0.12em] transition-all duration-200 cursor-pointer',
               on
-                ? 'border-gold bg-gold/15 text-cream'
-                : 'border-gold/20 bg-transparent text-muted hover:border-gold/45 hover:text-cream/80',
+                ? 'border-foreground bg-foreground text-background'
+                : 'border-border bg-card text-muted hover:border-border-strong hover:text-foreground',
             )}
           >
             {t(f)}
@@ -111,7 +111,7 @@ export function FilterBar({ active, onChange, realm = 'kitchen' }: Props) {
         <button
           type="button"
           onClick={() => onChange(new Set())}
-          className="shrink-0 whitespace-nowrap text-[10px] uppercase tracking-[0.18em] text-muted hover:text-gold transition cursor-pointer"
+          className="shrink-0 whitespace-nowrap text-[10px] uppercase tracking-[0.18em] text-muted hover:text-foreground transition cursor-pointer"
         >
           {t('reset')}
         </button>

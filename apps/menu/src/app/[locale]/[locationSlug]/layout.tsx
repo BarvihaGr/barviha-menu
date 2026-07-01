@@ -4,6 +4,7 @@ import { getClient } from '@barviha/db';
 import { LocationHeader } from '@/components/LocationHeader';
 import { CoffeeHeader } from '@/components/coffee/CoffeeHeader';
 import { LuxBottomNav } from '@/components/coffee/LuxBottomNav';
+import { BarvikhaBottomNav } from '@/components/BarvikhaBottomNav';
 import { KievThemeProvider } from '@/components/coffee/KievThemeProvider';
 import { Toaster } from '@/components/Toaster';
 import { FloatingCartButton } from '@/components/FloatingCartButton';
@@ -36,8 +37,6 @@ export default async function LocationLayout({
   if (!location) notFound();
 
   const coffeeDesign = isCoffeeDesign(location.slug);
-  // Для светлого дизайна акцент = фирменный цвет локации (ветка метро),
-  // чтобы инфо-модалка и плашка совпадали по цвету с остальным UI.
   const accent = coffeeDesign
     ? getCoffeeAccent(location.slug)
     : getLocationAccent(location.slug, location.brand_color);
@@ -49,7 +48,6 @@ export default async function LocationLayout({
         : location.name;
 
   const coffee = coffeeDesign;
-  // Lux-локации (Ереван, Киевская) — нижняя навигация на 4 таба вместо плашки.
   const lux = coffee && coffeeHomeVariant(location.slug) === 'lux';
   const isKiev = location.slug === 'kievskaia';
 
@@ -65,7 +63,7 @@ export default async function LocationLayout({
       </main>
       {lux ? (
         <LuxBottomNav locationSlug={location.slug} />
-      ) : (
+      ) : coffee ? (
         <FloatingCartButton
           locationSlug={location.slug}
           locationName={locationName}
@@ -73,8 +71,10 @@ export default async function LocationLayout({
           phone={location.phone ?? null}
           accent={accent}
           locations={locations}
-          dockAccent={coffee ? getCoffeeAccent(location.slug) : undefined}
+          dockAccent={getCoffeeAccent(location.slug)}
         />
+      ) : (
+        <BarvikhaBottomNav locationSlug={location.slug} />
       )}
       <Toaster />
       <SwipeBack />

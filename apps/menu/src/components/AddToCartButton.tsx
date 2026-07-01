@@ -48,16 +48,16 @@ export function AddToCartButton({ itemId, itemName, variant = 'icon', className 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={SPRING}
-            className={cn('flex flex-1 items-center justify-between bg-gold text-[#2A1B11] px-6 py-3.5', className)}
+            className={cn('flex flex-1 items-center justify-between bg-gold text-background px-6 py-3.5', className)}
             onClick={stop}
           >
             <button type="button" onClick={dec} aria-label="−"
-              className="flex h-8 w-8 items-center justify-center rounded-full transition hover:bg-black/10 cursor-pointer">
+              className="flex h-8 w-8 items-center justify-center rounded-full transition hover:bg-white/15 cursor-pointer">
               <Minus size={18} strokeWidth={2.5} />
             </button>
             <span className="text-base font-semibold tabular-nums">{shown}</span>
             <button type="button" onClick={inc} aria-label="+"
-              className="flex h-8 w-8 items-center justify-center rounded-full transition hover:bg-black/10 cursor-pointer">
+              className="flex h-8 w-8 items-center justify-center rounded-full transition hover:bg-white/15 cursor-pointer">
               <Plus size={18} strokeWidth={2.5} />
             </button>
           </motion.div>
@@ -70,7 +70,7 @@ export function AddToCartButton({ itemId, itemName, variant = 'icon', className 
             transition={SPRING}
             type="button"
             onClick={firstAdd}
-            className={cn('flex-1 bg-gold text-[#2A1B11] border-0 px-6 py-4 text-xs uppercase tracking-[0.25em] font-semibold transition hover:-translate-y-0.5 hover:bg-gold-light cursor-pointer', className)}
+            className={cn('flex-1 bg-gold text-background border-0 px-6 py-4 text-xs uppercase tracking-[0.25em] font-semibold transition hover:-translate-y-0.5 hover:bg-gold-light cursor-pointer', className)}
           >
             {t('item.addToCart')}
           </motion.button>
@@ -96,14 +96,14 @@ export function AddToCartButton({ itemId, itemName, variant = 'icon', className 
           onClick={stop}
         >
           <button type="button" onClick={dec} aria-label="−"
-            className="flex h-7 w-7 items-center justify-center rounded-full text-gold transition hover:bg-gold hover:text-[#2A1B11] cursor-pointer">
+            className="flex h-7 w-7 items-center justify-center rounded-full text-gold transition hover:bg-gold hover:text-background cursor-pointer">
             <Minus size={14} strokeWidth={2.5} />
           </button>
-          <span className="min-w-[20px] text-center text-sm font-medium tabular-nums text-cream">
+          <span className="min-w-[20px] text-center text-sm font-medium tabular-nums text-foreground">
             {shown}
           </span>
           <button type="button" onClick={inc} aria-label="+"
-            className="flex h-7 w-7 items-center justify-center rounded-full text-gold transition hover:bg-gold hover:text-[#2A1B11] cursor-pointer">
+            className="flex h-7 w-7 items-center justify-center rounded-full text-gold transition hover:bg-gold hover:text-background cursor-pointer">
             <Plus size={14} strokeWidth={2.5} />
           </button>
         </motion.div>
@@ -118,7 +118,7 @@ export function AddToCartButton({ itemId, itemName, variant = 'icon', className 
           onClick={firstAdd}
           aria-label={t('common.add') + ' ' + itemName}
           className={cn(
-            'flex h-9 w-9 items-center justify-center rounded-full border border-gold text-gold transition hover:bg-gold hover:text-[#2A1B11] hover:scale-110 cursor-pointer',
+            'flex h-9 w-9 items-center justify-center rounded-full border border-gold text-gold transition hover:bg-gold hover:text-background hover:scale-110 cursor-pointer',
             className,
           )}
         >

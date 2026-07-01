@@ -84,13 +84,13 @@ export function CategoryItemsList({
 
       {/* ── Поиск + кнопка фильтров в одной строке ── */}
       <div className="flex items-center gap-2">
-        <div className="relative flex flex-1 items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 focus-within:border-gold/50 transition-colors duration-200">
-          <Search size={14} className="shrink-0 text-gold/50" />
+        <div className="relative flex flex-1 items-center gap-3 rounded-full border border-border bg-card px-4 py-2.5 focus-within:border-border-strong transition-colors duration-200">
+          <Search size={14} className="shrink-0 text-muted" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={tSearch('placeholder')}
-            className="flex-1 min-w-0 bg-transparent text-[13px] text-foreground placeholder:text-muted/60 outline-none"
+            className="flex-1 min-w-0 bg-transparent text-[13px] text-foreground placeholder:text-muted outline-none"
             aria-label={tSearch('placeholder')}
             autoComplete="off"
             autoCorrect="off"
@@ -100,7 +100,7 @@ export function CategoryItemsList({
             <button
               type="button"
               onClick={() => setQuery('')}
-              className="shrink-0 text-muted hover:text-gold transition cursor-pointer"
+              className="shrink-0 text-muted hover:text-foreground transition cursor-pointer"
               aria-label="clear"
             >
               <X size={14} />

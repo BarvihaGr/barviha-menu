@@ -1,12 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Tenor+Sans&family=Raleway:wght@300;400;500;600&family=Forum&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Cormorant+SC:wght@400;500;600;700&family=Prata&family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Armenian:wght@300;400;500;600;700&family=Noto+Serif+Armenian:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Tenor+Sans&family=Raleway:wght@300;400;500;600&family=Forum&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Cormorant+SC:wght@400;500;600;700&family=Prata&family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Armenian:wght@300;400;500&family=Noto+Serif+Armenian:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-/* ── Display-шрифт заголовков/логотипа ──
-   Активен бесплатный Cormorant SC (Google Fonts, SIL OFL) — выбран как
-   аналог платной Canela. Capital/small-caps, высокий контраст, кириллица.
-   Canela ниже оставлена как опциональный DROP-IN: если положить файлы
-   в apps/menu/public/fonts/ и поставить 'Canela' первым в --font-display,
-   она перехватит заголовки. Триал/аренда: fontstand.com/fonts/canela. */
 @font-face {
   font-family: 'Canela';
   font-style: normal;
@@ -39,42 +33,33 @@
 }
 
 :root {
-  /* ── Barviha — палитра «бронзовый ресторан» ──
-     перенесена с эталонного сайта incandescent-starburst.netlify.app.
-     Тёплая коричнево-золотая гамма: фон #2A1B11, слои #33221A→#453324,
-     текст #F4E9D5, золото-бронза #C49262 (soft #A07642, deep #6F4827). */
-  --background: #6B5242;          /* --bg — основа (фон) */
-  --background-deep: #584030;     /* глубокий слой / оверлеи */
-  --card: #7C6454;               /* --bg-2 — карточки / поверхности */
-  --card-elev: #8C7464;          /* --bg-3 — приподнятая поверхность */
-  --foreground: #F4E9D5;         /* --text — основной текст */
-  --cream: #F1D9B0;              /* тёплый светлый акцент */
-  --beige: #E5C490;             /* светлое золото / перламутр */
-  --muted: rgba(244, 233, 213, 0.62);    /* --text-soft */
-  --muted-dim: rgba(244, 233, 213, 0.38); /* --text-mute */
-  --emerald: #533720;           /* тёплый средний тон (металлик-середина) */
-  --border: rgba(196, 146, 98, 0.14);     /* --line */
-  --border-strong: rgba(196, 146, 98, 0.32); /* --line-strong */
-  --hair: rgba(255, 255, 255, 0.06);
+  /* ── Barvikha — светлая палитра: тёплый бежевый + тёмно-коричневый ──
+     Фон #F5E6D3 (кремовый бежевый), акцент #2C0A00 (тёмный шоколад). */
+  --background: #F5E6D3;
+  --background-deep: #EDD8C0;
+  --card: #EDE0CB;
+  --card-elev: #FAF4EC;
+  --foreground: #2C0A00;
+  --cream: #2C0A00;
+  --beige: #5C1A00;
+  --muted: rgba(44, 10, 0, 0.50);
+  --muted-dim: rgba(44, 10, 0, 0.32);
+  --emerald: #8B3A00;
+  --border: rgba(44, 10, 0, 0.10);
+  --border-strong: rgba(44, 10, 0, 0.22);
+  --hair: rgba(44, 10, 0, 0.05);
 
-  /* Золото-бронза (как на эталоне) */
-  --gold: #C49262;              /* --gold */
-  --gold-light: #E5C490;
-  --gold-soft: #A07642;         /* --gold-soft */
-  --gold-dark: #6F4827;         /* --gold-deep */
-  --gold-glow: rgba(196, 146, 98, 0.35);  /* --gold-glow */
+  /* Акцент = тёмно-коричневый (кнопки, активные элементы, цены) */
+  --gold: #2C0A00;
+  --gold-light: #5C1A00;
+  --gold-soft: #2C0A00;
+  --gold-dark: #1A0500;
+  --gold-glow: rgba(44, 10, 0, 0.12);
 }
 
-/* ── СВЕТЛАЯ ТЕМА Coffeemania (Бауманская) ──
-   Единая белая стилистика для редизайн-локаций. Переопределяем семантические
-   переменные палитры на светлые — и все общие компоненты (плашка-корзина,
-   выпадашки локации/языка, модалки, тосты) автоматически становятся белыми,
-   без правки каждого. Акцент берётся из --cm-accent (фирменный цвет локации). */
+/* ── СВЕТЛАЯ ТЕМА Coffeemania ──
+   Семантические переменные переопределяются на токены --cm-* локации. */
 .coffee-theme {
-  /* Семантические переменные палитры маппятся на токены Coffeemania (--cm-*),
-     которые задаёт coffeeAccentStyle(slug) инлайном. Фолбэки — светлая тема
-     (Бауманская). Домодедово получает бронзовые --cm-* → весь общий обвес
-     (плашка, модалки, выпадашки) автоматически становится бронзовым. */
   --background: var(--cm-bg, #fbfbfa);
   --background-deep: var(--cm-bg, #ffffff);
   --card: var(--cm-surface, #f3f2ef);
@@ -97,19 +82,11 @@
   color: var(--cm-text, #1a1a1a);
 }
 
-/* Гасим тёмный фон body и все декоративные слои, когда на странице
-   светлая тема (любой потомок .coffee-theme). */
 body:has(.coffee-theme) {
   background: #fbfbfa;
 }
 body:has(.coffee-theme)::before,
 body:has(.coffee-theme)::after {
-  display: none;
-}
-body:has(.coffee-theme) .brush-strokes,
-body:has(.coffee-theme) .bg-sheen,
-body:has(.coffee-theme) .ambient-light,
-body:has(.coffee-theme) .gold-dust {
   display: none;
 }
 
@@ -135,19 +112,7 @@ body:has(.coffee-theme) .gold-dust {
   --font-sans: 'Inter', 'Noto Sans Armenian', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: 'Cormorant SC', 'Cormorant Garamond', 'Raleway', 'Jost', 'Tenor Sans', 'Noto Sans Armenian', 'Noto Sans SC', system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-  /* Didone-стек для названий позиций меню: высококонтрастный шрифт с засечками.
-     Cormorant Garamond — Google Fonts (полная кириллица, ОФЛ).
-     Playfair Display — запасной Google Fonts (кириллица).
-     Didot / Bodoni MT / Bodoni 72 — системные шрифты macOS/Windows. */
   --font-menu-title: 'Cormorant Garamond', 'Playfair Display', 'Didot', 'Bodoni MT', 'Bodoni 72', Georgia, 'Times New Roman', serif;
-
-  /* ── Брендовая типографика «Барвиха Lounge» (по брендбуку) ──
-     Заголовки/акценты — Baron Neue + Intro (жирный геометрический гротеск):
-     ближайший доступный web-аналог с полной кириллицей — Montserrat.
-     Тексты/описания — Market Fresh (фолбэк Arial): аналог — Manrope.
-     Используются только в светлом дизайне Coffeemania (см. coffeeAccentStyle). */
-  /* Заголовки coffee/lux — элегантный «дидон» Prata (Canela-аналог, с полной
-     кириллицей). Интерфейс/текст — чистый сан-сериф Manrope/Inter. */
   --cm-font-display: 'Raleway', 'Jost', 'Tenor Sans', 'Noto Sans Armenian', 'Noto Sans SC', system-ui, sans-serif;
   --cm-font-body: 'Manrope', 'Inter', 'Noto Sans Armenian', 'Noto Sans SC', system-ui, Arial, sans-serif;
 }
@@ -158,243 +123,21 @@ body:has(.coffee-theme) .gold-dust {
 
 html {
   scroll-behavior: smooth;
-  /* Никогда не допускаем горизонтальный скролл (full-bleed/fixed-элементы на
-     узких экранах). clip не создаёт скролл-контейнер → sticky не ломается. */
   overflow-x: clip;
 }
 
 html,
 body {
-  background-color: var(--background-deep);
+  background-color: var(--background);
   color: var(--foreground);
 }
 
-/* Атмосферный «расскрас» на ВЕСЬ экран: тёмный центр, мягкое свечение
-   сверху/снизу + виньетка. Боковые медно-бронзовые мазки вынесены в
-   отдельный «дышащий» слой .ambient-light (см. ниже). background-attachment:
-   fixed → градиент прибит к вьюпорту, покрывает страницу без швов при любом
-   скролле и высоте (моб / iPad / десктоп). */
 body {
-  background-image:
-    /* тёплое медное свечение сверху и снизу */
-    radial-gradient(90% 55% at 50% -8%,
-      rgba(200, 148, 72, 0.60) 0%,
-      transparent 62%),
-    radial-gradient(90% 55% at 50% 108%,
-      rgba(188, 132, 58, 0.50) 0%,
-      transparent 62%),
-    /* лёгкая виньетка по краям */
-    radial-gradient(120% 120% at 50% 50%,
-      transparent 18%,
-      rgba(15, 8, 2, 0.18) 100%),
-    /* тёплый бежевый слой — посветлее и потеплее, сдвиг от серого к бежевому */
-    linear-gradient(rgba(168, 140, 108, 0.56), rgba(148, 118, 86, 0.56)),
-    /* бронзовая фактура-мазок на весь фон */
-    url('/brushstroke-bg.webp');
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-
   font-family: var(--font-sans);
-  font-weight: 300;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   letter-spacing: 0.01em;
-}
-
-/* ── ФАКТУРА ФОНА ──
-   Два слоя поверх градиента, оба прибиты к вьюпорту (fixed) и лежат ПОЗАДИ
-   контента (z-index:-1) — текстура видна только в фоне, текст/карточки не
-   затрагивает. ::before — мягкие медно-бронзовые мазки (soft-light, объём),
-   ::after — мелкое тёплое зерно (overlay, тактильность). */
-body::before,
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-}
-body::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.018' numOctaves='4' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.66 0 0 0 0 0.45 0 0 0 0 0.24 0 0 0 0.85 0'/%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23m)'/%3E%3C/svg%3E");
-  background-size: 620px 620px;
-  opacity: 0.2;
-  filter: blur(1px);
-  mix-blend-mode: soft-light;
-}
-body::after {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.8 0 0 0 0 0.6 0 0 0 0 0.36 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-  background-size: 170px 170px;
-  opacity: 0.14;
-  mix-blend-mode: overlay;
-}
-
-/* ── МАЗКИ КИСТИ ──
-   Отдельный слой «сухой кисти»: толстые медные штрихи, у которых края рваные
-   (feDisplacementMap искажает гладкие path по фрактальному шуму → эффект кисти).
-   Статичный, за контентом (z-index:-1), под «живым светом» — свет ловит штрихи.
-   mix-blend-mode: soft-light → фактура, а не грязь; текст/карточки не задевает. */
-.brush-strokes {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cdefs%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016' numOctaves='4' seed='12' result='t'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='t' scale='46' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23r)' fill='none' stroke='%23C4965E' stroke-linecap='round'%3E%3Cpath d='M-60 130 Q 300 60 960 180' stroke-width='34' opacity='0.6'/%3E%3Cpath d='M-60 250 Q 340 180 960 290' stroke-width='24' opacity='0.4'/%3E%3Cpath d='M-60 360 Q 360 270 960 420' stroke-width='46' opacity='0.5'/%3E%3Cpath d='M-60 500 Q 300 430 960 540' stroke-width='28' opacity='0.45'/%3E%3Cpath d='M-60 600 Q 320 510 960 650' stroke-width='38' opacity='0.55'/%3E%3Cpath d='M-60 760 Q 400 670 960 810' stroke-width='30' opacity='0.45'/%3E%3Cpath d='M120 -60 Q 320 320 220 960' stroke-width='26' opacity='0.35'/%3E%3Cpath d='M560 -60 Q 460 340 600 960' stroke-width='20' opacity='0.3'/%3E%3Cpath d='M780 -60 Q 620 340 860 960' stroke-width='26' opacity='0.35'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.14;
-  filter: blur(4px);
-  /* screen → бронза светлеет на тёмном, мазки заполняют пустые места;
-     под яркой шапкой/карточками почти не проявляется (не пачкает контент). */
-  mix-blend-mode: screen;
-}
-
-/* ── ПЕРЕЛИВАЮЩИЙСЯ БЛИК ──
-   Широкая мягкая золотая полоса под наклоном медленно проходит по экрану —
-   будто свет скользит по металлической краске, фон «переливается».
-   blend screen, анимируем только transform → GPU. Полоса плавно гаснет на
-   краях, чтобы не было резких въездов/выездов. */
-.bg-sheen {
-  position: fixed;
-  inset: -40%;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(
-    115deg,
-    transparent 38%,
-    rgba(229, 196, 144, 0.035) 46%,
-    rgba(245, 217, 176, 0.07) 50%,
-    rgba(229, 196, 144, 0.035) 54%,
-    transparent 62%
-  );
-  mix-blend-mode: screen;
-  will-change: transform, opacity;
-  animation: sheen-sweep 17s ease-in-out infinite;
-}
-@keyframes sheen-sweep {
-  0% { transform: translate(-28%, -14%); opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { transform: translate(28%, 14%); opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .bg-sheen { animation: none; opacity: 0; }
-}
-
-/* ── ЖИВОЙ СВЕТ ──
-   Боковые медно-бронзовые мазки, которые медленно «дышат»: плавно меняют
-   яркость и чуть смещаются/расширяются. Отдельный фиксированный слой за
-   контентом (z-index:-1). Анимируем только opacity и transform → работа на
-   GPU-композиторе, без перерисовок и нагрузки на скролл. Два мазка дышат в
-   противофазе (разные delay) — свет «перекатывается» с края на край. */
-.ambient-light {
-  position: fixed;
-  inset: -10%; /* запас под scale, чтобы края не оголялись */
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.42;
-  filter: blur(10px);
-  will-change: opacity, transform;
-}
-.ambient-light::before,
-.ambient-light::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  will-change: opacity, transform;
-}
-/* Левый мазок */
-.ambient-light::before {
-  background: radial-gradient(135% 90% at 2% 32%,
-    rgba(168, 104, 56, 0.55) 0%,
-    rgba(111, 72, 39, 0.30) 24%,
-    transparent 58%);
-  animation: ambient-breathe 15s ease-in-out infinite;
-}
-/* Правый мазок — в противофазе */
-.ambient-light::after {
-  background: radial-gradient(135% 90% at 98% 70%,
-    rgba(168, 104, 56, 0.50) 0%,
-    rgba(111, 72, 39, 0.26) 24%,
-    transparent 58%);
-  animation: ambient-breathe 15s ease-in-out infinite;
-  animation-delay: -7.5s;
-}
-@keyframes ambient-breathe {
-  0%, 100% {
-    opacity: 0.55;
-    transform: scale(1) translateX(0);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.07) translateX(10px);
-  }
-}
-/* Уважение к «Уменьшению движения»: без анимации, но красивый статичный свет. */
-@media (prefers-reduced-motion: reduce) {
-  .ambient-light::before,
-  .ambient-light::after {
-    animation: none;
-    opacity: 0.8;
-  }
-}
-
-/* ── ЗОЛОТАЯ ПЫЛЬ ──
-   Редкие золотые крупинки, медленно плывущие вверх и мягко мерцающие.
-   Два поля (::before/::after) с разной скоростью → лёгкая глубина-параллакс.
-   blend screen — крупинки светятся на тёмном фоне. Анимируем только transform
-   и opacity → GPU. Дрейф ровно на высоту тайла (бесшовная петля). */
-.gold-dust {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 0.4;
-}
-.gold-dust::before,
-.gold-dust::after {
-  content: '';
-  position: absolute;
-  inset: -25%;
-  background-repeat: repeat;
-  mix-blend-mode: screen;
-  will-change: transform, opacity;
-}
-/* Ближнее поле — мельче, ярче, быстрее */
-.gold-dust::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cg fill='%23F1D9B0'%3E%3Ccircle cx='20' cy='40' r='1.2' opacity='0.9'/%3E%3Ccircle cx='75' cy='110' r='0.8' opacity='0.6'/%3E%3Ccircle cx='130' cy='30' r='1.5' opacity='0.85'/%3E%3Ccircle cx='185' cy='95' r='0.7' opacity='0.55'/%3E%3Ccircle cx='240' cy='50' r='1.1' opacity='0.8'/%3E%3Ccircle cx='300' cy='120' r='1.3' opacity='0.7'/%3E%3Ccircle cx='340' cy='60' r='0.8' opacity='0.6'/%3E%3Ccircle cx='50' cy='180' r='1.1' opacity='0.8'/%3E%3Ccircle cx='110' cy='215' r='0.7' opacity='0.5'/%3E%3Ccircle cx='160' cy='170' r='1.4' opacity='0.75'/%3E%3Ccircle cx='225' cy='205' r='0.9' opacity='0.65'/%3E%3Ccircle cx='285' cy='235' r='1.1' opacity='0.8'/%3E%3Ccircle cx='330' cy='195' r='0.7' opacity='0.55'/%3E%3Ccircle cx='30' cy='285' r='1.0' opacity='0.7'/%3E%3Ccircle cx='95' cy='320' r='1.3' opacity='0.85'/%3E%3Ccircle cx='150' cy='300' r='0.8' opacity='0.6'/%3E%3Ccircle cx='205' cy='340' r='1.0' opacity='0.7'/%3E%3Ccircle cx='265' cy='290' r='1.4' opacity='0.8'/%3E%3Ccircle cx='315' cy='335' r='0.9' opacity='0.6'/%3E%3Ccircle cx='70' cy='260' r='0.7' opacity='0.5'/%3E%3Ccircle cx='190' cy='260' r='0.8' opacity='0.6'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 360px 360px;
-  animation: dust-drift 55s linear infinite, dust-twinkle 6s ease-in-out infinite;
-}
-/* Дальнее поле — крупнее, мягче, медленнее */
-.gold-dust::after {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cg fill='%23E5C490'%3E%3Ccircle cx='60' cy='80' r='1.6' opacity='0.6'/%3E%3Ccircle cx='180' cy='40' r='1.2' opacity='0.5'/%3E%3Ccircle cx='300' cy='100' r='1.8' opacity='0.55'/%3E%3Ccircle cx='420' cy='60' r='1.3' opacity='0.5'/%3E%3Ccircle cx='480' cy='160' r='1.5' opacity='0.6'/%3E%3Ccircle cx='120' cy='200' r='1.4' opacity='0.5'/%3E%3Ccircle cx='260' cy='240' r='1.7' opacity='0.6'/%3E%3Ccircle cx='380' cy='200' r='1.2' opacity='0.45'/%3E%3Ccircle cx='80' cy='340' r='1.5' opacity='0.55'/%3E%3Ccircle cx='220' cy='380' r='1.8' opacity='0.6'/%3E%3Ccircle cx='340' cy='340' r='1.3' opacity='0.5'/%3E%3Ccircle cx='460' cy='400' r='1.6' opacity='0.55'/%3E%3Ccircle cx='160' cy='460' r='1.4' opacity='0.5'/%3E%3Ccircle cx='300' cy='480' r='1.7' opacity='0.6'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 520px 520px;
-  animation: dust-drift-far 85s linear infinite reverse, dust-twinkle 8s ease-in-out infinite;
-  animation-delay: -3s, -2s;
-  opacity: 0.7;
-}
-@keyframes dust-drift {
-  from { transform: translateY(0); }
-  to { transform: translateY(-360px); }
-}
-@keyframes dust-drift-far {
-  from { transform: translateY(0); }
-  to { transform: translateY(-520px); }
-}
-@keyframes dust-twinkle {
-  0%, 100% { opacity: 0.45; }
-  50% { opacity: 0.9; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .gold-dust::before,
-  .gold-dust::after {
-    animation: none;
-    opacity: 0.6;
-  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -402,10 +145,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 
-/* ── Didone-заголовки позиций меню ──
-   Применяется ТОЛЬКО к названиям блюд/напитков и крупным заголовкам меню.
-   Weight 400: сохраняет тонкие волосяные штрихи Didone — жирнее теряет изящность.
-   Весь остальной текст (состав, КБЖУ, цены, граммовка) остаётся в sans-serif. */
 .menu-title {
   font-family: var(--font-menu-title);
   font-weight: 400;
@@ -414,48 +153,15 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.02em;
 }
 
-/* ── Дорогое перламутровое золото ── */
 .gold-text {
-  background: linear-gradient(
-    110deg,
-    var(--gold-dark) 0%,
-    var(--gold) 22%,
-    var(--gold-light) 48%,
-    #F1D9B0 52%,
-    var(--gold-light) 56%,
-    var(--gold) 78%,
-    var(--gold-dark) 100%
-  );
-  background-size: 220% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  animation: gold-shimmer 6s linear infinite;
+  color: var(--gold);
 }
 
 .gold-surface {
-  background: linear-gradient(
-    135deg,
-    var(--gold-dark),
-    var(--gold) 42%,
-    var(--gold-light) 50%,
-    #F1D9B0 53%,
-    var(--gold) 60%,
-    var(--gold-dark)
-  );
-  background-size: 200% auto;
-  animation: gold-shimmer 6s linear infinite;
+  background-color: var(--gold);
 }
 
-@keyframes gold-shimmer {
-  to {
-    background-position: 220% center;
-  }
-}
-
-/* Ken-Burns: медленный зум постера. Создаёт иллюзию «живого» видео
-   на мобиле, где мы не грузим тяжёлое hero.mp4 */
+/* Ken-Burns: медленный зум постера */
 .ken-burns {
   animation: ken-burns-anim 22s ease-in-out infinite alternate;
   transform-origin: center;
@@ -464,41 +170,15 @@ h1, h2, h3, h4, h5, h6 {
   0%   { transform: scale(1.0) translate(0, 0); }
   100% { transform: scale(1.12) translate(-1.5%, 1.5%); }
 }
-/* Намеренно НЕ глушим под prefers-reduced-motion: на iPhone с включённым
-   «Уменьшением движения» декоративная анимация всё равно должна идти —
-   чтобы движущиеся элементы работали без правки настроек телефона. */
 
-/* Пульсирующее золото — намёк что элемент кликабелен */
-.gold-pulse {
-  color: var(--gold);
-  animation: gold-pulse-anim 2.2s ease-in-out infinite;
-  text-shadow: 0 0 8px var(--gold-glow);
-}
-@keyframes gold-pulse-anim {
-  0%, 100% {
-    color: var(--gold);
-    text-shadow: 0 0 8px var(--gold-glow);
-  }
-  50% {
-    color: var(--gold-light);
-    text-shadow: 0 0 18px var(--gold), 0 0 28px var(--gold-glow);
-  }
-}
-
-/* Бегущие золотые волны в шапке */
-@keyframes wave-flow {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-/* Плавное появление контента */
+/* Плавное появление */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .fade-up { animation: fade-up 0.5s ease both; }
 
-/* Скелетон-шиммер для прогрузки */
+/* Скелетон-шиммер */
 .skeleton {
   background: linear-gradient(100deg, var(--card) 30%, var(--card-elev) 50%, var(--card) 70%);
   background-size: 200% 100%;
@@ -508,9 +188,9 @@ h1, h2, h3, h4, h5, h6 {
   to { background-position: -200% 0; }
 }
 
-/* Тонкий золотой скроллбар */
-::-webkit-scrollbar { width: 8px; height: 8px; }
+/* Скроллбар */
+::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 8px; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 6px; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
