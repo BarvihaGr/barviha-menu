@@ -155,11 +155,6 @@ export function CategoryItemsList({
         {hasSections && (
           <div className="overflow-x-auto no-scrollbar flex-1">
             <div className="flex gap-2 pr-4 sm:pr-0">
-              <PillTab
-                label={tSections('all')}
-                on={activeSection === null}
-                onClick={() => setActiveSection(null)}
-              />
               {sections.map((s) => (
                 <PillTab
                   key={s.id}
