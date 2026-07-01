@@ -41,10 +41,10 @@ function Tab({ label, on, onClick }: { label: string; on: boolean; onClick: () =
       onClick={onClick}
       aria-pressed={on}
       className={cn(
-        'shrink-0 rounded-full border px-3.5 py-1.5 text-[11px] sm:text-[12px] tracking-[0.08em] font-medium transition cursor-pointer whitespace-nowrap',
+        'shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors cursor-pointer',
         on
-          ? 'border-foreground bg-foreground text-background'
-          : 'border-border bg-card text-muted hover:border-border-strong hover:text-foreground',
+          ? 'bg-foreground text-background'
+          : 'text-muted hover:text-foreground',
       )}
     >
       {label}
