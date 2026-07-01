@@ -9,10 +9,10 @@ import { pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/routing';
 import { activeSectionsFor } from '@/lib/menu-sections';
 import { searchItems } from '@/lib/search';
+import { cn } from '@/lib/utils';
 import { ItemCard } from './ItemCard';
 import { applyFilters, type FilterKey, type FilterRealm } from './FilterBar';
 import { FilterDrawer } from './FilterDrawer';
-import { SectionTabs } from './SectionTabs';
 
 interface Props {
   items: ResolvedMenuItem[];
@@ -43,6 +43,7 @@ export function CategoryItemsList({
   const [active, setActive] = useState<Set<FilterKey>>(new Set());
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const sections: SectionDef[] = useMemo(() => {
     const fromSub = buildFromSub(items, locale);
@@ -56,72 +57,123 @@ export function CategoryItemsList({
   }, [items, categorySlug, tSections, locale]);
 
   const filtered = useMemo(() => {
-    // 1. Подсекция (Салаты / Закуски / …)
     let pool = items;
     if (activeSection) {
       const sec = sections.find((s) => s.id === activeSection);
       if (sec) pool = items.filter((i) => sec.itemIds.has(i.id));
     }
-    // 2. Свойства блюда (Острое / Веган / Без мяса)
     pool = applyFilters(pool, active);
-    // 3. Текстовый поиск (по названию, описанию, составу + синонимы)
     const q = query.trim();
     if (q) pool = searchItems(pool, q, pool.length).map((r) => r.item);
     return pool;
   }, [items, active, activeSection, sections, query]);
 
-  const tabSections = sections.map((s) => ({
-    id: s.id,
-    i18nKey: s.id,
-    itemIds: [...s.itemIds],
-    label: s.label,
-  }));
-
   const isFiltering = active.size > 0 || query.trim().length > 0;
+  const hasSections = sections.length > 1;
+  const searchActive = searchOpen || !!query.trim();
+
+  const toggleSearch = () => {
+    if (searchOpen) {
+      setSearchOpen(false);
+      setQuery('');
+    } else {
+      setSearchOpen(true);
+    }
+  };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
 
-      {/* ── Поиск + кнопка фильтров в одной строке ── */}
-      <div className="flex items-center gap-2">
-        <div className="relative flex flex-1 items-center gap-3 rounded-full border border-border bg-card px-4 py-2.5 focus-within:border-border-strong transition-colors duration-200">
-          <Search size={14} className="shrink-0 text-muted" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={tSearch('placeholder')}
-            className="flex-1 min-w-0 bg-transparent text-[13px] text-foreground placeholder:text-muted outline-none"
-            aria-label={tSearch('placeholder')}
-            autoComplete="off"
-            autoCorrect="off"
-            spellCheck={false}
-          />
-          {query && (
-            <button
-              type="button"
-              onClick={() => setQuery('')}
-              className="shrink-0 text-muted hover:text-foreground transition cursor-pointer"
-              aria-label="clear"
-            >
-              <X size={14} />
-            </button>
+      {/* ── Строка поиска — появляется по тапу на иконку ── */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            key="search"
+            initial={{ opacity: 0, y: -6, height: 0 }}
+            animate={{ opacity: 1, y: 0, height: 'auto' }}
+            exit={{ opacity: 0, y: -6, height: 0 }}
+            transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="relative flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2.5 focus-within:border-border-strong transition-colors duration-200">
+              <Search size={14} className="shrink-0 text-muted" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={tSearch('placeholder')}
+                className="flex-1 min-w-0 bg-transparent text-[13px] text-foreground placeholder:text-muted outline-none"
+                aria-label={tSearch('placeholder')}
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery('')}
+                  className="shrink-0 text-muted hover:text-foreground transition cursor-pointer"
+                  aria-label="clear"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── [🔍] [≡] | [пилюля] [пилюля] ... — всё в одну строку ── */}
+      <div className="-mx-4 sm:mx-0 flex items-center">
+
+        {/* Фиксированные иконки слева */}
+        <div className="flex shrink-0 items-center pl-4 sm:pl-0">
+          <button
+            type="button"
+            onClick={toggleSearch}
+            className={cn(
+              'flex h-9 w-9 items-center justify-center rounded-full transition cursor-pointer',
+              searchActive ? 'text-foreground' : 'text-muted hover:text-foreground',
+            )}
+            aria-label={searchOpen ? 'close search' : 'open search'}
+          >
+            {searchActive
+              ? <X size={16} strokeWidth={2} />
+              : <Search size={16} strokeWidth={2} />
+            }
+          </button>
+          {showFilters && (
+            <FilterDrawer iconOnly active={active} onChange={setActive} realm={realm} />
           )}
         </div>
-        {showFilters && (
-          <FilterDrawer active={active} onChange={setActive} realm={realm} />
+
+        {/* Тонкий разделитель */}
+        {hasSections && <div className="mx-2 h-4 w-px shrink-0 bg-border" />}
+
+        {/* Прокручиваемые пилюли подсекций */}
+        {hasSections && (
+          <div className="overflow-x-auto no-scrollbar flex-1">
+            <div className="flex gap-2 pr-4 sm:pr-0">
+              <PillTab
+                label={tSections('all')}
+                on={activeSection === null}
+                onClick={() => setActiveSection(null)}
+              />
+              {sections.map((s) => (
+                <PillTab
+                  key={s.id}
+                  label={s.label}
+                  on={activeSection === s.id}
+                  onClick={() => setActiveSection(s.id)}
+                />
+              ))}
+            </div>
+          </div>
         )}
       </div>
 
-      {/* ── Подсекции (Салаты / Закуски / Супы / …) ── */}
-      {sections.length > 1 && (
-        <SectionTabs
-          sections={tabSections}
-          active={activeSection}
-          onChange={setActiveSection}
-        />
-      )}
-
-      {/* ── Сетка блюд с плавным enter/exit ── */}
+      {/* ── Сетка блюд ── */}
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
         <AnimatePresence mode="popLayout">
           {filtered.map((item, i) => (
@@ -166,6 +218,24 @@ export function CategoryItemsList({
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+function PillTab({ label, on, onClick }: { label: string; on: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={on}
+      className={cn(
+        'shrink-0 rounded-full border px-3.5 py-1.5 text-[11px] sm:text-[12px] tracking-[0.08em] font-medium transition cursor-pointer whitespace-nowrap',
+        on
+          ? 'border-foreground bg-foreground text-background'
+          : 'border-border bg-card text-muted hover:border-border-strong hover:text-foreground',
+      )}
+    >
+      {label}
+    </button>
   );
 }
 

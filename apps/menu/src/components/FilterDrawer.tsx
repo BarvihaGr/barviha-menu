@@ -12,6 +12,8 @@ interface Props {
   active: Set<FilterKey>;
   onChange: (next: Set<FilterKey>) => void;
   realm?: FilterRealm;
+  /** Только иконка без текста (для строки иконки+пилюли). */
+  iconOnly?: boolean;
   /**
    * Передаётся из coffee-контекста чтобы применить --cm-* переменные
    * внутри портала (который рендерится вне .coffee-theme дерева).
@@ -19,11 +21,7 @@ interface Props {
   themeStyle?: React.CSSProperties;
 }
 
-/**
- * Кнопка «Фильтры» + выезжающий снизу sheet.
- * Работает для обоих дизайнов: тёмный (default) и Coffeemania (через themeStyle).
- */
-export function FilterDrawer({ active, onChange, realm = 'kitchen', themeStyle }: Props) {
+export function FilterDrawer({ active, onChange, realm = 'kitchen', iconOnly, themeStyle }: Props) {
   const t = useTranslations('filters');
   const [open, setOpen] = useState(false);
   const available = FILTERS_BY_REALM[realm];
@@ -40,16 +38,51 @@ export function FilterDrawer({ active, onChange, realm = 'kitchen', themeStyle }
   const count = active.size;
   const isCoffee = !!themeStyle;
 
-  // ── Стили кнопки-триггера ──
-  const triggerCls = cn(
-    'inline-flex items-center gap-1.5 rounded-full transition-all duration-200 cursor-pointer shrink-0',
-    isCoffee
-      ? 'px-4 py-1.5 font-[family-name:var(--font-sans)] text-[13px] bg-[var(--cm-surface)] text-[var(--cm-text)] hover:bg-[var(--cm-surface-2)]'
-      : 'border px-3.5 py-1.5 text-[11px] uppercase tracking-[0.12em]',
-    !isCoffee && (count > 0
-      ? 'border-gold bg-gold/15 text-cream'
-      : 'border-gold/20 bg-transparent text-muted hover:border-gold/45 hover:text-cream/80'),
-    isCoffee && count > 0 && 'bg-[var(--cm-accent)] text-white',
+  // ── Триггер-кнопка ──
+  const trigger = iconOnly ? (
+    <button
+      type="button"
+      className={cn(
+        'relative flex h-9 w-9 items-center justify-center rounded-full transition cursor-pointer',
+        count > 0 ? 'text-foreground' : 'text-muted hover:text-foreground',
+      )}
+    >
+      <SlidersHorizontal size={16} strokeWidth={2} />
+      {count > 0 && (
+        <span className="absolute -right-0.5 -top-0.5 flex h-[14px] min-w-[14px] items-center justify-center rounded-full bg-foreground px-0.5 text-[9px] font-bold text-background">
+          {count}
+        </span>
+      )}
+    </button>
+  ) : (
+    <button
+      type="button"
+      className={cn(
+        'inline-flex items-center gap-1.5 rounded-full transition-all duration-200 cursor-pointer shrink-0',
+        isCoffee
+          ? cn(
+              'px-4 py-1.5 font-[family-name:var(--font-sans)] text-[13px] bg-[var(--cm-surface)] text-[var(--cm-text)] hover:bg-[var(--cm-surface-2)]',
+              count > 0 && 'bg-[var(--cm-accent)] text-white',
+            )
+          : cn(
+              'border px-3.5 py-1.5 text-[11px] uppercase tracking-[0.12em]',
+              count > 0
+                ? 'border-foreground bg-foreground text-background'
+                : 'border-border bg-card text-muted hover:border-border-strong hover:text-foreground',
+            ),
+      )}
+    >
+      <SlidersHorizontal size={13} strokeWidth={2.2} />
+      {t('title')}
+      {count > 0 && (
+        <span className={cn(
+          'inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-semibold',
+          isCoffee ? 'bg-white/25 text-white' : 'bg-background/30 text-background',
+        )}>
+          {count}
+        </span>
+      )}
+    </button>
   );
 
   // ── Стили чипов внутри шторки ──
@@ -59,56 +92,45 @@ export function FilterDrawer({ active, onChange, realm = 'kitchen', themeStyle }
       ? cn('px-5 py-2.5 font-[family-name:var(--font-sans)] text-[14px]',
           on ? 'bg-[var(--cm-accent)] text-white font-medium' : 'bg-[var(--cm-surface)] text-[var(--cm-muted)] hover:text-[var(--cm-text)]')
       : cn('border px-4 py-2.5 text-[12px] uppercase tracking-[0.1em]',
-          on ? 'border-gold bg-gold/15 text-cream' : 'border-gold/20 bg-transparent text-muted hover:border-gold/45 hover:text-cream/80'),
+          on
+            ? 'border-foreground bg-foreground text-background'
+            : 'border-border bg-card text-muted hover:border-border-strong hover:text-foreground'),
   );
 
-  // ── Цвета шторки (у тёмного дизайна — всегда тёмная, у coffee — из themeStyle) ──
-  const sheetBg = isCoffee ? 'bg-[var(--cm-bg)]' : 'bg-[#1C100A]';
-  const sheetBorder = isCoffee ? 'border-t border-[var(--cm-border)]' : 'border-t border-gold/15';
-  const handleColor = isCoffee ? 'bg-[var(--cm-border)]' : 'bg-white/15';
-  const titleColor = isCoffee ? 'text-[var(--cm-text)]' : 'text-cream uppercase tracking-[0.18em]';
+  // ── Цвета шторки ──
+  const sheetBg = isCoffee ? 'bg-[var(--cm-bg)]' : 'bg-background';
+  const sheetBorder = isCoffee ? 'border-t border-[var(--cm-border)]' : 'border-t border-border';
+  const handleColor = isCoffee ? 'bg-[var(--cm-border)]' : 'bg-border';
+  const titleColor = isCoffee ? 'text-[var(--cm-text)]' : 'text-foreground uppercase tracking-[0.18em]';
   const closeBtnCls = isCoffee
     ? 'text-[var(--cm-muted-dim)] hover:text-[var(--cm-text)] hover:bg-[var(--cm-surface)]'
-    : 'text-muted hover:text-cream hover:bg-white/8';
+    : 'text-muted hover:text-foreground hover:bg-card';
   const resetBtnCls = isCoffee
     ? 'bg-[var(--cm-surface)] text-[var(--cm-muted-dim)] hover:text-[var(--cm-text)]'
-    : 'border border-gold/25 text-muted hover:border-gold hover:text-cream text-[11px] uppercase tracking-[0.15em]';
+    : 'border border-border text-muted hover:border-border-strong hover:text-foreground text-[11px] uppercase tracking-[0.15em]';
   const doneBtnCls = isCoffee
     ? 'bg-[var(--cm-accent)] text-white'
-    : 'bg-gold text-[#2A1B11] text-[11px] uppercase tracking-[0.15em]';
+    : 'bg-foreground text-background text-[11px] uppercase tracking-[0.15em]';
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <button type="button" className={triggerCls}>
-          <SlidersHorizontal size={13} strokeWidth={2.2} />
-          {t('title')}
-          {count > 0 && (
-            <span className={cn(
-              'inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-semibold',
-              isCoffee ? 'bg-white/25 text-white' : 'bg-gold/30 text-cream',
-            )}>
-              {count}
-            </span>
-          )}
-        </button>
+        {trigger}
       </Dialog.Trigger>
 
       <AnimatePresence>
         {open && (
           <Dialog.Portal forceMount>
-            {/* Затемнение */}
             <Dialog.Overlay asChild>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.18 }}
-                className="fixed inset-0 z-[70] bg-black/55 backdrop-blur-sm"
+                className="fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm"
               />
             </Dialog.Overlay>
 
-            {/* Bottom sheet */}
             <Dialog.Content
               asChild
               aria-describedby={undefined}
@@ -133,7 +155,7 @@ export function FilterDrawer({ active, onChange, realm = 'kitchen', themeStyle }
                 {/* Заголовок + крестик */}
                 <div className={cn(
                   'flex items-center justify-between px-5 py-3.5',
-                  isCoffee ? 'border-b border-[var(--cm-border)]' : 'border-b border-white/8',
+                  isCoffee ? 'border-b border-[var(--cm-border)]' : 'border-b border-border',
                 )}>
                   <Dialog.Title className={cn('text-[15px] font-semibold', titleColor)}>
                     {t('title')}
