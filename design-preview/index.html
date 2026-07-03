@@ -40,53 +40,46 @@
 
   .brand-serif{ font-family:var(--font-serif); }
 
-  /* ============ 3. SPLASH SCREEN ============ */
+  /* ============ 3. SPLASH SCREEN — тихое проявление эмблемы ============ */
   #splash{
     position:fixed; inset:0; z-index:9999;
     background:var(--color-bg);
-    display:flex; align-items:center; justify-content:center;
-    transition:opacity 500ms ease-out;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transition:opacity 550ms ease-out;
   }
   #splash.splash-out{ opacity:0; }
   #splash.splash-gone{ display:none; }
 
-  .drop{
-    position:absolute; top:-80px; left:50%;
-    width:40px; height:56px;
-    transform:translateX(-50%);
-    color:var(--color-primary);
-    animation:dropFall 900ms cubic-bezier(0.55,0.055,0.675,0.19) forwards;
+  .tree-wrap{
+    width:104px; height:104px;
+    opacity:0; transform:scale(0.94);
+    transition:opacity 900ms ease-out, transform 900ms cubic-bezier(0.16,1,0.3,1);
   }
-  @keyframes dropFall{
-    0%   { top:-80px; transform:translateX(-50%) scaleX(1) scaleY(1); }
-    86%  { top:calc(50% - 28px); transform:translateX(-50%) scaleX(1) scaleY(1); }
-    100% { top:calc(50% - 28px); transform:translateX(-50%) scaleX(1.15) scaleY(0.7); }
-  }
-  .drop.drop-hide{ animation:none; opacity:0; transform:translateX(-50%) scale(0.6); transition:opacity 200ms ease-in, transform 200ms ease-in; }
+  .tree-wrap.tree-show{ opacity:1; transform:scale(1); }
+  .tree-wrap img{ width:100%; height:100%; object-fit:contain; }
 
-  .splash-ring{
-    position:absolute; left:50%; top:50%; width:10px; height:10px; border-radius:50%;
-    border:1.5px solid var(--color-primary); opacity:0; transform:translate(-50%,-50%) scale(1);
+  .splash-word{ margin-top:18px; text-align:center; }
+  .splash-word .flourish{
+    display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px;
+    opacity:0; transition:opacity 600ms ease-out;
   }
-  .splash-ring.ring-play{ opacity:0.5; animation:ringPulse 500ms ease-out forwards; }
-  @keyframes ringPulse{ 0%{ opacity:0.5; transform:translate(-50%,-50%) scale(1); } 100%{ opacity:0; transform:translate(-50%,-50%) scale(9); } }
+  .splash-word.word-show .flourish{ opacity:1; }
+  .splash-word .flourish-line{ height:1px; width:28px; background:var(--color-accent-line); opacity:0.55; }
+  .splash-word .flourish-dot{ width:4px; height:4px; border-radius:50%; background:var(--color-accent-line); opacity:0.7; }
 
-  .tree-wrap{ position:relative; width:210px; height:131px; opacity:0; transition:opacity 60ms; }
-  .tree-wrap.tree-show{ opacity:1; }
-  .tree-wrap img{
-    width:100%; height:100%; object-fit:contain;
-    clip-path:inset(100% 0% 0% 0%);
-    transition:clip-path 1200ms cubic-bezier(0.22,1,0.36,1);
+  .brand-line{
+    font-family:var(--font-serif); font-weight:600; font-size:19px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--color-primary);
+    opacity:0; transform:translateY(6px);
+    transition:opacity 600ms ease-out, transform 600ms ease-out;
   }
-  .tree-wrap.tree-grow img{ clip-path:inset(0% 0% 0% 0%); }
+  .splash-word.word-show .brand-line{ opacity:1; transform:translateY(0); }
 
-  .splash-word{
-    position:absolute; top:calc(50% + 80px); left:0; right:0; text-align:center;
-    opacity:0; transition:opacity 500ms ease-in-out;
+  .since-line{
+    font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--color-text-muted); margin-top:7px;
+    opacity:0; transition:opacity 600ms ease-out;
   }
-  .splash-word.word-show{ opacity:1; }
-  .splash-word .brand-line{ font-family:var(--font-serif); font-weight:600; font-size:20px; letter-spacing:0.15em; text-transform:uppercase; color:var(--color-primary); }
-  .splash-word .since-line{ font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:var(--color-text-muted); margin-top:6px; }
+  .splash-word.word-show .since-line{ opacity:1; }
 
   #demo-replay{
     position:fixed; right:14px; z-index:10000; opacity:0.55;
@@ -215,8 +208,8 @@
     main, header.site-header, footer.site-footer{ max-width:1200px; margin-left:auto; margin-right:auto; }
   }
 
-  #app{ opacity:0; transition:opacity 500ms ease-in; }
-  #app.app-show{ opacity:1; }
+  #app{ opacity:0; transform:translateY(8px); transition:opacity 550ms ease-out, transform 550ms ease-out; }
+  #app.app-show{ opacity:1; transform:translateY(0); }
 </style>
 </head>
 <body>
@@ -225,17 +218,16 @@
 
   <!-- ============ SPLASH ============ -->
   <div id="splash">
-    <svg class="splash-ring" id="splashRing" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4"/></svg>
-
-    <svg class="drop" id="drop" viewBox="0 0 40 56">
-      <path fill="currentColor" d="M20 0 C32 17 40 33 40 40 C40 49.4 31.05 56 20 56 C8.95 56 0 49.4 0 40 C0 33 8 17 20 0 Z"/>
-    </svg>
-
     <div class="tree-wrap" id="treeWrap">
-      <img src="../apps/menu/public/locations/arka/logo-tree.png" alt="Barvikha" />
+      <img src="assets/logo-tree-primary.png" alt="Barvikha" />
     </div>
 
     <div class="splash-word" id="splashWord">
+      <div class="flourish">
+        <div class="flourish-line left"></div>
+        <div class="flourish-dot"></div>
+        <div class="flourish-line right"></div>
+      </div>
       <div class="brand-line">Barvikha Group</div>
       <div class="since-line">Since 2017</div>
     </div>
@@ -245,7 +237,7 @@
   <div id="app">
 
     <header class="site-header">
-      <img class="logo-icon" src="../apps/menu/public/locations/arka/logo-tree.png" alt="Barvikha" />
+      <img class="logo-icon" src="assets/logo-tree-primary.png" alt="Barvikha" />
       <div class="brand-name">Barvikha Group</div>
       <div class="since">Since 2017</div>
       <div class="tagline">Barvikha Lounge</div>
@@ -272,7 +264,7 @@
     </main>
 
     <footer class="site-footer">
-      <img class="logo-icon" src="../apps/menu/public/locations/arka/logo-tree.png" alt="Barvikha" />
+      <img class="logo-icon" src="assets/logo-tree-primary.png" alt="Barvikha" />
       <div class="brand-name">Barvikha Group</div>
       <div class="since">Since 2017</div>
       <div class="tagline">Barvikha Lounge</div>
@@ -438,39 +430,26 @@
   renderSubTabs();
   renderCards();
 
-  /* ============ SPLASH SCREEN LOGIC ============ */
+  /* ============ SPLASH SCREEN LOGIC — тихое проявление эмблемы ============ */
   function runSplash(){
     const splash = document.getElementById("splash");
-    const drop = document.getElementById("drop");
-    const ring = document.getElementById("splashRing");
     const treeWrap = document.getElementById("treeWrap");
     const word = document.getElementById("splashWord");
     const app = document.getElementById("app");
 
-    // Этап 1: капля падает — 0..900мс (см. @keyframes dropFall)
+    // 0..900мс — логотип мягко проявляется (opacity + едва заметный scale-in)
+    requestAnimationFrame(() => treeWrap.classList.add("tree-show"));
 
-    // Этап 2: 900..1200мс — капля исчезает, дерево (пока не проросшее) появляется
-    setTimeout(() => {
-      drop.classList.add("drop-hide");
-      ring.classList.add("ring-play");
-      treeWrap.classList.add("tree-show");
-    }, 900);
+    // 400..1000мс — под ним проступает текст бренда
+    setTimeout(() => word.classList.add("word-show"), 400);
 
-    // Этап 3: 1200..2400мс — дерево «прорастает» снизу вверх (clip-path reveal)
-    setTimeout(() => {
-      treeWrap.classList.add("tree-grow");
-      word.classList.add("word-show");
-    }, 1200);
-
-    // Этап 4: 2400..3000мс — сплэш гаснет, контент проявляется
+    // держим композицию, затем гасим сплэш и показываем контент
     setTimeout(() => {
       splash.classList.add("splash-out");
       app.classList.add("app-show");
     }, 2400);
 
-    setTimeout(() => {
-      splash.classList.add("splash-gone");
-    }, 3000);
+    setTimeout(() => splash.classList.add("splash-gone"), 3000);
   }
 
   function skipSplash(){
