@@ -43,7 +43,7 @@ function Tab({ label, on, onClick }: { label: string; on: boolean; onClick: () =
       className={cn(
         'shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors cursor-pointer',
         on
-          ? 'bg-foreground text-background'
+          ? 'border border-foreground text-foreground'
           : 'text-muted hover:text-foreground',
       )}
     >

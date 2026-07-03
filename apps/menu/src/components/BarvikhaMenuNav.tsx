@@ -67,7 +67,7 @@ export function BarvikhaMenuNav({ locationSlug, categories, currentCategorySlug,
                   className={cn(
                     'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors cursor-pointer',
                     isActive
-                      ? 'bg-foreground text-background'
+                      ? 'border border-foreground text-foreground'
                       : 'text-muted hover:text-foreground',
                   )}
                 >
