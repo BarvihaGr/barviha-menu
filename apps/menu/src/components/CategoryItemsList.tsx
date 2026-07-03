@@ -124,11 +124,14 @@ export function CategoryItemsList({
         )}
       </AnimatePresence>
 
-      {/* ── [🔍] [≡] | [пилюля] [пилюля] ... — всё в одну строку ── */}
-      <div className="-mx-4 sm:mx-0 flex items-center">
+      {/* ── [🔍] [≡] | [пилюля] [пилюля] ... — sticky строка ── */}
+      <div
+        className="sticky z-20 -mx-4 sm:-mx-6 bg-background/95 backdrop-blur-sm border-b border-border flex items-center"
+        style={{ top: 'var(--header-h, 62px)' }}
+      >
 
         {/* Фиксированные иконки слева */}
-        <div className="flex shrink-0 items-center pl-4 sm:pl-0">
+        <div className="flex shrink-0 items-center pl-4 sm:pl-6">
           <button
             type="button"
             onClick={toggleSearch}
@@ -154,7 +157,7 @@ export function CategoryItemsList({
         {/* Прокручиваемые пилюли подсекций */}
         {hasSections && (
           <div className="overflow-x-auto no-scrollbar flex-1">
-            <div className="flex gap-2 pr-4 sm:pr-0">
+            <div className="flex gap-2 pr-4 sm:pr-6">
               {sections.map((s) => (
                 <PillTab
                   key={s.id}

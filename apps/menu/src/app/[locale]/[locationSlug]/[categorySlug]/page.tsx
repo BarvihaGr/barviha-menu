@@ -5,7 +5,6 @@ import type { Locale } from '@/i18n/routing';
 import { pickCategoryName } from '@/lib/i18n-helpers';
 import { SectionTitle } from '@/components/SectionTitle';
 import { CategoryItemsList } from '@/components/CategoryItemsList';
-import { BarvikhaMenuNav } from '@/components/BarvikhaMenuNav';
 import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
 import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
@@ -72,12 +71,6 @@ export default async function CategoryPage({
 
   return (
     <div className="flex flex-col gap-4">
-      <BarvikhaMenuNav
-        locationSlug={locationSlug}
-        categories={categories}
-        currentCategorySlug={category.slug}
-        locale={locale as Locale}
-      />
       <SectionTitle>{pickCategoryName(category, locale as Locale)}</SectionTitle>
       <CategoryItemsList
         items={items}
