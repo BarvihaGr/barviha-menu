@@ -1,6 +1,5 @@
 'use client';
 
-import { Search, SlidersHorizontal } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import type { Category } from '@barviha/db';
 import { pickCategoryName } from '@/lib/i18n-helpers';
@@ -30,30 +29,9 @@ export function BarvikhaMenuNav({ locationSlug, categories, currentCategorySlug,
     >
       <div className="-mx-0 flex items-center">
 
-        {/* Иконки: поиск + фильтр — фиксированные слева, нефункциональные-визуально */}
-        <div className="flex shrink-0 items-center pl-4 sm:pl-0">
-          <button
-            type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-muted transition hover:text-foreground cursor-pointer"
-            aria-label="search"
-          >
-            <Search size={16} strokeWidth={2} />
-          </button>
-          <button
-            type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-muted transition hover:text-foreground cursor-pointer"
-            aria-label="filter"
-          >
-            <SlidersHorizontal size={16} strokeWidth={2} />
-          </button>
-        </div>
-
-        {/* Разделитель */}
-        <div className="mx-1.5 h-4 w-px shrink-0 bg-border" />
-
         {/* Горизонтально прокручиваемые вкладки категорий */}
         <div className="overflow-x-auto no-scrollbar flex-1">
-          <div className="flex gap-0.5 py-2 pr-4 sm:pr-0">
+          <div className="flex gap-0.5 py-2 px-4 sm:px-0">
             {ordered.map((cat) => {
               const isActive = cat.slug === currentCategorySlug;
               const href = cat.slug === 'hookah'
