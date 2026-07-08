@@ -3,7 +3,6 @@ import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Metadata, Viewport } from 'next';
 import { routing } from '@/i18n/routing';
-import { SplashScreen } from '@/components/SplashScreen';
 import '../globals.css';
 
 export const metadata: Metadata = {
@@ -38,7 +37,7 @@ export default async function LocaleLayout({
     <html lang={locale} className="h-full antialiased">
       <body className="min-h-full flex flex-col text-foreground">
         <NextIntlClientProvider>
-          <SplashScreen>{children}</SplashScreen>
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>

@@ -83,7 +83,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
               <span className="block h-[15px] text-[11px] text-[var(--cm-muted)]">
                 {weightStr ?? ''}
               </span>
-              <span className="text-[14px] font-semibold text-[var(--cm-accent)]">
+              <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
                 {formatPrice(item.price)}
               </span>
             </div>

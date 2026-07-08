@@ -59,6 +59,9 @@ const LIGHT_PALETTE: CoffeePalette = {
   '--cm-muted': '#6b6b6b',
   '--cm-muted-dim': '#9b9b9b',
   '--cm-border': '#ececec',
+  // Текст на заливке --cm-accent (активный таб/пилюля). Здесь акцент — цвет
+  // ветки метро (обычно тёмный/насыщенный), поэтому светлый текст читается.
+  '--cm-accent-text': '#fbfbfa',
   // Тёмный вордмарк-лого (logo.png) на светлом фоне — без инверсии.
   '--cm-logo-invert': '0',
   // Единый цветокор фото блюд: лёгкая нормализация, без вуали (светлый фон).
@@ -81,6 +84,7 @@ const BRONZE_PALETTE: CoffeePalette = {
   // Единый цветокор: лёгкий тёплый грейд (экспозиция выровнена в самих файлах).
   '--cm-photo': 'contrast(1.04) saturate(1.04)',
   '--cm-photo-veil': 'transparent',
+  '--cm-accent-text': '#241710',
 };
 
 /**
@@ -102,6 +106,7 @@ const LUX_PALETTE: CoffeePalette = {
   // выровнена в самих файлах — нормализация средней яркости).
   '--cm-photo': 'contrast(1.05) saturate(0.97)',
   '--cm-photo-veil': 'transparent',
+  '--cm-accent-text': '#111111',
 };
 
 /**
@@ -120,6 +125,12 @@ const KIEV_PALETTE: CoffeePalette = {
   '--cm-logo-invert': '0',
   '--cm-photo': 'contrast(1.03) saturate(1.05)',
   '--cm-photo-veil': 'transparent',
+  // Акцент здесь светлое золото (#9B7A50-#C5A880) — светлый cm-bg на нём
+  // почти не читается (контраст ~1.9:1). Тёмный текст держит контраст ~6.5:1.
+  '--cm-accent-text': '#3C2210',
+  // Цена (текст цвета акцента поверх cm-bg, не наоборот) — тот же светлый
+  // акцент на светлом cm-bg тоже почти не читается (~1.9:1), нужен тёмный.
+  '--cm-accent-on-bg': '#3C2210',
 };
 
 /** slug → палитра. Нет в карте → светлая. */

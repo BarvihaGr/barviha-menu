@@ -135,8 +135,12 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
       </div>
 
       {/* ── Scroll-spy чипы ── */}
+      {/* top = высота CoffeeHeader (49px) + высота мобильной ленты категорий
+          из CoffeeCategoryNav (58px) = 107px. Раньше здесь было 117/121 —
+          подогнано под старую (завышенную) высоту шапки, из-за чего лента
+          категорий и эти чипы съезжали относительно реальной шапки. */}
       {hasMultipleSections && (
-        <div className="sticky top-[117px] z-[15] -mx-4 mb-5 sm:-mx-6 sm:top-[121px]">
+        <div className="sticky top-[107px] z-[15] -mx-4 mb-5 sm:-mx-6">
           <div
             ref={chipBarRef}
             className="overflow-x-auto no-scrollbar border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/96 backdrop-blur-md"
@@ -151,7 +155,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
                   className={cn(
                     'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 font-[family-name:var(--font-sans)] text-[13px] transition-all duration-200 cursor-pointer active:scale-[0.93]',
                     activeSection === s.id
-                      ? 'bg-[var(--cm-accent)] font-semibold text-[var(--cm-bg)] shadow-sm'
+                      ? 'bg-[var(--cm-accent)] font-semibold text-[var(--cm-accent-text)] shadow-sm'
                       : 'bg-[var(--cm-surface)] text-[var(--cm-text-soft)] hover:text-[var(--cm-text)]',
                   )}
                 >

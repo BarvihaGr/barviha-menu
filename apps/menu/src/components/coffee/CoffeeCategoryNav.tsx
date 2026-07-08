@@ -34,7 +34,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
                   className={cn(
                     'block rounded-lg px-3 py-2 font-[family-name:var(--font-sans)] text-[15px] leading-snug transition-all duration-200 active:scale-[0.96]',
                     on
-                      ? 'font-semibold text-[var(--cm-accent)]'
+                      ? 'font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]'
                       : 'font-normal text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
                   )}
                 >
@@ -47,9 +47,12 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
       </nav>
 
       {/* Мобайл: горизонтальная лента. Залипает под шапкой при скролле.
-          Высота шапки ≈68px (py-3.5 + h-10 logo) мобайл,
-          ≈72px (py-3.5 + h-11 logo) sm → top смещён соответственно. */}
-      <nav className="sticky top-[59px] z-20 -mx-4 mb-3 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/80 backdrop-blur-md sm:-mx-6 sm:top-[63px] lg:hidden">
+          Высота шапки (CoffeeHeader) = py-1.5 (12px) + h-9 trigger (36px)
+          + border (1px) = 49px, одинаково на всех брейкпоинтах (кнопка
+          гамбургера выше лого). Раньше здесь было 59/63 — из старого
+          макета шапки (py-3.5 + h-10/h-11 лого), из-за чего между шапкой
+          и лентой категорий был виден зазор при скролле. */}
+      <nav className="sticky top-[49px] z-20 -mx-4 mb-3 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/80 backdrop-blur-md sm:-mx-6 lg:hidden">
         <div className="overflow-x-auto no-scrollbar">
           <div className="flex gap-2 px-4 py-2.5 sm:px-6">
             {categories.map((c) => {
@@ -62,7 +65,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
                   className={cn(
                     'shrink-0 whitespace-nowrap rounded-full border px-4 py-2 font-[family-name:var(--font-sans)] text-[14px] transition-all duration-200 ease-out active:scale-[0.94]',
                     on
-                      ? 'border-transparent bg-[var(--cm-accent)] font-medium text-[var(--cm-bg)] shadow-[0_2px_14px_-4px_var(--cm-accent)]'
+                      ? 'border-transparent bg-[var(--cm-accent)] font-medium text-[var(--cm-accent-text)] shadow-[0_2px_14px_-4px_var(--cm-accent)]'
                       : 'border-[var(--cm-border)] bg-[var(--cm-surface)]/60 text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
                   )}
                 >

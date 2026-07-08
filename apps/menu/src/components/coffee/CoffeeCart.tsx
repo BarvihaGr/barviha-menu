@@ -101,7 +101,7 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="truncate text-[15px] font-semibold text-[var(--cm-text)]">{name}</div>
-                        <div className="mt-0.5 text-[14px] text-[var(--cm-accent)]">{formatPrice(item.price)}</div>
+                        <div className="mt-0.5 text-[14px] text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatPrice(item.price)}</div>
                       </div>
                       <CoffeeQty itemId={entry.itemId} qty={entry.qty} />
                       <button
