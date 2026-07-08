@@ -14,7 +14,7 @@ export default function middleware(request: NextRequest) {
   if (locationMatch) {
     const slug = locationMatch[2] ?? '';
     // Пропускаем служебные пути и саму Киевскую
-    const passThrough = ['kievskaia', 'board', 'buttons', 'concepts'];
+    const passThrough = ['kievskaia', 'arka', 'arka-lab', 'board', 'buttons', 'concepts'];
     if (!passThrough.includes(slug)) {
       const locale = locationMatch[1];
       const rest   = locationMatch[3] ?? '';

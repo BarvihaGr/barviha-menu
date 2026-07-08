@@ -163,9 +163,9 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--gold);
 }
 
-/* Ken-Burns: медленный зум постера */
+/* Ken-Burns: медленный зум постера — временно остановлен (работа над макетом Арки) */
 .ken-burns {
-  animation: ken-burns-anim 22s ease-in-out infinite alternate;
+  animation: none;
   transform-origin: center;
 }
 @keyframes ken-burns-anim {

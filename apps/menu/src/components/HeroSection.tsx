@@ -42,6 +42,10 @@ export function HeroSection({
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Временно остановлено — Арка сейчас в статике (работа над макетом).
+  // Вернуть видео-hero: поставить true.
+  const ENABLE_HERO_VIDEO = false;
+
   /**
    * Видео грузится поэтапно — НЕ блокирует первый paint:
    *  - сначала постер (мгновенно)
@@ -52,7 +56,7 @@ export function HeroSection({
    * оставляем только постер.
    */
   useEffect(() => {
-    if (!videoSrc) return;
+    if (!ENABLE_HERO_VIDEO || !videoSrc) return;
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } })
       .connection;
     const veryslow = conn?.saveData === true || (conn?.effectiveType && /^(2g|slow-2g)$/.test(conn.effectiveType));
@@ -98,7 +102,7 @@ export function HeroSection({
       )}
 
       {/* Видео — полная яркость */}
-      {videoSrc && shouldLoadVideo && (
+      {ENABLE_HERO_VIDEO && videoSrc && shouldLoadVideo && (
         <motion.video
           ref={videoRef}
           initial={{ opacity: 0, scale: 1.08 }}

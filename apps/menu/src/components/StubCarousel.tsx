@@ -66,7 +66,7 @@ export function StubCarousel({ items }: Props) {
     );
     io.observe(el);
 
-    const SPEED = 42; // px/сек — спокойное движение
+    const SPEED = 0; // временно остановлено — Арка сейчас в статике (работа над макетом)
     let raf = 0;
     let last = performance.now();
     let pos = el.scrollLeft; // float-аккумулятор (моб. scrollLeft целочисленный)

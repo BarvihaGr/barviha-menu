@@ -136,7 +136,9 @@ function realmCategory(realm: Realm): Category {
 
 class MockBarvihaClient implements BarvihaClient {
   async getAllLocations(): Promise<Location[]> {
-    return MOCK_LOCATIONS;
+    // Временно показываем в переключателе только Арку и Киевскую —
+    // остальные локации скрыты, но остаются доступны по прямой ссылке.
+    return MOCK_LOCATIONS.filter((l) => l.slug === 'arka' || l.slug === 'kievskaia');
   }
 
   async getLocationBySlug(slug: string): Promise<Location | null> {
