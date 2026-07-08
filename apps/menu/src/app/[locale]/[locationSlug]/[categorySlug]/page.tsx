@@ -53,9 +53,6 @@ export default async function CategoryPage({
               locale={locale as Locale}
             />
             <div className="min-w-0">
-              <h1 className="mb-6 font-[family-name:var(--font-sans)] text-[26px] font-bold leading-tight tracking-[-0.01em] text-[var(--cm-text)] sm:text-[32px]">
-                {pickCategoryName(category, locale as Locale)}
-              </h1>
               <CoffeeMenuList
                 items={items}
                 locationSlug={locationSlug}

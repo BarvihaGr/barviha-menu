@@ -3,7 +3,6 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/routing';
 import {
-  pickCategoryName,
   pickItemDescription,
   pickItemName,
   pickMoodDescription,
@@ -58,9 +57,6 @@ export default async function HookahPage({
               locale={locale as Locale}
             />
             <div>
-              <h1 className="mb-6 font-[family-name:var(--font-sans)] text-[26px] font-bold leading-tight tracking-[-0.01em] text-[var(--cm-text)] sm:text-[32px]">
-                {pickCategoryName(hookahCategory, locale as Locale)}
-              </h1>
               <CoffeeMenuList
                 items={hookahs}
                 locationSlug={locationSlug}
