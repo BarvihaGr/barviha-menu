@@ -22,9 +22,12 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
 
   return (
     <>
-      {/* Десктоп: вертикальный список */}
+      {/* Десктоп: вертикальный список. top-[51px] = высота CoffeeHeader на
+          десктопе (30px лого + 12px py-1.5 + 1px border = 43px) + 8px
+          отступа. Раньше было top-6 (24px) — меньше шапки, поэтому первый
+          пункт списка уезжал под шапку и обрезался при скролле. */}
       <nav className="hidden lg:block">
-        <ul className="sticky top-6 flex flex-col gap-0.5">
+        <ul className="sticky top-[51px] flex flex-col gap-0.5">
           {categories.map((c) => {
             const on = c.slug === currentSlug;
             return (

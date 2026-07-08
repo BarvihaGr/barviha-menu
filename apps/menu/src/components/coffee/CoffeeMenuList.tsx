@@ -74,16 +74,29 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   useEffect(() => {
     if (!hasMultipleSections) return;
 
+    // IntersectionObserver отдаёт в каждый вызов только те секции, чей
+    // порог пересечения изменился с прошлого раза, а не все видимые сейчас.
+    // Раньше "лучшая" секция считалась только по этому батчу — если у
+    // маленькой секции (например "Чай") порог сработал последним, она
+    // побеждала даже когда на экране реально доминировала соседняя, большая
+    // секция ("Кофе"). Из-за этого активный чип не совпадал с открытым
+    // разделом. Держим полную карту коэффициентов по всем секциям и всегда
+    // выбираем лучшую из неё, а не только из текущего батча.
+    const ratios = new Map<string, number>();
     const observer = new IntersectionObserver(
       (entries) => {
-        // Берём секцию с наибольшим пересечением, которая входит в зону
-        let best: IntersectionObserverEntry | null = null;
         for (const e of entries) {
-          if (e.isIntersecting) {
-            if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
+          ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
+        }
+        let bestId: string | null = null;
+        let bestRatio = 0;
+        for (const [id, ratio] of ratios) {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            bestId = id;
           }
         }
-        if (best) setActiveSection(best.target.id);
+        if (bestId) setActiveSection(bestId);
       },
       { rootMargin: '-10% 0px -60% 0px', threshold: [0, 0.1, 0.5] },
     );
@@ -103,6 +116,10 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   const jumpTo = (id: string) => {
     const el = sectionRefs.current.get(id);
     if (!el) return;
+    // Подсвечиваем нажатый чип сразу, не дожидаясь, пока IntersectionObserver
+    // подтвердит секцию по факту скролла — иначе на время smooth-скролла
+    // мог светиться предыдущий активный чип.
+    setActiveSection(id);
     const headerH = 120;
     const top = el.getBoundingClientRect().top + window.scrollY - headerH;
     window.scrollTo({ top, behavior: 'smooth' });
@@ -114,6 +131,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
     <div>
       {/* ── Поиск + фильтры ── */}
       <div className="mb-5 flex items-center gap-2">
+        <FilterDrawer iconOnly active={active} onChange={setActive} realm={realm} themeStyle={themeStyle} />
         <div className="flex flex-1 items-center gap-2.5 rounded-2xl bg-[var(--cm-surface)] px-4 py-3">
           <Search className="h-[18px] w-[18px] shrink-0 text-[var(--cm-muted-dim)]" />
           <input
@@ -131,19 +149,22 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
             </button>
           )}
         </div>
-        <FilterDrawer active={active} onChange={setActive} realm={realm} themeStyle={themeStyle} />
       </div>
 
       {/* ── Scroll-spy чипы ── */}
-      {/* top = высота CoffeeHeader (49px) + высота мобильной ленты категорий
-          из CoffeeCategoryNav (58px) = 107px. Раньше здесь было 117/121 —
-          подогнано под старую (завышенную) высоту шапки, из-за чего лента
-          категорий и эти чипы съезжали относительно реальной шапки. */}
+      {/* Мобайл/планшет: top = высота CoffeeHeader (49px) + мобильная лента
+          категорий из CoffeeCategoryNav (58px) = 107px. На lg (десктоп)
+          категории уходят в левый сайдбар — мобильной ленты нет, поэтому
+          чипы липнут сразу под шапкой (43px, см. CoffeeCategoryNav). Раньше
+          на десктопе оставался тот же top-[107px], из-за чего между шапкой
+          и лентой чипов был пустой скроллящийся зазор — визуально "сэндвич"
+          из фото сверху и снизу ленты. lg:mx-0 — без этого лента вылезала
+          за пределы своей колонки грида поверх левого сайдбара. */}
       {hasMultipleSections && (
-        <div className="sticky top-[107px] z-[15] -mx-4 mb-5 sm:-mx-6">
+        <div className="sticky top-[107px] lg:top-[43px] z-[15] -mx-4 mb-5 sm:-mx-6 lg:mx-0">
           <div
             ref={chipBarRef}
-            className="overflow-x-auto no-scrollbar border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/96 backdrop-blur-md"
+            className="overflow-x-auto no-scrollbar border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/96 backdrop-blur-md lg:rounded-2xl lg:border"
           >
             <div className="flex gap-2 px-4 pt-2.5 pb-2.5 sm:px-6">
               {sections.map((s) => (
