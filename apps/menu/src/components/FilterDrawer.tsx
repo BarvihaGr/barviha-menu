@@ -43,7 +43,7 @@ export function FilterDrawer({ active, onChange, realm = 'kitchen', iconOnly, th
     <button
       type="button"
       className={cn(
-        'relative flex h-9 w-9 items-center justify-center rounded-full transition cursor-pointer',
+        'relative flex aspect-square items-center justify-center self-stretch rounded-full transition cursor-pointer',
         count > 0 ? 'text-foreground' : 'text-muted hover:text-foreground',
       )}
     >
