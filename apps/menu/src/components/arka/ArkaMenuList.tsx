@@ -97,7 +97,7 @@ export function ArkaMenuList({ items, locale }: Props) {
                 className={cn(
                   'shrink-0 whitespace-nowrap rounded-full px-3.5 py-1 text-[11px] uppercase tracking-[0.1em] transition-colors duration-300',
                   activeSection === s.id
-                    ? 'bg-[var(--arka-surface-2)] text-[var(--arka-text)]'
+                    ? 'bg-[var(--arka-accent)] font-medium text-[var(--arka-accent-text)]'
                     : 'text-[var(--arka-muted)] hover:text-[var(--arka-text)]',
                 )}
               >
