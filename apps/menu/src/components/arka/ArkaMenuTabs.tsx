@@ -24,10 +24,10 @@ export function ArkaMenuTabs({ active }: Props) {
               key={s.slug}
               href={`/arka/menu/${s.slug}`}
               className={cn(
-                'shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-[12px] uppercase tracking-[0.15em] transition-all duration-300',
+                'shrink-0 whitespace-nowrap rounded-full border bg-transparent px-4 py-1.5 text-[12px] uppercase tracking-[0.15em] transition-all duration-300',
                 s.slug === active
-                  ? 'bg-[var(--arka-accent)] font-medium text-[var(--arka-accent-text)]'
-                  : 'text-[var(--arka-muted)] hover:text-[var(--arka-text)]',
+                  ? 'border-[var(--arka-accent)] font-medium text-[var(--arka-accent)]'
+                  : 'border-[var(--arka-border)] text-[var(--arka-muted)] hover:text-[var(--arka-text)]',
               )}
             >
               {s.label}

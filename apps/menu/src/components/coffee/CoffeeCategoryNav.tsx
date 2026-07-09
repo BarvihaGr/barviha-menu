@@ -57,7 +57,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
           и лентой категорий был виден зазор при скролле. */}
       <nav className="sticky top-[49px] z-20 -mx-4 mb-5 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/80 backdrop-blur-md sm:-mx-6 lg:hidden">
         <div className="overflow-x-auto no-scrollbar">
-          <div className="flex gap-2 px-4 py-2.5 sm:px-6">
+          <div className="flex justify-center gap-2 px-4 py-2.5 sm:px-6">
             {categories.map((c) => {
               const on = c.slug === currentSlug;
               return (
@@ -66,10 +66,10 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
                   href={hrefFor(c.slug)}
                   aria-current={on ? 'page' : undefined}
                   className={cn(
-                    'shrink-0 whitespace-nowrap rounded-full border px-4 py-2 font-[family-name:var(--font-sans)] text-[14px] transition-all duration-200 ease-out active:scale-[0.94]',
+                    'shrink-0 whitespace-nowrap rounded-full border bg-transparent px-3.5 py-1.5 font-[family-name:var(--font-sans)] text-[14px] transition-all duration-200 ease-out active:scale-[0.94]',
                     on
-                      ? 'border-transparent bg-[var(--cm-accent)] font-medium text-[var(--cm-accent-text)] shadow-[0_2px_14px_-4px_var(--cm-accent)]'
-                      : 'border-[var(--cm-border)] bg-[var(--cm-surface)]/60 text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
+                      ? 'border-[var(--cm-accent)] font-medium text-[var(--cm-accent)]'
+                      : 'border-[var(--cm-border)] text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
                   )}
                 >
                   {pickCategoryName(c, locale)}

@@ -95,10 +95,10 @@ export function ArkaMenuList({ items, locale }: Props) {
                 type="button"
                 onClick={() => jumpTo(s.id)}
                 className={cn(
-                  'shrink-0 whitespace-nowrap rounded-full px-3.5 py-1 text-[11px] uppercase tracking-[0.1em] transition-colors duration-300',
+                  'shrink-0 whitespace-nowrap rounded-full border bg-transparent px-3.5 py-1 text-[11px] uppercase tracking-[0.1em] transition-colors duration-300',
                   activeSection === s.id
-                    ? 'bg-[var(--arka-accent)] font-medium text-[var(--arka-accent-text)]'
-                    : 'text-[var(--arka-muted)] hover:text-[var(--arka-text)]',
+                    ? 'border-[var(--arka-accent)] font-medium text-[var(--arka-accent)]'
+                    : 'border-[var(--arka-border)] text-[var(--arka-muted)] hover:text-[var(--arka-text)]',
                 )}
               >
                 {s.label}

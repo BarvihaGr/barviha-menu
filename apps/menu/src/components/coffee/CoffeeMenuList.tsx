@@ -174,10 +174,10 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
                   type="button"
                   onClick={() => jumpTo(s.id)}
                   className={cn(
-                    'shrink-0 whitespace-nowrap rounded-full border px-4 py-1.5 font-[family-name:var(--font-sans)] text-[13px] transition-all duration-200 cursor-pointer active:scale-[0.93]',
+                    'shrink-0 whitespace-nowrap rounded-full border bg-transparent px-4 py-2.5 font-[family-name:var(--font-sans)] text-[13px] transition-all duration-200 cursor-pointer active:scale-[0.93]',
                     activeSection === s.id
-                      ? 'border-transparent bg-[var(--cm-accent)] font-semibold text-[var(--cm-accent-text)] shadow-[0_2px_14px_-4px_var(--cm-accent)]'
-                      : 'border-[var(--cm-border)] bg-[var(--cm-surface)]/60 text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
+                      ? 'border-[var(--cm-accent)] font-semibold text-[var(--cm-accent)]'
+                      : 'border-[var(--cm-border)] text-[var(--cm-muted)] hover:text-[var(--cm-text)]',
                   )}
                 >
                   {s.label}
