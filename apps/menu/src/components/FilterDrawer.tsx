@@ -47,7 +47,7 @@ export function FilterDrawer({ active, onChange, realm = 'kitchen', iconOnly, th
         count > 0 ? 'text-foreground' : 'text-muted hover:text-foreground',
       )}
     >
-      <SlidersHorizontal size={16} strokeWidth={2} />
+      <SlidersHorizontal size={20} strokeWidth={2} />
       {count > 0 && (
         <span className="absolute -right-0.5 -top-0.5 flex h-[14px] min-w-[14px] items-center justify-center rounded-full bg-foreground px-0.5 text-[9px] font-bold text-background">
           {count}
