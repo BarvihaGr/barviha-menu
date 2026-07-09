@@ -12,6 +12,12 @@ import { ItemPhotoViewer } from '@/components/ItemPhotoViewer';
 import { ItemCloseButton } from '@/components/ItemCloseButton';
 import { CoffeeItemDetail } from '@/components/coffee/CoffeeItemDetail';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
+import { toResolvedArkaBarItems } from '@/lib/arka-menu-data';
+
+// Тестовые позиции нового бара «Арки» не заведены в @barviha/db (см. чат) —
+// подставляем их напрямую по id (без фото), не трогая обычный путь через
+// getMenuItemById для всех остальных локаций/категорий.
+const ARKA_TEST_SLUG = 'arka';
 
 export default async function ItemDetailPage({
   params,
@@ -22,8 +28,11 @@ export default async function ItemDetailPage({
   setRequestLocale(locale);
   const t = await getTranslations('item');
 
+  const arkaBarItem =
+    locationSlug === ARKA_TEST_SLUG ? toResolvedArkaBarItems().find((i) => i.id === itemId) : undefined;
+
   const db = getClient();
-  const item = await db.getMenuItemById(itemId, locationSlug);
+  const item = arkaBarItem ?? (await db.getMenuItemById(itemId, locationSlug));
   if (!item) notFound();
 
   const name = pickItemName(item, locale as Locale);
@@ -32,7 +41,8 @@ export default async function ItemDetailPage({
   const ingredients = parseIngredients(composition);
 
   // Соседи по категории — для боковой ленты «из этой же категории».
-  const loc = await db.getLocationBySlug(locationSlug);
+  // У тестовых позиций Арки категории нет (не заведены в БД) — лента пустая.
+  const loc = arkaBarItem ? null : await db.getLocationBySlug(locationSlug);
   const related: RelatedItem[] = loc
     ? (await db.getMenuItemsForLocation(loc.id))
         .filter((x) => x.id !== item.id && x.category_id === item.category_id && x.is_available)

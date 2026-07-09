@@ -7,7 +7,15 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { CategoryItemsList } from '@/components/CategoryItemsList';
 import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
 import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
+import { ArkaMenuSections } from '@/components/coffee/ArkaMenuSections';
+import { ARKA_BAR_SECTIONS } from '@/lib/arka-menu-data';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
+
+// Тестовая замена контента новым меню (см. чат) — только для Арки и только
+// категории «Бар». Кухню намеренно не трогаем — остаётся на боевых данных.
+// Ни на какую другую локацию (в т.ч. Киевскую) не влияет.
+const ARKA_TEST_SLUG = 'arka';
+const ARKA_TEST_CATEGORY = 'bar';
 
 export default async function CategoryPage({
   params,
@@ -52,14 +60,18 @@ export default async function CategoryPage({
               locationSlug={locationSlug}
               locale={locale as Locale}
             />
-            <div className="min-w-0">
-              <CoffeeMenuList
-                items={items}
-                locationSlug={locationSlug}
-                categorySlug={category.slug}
-                realm={realm}
-              />
-            </div>
+            {locationSlug === ARKA_TEST_SLUG && category.slug === ARKA_TEST_CATEGORY ? (
+              <ArkaMenuSections sections={ARKA_BAR_SECTIONS} locationSlug={locationSlug} />
+            ) : (
+              <div className="min-w-0">
+                <CoffeeMenuList
+                  items={items}
+                  locationSlug={locationSlug}
+                  categorySlug={category.slug}
+                  realm={realm}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

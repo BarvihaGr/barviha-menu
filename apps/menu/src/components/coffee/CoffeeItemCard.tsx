@@ -49,7 +49,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
         className="flex flex-col h-full focus:outline-none"
       >
         {/* Квадратное фото */}
-        <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[var(--cm-surface)]">
+        <div className="relative aspect-square w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
           {item.photo ? (
             <Image
               src={item.photo}

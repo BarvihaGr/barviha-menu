@@ -6,7 +6,7 @@ import { getMetroColor } from './location-theme';
  * Палитра у каждой своя (см. COFFEE_PALETTE): Бауманская — светлая,
  * Домодедово — тёмная бронза в цветокоре «Арки».
  */
-export const COFFEE_DESIGN_SLUGS = new Set(['baumanskaia', 'domodedovo', 'erevan', 'kievskaia']);
+export const COFFEE_DESIGN_SLUGS = new Set(['arka', 'baumanskaia', 'domodedovo', 'erevan', 'kievskaia']);
 
 export function isCoffeeDesign(slug: string): boolean {
   return COFFEE_DESIGN_SLUGS.has(slug);
@@ -18,7 +18,7 @@ export function isCoffeeDesign(slug: string): boolean {
  *                Restaurant & Bar»). Ереван.
  *  - 'default' — воздушные плитки-категории. Бауманская, Домодедово.
  */
-const LUX_HOME_SLUGS = new Set(['erevan', 'kievskaia']);
+const LUX_HOME_SLUGS = new Set(['arka', 'erevan', 'kievskaia']);
 
 export function coffeeHomeVariant(slug: string): 'lux' | 'default' {
   return LUX_HOME_SLUGS.has(slug) ? 'lux' : 'default';
@@ -32,6 +32,7 @@ const COFFEE_ACCENT_FROM: Record<string, string> = {};
 
 /** Прямой цвет акцента для отдельных coffee-локаций (перебивает ветку метро). */
 const COFFEE_ACCENT: Record<string, string> = {
+  arka: '#C5A880', // как у Киевской — Арка временно 1:1 копия для теста
   domodedovo: '#C49262', // бронза-золото «Арки» (тёмный цветокор)
   erevan: '#B89B6A', // приглушённое золото «дорогого минимализма»
   kievskaia: '#C5A880', // брендбук: матовое золото / шампань (приглушённый люкс)
@@ -133,8 +134,32 @@ const KIEV_PALETTE: CoffeePalette = {
   '--cm-accent-on-bg': '#3C2210',
 };
 
+/**
+ * Палитра «Арки» — сейчас намеренно 1:1 копия KIEV_PALETTE (план изменился:
+ * Арка временно используется как тестовый полигон с виду идентичный
+ * Киевской, сама Киевская остаётся чистовиком и не трогается). Значения
+ * продублированы (а не переиспользован объект KIEV_PALETTE), чтобы поправки
+ * тут никогда не могли задеть Киевскую и наоборот.
+ */
+const ARKA_PALETTE: CoffeePalette = {
+  '--cm-bg': '#D8CEC0',
+  '--cm-surface': '#CABEAC',
+  '--cm-surface-2': '#BEAE98',
+  '--cm-text': '#3C2210',
+  '--cm-text-soft': '#6B4A28',
+  '--cm-muted': 'rgba(60, 34, 16, 0.52)',
+  '--cm-muted-dim': 'rgba(60, 34, 16, 0.36)',
+  '--cm-border': 'rgba(140, 101, 64, 0.18)',
+  '--cm-logo-invert': '0',
+  '--cm-photo': 'contrast(1.03) saturate(1.05)',
+  '--cm-photo-veil': 'transparent',
+  '--cm-accent-text': '#3C2210',
+  '--cm-accent-on-bg': '#3C2210',
+};
+
 /** slug → палитра. Нет в карте → светлая. */
 const COFFEE_PALETTE: Record<string, CoffeePalette> = {
+  arka: ARKA_PALETTE,
   domodedovo: BRONZE_PALETTE,
   erevan: LUX_PALETTE,
   kievskaia: KIEV_PALETTE,

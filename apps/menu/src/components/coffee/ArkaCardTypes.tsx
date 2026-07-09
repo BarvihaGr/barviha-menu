@@ -1,0 +1,165 @@
+'use client';
+
+/**
+ * Два шаблона карточек товара для тестового контента «Арки» (сейчас — Бар,
+ * см. arka-menu-data.ts). Использует те же токены `--cm-*`, что и
+ * CoffeeItemCard/CoffeeMenuList — палитра/шрифт наследуются от
+ * coffeeAccentStyle(locationSlug), заданного в родителе, поэтому визуально
+ * ничем не отличается от остальных coffee-страниц (сейчас у Арки — палитра
+ * Киевской, см. coffee-design.ts).
+ *
+ * Тип 1 (FullCard)  — синяя разметка в рабочем файле: у позиции есть/будет
+ *                      своё фото. Фото + название + описание + объём + цена.
+ * Тип 2 (GroupCard) — белая/без разметки: одно общее фото 16:9 на всю
+ *                      категорию, сами позиции — простой список строк.
+ *
+ * Если у позиции несколько объёмов (напр. 300 мл / 1 л) — каждая вариация
+ * показывается своей строкой со своей ценой, своей ссылкой на карточку
+ * товара и своей кнопкой «в корзину» (см. getItemVariants в arka-menu-data) —
+ * везде одинаково, что в сетке, что в простом списке.
+ */
+
+import { Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { getItemVariants, type ArkaMenuItem, type ArkaMenuVariant } from '@/lib/arka-menu-data';
+import { Link } from '@/i18n/navigation';
+import { useCart } from '@/store/cart';
+import { useToast } from '@/store/toast';
+
+function formatRub(n: number): string {
+  return n.toLocaleString('ru-RU');
+}
+
+/** Фото-плейсхолдер: реальных фото для нового меню пока нет, держим место
+ * тоновым градиентом с меткой вместо пустого поля. */
+function PhotoPlaceholder({ ratio, label }: { ratio: 'square' | 'wide'; label: string }) {
+  return (
+    <div
+      className={
+        (ratio === 'square' ? 'relative aspect-square w-full overflow-hidden' : 'relative aspect-video w-full overflow-hidden') +
+        ' rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]'
+      }
+    >
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="px-3 text-center text-[10px] uppercase tracking-[0.25em] text-[var(--cm-muted-dim)]">
+          {label}
+        </span>
+      </div>
+      <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_0_1px_var(--cm-border)]" />
+    </div>
+  );
+}
+
+/** Кнопка «+» — кладёт конкретную вариацию (свой id/цена) в корзину. */
+function AddButton({ variant }: { variant: ArkaMenuVariant }) {
+  const add = useCart((s) => s.add);
+  const push = useToast((s) => s.push);
+  const t = useTranslations();
+
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        add(variant.id, 1);
+        push(t('toast.addedToCart'), 'success');
+      }}
+      aria-label={`${t('item.addToCart')} ${variant.name}`}
+      className="shrink-0 grid h-7 w-7 place-items-center rounded-full bg-[var(--cm-accent)] text-white shadow-sm transition-all duration-200 active:scale-90 cursor-pointer"
+    >
+      <Plus className="h-3.5 w-3.5" strokeWidth={2.4} />
+    </button>
+  );
+}
+
+/** Строка одной вариации: объём + цена, сама ссылка на карточку товара + «+». */
+function VariantRow({ variant, locationSlug }: { variant: ArkaMenuVariant; locationSlug: string }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <Link
+        href={`/${locationSlug}/item/${variant.id}`}
+        className="flex min-w-0 flex-1 items-baseline justify-between gap-2 focus:outline-none"
+      >
+        {variant.label && (
+          <span className="text-[11px] text-[var(--cm-muted-dim)]">{variant.label}</span>
+        )}
+        <span className="text-[13.5px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
+          {formatRub(variant.price)} ₽
+        </span>
+      </Link>
+      <AddButton variant={variant} />
+    </div>
+  );
+}
+
+/** Тип 1 — полная карточка (своё фото). */
+export function ArkaFullCard({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
+  const variants = getItemVariants(item);
+  return (
+    <article className="flex min-w-0 flex-col">
+      <PhotoPlaceholder ratio="square" label="фото позиции" />
+      <div className="flex flex-1 flex-col pt-2.5">
+        <h3 className="break-words font-[family-name:var(--font-display)] text-[14px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
+          {item.name}
+        </h3>
+        {item.description && (
+          <p className="mt-1 break-words text-[11.5px] leading-snug text-[var(--cm-muted)]">{item.description}</p>
+        )}
+        <div className="mt-auto flex flex-col gap-1.5 pt-2.5">
+          {variants.map((v) => (
+            <VariantRow key={v.id} variant={v} locationSlug={locationSlug} />
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/** Тип 2 — простая карточка: список строк без фото у каждой позиции. */
+function ArkaSimpleRow({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
+  const variants = getItemVariants(item);
+  return (
+    <div className="flex items-start justify-between gap-3 border-b border-[var(--cm-border)] py-3">
+      <div className="min-w-0 flex-1">
+        <h4 className="break-words font-[family-name:var(--font-display)] text-[14.5px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
+          {item.name}
+        </h4>
+        {item.description && (
+          <p className="mt-0.5 break-words text-[11.5px] leading-snug text-[var(--cm-muted)]">{item.description}</p>
+        )}
+      </div>
+      <div className="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
+        {variants.map((v) => (
+          <VariantRow key={v.id} variant={v} locationSlug={locationSlug} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Тип 2 — общее фото 16:9 на всю группу + список позиций без фото.
+ * Для чистых бутылочных прайс-листов (вино, крепкий алкоголь) фото категории
+ * не имеет смысла — see WINE_SPIRITS_NO_PHOTO_CATEGORIES в ArkaMenuSections.tsx. */
+export function ArkaGroupCard({
+  category,
+  items,
+  locationSlug,
+  showPhoto = true,
+}: {
+  category: string;
+  items: ArkaMenuItem[];
+  locationSlug: string;
+  showPhoto?: boolean;
+}) {
+  return (
+    <div className="flex flex-col">
+      {showPhoto && <PhotoPlaceholder ratio="wide" label={`общее фото · ${category}`} />}
+      <div className={showPhoto ? 'mt-1' : undefined}>
+        {items.map((it, i) => (
+          <ArkaSimpleRow key={`${it.name}-${i}`} item={it} locationSlug={locationSlug} />
+        ))}
+      </div>
+    </div>
+  );
+}
