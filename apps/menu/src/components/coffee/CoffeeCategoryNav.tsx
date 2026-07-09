@@ -55,7 +55,7 @@ export function CoffeeCategoryNav({ categories, currentSlug, locationSlug, local
           гамбургера выше лого). Раньше здесь было 59/63 — из старого
           макета шапки (py-3.5 + h-10/h-11 лого), из-за чего между шапкой
           и лентой категорий был виден зазор при скролле. */}
-      <nav className="sticky top-[49px] z-20 -mx-4 mb-3 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/80 backdrop-blur-md sm:-mx-6 lg:hidden">
+      <nav className="sticky top-[49px] z-20 -mx-4 mb-5 border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/80 backdrop-blur-md sm:-mx-6 lg:hidden">
         <div className="overflow-x-auto no-scrollbar">
           <div className="flex gap-2 px-4 py-2.5 sm:px-6">
             {categories.map((c) => {
