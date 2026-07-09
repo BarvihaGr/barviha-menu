@@ -93,42 +93,50 @@ function VariantRow({ variant, locationSlug }: { variant: ArkaMenuVariant; locat
   );
 }
 
-/** Тип 1 — полная карточка (своё фото). */
+/** Тип 1 — полная карточка (своё фото). Фото+название+описание — тоже
+ * ссылка (на первую вариацию), чтобы вся верхняя часть карточки открывала
+ * карточку товара, а не только строка цены. */
 export function ArkaFullCard({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
   const variants = getItemVariants(item);
+  const primary = variants[0]!;
   return (
     <article className="flex min-w-0 flex-col">
-      <PhotoPlaceholder ratio="square" label="фото позиции" />
-      <div className="flex flex-1 flex-col pt-2.5">
-        <h3 className="break-words font-[family-name:var(--font-display)] text-[14px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
-          {item.name}
-        </h3>
-        {item.description && (
-          <p className="mt-1 break-words text-[11.5px] leading-snug text-[var(--cm-muted)]">{item.description}</p>
-        )}
-        <div className="mt-auto flex flex-col gap-1.5 pt-2.5">
-          {variants.map((v) => (
-            <VariantRow key={v.id} variant={v} locationSlug={locationSlug} />
-          ))}
+      <Link href={`/${locationSlug}/item/${primary.id}`} className="contents focus:outline-none">
+        <PhotoPlaceholder ratio="square" label="фото позиции" />
+        <div className="flex flex-1 flex-col pt-2.5">
+          <h3 className="break-words font-[family-name:var(--font-display)] text-[14px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
+            {item.name}
+          </h3>
+          {item.description && (
+            <p className="mt-1 break-words text-[11.5px] leading-snug text-[var(--cm-muted)]">{item.description}</p>
+          )}
         </div>
+      </Link>
+      <div className="mt-auto flex flex-col gap-1.5 pt-2.5">
+        {variants.map((v) => (
+          <VariantRow key={v.id} variant={v} locationSlug={locationSlug} />
+        ))}
       </div>
     </article>
   );
 }
 
-/** Тип 2 — простая карточка: список строк без фото у каждой позиции. */
+/** Тип 2 — простая карточка: список строк без фото у каждой позиции.
+ * Название/описание — тоже ссылка (на первую вариацию), чтобы вся строка
+ * (кроме кнопки «+») открывала карточку товара, а не только цена. */
 function ArkaSimpleRow({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
   const variants = getItemVariants(item);
+  const primary = variants[0]!;
   return (
     <div className="flex items-start justify-between gap-3 border-b border-[var(--cm-border)] py-3">
-      <div className="min-w-0 flex-1">
+      <Link href={`/${locationSlug}/item/${primary.id}`} className="min-w-0 flex-1 focus:outline-none">
         <h4 className="break-words font-[family-name:var(--font-display)] text-[14.5px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
           {item.name}
         </h4>
         {item.description && (
           <p className="mt-0.5 break-words text-[11.5px] leading-snug text-[var(--cm-muted)]">{item.description}</p>
         )}
-      </div>
+      </Link>
       <div className="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
         {variants.map((v) => (
           <VariantRow key={v.id} variant={v} locationSlug={locationSlug} />
