@@ -7,6 +7,7 @@
  */
 
 import type { ArkaMenuEntry, ArkaMenuItem } from '@/lib/arka-menu-data';
+import { ARKA_GROUP_PHOTOS } from '@/lib/arka-photos';
 import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
 
 /** Чистые бутылочные прайс-листы (вино, крепкий алкоголь) — фото категории
@@ -58,7 +59,13 @@ function CategoryBlock({
       {type1.length > 0 && type2.length > 0 && <div className="my-7 h-px w-full bg-[var(--cm-border)]" />}
 
       {type2.length > 0 && (
-        <ArkaGroupCard category={category} items={type2} locationSlug={locationSlug} showPhoto={showGroupPhoto} />
+        <ArkaGroupCard
+          category={category}
+          items={type2}
+          locationSlug={locationSlug}
+          showPhoto={showGroupPhoto}
+          photoSrc={ARKA_GROUP_PHOTOS[category]}
+        />
       )}
     </section>
   );

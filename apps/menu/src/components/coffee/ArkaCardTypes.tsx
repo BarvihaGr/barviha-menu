@@ -19,9 +19,11 @@
  * везде одинаково, что в сетке, что в простом списке.
  */
 
+import Image from 'next/image';
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { getItemVariants, type ArkaMenuItem, type ArkaMenuVariant } from '@/lib/arka-menu-data';
+import { ARKA_ITEM_PHOTOS } from '@/lib/arka-photos';
 import { Link } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
@@ -30,9 +32,10 @@ function formatRub(n: number): string {
   return n.toLocaleString('ru-RU');
 }
 
-/** Фото-плейсхолдер: реальных фото для нового меню пока нет, держим место
- * тоновым градиентом с меткой вместо пустого поля. */
-function PhotoPlaceholder({ ratio, label }: { ratio: 'square' | 'wide'; label: string }) {
+/** Фото позиции/категории — если путь передан (см. arka-photos.ts), рендерим
+ * реальный кадр; иначе держим место тоновым градиентом с меткой вместо
+ * пустого поля (фото ещё не подтверждено/не готово). */
+function PhotoPlaceholder({ ratio, label, src }: { ratio: 'square' | 'wide'; label: string; src?: string }) {
   return (
     <div
       className={
@@ -40,11 +43,15 @@ function PhotoPlaceholder({ ratio, label }: { ratio: 'square' | 'wide'; label: s
         ' rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]'
       }
     >
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="px-3 text-center text-[10px] uppercase tracking-[0.25em] text-[var(--cm-muted-dim)]">
-          {label}
-        </span>
-      </div>
+      {src ? (
+        <Image src={src} alt="" fill sizes="(max-width: 640px) 50vw, 320px" className="object-cover" />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="px-3 text-center text-[10px] uppercase tracking-[0.25em] text-[var(--cm-muted-dim)]">
+            {label}
+          </span>
+        </div>
+      )}
       <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_0_1px_var(--cm-border)]" />
     </div>
   );
@@ -99,10 +106,11 @@ function VariantRow({ variant, locationSlug }: { variant: ArkaMenuVariant; locat
 export function ArkaFullCard({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
   const variants = getItemVariants(item);
   const primary = variants[0]!;
+  const photoSrc = ARKA_ITEM_PHOTOS[item.id];
   return (
     <article className="flex min-w-0 flex-col">
       <Link href={`/${locationSlug}/item/${primary.id}`} className="contents focus:outline-none">
-        <PhotoPlaceholder ratio="square" label="фото позиции" />
+        <PhotoPlaceholder ratio="square" label="фото позиции" src={photoSrc} />
         <div className="flex flex-1 flex-col pt-2.5">
           <h3 className="break-words font-[family-name:var(--font-display)] text-[14px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
             {item.name}
@@ -154,15 +162,17 @@ export function ArkaGroupCard({
   items,
   locationSlug,
   showPhoto = true,
+  photoSrc,
 }: {
   category: string;
   items: ArkaMenuItem[];
   locationSlug: string;
   showPhoto?: boolean;
+  photoSrc?: string;
 }) {
   return (
     <div className="flex flex-col">
-      {showPhoto && <PhotoPlaceholder ratio="wide" label={`общее фото · ${category}`} />}
+      {showPhoto && <PhotoPlaceholder ratio="wide" label={`общее фото · ${category}`} src={photoSrc} />}
       <div className={showPhoto ? 'mt-1' : undefined}>
         {items.map((it, i) => (
           <ArkaSimpleRow key={`${it.name}-${i}`} item={it} locationSlug={locationSlug} />
