@@ -44,7 +44,13 @@ function PhotoPlaceholder({ ratio, label, src }: { ratio: 'square' | 'wide'; lab
       }
     >
       {src ? (
-        <Image src={src} alt="" fill sizes="(max-width: 640px) 50vw, 320px" className="object-cover" />
+        <Image
+          src={src}
+          alt=""
+          fill
+          sizes="(max-width: 640px) 50vw, 320px"
+          className={ratio === 'wide' ? 'object-contain' : 'object-cover'}
+        />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="px-3 text-center text-[10px] uppercase tracking-[0.25em] text-[var(--cm-muted-dim)]">
