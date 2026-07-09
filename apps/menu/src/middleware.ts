@@ -21,7 +21,10 @@ export default function middleware(request: NextRequest) {
       const rest = locationMatch[3] ?? '';
       const url = request.nextUrl.clone();
       url.pathname = `/${locale}/kievskaia${rest}`;
-      return NextResponse.redirect(url, { status: 302 });
+      const res = NextResponse.redirect(url, { status: 302 });
+      // Тоже уход с Арки на другую локацию — гасим доступ (см. ниже).
+      res.cookies.delete(ARKA_GATE_COOKIE);
+      return res;
     }
 
     // Арка — тестовая локация, закрыта паролем: даже по прямой ссылке без
@@ -31,6 +34,16 @@ export default function middleware(request: NextRequest) {
       url.pathname = `/${locale}/arka-gate`;
       url.searchParams.set('next', pathname);
       return NextResponse.redirect(url, { status: 302 });
+    }
+
+    // Ушли с Арки на любую другую локацию — гасим доступ. По просьбе
+    // пользователя код должен спрашиваться заново при КАЖДОМ переходе между
+    // локациями, а не раз за сессию браузера. Действует, пока не отменят.
+    // Саму /arka и экран /arka-gate не трогаем, иначе сломаем вход по коду.
+    if (slug !== 'arka' && slug !== 'arka-gate') {
+      const res = intlMiddleware(request);
+      res.cookies.delete(ARKA_GATE_COOKIE);
+      return res;
     }
   }
 
