@@ -102,22 +102,28 @@ export function CoffeeLuxHome({
             transition={{ duration: 0.7, delay: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
             className="flex w-full max-w-[340px] flex-col gap-3"
           >
-            <motion.div whileTap={{ scale: 0.94 }} whileHover={{ scale: 1.03 }} transition={{ type: 'spring', stiffness: 400, damping: 22 }}>
-              <Link
-                href={menuHref}
-                className="group flex h-[54px] w-full items-center justify-center gap-3 rounded-[14px] border border-white/40 bg-white/18 font-[family-name:var(--font-display)] text-[13px] font-light uppercase tracking-[0.28em] text-white shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-[12px] transition-colors duration-300 hover:border-white/60 hover:bg-white/28 focus-visible:outline-none cursor-pointer"
+            {/*
+              Раньше tap/hover-масштаб вешался на motion.div-обёртку ВОКРУГ
+              Link — жест-recognizer Framer Motion конкурировал с нативным
+              кликом по вложенной ссылке и на части нажатий (особенно touch)
+              клик просто не долетал до навигации («работает через раз»).
+              Теперь scale — обычный CSS-transition прямо на самой ссылке,
+              без вложенного элемента-перехватчика жестов.
+            */}
+            <Link
+              href={menuHref}
+              className="group flex h-[54px] w-full scale-100 items-center justify-center gap-3 rounded-[14px] border border-white/40 bg-white/18 font-[family-name:var(--font-display)] text-[13px] font-light uppercase tracking-[0.28em] text-white shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-[12px] transition-[transform,background-color,border-color] duration-200 hover:scale-[1.03] hover:border-white/60 hover:bg-white/28 active:scale-[0.94] focus-visible:outline-none cursor-pointer"
+            >
+              {menuLabel}
+              <motion.span
+                aria-hidden
+                className="text-[15px] leading-none"
+                animate={{ x: [0, 4, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
               >
-                {menuLabel}
-                <motion.span
-                  aria-hidden
-                  className="text-[15px] leading-none"
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
-                >
-                  →
-                </motion.span>
-              </Link>
-            </motion.div>
+                →
+              </motion.span>
+            </Link>
 
           </motion.div>
         </div>
