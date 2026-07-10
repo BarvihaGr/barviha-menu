@@ -6,7 +6,11 @@
 
 export const ARKA_GROUP_PHOTOS: Record<string, string> = {
   Смузи: '/arka-bar/groups/napitki-ba.png',
-  'Молочный коктейль': '/arka-bar/groups/napitki-ba.png',
+  // Раньше делил кадр со Смузи/Соком (napitki-ba.png) — по просьбе
+  // пользователя подобрал отдельное стоковое фото именно под молочный
+  // коктейль: тёмный лаунж-фон, бокал со взбитыми сливками и карамелью,
+  // дым для атмосферы (Unsplash, тот же паттерн, что и STOCK ниже).
+  'Молочный коктейль': 'https://images.unsplash.com/photo-1767065703486-32be4d8a0a4b?auto=format&fit=crop&w=1200&q=80',
   Сок: '/arka-bar/groups/napitki-ba.png',
   'Классические чаи': '/arka-bar/groups/chai.png',
   'Премиальные чаи': '/arka-bar/groups/chai.png',
