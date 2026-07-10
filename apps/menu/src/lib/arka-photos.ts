@@ -33,10 +33,24 @@ export const ARKA_GROUP_PHOTOS: Record<string, string> = {
 //     но ближе всего по цвету/подаче из оставшихся позиций.
 // Доминант (сливочно-шоколадный, ни один коктейль в меню не кремовый) — без
 // совпадения вообще, оставлен неподключённым (плейсхолдер до точного фото).
+//
+// Дополнительно (по просьбе «поставь любые красивые, если пусто») вырезал
+// отдельные бокалы из групповых фото-сетов (см. groups/) под ещё 5 пустых
+// позиций — уже не по названию, а просто по цвету/подаче напитка:
+//   red-smoothie-crop  (красный, бокал на ножке)  → Лимонады: Гранат Клубника
+//   orange-juice-crop  (жёлтый, хайбол)            → Лимонады: Апельсин Юдзу Миндаль
+//   green-tea-crop     (зелёный чай, киви/лайм)     → Авторские чаи: Мятный с чабрецом и кардамоном
+//   cosmopolitan-crop  (розовый, мартини)           → Авторские коктейли: Клубника Тонка
+//   ny-sour-crop       (тёмно-красный, пена сверху) → Авторские коктейли: Апероль Клубника Сауэр
 export const ARKA_ITEM_PHOTOS: Record<string, string> = {
   'arka-bar-0060': '/arka-bar/solo/rose-glass.png',
   'arka-bar-0066': '/arka-bar/solo/pina-colada.png',
   'arka-bar-0069': '/arka-bar/solo/last-word.png',
   'arka-bar-0067': '/arka-bar/solo/french.png',
   'arka-bar-0065': '/arka-bar/solo/drunk-duchess.png',
+  'arka-bar-0002': '/arka-bar/solo/red-smoothie-crop.png',
+  'arka-bar-0001': '/arka-bar/solo/orange-juice-crop.png',
+  'arka-bar-0025': '/arka-bar/solo/green-tea-crop.png',
+  'arka-bar-0062': '/arka-bar/solo/cosmopolitan-crop.png',
+  'arka-bar-0068': '/arka-bar/solo/ny-sour-crop.png',
 };
