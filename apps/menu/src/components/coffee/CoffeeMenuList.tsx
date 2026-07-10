@@ -130,7 +130,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   return (
     <div>
       {/* ── Поиск + фильтры ── */}
-      <div className="mb-5 flex items-center gap-2">
+      <div className="mb-2.5 flex items-center gap-2">
         <FilterDrawer iconOnly active={active} onChange={setActive} realm={realm} themeStyle={themeStyle} />
         <div className="flex flex-1 items-center gap-2.5 rounded-2xl bg-[var(--cm-surface)] px-4 py-3">
           <Search className="h-[18px] w-[18px] shrink-0 text-[var(--cm-muted-dim)]" />
@@ -166,7 +166,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
             ref={chipBarRef}
             className="overflow-x-auto no-scrollbar border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/96 backdrop-blur-md lg:rounded-2xl lg:border"
           >
-            <div className="flex gap-2 px-4 pt-2.5 pb-2.5 sm:px-6">
+            <div className="flex gap-2 px-4 pb-2.5 sm:px-6">
               {sections.map((s) => (
                 <button
                   key={s.id}
