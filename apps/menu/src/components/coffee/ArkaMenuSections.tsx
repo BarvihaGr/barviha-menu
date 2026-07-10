@@ -7,27 +7,7 @@
  */
 
 import type { ArkaMenuEntry, ArkaMenuItem } from '@/lib/arka-menu-data';
-import { ARKA_GROUP_PHOTOS } from '@/lib/arka-photos';
 import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
-
-/** Чистые бутылочные прайс-листы (вино, крепкий алкоголь) — фото категории
- * не несёт смысла (в отличие от лимонадов/смузи/чаёв), поэтому для них
- * общее фото над списком не показываем. Решение подтверждено пользователем. */
-const WINE_SPIRITS_NO_PHOTO_CATEGORIES = new Set([
-  'Игристые и шампанские вина',
-  'Белые вина',
-  'Розовые вина',
-  'Красные вина',
-  'Аперетивы / Биттеры / Ликёры',
-  'Текила',
-  'Джин',
-  'Ром',
-  'Коньяк',
-  'Виски односолодовый',
-  'Виски купажированный',
-  'Водка',
-  'Пиво',
-]);
 
 function CategoryBlock({
   category,
@@ -40,7 +20,6 @@ function CategoryBlock({
 }) {
   const type1 = items.filter((i) => i.type === 1);
   const type2 = items.filter((i) => i.type === 2);
-  const showGroupPhoto = !WINE_SPIRITS_NO_PHOTO_CATEGORIES.has(category);
 
   return (
     <section className="py-8 first:pt-0">
@@ -58,15 +37,7 @@ function CategoryBlock({
 
       {type1.length > 0 && type2.length > 0 && <div className="my-7 h-px w-full bg-[var(--cm-border)]" />}
 
-      {type2.length > 0 && (
-        <ArkaGroupCard
-          category={category}
-          items={type2}
-          locationSlug={locationSlug}
-          showPhoto={showGroupPhoto}
-          photoSrc={ARKA_GROUP_PHOTOS[category]}
-        />
-      )}
+      {type2.length > 0 && <ArkaGroupCard items={type2} locationSlug={locationSlug} />}
     </section>
   );
 }

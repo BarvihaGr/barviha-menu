@@ -106,6 +106,27 @@ function VariantRow({ variant, locationSlug }: { variant: ArkaMenuVariant; locat
   );
 }
 
+/** Строка одной вариации в стиле Timeless: объём слева, цена + компактная
+ * «+» справа — используется внутри ArkaTimelessRow (см. ниже). */
+function TimelessVariantLine({ variant, locationSlug }: { variant: ArkaMenuVariant; locationSlug: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <Link
+        href={`/${locationSlug}/item/${variant.id}`}
+        className="flex min-w-0 flex-1 items-baseline gap-3 focus:outline-none"
+      >
+        {variant.label && (
+          <span className="shrink-0 text-[12px] uppercase tracking-[0.08em] text-[var(--cm-muted-dim)]">
+            {variant.label}
+          </span>
+        )}
+        <span className="text-[15px] font-medium text-[var(--cm-text)]">{formatRub(variant.price)} ₽</span>
+      </Link>
+      <AddButton variant={variant} />
+    </div>
+  );
+}
+
 /** Тип 1 — полная карточка (своё фото). Фото+название+описание — тоже
  * ссылка (на первую вариацию), чтобы вся верхняя часть карточки открывала
  * карточку товара, а не только строка цены. */
@@ -135,55 +156,46 @@ export function ArkaFullCard({ item, locationSlug }: { item: ArkaMenuItem; locat
   );
 }
 
-/** Тип 2 — простая карточка: список строк без фото у каждой позиции.
- * Название/описание — тоже ссылка (на первую вариацию), чтобы вся строка
- * (кроме кнопки «+») открывала карточку товара, а не только цена. */
-function ArkaSimpleRow({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
+/** Тип 2 — позиция без фото, в стиле Timeless: крупное название сверху,
+ * объём + цена снизу, без фото и без плейсхолдера. Название — тоже ссылка
+ * (на первую вариацию), чтобы вся ячейка открывала карточку товара. */
+function ArkaTimelessRow({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
   const variants = getItemVariants(item);
   const primary = variants[0]!;
   return (
-    <div className="flex items-start justify-between gap-3 border-b border-[var(--cm-border)] py-3">
-      <Link href={`/${locationSlug}/item/${primary.id}`} className="min-w-0 flex-1 focus:outline-none">
-        <h4 className="break-words font-[family-name:var(--font-display)] text-[14.5px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
+    <div className="flex flex-col gap-3 border-b border-[var(--cm-border)] py-6">
+      <Link href={`/${locationSlug}/item/${primary.id}`} className="min-w-0 focus:outline-none">
+        <h4 className="break-words font-[family-name:var(--font-display)] text-[19px] font-medium uppercase leading-[1.2] tracking-[0.02em] text-[var(--cm-text)] sm:text-[21px]">
           {item.name}
         </h4>
         {item.description && (
-          <p className="mt-0.5 break-words text-[11.5px] leading-snug text-[var(--cm-muted)]">{item.description}</p>
+          <p className="mt-1.5 break-words text-[12px] leading-snug text-[var(--cm-muted)]">{item.description}</p>
         )}
       </Link>
-      <div className="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
+      <div className="flex flex-col gap-1.5">
         {variants.map((v) => (
-          <VariantRow key={v.id} variant={v} locationSlug={locationSlug} />
+          <TimelessVariantLine key={v.id} variant={v} locationSlug={locationSlug} />
         ))}
       </div>
     </div>
   );
 }
 
-/** Тип 2 — общее фото 16:9 на всю группу + список позиций без фото.
- * Для чистых бутылочных прайс-листов (вино, крепкий алкоголь) фото категории
- * не имеет смысла — see WINE_SPIRITS_NO_PHOTO_CATEGORIES в ArkaMenuSections.tsx. */
+/** Тип 2 — сетка 2 колонки без фото (в стиле Timeless: название крупно,
+ * объём/цена мелко). Раньше здесь было общее фото 16:9 на категорию —
+ * убрано по просьбе пользователя в пользу чистой типографики. */
 export function ArkaGroupCard({
-  category,
   items,
   locationSlug,
-  showPhoto = true,
-  photoSrc,
 }: {
-  category: string;
   items: ArkaMenuItem[];
   locationSlug: string;
-  showPhoto?: boolean;
-  photoSrc?: string;
 }) {
   return (
-    <div className="flex flex-col">
-      {showPhoto && <PhotoPlaceholder ratio="wide" label={`общее фото · ${category}`} src={photoSrc} />}
-      <div className={showPhoto ? 'mt-1' : undefined}>
-        {items.map((it, i) => (
-          <ArkaSimpleRow key={`${it.name}-${i}`} item={it} locationSlug={locationSlug} />
-        ))}
-      </div>
+    <div className="grid grid-cols-1 gap-x-10 sm:grid-cols-2">
+      {items.map((it, i) => (
+        <ArkaTimelessRow key={`${it.name}-${i}`} item={it} locationSlug={locationSlug} />
+      ))}
     </div>
   );
 }
