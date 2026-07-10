@@ -12,9 +12,16 @@ interface Props {
   wifi?: { ssid: string; password: string };
 }
 
-/** Маршрут «от меня» до адреса на Яндекс.Картах. */
+/**
+ * Маршрут «от меня» до адреса. Google Maps Directions API (api=1) без
+ * origin — по документации Google это гарантированно строит маршрут от
+ * текущей геопозиции, а не просто открывает карту на ней (в отличие от
+ * Яндекс-ссылки rtext=~<текст>, которая была раньше: при неудачном
+ * клиентском геокодинге текста адреса Яндекс молча падал на «просто
+ * показать мою позицию» без маршрута — это и была жалоба пользователя).
+ */
 function directionsUrl(address: string): string {
-  return `https://yandex.ru/maps/?rtext=~${encodeURIComponent(address)}&rtt=auto`;
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}&travelmode=driving`;
 }
 
 /**

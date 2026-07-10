@@ -37,12 +37,16 @@ interface Props {
 }
 
 /**
- * Маршрут до точки на Яндекс.Картах ("от меня" → адрес).
+ * Маршрут "от меня" → адрес. Google Maps Directions API (api=1) без
+ * origin — по спецификации Google гарантированно строит маршрут от текущей
+ * геопозиции. Раньше была ссылка на Яндекс (rtext=~<текст адреса>), но при
+ * неудачном клиентском геокодинге текста Яндекс молча открывал карту
+ * просто на текущей позиции, без маршрута.
  * Универсально работает в десктопе и на мобиле; смартфон спросит,
  * открыть ли в нативном приложении.
  */
-function yandexDirectionsUrl(address: string): string {
-  return `https://yandex.ru/maps/?rtext=~${encodeURIComponent(address)}&rtt=auto`;
+function directionsUrl(address: string): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}&travelmode=driving`;
 }
 
 export function LocationInfoModal({
@@ -174,7 +178,7 @@ export function LocationInfoModal({
                   )}
                   {address ? (
                     <a
-                      href={yandexDirectionsUrl(address)}
+                      href={directionsUrl(address)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group/row flex items-start gap-3 rounded-sm border border-[color:var(--border)] bg-background/40 px-4 py-3.5 hover:border-gold transition cursor-pointer"
