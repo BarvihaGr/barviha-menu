@@ -34,23 +34,49 @@ export const ARKA_GROUP_PHOTOS: Record<string, string> = {
 // Доминант (сливочно-шоколадный, ни один коктейль в меню не кремовый) — без
 // совпадения вообще, оставлен неподключённым (плейсхолдер до точного фото).
 //
-// Дополнительно (по просьбе «поставь любые красивые, если пусто») вырезал
-// отдельные бокалы из групповых фото-сетов (см. groups/) под ещё 5 пустых
-// позиций — уже не по названию, а просто по цвету/подаче напитка:
-//   red-smoothie-crop  (красный, бокал на ножке)  → Лимонады: Гранат Клубника
-//   orange-juice-crop  (жёлтый, хайбол)            → Лимонады: Апельсин Юдзу Миндаль
-//   green-tea-crop     (зелёный чай, киви/лайм)     → Авторские чаи: Мятный с чабрецом и кардамоном
-//   cosmopolitan-crop  (розовый, мартини)           → Авторские коктейли: Клубника Тонка
-//   ny-sour-crop       (тёмно-красный, пена сверху) → Авторские коктейли: Апероль Клубника Сауэр
+// Остальные пустые позиции (по просьбе «поставь фотки, какие используются
+// на Киевской») — те же Unsplash-заглушки, что и в packages/db/src/mock-data.ts
+// (PIC/UNSPLASH), той же логикой: один и тот же стоковый кадр переиспользуется
+// на нескольких похожих по цвету/типу напитках — ровно как на Киевской
+// (там cocktailBerry/martiniYellow/mojitoMint/cocktailIced/teapot тоже висят
+// на нескольких разных позициях одновременно).
+const UNSPLASH = (id: string): string => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1200&q=80`;
+const STOCK = {
+  martiniYellow: UNSPLASH('1587223962930-cb7f31384c19'),
+  cocktailBerry: UNSPLASH('1536935338788-846bb9981813'),
+  cocktailIced: UNSPLASH('1556679343-c7306c1976bc'),
+  mojitoMint: UNSPLASH('1551538827-9c037cb4f32a'),
+  teapot: UNSPLASH('1551024601-bec78aea704b'),
+};
+
 export const ARKA_ITEM_PHOTOS: Record<string, string> = {
+  // Реальные тестовые фото (см. выше) — не трогать.
   'arka-bar-0060': '/arka-bar/solo/rose-glass.png',
   'arka-bar-0066': '/arka-bar/solo/pina-colada.png',
   'arka-bar-0069': '/arka-bar/solo/last-word.png',
   'arka-bar-0067': '/arka-bar/solo/french.png',
   'arka-bar-0065': '/arka-bar/solo/drunk-duchess.png',
-  'arka-bar-0002': '/arka-bar/solo/red-smoothie-crop.png',
-  'arka-bar-0001': '/arka-bar/solo/orange-juice-crop.png',
-  'arka-bar-0025': '/arka-bar/solo/green-tea-crop.png',
-  'arka-bar-0062': '/arka-bar/solo/cosmopolitan-crop.png',
-  'arka-bar-0068': '/arka-bar/solo/ny-sour-crop.png',
+
+  // Лимонады
+  'arka-bar-0000': STOCK.cocktailIced, // Манго Маракуйя Кокос
+  'arka-bar-0001': STOCK.martiniYellow, // Апельсин Юдзу Миндаль
+  'arka-bar-0002': STOCK.cocktailBerry, // Гранат Клубника
+  'arka-bar-0003': STOCK.mojitoMint, // Киви Крыжовник Фейхоа
+  'arka-bar-0004': STOCK.cocktailIced, // Ананас Щавель
+
+  // Авторские чаи — все на одном чайнике, как itm-bar-tea-dahongpao на Киевской
+  'arka-bar-0021': STOCK.teapot,
+  'arka-bar-0022': STOCK.teapot,
+  'arka-bar-0023': STOCK.teapot,
+  'arka-bar-0024': STOCK.teapot,
+  'arka-bar-0025': STOCK.teapot,
+
+  // Авторские коктейли — оставшиеся без реального фото
+  'arka-bar-0059': STOCK.cocktailBerry, // Виолет
+  'arka-bar-0061': STOCK.martiniYellow, // Хуго
+  'arka-bar-0062': STOCK.cocktailBerry, // Клубника Тонка
+  'arka-bar-0063': STOCK.cocktailIced, // Грейп Тоник
+  'arka-bar-0064': STOCK.mojitoMint, // Бэйзил Тоник
+  'arka-bar-0068': STOCK.cocktailBerry, // Апероль Клубника Сауэр
+  'arka-bar-0070': STOCK.cocktailBerry, // Слива Голубика
 };
