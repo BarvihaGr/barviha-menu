@@ -107,21 +107,29 @@ function uniqueSuffix(): string {
   return Math.random().toString(36).slice(2, 8);
 }
 
-/** Названия существующих разделов Бара (для выпадающего списка в бэк-офисе). */
-export function getBarCategories(slug: string): string[] {
-  return getBarSections(slug)
-    .filter((e): e is Extract<ArkaMenuEntry, { kind: 'category' }> => e.kind === 'category')
-    .map((e) => e.category);
+export interface BarCategoryOption {
+  /** Индекс в исходном массиве sections — категории могут повторяться по
+   * имени (историческое наполнение), поэтому идентифицируем позицией, а не
+   * названием. */
+  index: number;
+  category: string;
 }
 
-/** Новый раздел Бара (шаблон Арки) — пустая категория, без заголовка-секции. */
-export function addBarCategory(slug: string, category: string): void {
+/** Разделы Бара для выпадающего списка в бэк-офисе — с индексом, потому что
+ * названия разделов не гарантированно уникальны (см. addBarItem). */
+export function getBarCategories(slug: string): BarCategoryOption[] {
+  return getBarSections(slug)
+    .map((e, index) => ({ e, index }))
+    .filter((x): x is { e: Extract<ArkaMenuEntry, { kind: 'category' }>; index: number } => x.e.kind === 'category')
+    .map(({ e, index }) => ({ index, category: e.category }));
+}
+
+/** Новый раздел Бара (шаблон Арки) — пустая категория, без заголовка-секции. Возвращает индекс нового раздела в sections (для addBarItem). */
+export function addBarCategory(slug: string, category: string): number {
   const file = readContentJson<BarFile>(`${slug}/bar.json`);
-  if (file.sections.some((e) => e.kind === 'category' && e.category === category)) {
-    throw new Error(`Категория уже существует: ${slug}/${category}`);
-  }
   file.sections.push({ kind: 'category', sheet: 'custom', category, items: [] });
   writeContentJson(`${slug}/bar.json`, file);
+  return file.sections.length - 1;
 }
 
 export interface NewBarItemInput {
@@ -132,15 +140,13 @@ export interface NewBarItemInput {
   type?: 1 | 2;
 }
 
-/** Новая позиция в существующий раздел Бара (шаблон Арки). */
-export function addBarItem(slug: string, category: string, input: NewBarItemInput): ArkaMenuItem {
+/** Новая позиция в существующий раздел Бара (шаблон Арки) — раздел выбирается по индексу в sections, не по имени (см. getBarCategories). */
+export function addBarItem(slug: string, categoryIndex: number, input: NewBarItemInput): ArkaMenuItem {
   const file = readContentJson<BarFile>(`${slug}/bar.json`);
-  const entry = file.sections.find(
-    (e): e is Extract<ArkaMenuEntry, { kind: 'category' }> => e.kind === 'category' && e.category === category,
-  );
-  if (!entry) throw new Error(`Раздел бара не найден: ${slug}/${category}`);
+  const entry = file.sections[categoryIndex];
+  if (!entry || entry.kind !== 'category') throw new Error(`Раздел бара не найден: ${slug}/${categoryIndex}`);
   const item: ArkaMenuItem = {
-    id: `bar-${slugPart(category)}-${uniqueSuffix()}`,
+    id: `bar-${slugPart(entry.category)}-${uniqueSuffix()}`,
     name: input.name,
     type: input.type ?? 1,
     priceParts: [input.price],

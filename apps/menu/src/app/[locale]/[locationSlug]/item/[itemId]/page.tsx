@@ -1,4 +1,5 @@
-import { getClient, usesArkaBarTemplate } from '@barviha/db';
+import { getClient, usesArkaBarTemplate, recordView } from '@barviha/db';
+import { STATS_ENABLED } from '@/lib/stats';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/routing';
@@ -33,6 +34,9 @@ export default async function ItemDetailPage({
   const db = getClient();
   const item = arkaBarItem ?? (await db.getMenuItemById(itemId, locationSlug));
   if (!item) notFound();
+  // Заготовка счётчика просмотров (см. lib/stats.ts) — пока STATS_ENABLED
+  // false, ничего не пишет.
+  if (STATS_ENABLED) recordView(locationSlug, item.id);
 
   const name = pickItemName(item, locale as Locale);
   const description = pickItemDescription(item, locale as Locale);
@@ -164,7 +168,7 @@ export default async function ItemDetailPage({
 
           <div className="flex items-center justify-between gap-4 border-t border-[color:var(--border)] pt-5">
             <div className="text-2xl sm:text-3xl text-gold font-medium">{formatPrice(item.price)}</div>
-            <AddToCartButton itemId={item.id} itemName={name} />
+            <AddToCartButton itemId={item.id} itemName={name} locationSlug={locationSlug} />
           </div>
         </div>
       </article>

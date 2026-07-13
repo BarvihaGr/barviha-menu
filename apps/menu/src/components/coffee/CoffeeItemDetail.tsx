@@ -12,6 +12,7 @@ import { formatPrice, cn, capitalizeRu } from '@/lib/utils';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import type { RelatedItem } from '@/components/RelatedItemsRail';
+import { trackAdd } from '@/lib/stats';
 
 interface Ingredient {
   name: string;
@@ -134,7 +135,12 @@ export function CoffeeItemDetail({
             <div className="text-[26px] font-semibold text-[var(--cm-text)] sm:text-[30px]">
               {formatPrice(item.price)}
             </div>
-            <CoffeeAddButton itemId={item.id} itemName={name} addLabel={t('addToCart')} />
+            <CoffeeAddButton
+              itemId={item.id}
+              itemName={name}
+              locationSlug={locationSlug}
+              addLabel={t('addToCart')}
+            />
           </div>
         </div>
       </article>
@@ -275,10 +281,12 @@ function CoffeeExpandableText({
 function CoffeeAddButton({
   itemId,
   itemName,
+  locationSlug,
   addLabel,
 }: {
   itemId: string;
   itemName: string;
+  locationSlug: string;
   addLabel: string;
 }) {
   const add = useCart((s) => s.add);
@@ -289,6 +297,7 @@ function CoffeeAddButton({
 
   const firstAdd = () => {
     add(itemId, 1);
+    trackAdd(locationSlug, itemId);
     push(t('toast.addedToCart'), 'success');
   };
 

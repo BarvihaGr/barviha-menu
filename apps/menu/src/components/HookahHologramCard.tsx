@@ -15,7 +15,7 @@ interface Props {
   locationSlug: string;
 }
 
-export function HookahHologramCard({ itemId, name, description, price, photo }: Props) {
+export function HookahHologramCard({ itemId, name, description, price, photo, locationSlug }: Props) {
   const t = useTranslations('hookah');
 
   return (
@@ -74,6 +74,7 @@ export function HookahHologramCard({ itemId, name, description, price, photo }: 
             <AddToCartButton
               itemId={itemId}
               itemName={name}
+              locationSlug={locationSlug}
               variant="full"
               className="sm:flex-none sm:min-w-[200px]"
             />

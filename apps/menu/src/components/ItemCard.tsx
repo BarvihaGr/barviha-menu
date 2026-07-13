@@ -54,7 +54,7 @@ export function ItemCard({ item, name, locationSlug }: Props) {
             <span className="text-[13px] sm:text-[14px] font-semibold text-gold leading-none">
               {formatPrice(item.price)}
             </span>
-            <AddToCartButton itemId={item.id} itemName={name} className="shrink-0" />
+            <AddToCartButton itemId={item.id} itemName={name} locationSlug={locationSlug} className="shrink-0" />
           </div>
         </div>
       </Link>

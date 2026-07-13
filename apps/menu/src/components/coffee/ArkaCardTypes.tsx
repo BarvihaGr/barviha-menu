@@ -27,6 +27,7 @@ import { Link } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { photoTransformCss, type PhotoTransform } from '@/lib/photo-transform';
+import { trackAdd } from '@/lib/stats';
 
 function formatRub(n: number): string {
   return n.toLocaleString('ru-RU');
@@ -80,7 +81,7 @@ function PhotoPlaceholder({
 }
 
 /** Кнопка «+» — кладёт конкретную вариацию (свой id/цена) в корзину. */
-function AddButton({ variant }: { variant: ArkaMenuVariant }) {
+function AddButton({ variant, locationSlug }: { variant: ArkaMenuVariant; locationSlug: string }) {
   const add = useCart((s) => s.add);
   const push = useToast((s) => s.push);
   const t = useTranslations();
@@ -92,6 +93,7 @@ function AddButton({ variant }: { variant: ArkaMenuVariant }) {
         e.preventDefault();
         e.stopPropagation();
         add(variant.id, 1);
+        trackAdd(locationSlug, variant.id);
         push(t('toast.addedToCart'), 'success');
       }}
       aria-label={`${t('item.addToCart')} ${variant.name}`}
@@ -117,7 +119,7 @@ function VariantRow({ variant, locationSlug }: { variant: ArkaMenuVariant; locat
           {formatRub(variant.price)} ₽
         </span>
       </Link>
-      <AddButton variant={variant} />
+      <AddButton variant={variant} locationSlug={locationSlug} />
     </div>
   );
 }
@@ -138,7 +140,7 @@ function TimelessVariantLine({ variant, locationSlug }: { variant: ArkaMenuVaria
         )}
         <span className="text-[15px] font-medium text-[var(--cm-text)]">{formatRub(variant.price)} ₽</span>
       </Link>
-      <AddButton variant={variant} />
+      <AddButton variant={variant} locationSlug={locationSlug} />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { WORKING_SLUGS } from '@barviha/db/onboarding';
 import { ARKA_GATE_COOKIE, ARKA_GATE_TOKEN } from './lib/arka-gate';
-import { KIEVSKAIA_GATE_COOKIE, KIEVSKAIA_GATE_TOKEN } from './lib/kievskaia-gate';
 import { TEST_LOC_GATE_COOKIE, TEST_LOC_GATE_TOKEN } from './lib/test-loc-gate';
 
 const intlMiddleware = createMiddleware(routing);
@@ -12,7 +11,6 @@ const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
 // Служебные пути + шаблоны («Тест лок» — Арка/Киевская) — не редиректим на Киевскую.
 const SERVICE_PATHS = new Set([
   'kievskaia',
-  'kievskaia-gate',
   'arka',
   'arka-lab',
   'arka-gate',
@@ -53,14 +51,7 @@ export default function middleware(request: NextRequest) {
       return NextResponse.redirect(url, { status: 302 });
     }
 
-    // Киевская («Тест лок», эталон) — тоже закрыта паролем 0000, отдельная
-    // cookie от Арки и рабочих локаций (см. kievskaia-gate.ts).
-    if (slug === 'kievskaia' && request.cookies.get(KIEVSKAIA_GATE_COOKIE)?.value !== KIEVSKAIA_GATE_TOKEN) {
-      const url = request.nextUrl.clone();
-      url.pathname = `/${locale}/kievskaia-gate`;
-      url.searchParams.set('next', pathname);
-      return NextResponse.redirect(url, { status: 302 });
-    }
+    // Киевская («Тест лок», эталон) — без пароля, открывается свободно.
 
     // 25 рабочих локаций-клонов — закрыты общим паролем 0000, тем же, что и
     // у Арки (см. onboarding.ts WORKING_SLUGS), но своя cookie/токен —

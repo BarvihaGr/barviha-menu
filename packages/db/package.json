@@ -10,7 +10,8 @@
     "./mock": "./src/mock-data.ts",
     "./arka-shared": "./src/arka-shared.ts",
     "./onboarding": "./src/onboarding.ts",
-    "./catalog-shared": "./src/catalog-shared.ts"
+    "./catalog-shared": "./src/catalog-shared.ts",
+    "./stats-flag": "./src/stats-flag.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

@@ -11,6 +11,7 @@ import { formatPrice, capitalizeRu } from '@/lib/utils';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { photoTransformCss } from '@/lib/photo-transform';
+import { trackAdd } from '@/lib/stats';
 
 interface Props {
   item: ResolvedMenuItem;
@@ -32,6 +33,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
     e.preventDefault();
     e.stopPropagation();
     add(item.id, 1);
+    trackAdd(locationSlug, item.id);
     push(t('toast.addedToCart'), 'success');
     setBump(true);
     setTimeout(() => setBump(false), 180);

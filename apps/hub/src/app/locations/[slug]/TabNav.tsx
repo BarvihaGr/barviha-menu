@@ -8,6 +8,7 @@ const TABS = [
   { href: '/kitchen', label: 'Кухня' },
   { href: '/bar', label: 'Бар' },
   { href: '/hookah', label: 'Кальяны' },
+  { href: '/add', label: 'Добавить' },
   { href: '/stop-list', label: 'Стоп-лист' },
   { href: '/archive', label: 'Архив' },
 ] as const;

@@ -7,17 +7,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { cn } from '@/lib/utils';
+import { trackAdd } from '@/lib/stats';
 
 interface Props {
   itemId: string;
   itemName: string;
+  /** Для счётчика "добавлений в корзину" (см. lib/stats.ts) — опционально,
+   * пока трекинг выключен и не везде проброшен locationSlug. */
+  locationSlug?: string;
   variant?: 'icon' | 'full';
   className?: string;
 }
 
 const SPRING = { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] } as const;
 
-export function AddToCartButton({ itemId, itemName, variant = 'icon', className }: Props) {
+export function AddToCartButton({ itemId, itemName, locationSlug, variant = 'icon', className }: Props) {
   const add = useCart((s) => s.add);
   const setQty = useCart((s) => s.setQty);
   const qty = useCart((s) => s.items.find((i) => i.itemId === itemId)?.qty ?? 0);
@@ -34,6 +38,7 @@ export function AddToCartButton({ itemId, itemName, variant = 'icon', className 
   const firstAdd = (e: React.MouseEvent) => {
     stop(e);
     add(itemId, 1);
+    if (locationSlug) trackAdd(locationSlug, itemId);
     push(t('toast.addedToCart'), 'success');
   };
 
