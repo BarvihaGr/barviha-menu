@@ -6,6 +6,7 @@ import { Menu, X, Search, Check } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
 import type { Location } from '@barviha/db';
+import { TEMPLATE_SLUGS } from '@barviha/db/onboarding';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
 import { getMetroColor } from '@/lib/location-theme';
@@ -69,6 +70,17 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
       )
       .sort((a, b) => locName(a, locale).localeCompare(locName(b, locale), 'ru'));
   }, [locations, q, locale]);
+
+  // Тест лок (Арка/Киевская — эталоны дизайна) отдельно от рабочих локаций
+  // сети — как группировка в бэк-офисе (apps/hub Sidebar).
+  const templateLocs = useMemo(
+    () => filtered.filter((l) => (TEMPLATE_SLUGS as readonly string[]).includes(l.slug)),
+    [filtered],
+  );
+  const workingLocs = useMemo(
+    () => filtered.filter((l) => !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug)),
+    [filtered],
+  );
 
   const switchLang = (next: Locale) => {
     setOpen(false);
@@ -218,30 +230,33 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
 
                     {/* Список локаций */}
                     <div className="overflow-y-auto flex-1 -mx-1">
-                      {filtered.map((l) => {
-                        const active = l.slug === locationSlug;
-                        const accent = getMetroColor(l.slug);
-                        return (
-                          <Link
-                            key={l.id}
-                            href={`/${l.slug}`}
-                            onClick={close}
+                      {templateLocs.length > 0 && (
+                        <>
+                          <div className="px-3 pb-1.5 pt-1 text-[10px] uppercase tracking-[0.2em] opacity-40">
+                            Тест лок
+                          </div>
+                          {templateLocs.map((l) => (
+                            <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
+                          ))}
+                        </>
+                      )}
+
+                      {workingLocs.length > 0 && (
+                        <>
+                          <div
                             className={cn(
-                              'flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] transition cursor-pointer border-l-2',
-                              D.itemText,
-                              active && D.itemActive,
+                              'mt-2 border-t px-3 pb-1.5 pt-2.5 text-[10px] uppercase tracking-[0.2em] opacity-40',
+                              D.divider,
                             )}
-                            style={{ borderLeftColor: active ? accent : 'transparent' }}
                           >
-                            <span className="flex-1 truncate leading-tight">
-                              {locName(l, locale)}
-                            </span>
-                            {l.city && l.city !== locName(l, locale) && (
-                              <span className="shrink-0 text-[11px] opacity-40">{l.city}</span>
-                            )}
-                          </Link>
-                        );
-                      })}
+                            Локации сети
+                          </div>
+                          {workingLocs.map((l) => (
+                            <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
+                          ))}
+                        </>
+                      )}
+
                       {filtered.length === 0 && (
                         <div className="py-8 text-center text-[12px] opacity-30 uppercase tracking-[0.2em]">—</div>
                       )}
@@ -254,5 +269,41 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
         )}
       </AnimatePresence>
     </Dialog.Root>
+  );
+}
+
+function LocationRow({
+  l,
+  locale,
+  locationSlug,
+  D,
+  close,
+}: {
+  l: Location;
+  locale: Locale;
+  locationSlug: string;
+  D: Record<string, string>;
+  close: () => void;
+}) {
+  const active = l.slug === locationSlug;
+  const accent = getMetroColor(l.slug);
+  return (
+    <Link
+      href={`/${l.slug}`}
+      onClick={close}
+      className={cn(
+        'flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] transition cursor-pointer border-l-2',
+        D.itemText,
+        active && D.itemActive,
+      )}
+      style={{ borderLeftColor: active ? accent : 'transparent' }}
+    >
+      <span className="flex-1 truncate leading-tight">
+        {locName(l, locale)}
+      </span>
+      {l.city && l.city !== locName(l, locale) && (
+        <span className="shrink-0 text-[11px] opacity-40">{l.city}</span>
+      )}
+    </Link>
   );
 }

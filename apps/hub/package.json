@@ -2,14 +2,28 @@
   "name": "@barviha/hub",
   "version": "0.0.0",
   "private": true,
-  "description": "Barviha Hub — placeholder app. Will host the brand-chef admin / staff console.",
+  "description": "Barviha Hub — бэк-офис диджитал-меню (этап 1: локально, Арка).",
   "scripts": {
-    "dev": "echo 'hub: placeholder — implement after menu MVP ships'",
-    "build": "echo 'hub: nothing to build yet'",
-    "lint": "echo 'hub: no lint targets'",
+    "dev": "next dev -p 3100",
+    "build": "next build",
+    "start": "next start -p 3100",
+    "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@barviha/db": "workspace:*",
+    "next": "16.2.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "tailwindcss": "^4",
     "typescript": "^5.6.3"
   }
 }

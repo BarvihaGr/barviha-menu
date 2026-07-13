@@ -23,19 +23,31 @@ import Image from 'next/image';
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { getItemVariants, type ArkaMenuItem, type ArkaMenuVariant } from '@/lib/arka-menu-data';
-import { ARKA_ITEM_PHOTOS } from '@/lib/arka-photos';
 import { Link } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
+import { photoTransformCss, type PhotoTransform } from '@/lib/photo-transform';
 
 function formatRub(n: number): string {
   return n.toLocaleString('ru-RU');
 }
 
-/** Фото позиции/категории — если путь передан (см. arka-photos.ts), рендерим
+/** Фото позиции/категории — если путь передан (item.photo из content-store), рендерим
  * реальный кадр; иначе держим место тоновым градиентом с меткой вместо
  * пустого поля (фото ещё не подтверждено/не готово). */
-function PhotoPlaceholder({ ratio, label, src }: { ratio: 'square' | 'wide'; label: string; src?: string }) {
+function PhotoPlaceholder({
+  ratio,
+  label,
+  src,
+  position,
+  transform,
+}: {
+  ratio: 'square' | 'wide';
+  label: string;
+  src?: string;
+  position?: { x: number; y: number } | null;
+  transform?: PhotoTransform;
+}) {
   return (
     <div
       className={
@@ -49,6 +61,10 @@ function PhotoPlaceholder({ ratio, label, src }: { ratio: 'square' | 'wide'; lab
           alt=""
           fill
           sizes="(max-width: 640px) 50vw, 320px"
+          style={{
+            objectPosition: position ? `${position.x}% ${position.y}%` : undefined,
+            transform: photoTransformCss(transform),
+          }}
           className={ratio === 'wide' ? 'object-contain' : 'object-cover'}
         />
       ) : (
@@ -133,11 +149,17 @@ function TimelessVariantLine({ variant, locationSlug }: { variant: ArkaMenuVaria
 export function ArkaFullCard({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
   const variants = getItemVariants(item);
   const primary = variants[0]!;
-  const photoSrc = ARKA_ITEM_PHOTOS[item.id];
+  const photoSrc = item.photo ?? undefined;
   return (
     <article className="flex min-w-0 flex-col">
       <Link href={`/${locationSlug}/item/${primary.id}`} className="contents focus:outline-none">
-        <PhotoPlaceholder ratio="square" label="фото позиции" src={photoSrc} />
+        <PhotoPlaceholder
+          ratio="square"
+          label="фото позиции"
+          src={photoSrc}
+          position={item.photo_position}
+          transform={item.photo_transform}
+        />
         <div className="flex flex-1 flex-col pt-2.5">
           <h3 className="break-words font-[family-name:var(--font-display)] text-[14px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
             {item.name}

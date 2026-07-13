@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { formatPrice, capitalizeRu } from '@/lib/utils';
+import { photoTransformCss } from '@/lib/photo-transform';
 
 interface Props {
   item: ResolvedMenuItem;
@@ -26,7 +27,10 @@ export function ArkaItemCard({ item, name, description }: Props) {
             alt={displayName}
             fill
             sizes="(max-width: 640px) 50vw, 33vw"
-            style={{ objectPosition: 'center 35%' }}
+            style={{
+              objectPosition: item.photo_position ? `${item.photo_position.x}% ${item.photo_position.y}%` : 'center 35%',
+              transform: photoTransformCss(item.photo_transform),
+            }}
             className="object-cover transition duration-700 group-hover:scale-[1.04]"
           />
         ) : (

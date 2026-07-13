@@ -1,4 +1,4 @@
-import { getClient } from '@barviha/db';
+import { getClient, usesArkaBarTemplate } from '@barviha/db';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import type { Locale } from '@/i18n/routing';
@@ -8,13 +8,17 @@ import { CategoryItemsList } from '@/components/CategoryItemsList';
 import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
 import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
 import { ArkaMenuSections } from '@/components/coffee/ArkaMenuSections';
-import { ARKA_BAR_SECTIONS } from '@/lib/arka-menu-data';
+import { loadArkaBarSections, loadArkaBarGroupPhotos } from '@/lib/arka-bar-loader';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
 
-// Тестовая замена контента новым меню (см. чат) — только для Арки и только
-// категории «Бар». Кухню намеренно не трогаем — остаётся на боевых данных.
-// Ни на какую другую локацию (в т.ч. Киевскую) не влияет.
-const ARKA_TEST_SLUG = 'arka';
+// Бар (шаблон «Арка») рендерится своей вёрсткой (секции + type1/type2
+// карточки, см. ArkaMenuSections) вместо общего CoffeeMenuList — данные из
+// content-store (packages/db/content/<slug>/bar.json), редактируются в
+// бэк-офисе (apps/hub). Применяется к Арке и ко всем 25 рабочим клонам
+// (см. usesArkaBarTemplate). Кухня/Кальяны идут обычным путём через
+// db.getMenuItemsForLocation — content-store подключён внутри client.ts.
+// У Киевской Бар — тоже content-store, но обычный CatalogItem (свой шаблон
+// не задет), поэтому она идёт через CoffeeMenuList, как и остальные разделы.
 const ARKA_TEST_CATEGORY = 'bar';
 
 export default async function CategoryPage({
@@ -60,8 +64,12 @@ export default async function CategoryPage({
               locationSlug={locationSlug}
               locale={locale as Locale}
             />
-            {locationSlug === ARKA_TEST_SLUG && category.slug === ARKA_TEST_CATEGORY ? (
-              <ArkaMenuSections sections={ARKA_BAR_SECTIONS} locationSlug={locationSlug} />
+            {usesArkaBarTemplate(locationSlug) && category.slug === ARKA_TEST_CATEGORY ? (
+              <ArkaMenuSections
+                sections={loadArkaBarSections(locationSlug)}
+                groupPhotos={loadArkaBarGroupPhotos(locationSlug)}
+                locationSlug={locationSlug}
+              />
             ) : (
               <div className="min-w-0">
                 <CoffeeMenuList

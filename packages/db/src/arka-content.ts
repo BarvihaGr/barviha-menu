@@ -1,0 +1,391 @@
+/**
+ * Редактируемый контент локаций на content-store (этап 1 бэк-офиса) —
+ * файловый content-store, packages/db/content/<slug>/{bar,kitchen,hookah,location}.json.
+ * Название файла осталось историческим (Арка была первой), но функции тут
+ * генерик по slug — используются Аркой, Киевской и 25 рабочими клонами
+ * (см. onboarding.ts: isContentStoreSlug/usesArkaBarTemplate).
+ *
+ * Бар: у Арки и её клонов — своя вёрстка-шаблон (секции + type1/type2
+ * карточки, см. apps/menu ArkaMenuSections/ArkaCardTypes), файл bar.json.
+ * У Киевской Бар — обычные CatalogItem (realm: 'bar'), как Кухня/Кальяны,
+ * своя вёрстка (CoffeeMenuList) не задета. Оба хранилища читает/пишет и
+ * меню, и бэк-офис (hub).
+ */
+import { readContentJson, writeContentJson } from './content-store';
+import { subLabel, subOrder } from './catalog-shared';
+import { getItemVariants } from './arka-shared';
+import type { ArkaMenuEntry, ArkaMenuItem } from './arka-shared';
+import { usesArkaBarTemplate } from './onboarding';
+import type { GenKbju } from './menu-types';
+import type { ResolvedMenuItem } from './types';
+
+export type { ArkaMenuEntry, ArkaMenuItem, ArkaMenuVariant } from './arka-shared';
+export { getItemVariants } from './arka-shared';
+
+// ── Бар: секции + type1/type2 карточки ──
+
+interface BarFile {
+  sections: ArkaMenuEntry[];
+  groupPhotos: Record<string, string>;
+}
+
+function flattenBarItems(sections: ArkaMenuEntry[]): ArkaMenuItem[] {
+  return sections.flatMap((e) => (e.kind === 'category' ? e.items : []));
+}
+
+export function getBarSections(slug: string): ArkaMenuEntry[] {
+  return readContentJson<BarFile>(`${slug}/bar.json`).sections;
+}
+
+export function getBarGroupPhotos(slug: string): Record<string, string> {
+  return readContentJson<BarFile>(`${slug}/bar.json`).groupPhotos;
+}
+
+/** "Фейковые" ResolvedMenuItem для Бара — чтобы работали корзина и /item/[itemId]. */
+export function toResolvedBarItems(slug: string): ResolvedMenuItem[] {
+  const sections = getBarSections(slug);
+  return flattenBarItems(sections)
+    .filter((item) => item.is_available && !item.is_archived)
+    .flatMap((item) =>
+      getItemVariants(item).map((v) => ({
+        id: v.id,
+        name: v.name,
+        description: v.description,
+        photo: item.photo,
+        photo_position: item.photo_position ?? null,
+        photo_transform: item.photo_transform ?? null,
+        composition: null,
+        category_id: 'bar',
+        price: v.price,
+        weight: item.volume,
+        labels: [],
+        is_available: item.is_available,
+        is_premium: false,
+        is_alcoholic: false,
+        has_3d_model: false,
+        spline_url: null,
+      })),
+    );
+}
+
+/** Точечная правка одной позиции Бара (панель шлёт id + изменённые поля). */
+export function updateBarItem(slug: string, id: string, patch: Partial<ArkaMenuItem>): void {
+  const file = readContentJson<BarFile>(`${slug}/bar.json`);
+  let found = false;
+  for (const entry of file.sections) {
+    if (entry.kind !== 'category') continue;
+    const idx = entry.items.findIndex((i) => i.id === id);
+    if (idx >= 0) {
+      entry.items[idx] = { ...entry.items[idx]!, ...patch };
+      found = true;
+      break;
+    }
+  }
+  if (!found) throw new Error(`Позиция бара не найдена: ${slug}/${id}`);
+  writeContentJson(`${slug}/bar.json`, file);
+}
+
+export function updateBarGroupPhoto(slug: string, category: string, src: string): void {
+  const file = readContentJson<BarFile>(`${slug}/bar.json`);
+  file.groupPhotos[category] = src;
+  writeContentJson(`${slug}/bar.json`, file);
+}
+
+/** Уникальный ключ для новой позиции — не для показа, просто внутренний id. */
+function slugPart(s: string): string {
+  return (
+    s
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-zа-яё0-9]+/gi, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 40) || 'item'
+  );
+}
+
+function uniqueSuffix(): string {
+  return Math.random().toString(36).slice(2, 8);
+}
+
+/** Названия существующих разделов Бара (для выпадающего списка в бэк-офисе). */
+export function getBarCategories(slug: string): string[] {
+  return getBarSections(slug)
+    .filter((e): e is Extract<ArkaMenuEntry, { kind: 'category' }> => e.kind === 'category')
+    .map((e) => e.category);
+}
+
+/** Новый раздел Бара (шаблон Арки) — пустая категория, без заголовка-секции. */
+export function addBarCategory(slug: string, category: string): void {
+  const file = readContentJson<BarFile>(`${slug}/bar.json`);
+  if (file.sections.some((e) => e.kind === 'category' && e.category === category)) {
+    throw new Error(`Категория уже существует: ${slug}/${category}`);
+  }
+  file.sections.push({ kind: 'category', sheet: 'custom', category, items: [] });
+  writeContentJson(`${slug}/bar.json`, file);
+}
+
+export interface NewBarItemInput {
+  name: string;
+  price: string;
+  volume?: string | null;
+  description?: string | null;
+  type?: 1 | 2;
+}
+
+/** Новая позиция в существующий раздел Бара (шаблон Арки). */
+export function addBarItem(slug: string, category: string, input: NewBarItemInput): ArkaMenuItem {
+  const file = readContentJson<BarFile>(`${slug}/bar.json`);
+  const entry = file.sections.find(
+    (e): e is Extract<ArkaMenuEntry, { kind: 'category' }> => e.kind === 'category' && e.category === category,
+  );
+  if (!entry) throw new Error(`Раздел бара не найден: ${slug}/${category}`);
+  const item: ArkaMenuItem = {
+    id: `bar-${slugPart(category)}-${uniqueSuffix()}`,
+    name: input.name,
+    type: input.type ?? 1,
+    priceParts: [input.price],
+    volume: input.volume ?? null,
+    description: input.description ?? null,
+    photo: null,
+    is_available: true,
+  };
+  entry.items.push(item);
+  writeContentJson(`${slug}/bar.json`, file);
+  return item;
+}
+
+/**
+ * Секции Бара с позициями, отфильтрованными предикатом — категории, у
+ * которых после фильтра не осталось позиций, выпадают целиком, а их
+ * заголовок-секция (kind: 'header') не показывается, если под ним не
+ * осталось ни одной категории. Используется бэк-офисом, чтобы прятать
+ * архив из обычной вкладки «Бар» (см. getArchiveItems/getStopListItems).
+ */
+export function filterBarSections(
+  sections: ArkaMenuEntry[],
+  predicate: (item: ArkaMenuItem) => boolean,
+): ArkaMenuEntry[] {
+  const result: ArkaMenuEntry[] = [];
+  let pendingHeader: ArkaMenuEntry | null = null;
+  let headerUsed = false;
+  for (const entry of sections) {
+    if (entry.kind === 'header') {
+      pendingHeader = entry;
+      headerUsed = false;
+      continue;
+    }
+    const items = entry.items.filter(predicate);
+    if (items.length === 0) continue;
+    if (pendingHeader && !headerUsed) {
+      result.push(pendingHeader);
+      headerUsed = true;
+    }
+    result.push({ ...entry, items });
+  }
+  return result;
+}
+
+// ── Кухня / Кальяны: обычные позиции меню ──
+
+export type CatalogRealm = 'kitchen' | 'hookah' | 'bar';
+
+export interface CatalogItem {
+  id: string;
+  realm: CatalogRealm;
+  sub: string;
+  name: string;
+  description: string | null;
+  composition: string | null;
+  kbju: GenKbju | null;
+  price: number;
+  photo: string | null;
+  /** Кадрирование фото в квадратной рамке карточки (0–100%, объектная позиция). Null/отсутствует — дефолт. */
+  photo_position?: { x: number; y: number } | null;
+  /** Зум/поворот/отражение поверх object-position. Null/отсутствует — дефолт (без изменений). */
+  photo_transform?: { zoom: number; rotate: 0 | 90 | 180 | 270; flipH: boolean; flipV: boolean } | null;
+  is_available: boolean;
+  /** В архиве (сезонное/неактуальное меню) — не показывается на живом меню независимо от is_available, и скрыто из обычных списков бэк-офиса (см. «Архив»). */
+  is_archived?: boolean;
+}
+
+const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
+
+export function getCatalogItems(slug: string, realm: CatalogRealm): CatalogItem[] {
+  return readContentJson<CatalogItem[]>(`${slug}/${realm}.json`);
+}
+
+export function updateCatalogItem(
+  slug: string,
+  realm: CatalogRealm,
+  id: string,
+  patch: Partial<CatalogItem>,
+): void {
+  const items = getCatalogItems(slug, realm);
+  const idx = items.findIndex((i) => i.id === id);
+  if (idx < 0) throw new Error(`Позиция ${realm} не найдена: ${slug}/${id}`);
+  items[idx] = { ...items[idx]!, ...patch };
+  writeContentJson(`${slug}/${realm}.json`, items);
+}
+
+/** Категории, реально встречающиеся у этой локации в разделе (для выпадающего списка в форме добавления). */
+export function getCatalogCategories(slug: string, realm: CatalogRealm): { sub: string; label: string }[] {
+  const subs = [...new Set(getCatalogItems(slug, realm).map((it) => it.sub))];
+  return subs
+    .map((sub) => ({ sub, label: subLabel(realm, sub) }))
+    .sort((a, b) => subOrder(realm, a.sub) - subOrder(realm, b.sub));
+}
+
+export interface NewCatalogItemInput {
+  name: string;
+  sub: string;
+  price: number;
+  weight?: number | null;
+  description?: string | null;
+  composition?: string | null;
+}
+
+/** Новая позиция Кухни/Кальянов/Бара-каталога — sub может быть новой категорией (ещё не встречавшейся у локации). */
+export function addCatalogItem(slug: string, realm: CatalogRealm, input: NewCatalogItemInput): CatalogItem {
+  const items = getCatalogItems(slug, realm);
+  const item: CatalogItem = {
+    id: `${realm}-${slugPart(input.sub)}-${uniqueSuffix()}`,
+    realm,
+    sub: input.sub,
+    name: input.name,
+    description: input.description ?? null,
+    composition: input.composition ?? null,
+    kbju: input.weight != null ? { weight: input.weight, prot: null, fat: null, carb: null, kcal: null } : null,
+    price: input.price,
+    photo: null,
+    is_available: true,
+  };
+  items.push(item);
+  writeContentJson(`${slug}/${realm}.json`, items);
+  return item;
+}
+
+function detectLabelsFromText(text: string): ResolvedMenuItem['labels'] {
+  const SPICY_RE = /остр[ыоеаяийё]|перец.{0,5}чили|чили.{0,5}перц|халапень|кайенн|спайси|spicy|кимчи|васаби|жгуч/i;
+  const VEGAN_RE = /\bвеган\b|\bvegan\b/i;
+  const labels: ResolvedMenuItem['labels'] = [];
+  if (SPICY_RE.test(text)) labels.push('spicy');
+  if (VEGAN_RE.test(text)) labels.push('vegan');
+  return labels;
+}
+
+export function toResolvedCatalogItem(it: CatalogItem): ResolvedMenuItem {
+  const kb = it.kbju;
+  const r = (n: number | null | undefined) => (n == null ? 0 : Math.round(n));
+  const text = [it.name, it.description, it.composition].filter(Boolean).join(' ');
+  return {
+    id: it.id,
+    name: it.name,
+    description: it.description,
+    photo: it.photo,
+    photo_position: it.photo_position ?? null,
+    photo_transform: it.photo_transform ?? null,
+    composition: it.composition,
+    category_id: it.realm,
+    price: it.price,
+    weight: kb && kb.weight != null ? `${kb.weight}` : null,
+    labels: detectLabelsFromText(text),
+    is_available: it.is_available,
+    is_premium: false,
+    is_alcoholic: it.realm === 'bar' && ALCOHOL_SUBS.has(it.sub),
+    has_3d_model: false,
+    spline_url: null,
+    nutrition:
+      kb && kb.kcal != null
+        ? { kcal: r(kb.kcal), protein: r(kb.prot), fat: r(kb.fat), carbs: r(kb.carb) }
+        : undefined,
+    sub: it.sub,
+    subLabel: subLabel(it.realm, it.sub),
+  };
+}
+
+export { subOrder } from './catalog-shared';
+
+// ── Настройки локации ──
+
+export interface LocationSettings {
+  address: string | null;
+  phone: string | null;
+  is_active: boolean;
+}
+
+export function getLocationSettings(slug: string): LocationSettings {
+  return readContentJson<LocationSettings>(`${slug}/location.json`);
+}
+
+export function updateLocationSettings(slug: string, patch: Partial<LocationSettings>): void {
+  const current = getLocationSettings(slug);
+  writeContentJson(`${slug}/location.json`, { ...current, ...patch });
+}
+
+// ── Стоп-лист / Архив: сводка по всем разделам (Кухня + Бар + Кальяны) ──
+
+export interface FlagListItem {
+  id: string;
+  realm: CatalogRealm;
+  name: string;
+  photo: string | null;
+  price: number;
+  is_available: boolean;
+  is_archived: boolean;
+}
+
+function barItemPrice(it: ArkaMenuItem): number {
+  const n = Number(it.priceParts[0]?.replace(/[^\d.]/g, ''));
+  return Number.isFinite(n) ? n : 0;
+}
+
+function allFlagItems(slug: string): FlagListItem[] {
+  const fromCatalog = (realm: CatalogRealm): FlagListItem[] =>
+    getCatalogItems(slug, realm).map((it) => ({
+      id: it.id,
+      realm,
+      name: it.name,
+      photo: it.photo,
+      price: it.price,
+      is_available: it.is_available,
+      is_archived: it.is_archived ?? false,
+    }));
+
+  const bar: FlagListItem[] = usesArkaBarTemplate(slug)
+    ? flattenBarItems(getBarSections(slug)).map((it) => ({
+        id: it.id,
+        realm: 'bar' as const,
+        name: it.name,
+        photo: it.photo,
+        price: barItemPrice(it),
+        is_available: it.is_available,
+        is_archived: it.is_archived ?? false,
+      }))
+    : fromCatalog('bar');
+
+  return [...fromCatalog('kitchen'), ...fromCatalog('hookah'), ...bar];
+}
+
+/** Позиции временно выключены («актуально» = нет), но не в архиве — быстрый возврат в меню. */
+export function getStopListItems(slug: string): FlagListItem[] {
+  return allFlagItems(slug).filter((it) => !it.is_available && !it.is_archived);
+}
+
+/** Позиции в архиве (сезонное/неактуальное меню) — не показываются на живом меню независимо от «актуально». */
+export function getArchiveItems(slug: string): FlagListItem[] {
+  return allFlagItems(slug).filter((it) => it.is_archived);
+}
+
+/** Точечная правка is_available/is_archived для позиции любого раздела — сама выбирает верное хранилище (Бар-шаблон vs каталог). */
+export function setItemFlag(
+  slug: string,
+  realm: CatalogRealm,
+  id: string,
+  patch: { is_available?: boolean; is_archived?: boolean },
+): void {
+  if (realm === 'bar' && usesArkaBarTemplate(slug)) {
+    updateBarItem(slug, id, patch);
+  } else {
+    updateCatalogItem(slug, realm, id, patch);
+  }
+}

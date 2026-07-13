@@ -152,21 +152,25 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
       </div>
 
       {/* ── Scroll-spy чипы ── */}
-      {/* Мобайл/планшет: top = высота CoffeeHeader (49px) + мобильная лента
-          категорий из CoffeeCategoryNav (58px) = 107px. На lg (десктоп)
-          категории уходят в левый сайдбар — мобильной ленты нет, поэтому
-          чипы липнут сразу под шапкой (43px, см. CoffeeCategoryNav). Раньше
-          на десктопе оставался тот же top-[107px], из-за чего между шапкой
-          и лентой чипов был пустой скроллящийся зазор — визуально "сэндвич"
-          из фото сверху и снизу ленты. lg:mx-0 — без этого лента вылезала
-          за пределы своей колонки грида поверх левого сайдбара. */}
+      {/* Мобайл/планшет: top = высота CoffeeHeader (49px, замерено) + лента
+          категорий из CoffeeCategoryNav (56px, замерено) = 105px — чипы
+          липнут впритык под лентой категорий, без зазора между ними (было
+          107px по неточной оценке из комментария — оставляло 2px просвета
+          фона между лентами, да ещё и с другой прозрачностью фона, из-за
+          чего было видно шов/стык двух разных оттенков). Прозрачность фона
+          (bg-[var(--cm-bg)]/95) теперь одинаковая у шапки, ленты категорий
+          и ленты чипов — все три полосы визуально один блок с одной тонкой
+          border-b линией на стыке, а не отдельные фрагменты разного цвета.
+          На lg (десктоп) категории уходят в левый сайдбар — мобильной ленты
+          нет, поэтому чипы липнут сразу под шапкой. lg:mx-0 — без этого
+          лента вылезала за пределы своей колонки грида поверх сайдбара. */}
       {hasMultipleSections && (
-        <div className="sticky top-[107px] lg:top-[43px] z-[15] -mx-4 mb-5 sm:-mx-6 lg:mx-0">
+        <div className="sticky top-[105px] lg:top-[43px] z-[15] -mx-4 mb-5 sm:-mx-6 lg:mx-0">
           <div
             ref={chipBarRef}
-            className="overflow-x-auto no-scrollbar border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/96 backdrop-blur-md lg:rounded-2xl lg:border"
+            className="overflow-x-auto no-scrollbar border-b border-[var(--cm-border)] bg-[var(--cm-bg)]/95 backdrop-blur-md lg:rounded-2xl lg:border"
           >
-            <div className="flex gap-2 px-4 pb-2.5 sm:px-6">
+            <div className="flex gap-2 px-4 py-2.5 sm:px-6">
               {sections.map((s) => (
                 <button
                   key={s.id}

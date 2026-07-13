@@ -1,4 +1,4 @@
-import { getClient } from '@barviha/db';
+import { getClient, usesArkaBarTemplate } from '@barviha/db';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/routing';
@@ -12,12 +12,7 @@ import { ItemPhotoViewer } from '@/components/ItemPhotoViewer';
 import { ItemCloseButton } from '@/components/ItemCloseButton';
 import { CoffeeItemDetail } from '@/components/coffee/CoffeeItemDetail';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
-import { toResolvedArkaBarItems } from '@/lib/arka-menu-data';
-
-// Тестовые позиции нового бара «Арки» не заведены в @barviha/db (см. чат) —
-// подставляем их напрямую по id (без фото), не трогая обычный путь через
-// getMenuItemById для всех остальных локаций/категорий.
-const ARKA_TEST_SLUG = 'arka';
+import { toResolvedArkaBarItems } from '@/lib/arka-bar-loader';
 
 export default async function ItemDetailPage({
   params,
@@ -28,8 +23,12 @@ export default async function ItemDetailPage({
   setRequestLocale(locale);
   const t = await getTranslations('item');
 
-  const arkaBarItem =
-    locationSlug === ARKA_TEST_SLUG ? toResolvedArkaBarItems().find((i) => i.id === itemId) : undefined;
+  // Позиции Бара (шаблон «Арка», см. arka-bar-loader) не заведены как
+  // обычные ResolvedMenuItem в content-store — подставляем их напрямую по
+  // id, не трогая обычный путь через getMenuItemById.
+  const arkaBarItem = usesArkaBarTemplate(locationSlug)
+    ? toResolvedArkaBarItems(locationSlug).find((i) => i.id === itemId)
+    : undefined;
 
   const db = getClient();
   const item = arkaBarItem ?? (await db.getMenuItemById(itemId, locationSlug));

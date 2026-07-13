@@ -1,27 +1,32 @@
+import { WORKING_SLUGS } from '@barviha/db/onboarding';
 import { getMetroColor } from './location-theme';
+
+const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
 
 /**
  * Локации, у которых меню рендерится в дизайне Coffeemania
  * (левый сайдбар категорий + воздушная сетка карточек). Блюда — наши.
  * Палитра у каждой своя (см. COFFEE_PALETTE): Бауманская — светлая,
- * Домодедово — тёмная бронза в цветокоре «Арки».
+ * Домодедово — тёмная бронза в цветокоре «Арки». Все 25 рабочих клонов
+ * (см. @barviha/db WORKING_SLUGS) оформляются 1:1 как Арка — это и есть
+ * общий шаблон сети, пока для конкретной локации не задано иначе.
  */
 export const COFFEE_DESIGN_SLUGS = new Set(['arka', 'baumanskaia', 'domodedovo', 'erevan', 'kievskaia']);
 
 export function isCoffeeDesign(slug: string): boolean {
-  return COFFEE_DESIGN_SLUGS.has(slug);
+  return COFFEE_DESIGN_SLUGS.has(slug) || WORKING_SLUG_SET.has(slug);
 }
 
 /**
  * Вариант главной для coffee-локации:
  *  - 'lux'     — дорогой тёмный минимализм (hero c деревом, бронь, «Lounge
- *                Restaurant & Bar»). Ереван.
+ *                Restaurant & Bar»). Ереван, Арка и все её рабочие клоны.
  *  - 'default' — воздушные плитки-категории. Бауманская, Домодедово.
  */
 const LUX_HOME_SLUGS = new Set(['arka', 'erevan', 'kievskaia']);
 
 export function coffeeHomeVariant(slug: string): 'lux' | 'default' {
-  return LUX_HOME_SLUGS.has(slug) ? 'lux' : 'default';
+  return LUX_HOME_SLUGS.has(slug) || WORKING_SLUG_SET.has(slug) ? 'lux' : 'default';
 }
 
 /**
@@ -44,6 +49,7 @@ const COFFEE_ACCENT: Record<string, string> = {
  * Прокидывается в CSS-переменную `--cm-accent` и подхватывается компонентами.
  */
 export function getCoffeeAccent(slug: string): string {
+  if (WORKING_SLUG_SET.has(slug)) return COFFEE_ACCENT.arka!;
   return COFFEE_ACCENT[slug] ?? getMetroColor(COFFEE_ACCENT_FROM[slug] ?? slug);
 }
 
@@ -172,7 +178,7 @@ const COFFEE_PALETTE: Record<string, CoffeePalette> = {
  * coffee-компоненты получают палитру/типографику, не задевая остальные локации.
  */
 export function coffeeAccentStyle(slug: string): React.CSSProperties {
-  const palette = COFFEE_PALETTE[slug] ?? LIGHT_PALETTE;
+  const palette = COFFEE_PALETTE[slug] ?? (WORKING_SLUG_SET.has(slug) ? ARKA_PALETTE : LIGHT_PALETTE);
   // Lux-локации (Ереван, Киевская) — заголовки на Cormorant SC (аналог Canela,
   // как у «Арки»); остальные coffee-точки сохраняют брендовый --cm-font-display.
   const displayFont =

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getClient } from '@barviha/db';
+import { LocationClosedScreen } from '@/components/LocationClosedScreen';
 import { LocationHeader } from '@/components/LocationHeader';
 import { CoffeeHeader } from '@/components/coffee/CoffeeHeader';
 import { LuxBottomNav } from '@/components/coffee/LuxBottomNav';
@@ -36,16 +37,23 @@ export default async function LocationLayout({
   ]);
   if (!location) notFound();
 
-  const coffeeDesign = isCoffeeDesign(location.slug);
-  const accent = coffeeDesign
-    ? getCoffeeAccent(location.slug)
-    : getLocationAccent(location.slug, location.brand_color);
   const locationName =
     locale === 'en' && location.name_en
       ? location.name_en
       : locale === 'zh' && location.name_zh
         ? location.name_zh
         : location.name;
+
+  // Локацию выключили в бэк-офисе (is_active: false) — показываем заглушку
+  // вместо каталога/шапки/навигации, не 404 (ссылка живая, просто закрыта).
+  if (location.is_active === false) {
+    return <LocationClosedScreen locationName={locationName} />;
+  }
+
+  const coffeeDesign = isCoffeeDesign(location.slug);
+  const accent = coffeeDesign
+    ? getCoffeeAccent(location.slug)
+    : getLocationAccent(location.slug, location.brand_color);
 
   const coffee = coffeeDesign;
   const lux = coffee && coffeeHomeVariant(location.slug) === 'lux';

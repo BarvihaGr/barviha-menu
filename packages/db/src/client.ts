@@ -12,6 +12,15 @@ import {
 } from './mock-data';
 import { GEN_CATEGORIES, GEN_ITEMS } from './menu-generated';
 import { PHOTOS } from './menu-photos';
+import {
+  getBarSections,
+  getCatalogItems,
+  getLocationSettings,
+  subOrder,
+  toResolvedCatalogItem,
+} from './arka-content';
+import type { CatalogRealm } from './arka-content';
+import { isContentStoreSlug, usesArkaBarTemplate } from './onboarding';
 import type { GenItem, Realm } from './menu-types';
 import type {
   AfishaEvent,
@@ -51,7 +60,20 @@ export interface BarvihaClient {
 }
 
 function getLocationById(id: string): Location | undefined {
-  return MOCK_LOCATIONS.find((l) => l.id === id);
+  const loc = MOCK_LOCATIONS.find((l) => l.id === id);
+  return loc ? withContentStoreOverrides(loc) : loc;
+}
+
+/**
+ * Арка + рабочие клоны — на редактируемом content-store (см. arka-content.ts,
+ * packages/db/content/<slug>/**). Адрес/телефон/is_active панель правит там;
+ * здесь просто накладываем поверх статичной заготовки из mock-data. Киевская
+ * этот путь не проходит — без изменений (см. onboarding.ts).
+ */
+function withContentStoreOverrides(loc: Location): Location {
+  if (!isContentStoreSlug(loc.slug)) return loc;
+  const s = getLocationSettings(loc.slug);
+  return { ...loc, address: s.address, phone: s.phone ?? undefined, is_active: s.is_active };
 }
 
 // ── Карты подкатегорий (для подписи/порядка/группировки) ──
@@ -123,6 +145,18 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
   };
 }
 
+function contentStoreRealmHasAvailableItems(slug: string, rm: Realm): boolean {
+  if (rm === 'bar' && usesArkaBarTemplate(slug)) {
+    return getBarSections(slug).some(
+      (e) => e.kind === 'category' && e.items.some((i) => i.is_available && !i.is_archived),
+    );
+  }
+  if (rm === 'kitchen' || rm === 'hookah' || rm === 'bar') {
+    return getCatalogItems(slug, rm).some((i) => i.is_available && !i.is_archived);
+  }
+  return false;
+}
+
 function realmCategory(realm: Realm): Category {
   return {
     id: realm,
@@ -136,17 +170,20 @@ function realmCategory(realm: Realm): Category {
 
 class MockBarvihaClient implements BarvihaClient {
   async getAllLocations(): Promise<Location[]> {
-    // Временно показываем в переключателе только Арку и Киевскую —
-    // остальные локации скрыты, но остаются доступны по прямой ссылке.
-    return MOCK_LOCATIONS.filter((l) => l.slug === 'arka' || l.slug === 'kievskaia');
+    return MOCK_LOCATIONS.map(withContentStoreOverrides);
   }
 
   async getLocationBySlug(slug: string): Promise<Location | null> {
-    return MOCK_LOCATIONS.find((l) => l.slug === slug) ?? null;
+    const loc = MOCK_LOCATIONS.find((l) => l.slug === slug) ?? null;
+    return loc ? withContentStoreOverrides(loc) : null;
   }
 
   async getCategoriesForLocation(locationId: string): Promise<Category[]> {
     const loc = getLocationById(locationId);
+    if (loc && isContentStoreSlug(loc.slug)) {
+      const realms: Realm[] = ['kitchen', 'bar', 'hookah'];
+      return realms.filter((rm) => contentStoreRealmHasAvailableItems(loc.slug, rm)).map(realmCategory);
+    }
     const slug = effectiveSlug(loc?.slug);
     const realms: Realm[] = ['kitchen', 'bar', 'hookah'];
     // Реалм показываем, если у локации есть видимые позиции (только с фото).
@@ -164,6 +201,18 @@ class MockBarvihaClient implements BarvihaClient {
 
   async getMenuItemsForLocation(locationId: string): Promise<ResolvedMenuItem[]> {
     const loc = getLocationById(locationId);
+    if (loc && isContentStoreSlug(loc.slug)) {
+      // У Арки/клонов Бар — своя вёрстка/резолвер (см. toResolvedBarItems в
+      // apps/menu), сюда не подмешиваем, чтобы не плодить дубли по разным
+      // id-схемам. У Киевской Бар — обычный CatalogItem, подмешиваем как есть.
+      const realms: CatalogRealm[] = usesArkaBarTemplate(loc.slug)
+        ? ['kitchen', 'hookah']
+        : ['kitchen', 'hookah', 'bar'];
+      return realms
+        .flatMap((realm) => getCatalogItems(loc.slug, realm).filter((i) => i.is_available && !i.is_archived))
+        .map(toResolvedCatalogItem)
+        .sort((a, b) => subOrder(a.category_id!, a.sub) - subOrder(b.category_id!, b.sub));
+    }
     const slug = effectiveSlug(loc?.slug);
     const base = slug
       ? GEN_ITEMS.filter((it) => it.prices[slug] != null)
@@ -176,6 +225,16 @@ class MockBarvihaClient implements BarvihaClient {
   }
 
   async getMenuItemById(itemId: string, locationSlug?: string): Promise<ResolvedMenuItem | null> {
+    if (locationSlug && isContentStoreSlug(locationSlug)) {
+      const realms: CatalogRealm[] = usesArkaBarTemplate(locationSlug)
+        ? ['kitchen', 'hookah']
+        : ['kitchen', 'hookah', 'bar'];
+      for (const realm of realms) {
+        const it = getCatalogItems(locationSlug, realm).find((i) => i.id === itemId);
+        if (it) return it.is_available && !it.is_archived ? toResolvedCatalogItem(it) : null;
+      }
+      return null;
+    }
     const it = GEN_ITEMS.find((x) => x.id === itemId);
     return it ? toResolved(it, effectiveSlug(locationSlug)) : null;
   }

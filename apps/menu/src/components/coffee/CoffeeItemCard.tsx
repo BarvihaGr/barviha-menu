@@ -10,6 +10,7 @@ import { Link } from '@/i18n/navigation';
 import { formatPrice, capitalizeRu } from '@/lib/utils';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
+import { photoTransformCss } from '@/lib/photo-transform';
 
 interface Props {
   item: ResolvedMenuItem;
@@ -56,7 +57,11 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
               alt={displayName}
               fill
               sizes="(max-width: 640px) 50vw, 33vw"
-              style={{ filter: 'var(--cm-photo, none)', objectPosition: 'center 35%' }}
+              style={{
+                filter: 'var(--cm-photo, none)',
+                objectPosition: item.photo_position ? `${item.photo_position.x}% ${item.photo_position.y}%` : 'center 35%',
+                transform: photoTransformCss(item.photo_transform),
+              }}
               className="object-cover transition duration-500 group-hover:scale-[1.05]"
             />
           ) : (

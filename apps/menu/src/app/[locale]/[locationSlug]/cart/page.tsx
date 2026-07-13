@@ -1,16 +1,14 @@
 import { setRequestLocale } from 'next-intl/server';
-import { getClient } from '@barviha/db';
+import { getClient, usesArkaBarTemplate } from '@barviha/db';
 import { notFound } from 'next/navigation';
 import { CartView } from './CartView';
 import { CoffeeCart } from '@/components/coffee/CoffeeCart';
 import { isCoffeeDesign } from '@/lib/coffee-design';
-import { toResolvedArkaBarItems } from '@/lib/arka-menu-data';
+import { toResolvedArkaBarItems } from '@/lib/arka-bar-loader';
 
-// Тестовые позиции нового бара «Арки» не заведены в @barviha/db (см. чат) —
-// подмешиваем их в список корзины только для Арки, чтобы корзина их не
+// Позиции Бара (шаблон «Арка») не заведены как обычные ResolvedMenuItem в
+// content-store — подмешиваем их в список корзины, чтобы корзина их не
 // удаляла как «несуществующие» (см. CoffeeCart — там сверка по allItems).
-const ARKA_TEST_SLUG = 'arka';
-
 export default async function CartPage({
   params,
 }: {
@@ -23,7 +21,7 @@ export default async function CartPage({
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) notFound();
   const dbItems = await db.getMenuItemsForLocation(location.id);
-  const items = locationSlug === ARKA_TEST_SLUG ? [...dbItems, ...toResolvedArkaBarItems()] : dbItems;
+  const items = usesArkaBarTemplate(locationSlug) ? [...dbItems, ...toResolvedArkaBarItems(locationSlug)] : dbItems;
 
   if (isCoffeeDesign(locationSlug)) {
     return <CoffeeCart allItems={items} locationSlug={locationSlug} />;

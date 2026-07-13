@@ -8,7 +8,6 @@
 
 import Image from 'next/image';
 import type { ArkaMenuEntry, ArkaMenuItem } from '@/lib/arka-menu-data';
-import { ARKA_GROUP_PHOTOS } from '@/lib/arka-photos';
 import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
 
 /**
@@ -32,14 +31,16 @@ function CategoryBlock({
   category,
   items,
   locationSlug,
+  groupPhotos,
 }: {
   category: string;
   items: ArkaMenuItem[];
   locationSlug: string;
+  groupPhotos: Record<string, string>;
 }) {
   const type1 = items.filter((i) => i.type === 1);
   const type2 = items.filter((i) => i.type === 2);
-  const groupPhoto = ARKA_GROUP_PHOTOS[category];
+  const groupPhoto = groupPhotos[category];
 
   return (
     <section className="py-8 first:pt-0">
@@ -66,7 +67,15 @@ function CategoryBlock({
   );
 }
 
-export function ArkaMenuSections({ sections, locationSlug }: { sections: ArkaMenuEntry[]; locationSlug: string }) {
+export function ArkaMenuSections({
+  sections,
+  locationSlug,
+  groupPhotos,
+}: {
+  sections: ArkaMenuEntry[];
+  locationSlug: string;
+  groupPhotos: Record<string, string>;
+}) {
   return (
     <div className="min-w-0">
       {sections.map((entry, idx) => {
@@ -79,7 +88,15 @@ export function ArkaMenuSections({ sections, locationSlug }: { sections: ArkaMen
             </div>
           );
         }
-        return <CategoryBlock key={idx} category={entry.category} items={entry.items} locationSlug={locationSlug} />;
+        return (
+          <CategoryBlock
+            key={idx}
+            category={entry.category}
+            items={entry.items}
+            locationSlug={locationSlug}
+            groupPhotos={groupPhotos}
+          />
+        );
       })}
     </div>
   );

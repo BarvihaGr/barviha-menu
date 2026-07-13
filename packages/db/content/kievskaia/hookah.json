@@ -1,0 +1,122 @@
+[
+  {
+    "id": "hookah-hookah-black-edition",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "BLACK EDITION",
+    "description": "Тёмный ягодный микс на гранате: ежевика и ананасовый сок с кислинкой лайма и цитрусовым штрихом апельсина, освежённые мятой. Сочный, насыщенный, прохладный.",
+    "composition": "Чаша: гранат. В колбе: ягоды ежевики, ананасовый сок, пюре лайма, чипсы апельсина, свежая мята.",
+    "kbju": null,
+    "price": 7000,
+    "photo": "/menu/hookah-hookah-black-edition.webp",
+    "is_available": true
+  },
+  {
+    "id": "hookah-hookah-dolce-vita",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "DOLCE VITA",
+    "description": "Шоколадный десерт на ананасе: шоколадное мороженое и печенье oreo с тёплой корицей и свежей мятой. Густой, сладкий, с кофейно-какаовой глубиной.",
+    "composition": "Чаша: ананас. В колбе: шоколадное мороженое, печенье oreo, корица, свежая мята.",
+    "kbju": null,
+    "price": 7000,
+    "photo": "/menu/hookah-hookah-dolce-vita.webp",
+    "is_available": true
+  },
+  {
+    "id": "hookah-hookah-du-barry",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "DU BARRY",
+    "description": "Десертный микс на гранатовой чаше: малина, клубничное мороженое и сливочный raffaello. Нежный, кремовый и ягодный вкус с лёгкой кокосовой сладостью. Уютный финал вечера.",
+    "composition": "Чаша: гранат. В колбе: ягоды малины, клубничное мороженое, raffaello",
+    "kbju": null,
+    "price": 7000,
+    "photo": "/menu/hookah-hookah-du-barry.webp",
+    "is_available": true
+  },
+  {
+    "id": "hookah-hookah-one-more-please",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "ONE MORE PLEASE",
+    "description": "Сливочный десерт на ананасе: ванильное мороженое и нежный кокос с ягодами малины и хрустящей фисташковой нотой. Мягкий, обволакивающий, по-настоящему уютный.",
+    "composition": "Чаша: ананас. В колбе: ванильное мороженое, свежий кокос, ягоды малины, фисташки.",
+    "kbju": null,
+    "price": 7000,
+    "photo": "/menu/hookah-hookah-one-more-please.webp",
+    "is_available": true
+  },
+  {
+    "id": "hookah-hookah-perfume-na-frukte",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "PERFUME НА ФРУКТЕ",
+    "description": "Любимый табак на сочной фруктовой чаше — грейпфрут, ансанас или гранат — с добавлением perfume для яркого аромата. Мягкий дым и насыщенное вкусоароматическое раскрытие.",
+    "composition": "Чаша: грейпфрут / ананас / гранат.  Табак : любой по желанию, с добавлением perfume",
+    "kbju": null,
+    "price": 6500,
+    "photo": "/menu/hookah-hookah-perfume-na-frukte.webp",
+    "is_available": true
+  },
+  {
+    "id": "hookah-hookah-perfume-na-chashe",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "PERFUME НА ЧАШЕ",
+    "description": "Классическая чаша с табаком на ваш выбор и каплей perfume для глубины аромата. Чистый, выразительный дым с насыщенным ароматическим шлейфом.",
+    "composition": "Чаша: классическая. Табак: любой по желанию, с добавлением perfume",
+    "kbju": null,
+    "price": 5500,
+    "photo": "/menu/hookah-hookah-perfume-na-chashe.webp",
+    "is_available": true
+  },
+  {
+    "id": "hookah-hookah-tropicana-mama",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "TROPICANA MAMA",
+    "description": "Тропический коктейль на ананасовой чаше: маракуйя, малина и киви с дыханием свежей мяты. Яркий, сочный и кисло-сладкий вкус с прохладным финалом. Кальян-настроение жаркого побережья.",
+    "composition": "Чаша: ананас. В колбе: пюре маракуйи, ягоды малины, киви, свежая мята.",
+    "kbju": null,
+    "price": 7000,
+    "photo": "/menu/hookah-hookah-tropicana-mama.webp",
+    "is_available": true
+  },
+  {
+    "id": "hookah-hookah-kalian-barviha",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "КАЛЬЯН БАРВИХА",
+    "description": "Фирменный кальян на фруктовой чаше — грейпфрут, ананас или гранат, табак по вашему вкусу, колба на арбузе или дыне. Сочный, прохладный и невероятно мягкий дым. Подача, достойная вечера в Барвихе.",
+    "composition": "Чаша: грейпфрут / ананас / гранат.  Табак : любой по желанию. Колба: арбуз / дыня.",
+    "kbju": null,
+    "price": 20000,
+    "photo": "/menu/hookah-hookah-kalian-barviha.webp",
+    "is_available": true
+  },
+  {
+    "id": "hookah-hookah-kalian-na-frukte",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "КАЛЬЯН НА ФРУКТЕ",
+    "description": "Кальян на свежей фруктовой чаше — грейпфрут, ананас или гранат и любой табак по желанию. Фрукт отдаёт натуральную сочность и смягчает дым. Яркий вкус с приятной прохладой.",
+    "composition": "Чаша: грейпфрут / ананас / гранат.  Табак : любой по желанию, кроме  perfume",
+    "kbju": null,
+    "price": 4200,
+    "photo": "/menu/hookah-hookah-kalian-na-frukte.webp",
+    "is_available": true
+  },
+  {
+    "id": "hookah-hookah-kalian-na-chashe",
+    "realm": "hookah",
+    "sub": "hookah",
+    "name": "КАЛЬЯН НА ЧАШЕ",
+    "description": "Классическая чаша и любой табак на ваш вкус — ровный, насыщенный дым без лишних акцентов. Чистое раскрытие выбранного вкуса от первой затяжки. Универсальный выбор для отдыха.",
+    "composition": "Чаша: классическая. Табак: любой по желанию, кроме perfume",
+    "kbju": null,
+    "price": 3700,
+    "photo": "/menu/hookah-hookah-kalian-na-chashe.webp",
+    "is_available": true
+  }
+]

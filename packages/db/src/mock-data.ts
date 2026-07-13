@@ -75,14 +75,29 @@ const LOC = (
 export const MOCK_LOCATIONS: Location[] = [
   {
     // TODO: заменить на реальные address/phone для Арки.
-    ...LOC('loc-arka', 'arka', 'Арка', ['lounge'], '/locations/arka/hero.mp4'),
+    // Тестовый эталон дизайна — не трогаем, живёт на /arka (см.
+    // TEMPLATE_SLUGS в onboarding.ts). Рабочая копия сети — 'arka-network'.
+    ...LOC('loc-arka', 'arka', 'Арка тест 1', ['lounge'], '/locations/arka/hero.mp4'),
+    address: 'г. Москва, ул. Киевская, 2',
+    phone: '+7 (495) 000-00-00',
+  },
+  {
+    // Независимая рабочая копия Арки для сети (см. project memory) — своя
+    // content-store папка packages/db/content/arka-network, склонирована
+    // от 'arka' один раз, дальше правится в бэк-офисе отдельно от теста.
+    ...LOC('loc-arka-network', 'arka-network', 'Арка', ['lounge'], '/locations/arka/hero.mp4'),
     address: 'г. Москва, ул. Киевская, 2',
     phone: '+7 (495) 000-00-00',
   },
   LOC('loc-baumanskaia', 'baumanskaia', 'Бауманская'),
   LOC('loc-domodedovo', 'domodedovo', 'Домодедово'),
   LOC('loc-erevan', 'erevan', 'Ереван'),
-  LOC('loc-kievskaia', 'kievskaia', 'Киевская'),
+  // Тестовый эталон Киевской — свой отдельный дизайн Бара, не трогаем (см.
+  // TEMPLATE_SLUGS в onboarding.ts). Рабочая копия сети — 'kievskaia-network'.
+  LOC('loc-kievskaia', 'kievskaia', 'Киевская тест 1'),
+  // Независимая рабочая копия Киевской для сети — своя content-store папка
+  // packages/db/content/kievskaia-network, склонирована от 'kievskaia'.
+  LOC('loc-kievskaia-network', 'kievskaia-network', 'Киевская'),
   LOC('loc-kolomenskaia', 'kolomenskaia', 'Коломенская'),
   LOC('loc-krasnaia-ploshchad', 'krasnaia-ploshchad', 'Красная Площадь'),
   LOC('loc-krylatskoe', 'barvixa-lounge-krylatskoe', 'Крылатское', ['lounge', 'karaoke']),

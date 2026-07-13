@@ -27,6 +27,8 @@ export interface Location {
   hero_video?: string | null;
   /** Hookah realm enabled for this location (staged rollout). */
   has_hookah?: boolean;
+  /** Меню локации доступно онлайн (бэк-офис). По умолчанию true, если не задано. */
+  is_active?: boolean;
   created_at: string;
 }
 
@@ -226,6 +228,10 @@ export interface ResolvedMenuItem {
   description_zh?: string | null;
   description_hy?: string | null;
   photo: string | null;
+  /** Кадрирование фото в квадратной рамке карточки (0–100%, объектная позиция). Undefined/null — дефолт компонента. */
+  photo_position?: { x: number; y: number } | null;
+  /** Зум/поворот/отражение поверх object-position. Undefined/null — дефолт (без изменений). */
+  photo_transform?: { zoom: number; rotate: 0 | 90 | 180 | 270; flipH: boolean; flipV: boolean } | null;
   composition: string | null;
   composition_en?: string | null;
   composition_zh?: string | null;
