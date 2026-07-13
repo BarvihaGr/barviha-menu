@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { MOCK_LOCATIONS, getCatalogItems, isContentStoreSlug } from '@barviha/db';
-import { Header } from '../Header';
+import { PageShell } from '../PageShell';
 import { CatalogEditor } from '../CatalogEditor';
 import { NotOnboarded } from '../../NotOnboarded';
 
@@ -10,8 +10,7 @@ export default async function KitchenPage({ params }: { params: Promise<{ slug: 
   if (!loc) notFound();
 
   return (
-    <div>
-      <Header name={loc.name} slug={slug} />
+    <PageShell name={loc.name} slug={slug}>
       {isContentStoreSlug(slug) ? (
         <CatalogEditor
           slug={slug}
@@ -21,6 +20,6 @@ export default async function KitchenPage({ params }: { params: Promise<{ slug: 
       ) : (
         <NotOnboarded name={loc.name} />
       )}
-    </div>
+    </PageShell>
   );
 }

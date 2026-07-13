@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { MOCK_LOCATIONS, getLocationSettings, isContentStoreSlug } from '@barviha/db';
-import { Header } from './Header';
+import { PageShell } from './PageShell';
 import { LocationSettingsForm } from './LocationSettingsForm';
 import { NotOnboarded } from '../NotOnboarded';
 
@@ -10,13 +10,12 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
   if (!loc) notFound();
 
   return (
-    <div>
-      <Header name={loc.name} slug={slug} />
+    <PageShell name={loc.name} slug={slug}>
       {isContentStoreSlug(slug) ? (
         <LocationSettingsForm slug={slug} settings={getLocationSettings(slug)} />
       ) : (
         <NotOnboarded name={loc.name} />
       )}
-    </div>
+    </PageShell>
   );
 }

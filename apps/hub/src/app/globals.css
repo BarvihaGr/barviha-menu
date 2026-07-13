@@ -1,23 +1,43 @@
 @import "tailwindcss";
 
+/*
+ * Тема бэк-офиса — «спайдер-вёрсовый» комикс-нуар: тёмная основа (как в
+ * фильмах про Майлза Моралеса), два акцента (розовый + циан) вместо палитры
+ * из десятка цветов, лёгкий halftone-паттерн и «глитч»-тень (двойной сдвиг
+ * розовый/циан) на акцентных элементах — не более двух точек на страницу
+ * (бренд-марка в сайдбаре, активная вкладка), чтобы не пестрило.
+ */
 :root {
-  --bg: #0f1115;
-  --surface: #171a21;
-  --surface-2: #1f232c;
-  --border: #2a2f3a;
-  --text: #f0f1f3;
-  --text-soft: #b8bcc6;
-  --muted: #7d8391;
-  --accent: #c5a880;
-  --accent-text: #171a21;
-  --danger: #e0665c;
-  --ok: #6fbf8b;
+  --bg: #0a0a13;
+  --surface: #131320;
+  --surface-2: #1b1b2c;
+  --border: #2b2a42;
+  --text: #f5f4fb;
+  --text-soft: #c6c2da;
+  --muted: #85819c;
+  --accent: #ff2d78;
+  --accent-2: #00e5ff;
+  --accent-text: #fff7fa;
+  --danger: #ff4d6a;
+  --ok: #33e0a3;
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1.2px);
+  background-size: 8px 8px;
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #7c3aed, var(--accent-2));
+  pointer-events: none;
+  z-index: 100;
 }
 
 @layer components {
@@ -33,5 +53,15 @@ body {
   }
   .input:focus {
     border-color: var(--accent);
+  }
+
+  /* Комикс-«глитч»: двойная цветная тень, розовый + циан со сдвигом —
+   * использовать точечно, на акцентных элементах, не на всём подряд. */
+  .glitch-text {
+    text-shadow: -1.5px 0 var(--accent), 1.5px 0 var(--accent-2);
+  }
+  .glitch-box {
+    box-shadow: -2px 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent),
+      2px 0 0 0 color-mix(in srgb, var(--accent-2) 45%, transparent);
   }
 }

@@ -27,10 +27,10 @@ export function Sidebar({ templates, working }: { templates: LocationRow[]; work
       <Link
         key={loc.slug}
         href={href}
-        className={`flex items-center justify-between gap-2 px-5 py-2.5 text-sm transition-colors ${
+        className={`flex items-center justify-between gap-2 border-l-2 px-5 py-2.5 text-sm transition-colors ${
           active
-            ? 'bg-[color:var(--surface-2)] text-[color:var(--text)]'
-            : 'text-[color:var(--text-soft)] hover:bg-[color:var(--surface-2)]/60'
+            ? 'border-l-[color:var(--accent)] bg-[color:var(--surface-2)] text-[color:var(--text)]'
+            : 'border-l-transparent text-[color:var(--text-soft)] hover:bg-[color:var(--surface-2)]/60'
         }`}
       >
         <span className="truncate">{loc.name}</span>
@@ -41,8 +41,10 @@ export function Sidebar({ templates, working }: { templates: LocationRow[]; work
   return (
     <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-[color:var(--border)] bg-[color:var(--surface)]">
       <div className="border-b border-[color:var(--border)] px-5 py-4">
-        <div className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--muted)]">Barviha</div>
-        <div className="text-sm font-medium text-[color:var(--text)]">Бэк-офис меню</div>
+        <div className="glitch-text text-[10px] font-bold uppercase tracking-[0.3em] text-[color:var(--text)]">
+          Barviha
+        </div>
+        <div className="text-sm font-medium text-[color:var(--text-soft)]">Бэк-офис меню</div>
       </div>
       <div className="border-b border-[color:var(--border)] px-3 py-3">
         <input

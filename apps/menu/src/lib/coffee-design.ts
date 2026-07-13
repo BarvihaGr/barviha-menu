@@ -6,12 +6,11 @@ const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
 /**
  * Локации, у которых меню рендерится в дизайне Coffeemania
  * (левый сайдбар категорий + воздушная сетка карточек). Блюда — наши.
- * Палитра у каждой своя (см. COFFEE_PALETTE): Бауманская — светлая,
- * Домодедово — тёмная бронза в цветокоре «Арки». Все 25 рабочих клонов
- * (см. @barviha/db WORKING_SLUGS) оформляются 1:1 как Арка — это и есть
- * общий шаблон сети, пока для конкретной локации не задано иначе.
+ * Единый стиль цвета и шрифтов у Арки и всех 25 рабочих клонов сети (см.
+ * @barviha/db WORKING_SLUGS) — ARKA_PALETTE ниже. Киевская — единственное
+ * исключение, свой отдельный эталон (KIEV_PALETTE), не трогаем.
  */
-export const COFFEE_DESIGN_SLUGS = new Set(['arka', 'baumanskaia', 'domodedovo', 'erevan', 'kievskaia']);
+export const COFFEE_DESIGN_SLUGS = new Set(['arka', 'kievskaia']);
 
 export function isCoffeeDesign(slug: string): boolean {
   return COFFEE_DESIGN_SLUGS.has(slug) || WORKING_SLUG_SET.has(slug);
@@ -20,10 +19,11 @@ export function isCoffeeDesign(slug: string): boolean {
 /**
  * Вариант главной для coffee-локации:
  *  - 'lux'     — дорогой тёмный минимализм (hero c деревом, бронь, «Lounge
- *                Restaurant & Bar»). Ереван, Арка и все её рабочие клоны.
- *  - 'default' — воздушные плитки-категории. Бауманская, Домодедово.
+ *                Restaurant & Bar»). Арка, Киевская и все 25 рабочих клонов.
+ *  - 'default' — воздушные плитки-категории. Сейчас не используется —
+ *                весь единый стиль сети идёт через 'lux'.
  */
-const LUX_HOME_SLUGS = new Set(['arka', 'erevan', 'kievskaia']);
+const LUX_HOME_SLUGS = new Set(['arka', 'kievskaia']);
 
 export function coffeeHomeVariant(slug: string): 'lux' | 'default' {
   return LUX_HOME_SLUGS.has(slug) || WORKING_SLUG_SET.has(slug) ? 'lux' : 'default';
@@ -38,15 +38,12 @@ const COFFEE_ACCENT_FROM: Record<string, string> = {};
 /** Прямой цвет акцента для отдельных coffee-локаций (перебивает ветку метро). */
 const COFFEE_ACCENT: Record<string, string> = {
   arka: '#C5A880', // как у Киевской — Арка временно 1:1 копия для теста
-  domodedovo: '#C49262', // бронза-золото «Арки» (тёмный цветокор)
-  erevan: '#B89B6A', // приглушённое золото «дорогого минимализма»
   kievskaia: '#C5A880', // брендбук: матовое золото / шампань (приглушённый люкс)
 };
 
 /**
- * Акцентный цвет дизайна Coffeemania. По умолчанию — цвет ветки метро локации;
- * для отдельных точек перебивается фирменным цветом (COFFEE_ACCENT).
- * Прокидывается в CSS-переменную `--cm-accent` и подхватывается компонентами.
+ * Акцентный цвет дизайна Coffeemania. Арка и все 25 рабочих клонов сети —
+ * единый акцент Арки (COFFEE_ACCENT.arka). Киевская — свой отдельный эталон.
  */
 export function getCoffeeAccent(slug: string): string {
   if (WORKING_SLUG_SET.has(slug)) return COFFEE_ACCENT.arka!;
@@ -56,7 +53,7 @@ export function getCoffeeAccent(slug: string): string {
 /** Токены палитры Coffeemania (фон/поверхности/текст/границы). */
 type CoffeePalette = Record<string, string>;
 
-/** Светлая палитра (по умолчанию) — Бауманская. */
+/** Светлая палитра — запасной вариант, сейчас ничем не используется. */
 const LIGHT_PALETTE: CoffeePalette = {
   '--cm-bg': '#fbfbfa',
   '--cm-surface': '#f3f2ef',
@@ -74,46 +71,6 @@ const LIGHT_PALETTE: CoffeePalette = {
   // Единый цветокор фото блюд: лёгкая нормализация, без вуали (светлый фон).
   '--cm-photo': 'contrast(1.03) saturate(1.03)',
   '--cm-photo-veil': 'transparent',
-};
-
-/** Тёмная бронзовая палитра в цветокоре «Арки» — Домодедово. */
-const BRONZE_PALETTE: CoffeePalette = {
-  '--cm-bg': '#241710',
-  '--cm-surface': '#34251b',
-  '--cm-surface-2': '#3f2d20',
-  '--cm-text': '#f1d9b0',
-  '--cm-text-soft': '#e5c490',
-  '--cm-muted': 'rgba(241, 217, 176, 0.66)',
-  '--cm-muted-dim': 'rgba(241, 217, 176, 0.45)',
-  '--cm-border': 'rgba(196, 146, 98, 0.22)',
-  // Тёмный фон — тёмный вордмарк инвертируем в белый.
-  '--cm-logo-invert': '1',
-  // Единый цветокор: лёгкий тёплый грейд (экспозиция выровнена в самих файлах).
-  '--cm-photo': 'contrast(1.04) saturate(1.04)',
-  '--cm-photo-veil': 'transparent',
-  '--cm-accent-text': '#241710',
-};
-
-/**
- * Дорогой тёмный минимализм (≈чёрный #111111 + кремовый текст, золото очень
- * дозированно). Ереван. Концепт: «luxury hospitality first».
- */
-const LUX_PALETTE: CoffeePalette = {
-  '--cm-bg': '#111111',
-  '--cm-surface': '#181818',
-  '--cm-surface-2': '#202020',
-  '--cm-text': '#f4f0ea',
-  '--cm-text-soft': '#cfc9bd',
-  '--cm-muted': 'rgba(244, 240, 234, 0.58)',
-  '--cm-muted-dim': 'rgba(244, 240, 234, 0.38)',
-  '--cm-border': 'rgba(184, 155, 106, 0.18)',
-  // Тёмный фон — тёмный вордмарк инвертируем в белый.
-  '--cm-logo-invert': '1',
-  // Единый «дорогой» цветокор: лёгкий контраст без вуали (экспозиция
-  // выровнена в самих файлах — нормализация средней яркости).
-  '--cm-photo': 'contrast(1.05) saturate(0.97)',
-  '--cm-photo-veil': 'transparent',
-  '--cm-accent-text': '#111111',
 };
 
 /**
@@ -163,11 +120,9 @@ const ARKA_PALETTE: CoffeePalette = {
   '--cm-accent-on-bg': '#3C2210',
 };
 
-/** slug → палитра. Нет в карте → светлая. */
+/** slug → палитра. Нет в карте (в т.ч. все рабочие клоны) → ARKA_PALETTE. */
 const COFFEE_PALETTE: Record<string, CoffeePalette> = {
   arka: ARKA_PALETTE,
-  domodedovo: BRONZE_PALETTE,
-  erevan: LUX_PALETTE,
   kievskaia: KIEV_PALETTE,
 };
 

@@ -20,6 +20,24 @@ const SERVICE_PATHS = new Set([
   'concepts',
 ]);
 
+/**
+ * Сессионная cookie: slug последней открытой локации. По просьбе пользователя
+ * код доступа должен спрашиваться заново при КАЖДОМ переходе между локациями
+ * (в т.ч. между двумя рабочими локациями, у которых один общий пароль/cookie)
+ * — а не один раз за сессию браузера. Сравнение lastSlug !== slug и даёт этот
+ * эффект: валидность гейт-cookie игнорируется, если только что пришли извне.
+ */
+const LAST_LOC_COOKIE = 'last_loc_slug';
+
+function setLastLoc(res: NextResponse, slug: string) {
+  res.cookies.set(LAST_LOC_COOKIE, slug, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+  });
+}
+
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -37,39 +55,47 @@ export default function middleware(request: NextRequest) {
       const url = request.nextUrl.clone();
       url.pathname = `/${locale}/kievskaia${rest}`;
       const res = NextResponse.redirect(url, { status: 302 });
-      // Тоже уход с Арки на другую локацию — гасим доступ (см. ниже).
       res.cookies.delete(ARKA_GATE_COOKIE);
+      res.cookies.delete(TEST_LOC_GATE_COOKIE);
+      setLastLoc(res, 'kievskaia');
       return res;
     }
 
-    // Арка — тестовая локация, закрыта паролем: даже по прямой ссылке без
-    // валидной cookie отправляем на экран ввода кода, а не сразу на страницу.
-    if (slug === 'arka' && request.cookies.get(ARKA_GATE_COOKIE)?.value !== ARKA_GATE_TOKEN) {
+    const lastSlug = request.cookies.get(LAST_LOC_COOKIE)?.value;
+    const switchedLocation = lastSlug !== slug;
+
+    // Арка — тестовая локация, закрыта паролем 0000. Пришли сюда с любой
+    // другой локации (или по прямой ссылке без cookie) — спрашиваем код,
+    // даже если старая cookie доступа ещё валидна.
+    if (slug === 'arka' && (switchedLocation || request.cookies.get(ARKA_GATE_COOKIE)?.value !== ARKA_GATE_TOKEN)) {
       const url = request.nextUrl.clone();
       url.pathname = `/${locale}/arka-gate`;
       url.searchParams.set('next', pathname);
-      return NextResponse.redirect(url, { status: 302 });
+      const res = NextResponse.redirect(url, { status: 302 });
+      res.cookies.delete(ARKA_GATE_COOKIE);
+      setLastLoc(res, 'arka');
+      return res;
     }
 
     // Киевская («Тест лок», эталон) — без пароля, открывается свободно.
+    if (slug === 'kievskaia') {
+      const res = intlMiddleware(request);
+      setLastLoc(res, 'kievskaia');
+      return res;
+    }
 
-    // 25 рабочих локаций-клонов — закрыты общим паролем 0000, тем же, что и
-    // у Арки (см. onboarding.ts WORKING_SLUGS), но своя cookie/токен —
-    // переход между Аркой и рабочей локацией всё равно спрашивает код заново.
-    if (isWorkingLocation && request.cookies.get(TEST_LOC_GATE_COOKIE)?.value !== TEST_LOC_GATE_TOKEN) {
+    // 25 рабочих локаций-клонов — закрыты общим паролем 0000. Переход сюда с
+    // любой другой локации (включая другую рабочую) — тоже спрашивает код.
+    if (
+      isWorkingLocation &&
+      (switchedLocation || request.cookies.get(TEST_LOC_GATE_COOKIE)?.value !== TEST_LOC_GATE_TOKEN)
+    ) {
       const url = request.nextUrl.clone();
       url.pathname = `/${locale}/test-loc-gate`;
       url.searchParams.set('next', pathname);
-      return NextResponse.redirect(url, { status: 302 });
-    }
-
-    // Ушли с Арки на любую другую локацию — гасим доступ. По просьбе
-    // пользователя код должен спрашиваться заново при КАЖДОМ переходе между
-    // локациями, а не раз за сессию браузера. Действует, пока не отменят.
-    // Саму /arka и экран /arka-gate не трогаем, иначе сломаем вход по коду.
-    if (slug !== 'arka' && slug !== 'arka-gate') {
-      const res = intlMiddleware(request);
-      res.cookies.delete(ARKA_GATE_COOKIE);
+      const res = NextResponse.redirect(url, { status: 302 });
+      res.cookies.delete(TEST_LOC_GATE_COOKIE);
+      setLastLoc(res, slug);
       return res;
     }
   }
