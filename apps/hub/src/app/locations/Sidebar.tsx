@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -14,8 +14,15 @@ export function Sidebar({ templates, working }: { templates: LocationRow[]; work
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
 
-  // Закрыть мобильную панель при переходе на другую локацию/вкладку.
-  useEffect(() => setOpen(false), [pathname]);
+  // Закрыть мобильную панель при переходе на другую локацию/вкладку — правим
+  // стейт прямо во время рендера (без useEffect), см. React docs "Adjusting
+  // state when a prop changes": так нет лишнего каскадного ре-рендера после
+  // коммита. pathname — примитив, сравнение по значению безопасно.
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
 
   const q = query.trim().toLowerCase();
   const filteredTemplates = templates.filter((loc) => !q || loc.name.toLowerCase().includes(q));

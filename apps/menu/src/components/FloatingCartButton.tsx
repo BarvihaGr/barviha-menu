@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Home, Info, ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -10,6 +9,7 @@ import type { Location } from '@barviha/db';
 import { LocationInfoModal } from './LocationInfoModal';
 import { cn } from '@/lib/utils';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
+import { useIsClient } from '@/lib/use-is-client';
 
 /** Базовые классы пункта плашки — круглая кнопка-иконка (без подписи).
  *  Тап-зоны 48px — уверенно попадать пальцем, но плашка не громоздкая.
@@ -76,8 +76,7 @@ interface Props {
  */
 export function FloatingCartButton({ locationSlug, locationName, address, phone, accent, locations, dockAccent }: Props) {
   const rawCount = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
   const count = mounted ? rawCount : 0;
   const t = useTranslations('nav');
   const pathname = usePathname();
