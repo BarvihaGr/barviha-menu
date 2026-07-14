@@ -62,23 +62,25 @@ export function GroupPhotoUploader({
   }
 
   return (
-    <button
-      type="button"
-      onClick={() => inputRef.current?.click()}
-      className="group relative mb-2 aspect-[16/9] w-full max-w-sm overflow-hidden rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)]"
-    >
-      {photoUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu)
-        <img src={photoUrl} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
-      ) : (
-        <span className="flex h-full w-full items-center justify-center text-xs uppercase text-[color:var(--muted)]">
-          общее фото категории
+    <>
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="group relative mb-2 aspect-[16/9] w-full max-w-sm overflow-hidden rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)]"
+      >
+        {photoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu)
+          <img src={photoUrl} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+        ) : (
+          <span className="flex h-full w-full items-center justify-center text-xs uppercase text-[color:var(--muted)]">
+            общее фото категории
+          </span>
+        )}
+        <span className="absolute inset-0 flex items-center justify-center bg-black/0 text-xs font-medium text-transparent transition group-hover:bg-black/50 group-hover:text-white">
+          {uploading ? 'Загружаю…' : photoUrl ? 'заменить' : 'загрузить'}
         </span>
-      )}
-      <span className="absolute inset-0 flex items-center justify-center bg-black/0 text-xs font-medium text-transparent transition group-hover:bg-black/50 group-hover:text-white">
-        {uploading ? 'Загружаю…' : photoUrl ? 'заменить' : 'загрузить'}
-      </span>
+      </button>
       <input ref={inputRef} type="file" accept="image/*" onChange={onFile} className="hidden" />
-    </button>
+    </>
   );
 }
