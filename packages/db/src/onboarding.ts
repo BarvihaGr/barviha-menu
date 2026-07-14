@@ -17,7 +17,7 @@ import { MOCK_LOCATIONS } from './mock-data';
 export const TEMPLATE_SLUGS = ['arka', 'kievskaia'] as const;
 
 /** Клоны Киевской (тест + сетевая копия) — свой Бар, не шаблон Арки. */
-const KIEVSKAIA_STYLE_SLUGS = ['kievskaia', 'kievskaia-network', 'kievskaia-test1'] as const;
+const KIEVSKAIA_STYLE_SLUGS = ['kievskaia', 'kievskaia-network'] as const;
 
 export const WORKING_SLUGS: string[] = MOCK_LOCATIONS.map((l) => l.slug).filter(
   (slug) => !(TEMPLATE_SLUGS as readonly string[]).includes(slug),
