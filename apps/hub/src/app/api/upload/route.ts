@@ -21,12 +21,19 @@ const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
 sharp.cache(false);
 sharp.concurrency(1);
 
+// Только латиница/цифры — apps/menu/api/upload-asset проверяет имя файла по
+// /^[a-z0-9-]+\.webp$/ (см. там), кириллица там не проходит. idHint для
+// обычных позиций и так латинский (id вида "kitchen-salads-..."), но для
+// категорий (GroupPhotoUploader шлёт название категории как есть, кириллицей)
+// без этой чистки загрузка тихо 502-ила на relay-шаге — фото просто не
+// менялось, без видимой причины.
 function slugify(s: string): string {
-  return s
+  const cleaned = s
     .toLowerCase()
-    .replace(/[^a-z0-9а-яё]+/gi, '-')
+    .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 60);
+  return cleaned || 'photo';
 }
 
 /**
@@ -76,7 +83,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: 'menu server unreachable' }, { status: 502 });
   }
   if (!relayRes.ok) {
-    return NextResponse.json({ ok: false, error: `menu upload failed: ${relayRes.status}` }, { status: 502 });
+    const body = await relayRes.text().catch(() => '');
+    return NextResponse.json({ ok: false, error: `menu upload failed: ${relayRes.status} ${body}`.trim() }, { status: 502 });
   }
   const relayData = (await relayRes.json()) as { ok: boolean; path?: string };
   if (!relayData.ok || !relayData.path) {
