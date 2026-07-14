@@ -16,6 +16,13 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'fastly.picsum.photos' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
     ],
+    // Все фото уже сжаты и приведены к веб-размеру на этапе загрузки (см.
+    // apps/hub api/upload) — серверный оптимизатор Next тут не нужен, а на
+    // тесной VDS ещё и создавал проблемы: разово споткнувшись на свежем
+    // файле (гонка сразу после аплоада), он кэширует сбой на часы вперёд
+    // (minimumCacheTTL) и потом отдаёт битую картинку, даже когда файл уже
+    // в порядке. Раздаём как есть — nginx уже отдаёт эти файлы напрямую.
+    unoptimized: true,
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
