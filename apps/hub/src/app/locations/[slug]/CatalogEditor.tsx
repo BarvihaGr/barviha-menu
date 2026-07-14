@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { CatalogItem, CatalogRealm } from '@barviha/db';
 import { subLabel, subOrder } from '@barviha/db/catalog-shared';
+import { apiPath } from '@/lib/base-path';
 import { PhotoUploader } from './PhotoUploader';
 import { SavedBadge } from './SavedBadge';
 
@@ -78,12 +79,12 @@ function CatalogItemRow({
   async function save(patch: Partial<CatalogItem>) {
     const next = { ...draft, ...patch };
     setDraft(next);
-    await fetch(`/api/locations/${slug}/catalog/${realm}/${item.id}`, {
+    const res = await fetch(apiPath(`/api/locations/${slug}/catalog/${realm}/${item.id}`), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(patch),
     });
-    setSavedAt(Date.now());
+    if (res.ok) setSavedAt(Date.now());
     if (patch.is_archived) router.refresh();
   }
 

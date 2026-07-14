@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import type { FlagListItem } from '@barviha/db';
 import { menuAssetUrl } from '@/lib/menu-origin';
+import { apiPath } from '@/lib/base-path';
 
 const REALM_LABEL: Record<string, string> = { kitchen: 'Кухня', hookah: 'Кальяны', bar: 'Бар' };
 
@@ -22,7 +23,7 @@ export function FlagListEditor({
 
   async function restore(item: FlagListItem) {
     const patch = mode === 'stop-list' ? { is_available: true } : { is_archived: false };
-    await fetch(`/api/locations/${slug}/flag/${item.realm}/${item.id}`, {
+    await fetch(apiPath(`/api/locations/${slug}/flag/${item.realm}/${item.id}`), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(patch),

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { apiPath } from '@/lib/base-path';
 
 export function GateForm() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export function GateForm() {
     e.preventDefault();
     setLoading(true);
     setError(false);
-    const res = await fetch('/api/hub-gate', {
+    const res = await fetch(apiPath('/api/hub-gate'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password }),

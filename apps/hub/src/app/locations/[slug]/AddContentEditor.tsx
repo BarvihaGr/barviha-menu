@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BarCategoryOption, CatalogRealm } from '@barviha/db';
+import { apiPath } from '@/lib/base-path';
 
 const REALM_LABEL: Record<CatalogRealm, string> = { kitchen: 'Кухня', hookah: 'Кальяны', bar: 'Бар' };
 const REALMS: CatalogRealm[] = ['kitchen', 'hookah', 'bar'];
@@ -101,7 +102,7 @@ function CatalogForm({
     if (!name.trim() || !effectiveSub) return;
     setPending(true);
     setMessage(null);
-    const res = await fetch(`/api/locations/${slug}/catalog/${realm}`, {
+    const res = await fetch(apiPath(`/api/locations/${slug}/catalog/${realm}`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -222,7 +223,7 @@ function NewBarCategoryForm({
     if (!name) return;
     setPending(true);
     setMessage(null);
-    const res = await fetch(`/api/locations/${slug}/bar-category`, {
+    const res = await fetch(apiPath(`/api/locations/${slug}/bar-category`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ category: name }),
@@ -291,7 +292,7 @@ function NewBarItemForm({
     if (categoryIndex < 0 || !name.trim() || !price.trim()) return;
     setPending(true);
     setMessage(null);
-    const res = await fetch(`/api/locations/${slug}/bar`, {
+    const res = await fetch(apiPath(`/api/locations/${slug}/bar`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
