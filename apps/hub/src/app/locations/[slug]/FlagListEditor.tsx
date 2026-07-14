@@ -48,7 +48,7 @@ export function FlagListEditor({
             <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-[color:var(--border)] bg-[color:var(--surface-2)]">
               {photoUrl && (
                 // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu)
-                <img src={photoUrl} alt="" className="h-full w-full object-cover" />
+                <img src={photoUrl} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
               )}
             </div>
             <div className="min-w-0 flex-1">

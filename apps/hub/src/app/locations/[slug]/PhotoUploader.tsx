@@ -58,7 +58,10 @@ export function PhotoUploader({
     const res = await fetch(apiPath('/api/upload'), { method: 'POST', body: form });
     const data = (await res.json()) as { ok: boolean; path?: string };
     setUploading(false);
-    if (data.ok && data.path) onChange({ photo: data.path, photo_position: null, photo_transform: null });
+    if (data.ok && data.path) {
+      onChange({ photo: data.path, photo_position: null, photo_transform: null });
+      setEditing(true);
+    }
   }
 
   return (
@@ -77,6 +80,8 @@ export function PhotoUploader({
           <img
             src={photoUrl}
             alt=""
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover"
             style={{ objectPosition: `${pos.x}% ${pos.y}%`, transform: cssTransform(tf) }}
           />

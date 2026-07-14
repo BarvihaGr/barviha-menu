@@ -80,6 +80,12 @@ function withContentStoreOverrides(loc: Location): Location {
 const SUB_LABEL = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.label]));
 const SUB_ORDER = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.order]));
 
+// Кальяны внутри своей карты — от дорогих к дешёвым (остальные реалмы не трогаем).
+function hookahPriceOrder(a: ResolvedMenuItem, b: ResolvedMenuItem): number {
+  if (a.category_id !== 'hookah' || b.category_id !== 'hookah') return 0;
+  return b.price - a.price;
+}
+
 const REALM_NAME: Record<Realm, string> = { kitchen: 'Кухня', bar: 'Бар', hookah: 'Кальяны', desserts: 'Десерты' };
 const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
 
@@ -211,7 +217,7 @@ class MockBarvihaClient implements BarvihaClient {
       return realms
         .flatMap((realm) => getCatalogItems(loc.slug, realm).filter((i) => i.is_available && !i.is_archived))
         .map(toResolvedCatalogItem)
-        .sort((a, b) => subOrder(a.category_id!, a.sub) - subOrder(b.category_id!, b.sub));
+        .sort((a, b) => subOrder(a.category_id!, a.sub) - subOrder(b.category_id!, b.sub) || hookahPriceOrder(a, b));
     }
     const slug = effectiveSlug(loc?.slug);
     const base = slug
@@ -221,7 +227,11 @@ class MockBarvihaClient implements BarvihaClient {
     const items = base.filter((it) => hasPhoto(it.id));
     return items
       .map((it) => toResolved(it, slug))
-      .sort((a, b) => (SUB_ORDER.get(`${a.category_id}/${a.sub}`) ?? 99) - (SUB_ORDER.get(`${b.category_id}/${b.sub}`) ?? 99));
+      .sort(
+        (a, b) =>
+          (SUB_ORDER.get(`${a.category_id}/${a.sub}`) ?? 99) - (SUB_ORDER.get(`${b.category_id}/${b.sub}`) ?? 99) ||
+          hookahPriceOrder(a, b),
+      );
   }
 
   async getMenuItemById(itemId: string, locationSlug?: string): Promise<ResolvedMenuItem | null> {

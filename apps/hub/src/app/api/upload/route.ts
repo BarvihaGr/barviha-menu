@@ -2,14 +2,16 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import sharp from 'sharp';
 import { menuPublicDir } from '@barviha/db';
 
-const EXT_BY_MIME: Record<string, string> = {
-  'image/jpeg': 'jpg',
-  'image/png': 'png',
-  'image/webp': 'webp',
-  'image/gif': 'gif',
-};
+// Телефонные фото с камеры легко весят 5-10+ МБ — без сжатия это грузит и
+// список позиций в бэк-офисе (десятки таких превью на странице), и живое
+// меню (сервер каждый раз пережимает оригинал на лету). Ужимаем один раз
+// при загрузке: до 1600px по длинной стороне, webp — этого достаточно для
+// карточек меню и экономит на порядок места и трафика.
+const MAX_DIMENSION = 1600;
+const WEBP_QUALITY = 82;
 
 function slugify(s: string): string {
   return s
@@ -31,12 +33,16 @@ export async function POST(request: NextRequest) {
   if (!(file instanceof File)) {
     return NextResponse.json({ ok: false, error: 'no file' }, { status: 400 });
   }
-  const ext = EXT_BY_MIME[file.type] ?? 'jpg';
-  const filename = `${slugify(idHint)}-${Date.now()}.${ext}`;
+  const filename = `${slugify(idHint)}-${Date.now()}.webp`;
   const dir = join(menuPublicDir(), 'menu-admin', slugify(slug), slugify(realm));
   mkdirSync(dir, { recursive: true });
-  const buf = Buffer.from(await file.arrayBuffer());
-  writeFileSync(join(dir, filename), buf);
+  const srcBuf = Buffer.from(await file.arrayBuffer());
+  const outBuf = await sharp(srcBuf)
+    .rotate()
+    .resize({ width: MAX_DIMENSION, height: MAX_DIMENSION, fit: 'inside', withoutEnlargement: true })
+    .webp({ quality: WEBP_QUALITY })
+    .toBuffer();
+  writeFileSync(join(dir, filename), outBuf);
 
   const publicPath = `/menu-admin/${slugify(slug)}/${slugify(realm)}/${filename}`;
   return NextResponse.json({ ok: true, path: publicPath });
