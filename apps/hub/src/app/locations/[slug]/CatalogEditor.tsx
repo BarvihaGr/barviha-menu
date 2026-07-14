@@ -34,7 +34,7 @@ export function CatalogEditor({
 
   return (
     <div className="flex flex-col">
-      <div className="px-8 pt-4">
+      <div className="px-4 sm:px-8 pt-4">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -44,7 +44,7 @@ export function CatalogEditor({
       </div>
       {groups.map((g) => (
         <div key={g.sub} className="border-b border-[color:var(--border)]">
-          <div className="px-8 pt-4 pb-1 text-sm font-medium text-[color:var(--text-soft)]">
+          <div className="px-4 sm:px-8 pt-4 pb-1 text-sm font-medium text-[color:var(--text-soft)]">
             {g.label} <span className="text-xs text-[color:var(--muted)]">· {g.items.length}</span>
           </div>
           <div className="divide-y divide-[color:var(--border)]">
@@ -88,7 +88,7 @@ function CatalogItemRow({
   }
 
   return (
-    <div className="px-8 py-3">
+    <div className="px-4 sm:px-8 py-3">
       <div
         role="button"
         tabIndex={0}

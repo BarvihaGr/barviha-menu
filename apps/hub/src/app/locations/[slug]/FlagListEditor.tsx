@@ -32,7 +32,7 @@ export function FlagListEditor({
 
   if (items.length === 0) {
     return (
-      <div className="px-8 py-10 text-center text-sm text-[color:var(--muted)]">
+      <div className="px-4 sm:px-8 py-10 text-center text-sm text-[color:var(--muted)]">
         {mode === 'stop-list' ? 'Стоп-лист пуст' : 'Архив пуст'}
       </div>
     );
@@ -43,7 +43,7 @@ export function FlagListEditor({
       {items.map((item) => {
         const photoUrl = menuAssetUrl(item.photo);
         return (
-          <div key={`${item.realm}-${item.id}`} className="flex items-center gap-3 px-8 py-3">
+          <div key={`${item.realm}-${item.id}`} className="flex items-center gap-3 px-4 sm:px-8 py-3">
             <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-[color:var(--border)] bg-[color:var(--surface-2)]">
               {photoUrl && (
                 // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu)

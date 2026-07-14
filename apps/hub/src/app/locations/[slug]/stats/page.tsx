@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { MOCK_LOCATIONS, getStatsSummary, isContentStoreSlug } from '@barviha/db';
-import { Header } from '../Header';
+import { PageShell } from '../PageShell';
 import { StatsView } from '../StatsView';
 import { NotOnboarded } from '../../NotOnboarded';
 
@@ -10,13 +10,12 @@ export default async function StatsPage({ params }: { params: Promise<{ slug: st
   if (!loc) notFound();
 
   return (
-    <div>
-      <Header name={loc.name} slug={slug} />
+    <PageShell name={loc.name} slug={slug}>
       {isContentStoreSlug(slug) ? (
         <StatsView rows={getStatsSummary(slug)} />
       ) : (
         <NotOnboarded name={loc.name} />
       )}
-    </div>
+    </PageShell>
   );
 }

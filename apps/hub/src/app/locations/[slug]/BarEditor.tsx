@@ -34,7 +34,7 @@ export function BarEditor({ slug, sections }: { slug: string; sections: ArkaMenu
 
   return (
     <div className="flex flex-col">
-      <div className="px-8 pt-4">
+      <div className="px-4 sm:px-8 pt-4">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -44,12 +44,12 @@ export function BarEditor({ slug, sections }: { slug: string; sections: ArkaMenu
       </div>
       {filtered.map((entry, idx) =>
         entry.kind === 'header' ? (
-          <div key={idx} className="px-8 pt-6 pb-1 text-xs uppercase tracking-[0.2em] text-[color:var(--accent)]">
+          <div key={idx} className="px-4 sm:px-8 pt-6 pb-1 text-xs uppercase tracking-[0.2em] text-[color:var(--accent)]">
             {entry.title}
           </div>
         ) : (
           <div key={idx} className="border-b border-[color:var(--border)]">
-            <div className="px-8 pt-4 pb-1 text-sm font-medium text-[color:var(--text-soft)]">{entry.category}</div>
+            <div className="px-4 sm:px-8 pt-4 pb-1 text-sm font-medium text-[color:var(--text-soft)]">{entry.category}</div>
             <div className="divide-y divide-[color:var(--border)]">
               {entry.items.map((it) => (
                 <BarItemRow key={it.id} slug={slug} item={it} />
@@ -84,7 +84,7 @@ function BarItemRow({ slug, item }: { slug: string; item: ArkaMenuItem }) {
   }
 
   return (
-    <div className="px-8 py-3">
+    <div className="px-4 sm:px-8 py-3">
       <div
         role="button"
         tabIndex={0}

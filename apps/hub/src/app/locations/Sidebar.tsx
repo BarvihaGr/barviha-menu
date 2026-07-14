@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -12,6 +12,10 @@ interface LocationRow {
 export function Sidebar({ templates, working }: { templates: LocationRow[]; working: LocationRow[] }) {
   const pathname = usePathname();
   const [query, setQuery] = useState('');
+  const [open, setOpen] = useState(false);
+
+  // Закрыть мобильную панель при переходе на другую локацию/вкладку.
+  useEffect(() => setOpen(false), [pathname]);
 
   const q = query.trim().toLowerCase();
   const filteredTemplates = templates.filter((loc) => !q || loc.name.toLowerCase().includes(q));
@@ -39,44 +43,89 @@ export function Sidebar({ templates, working }: { templates: LocationRow[]; work
   };
 
   return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-[color:var(--border)] bg-[color:var(--surface)]">
-      <div className="border-b border-[color:var(--border)] px-5 py-4">
+    <>
+      {/* Мобильный топ-бар — вместо постоянного сайдбара на узких экранах */}
+      <div className="flex shrink-0 items-center justify-between border-b border-[color:var(--border)] bg-[color:var(--surface)] px-4 py-3 md:hidden">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-label="Открыть список локаций"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-[color:var(--text-soft)] hover:bg-[color:var(--surface-2)]"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <path d="M3 5h14M3 10h14M3 15h14" />
+          </svg>
+        </button>
         <div className="glitch-text text-[10px] font-bold uppercase tracking-[0.3em] text-[color:var(--text)]">
           Barviha
         </div>
-        <div className="text-sm font-medium text-[color:var(--text-soft)]">Бэк-офис меню</div>
+        <span className="w-8" />
       </div>
-      <div className="border-b border-[color:var(--border)] px-3 py-3">
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Поиск локации…"
-          className="input"
+
+      {/* Затемнение фона при открытой мобильной панели */}
+      {open && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 md:hidden"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
         />
-      </div>
-      <nav className="flex-1 overflow-y-auto py-2">
-        {filteredTemplates.length > 0 && (
-          <>
-            <div className="px-5 pb-1 pt-3 text-[10px] uppercase tracking-[0.2em] text-[color:var(--muted)]">
-              Тест лок
-            </div>
-            {filteredTemplates.map(row)}
-          </>
-        )}
+      )}
 
-        {filteredWorking.length > 0 && (
-          <>
-            <div className="mt-2 border-t border-[color:var(--border)] px-5 pb-1 pt-3 text-[10px] uppercase tracking-[0.2em] text-[color:var(--muted)]">
-              Локации сети
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col border-r border-[color:var(--border)] bg-[color:var(--surface)] transition-transform duration-200 md:static md:z-auto md:h-full md:w-64 md:shrink-0 md:translate-x-0 ${
+          open ? 'translate-x-0' : ''
+        }`}
+      >
+        <div className="flex items-center justify-between border-b border-[color:var(--border)] px-5 py-4">
+          <div>
+            <div className="glitch-text text-[10px] font-bold uppercase tracking-[0.3em] text-[color:var(--text)]">
+              Barviha
             </div>
-            {filteredWorking.map(row)}
-          </>
-        )}
+            <div className="text-sm font-medium text-[color:var(--text-soft)]">Бэк-офис меню</div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label="Закрыть"
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-[color:var(--muted)] hover:bg-[color:var(--surface-2)] md:hidden"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+              <path d="M3 3l10 10M13 3L3 13" />
+            </svg>
+          </button>
+        </div>
+        <div className="border-b border-[color:var(--border)] px-3 py-3">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Поиск локации…"
+            className="input"
+          />
+        </div>
+        <nav className="flex-1 overflow-y-auto py-2">
+          {filteredTemplates.length > 0 && (
+            <>
+              <div className="px-5 pb-1 pt-3 text-[10px] uppercase tracking-[0.2em] text-[color:var(--muted)]">
+                Тест лок
+              </div>
+              {filteredTemplates.map(row)}
+            </>
+          )}
 
-        {filteredTemplates.length === 0 && filteredWorking.length === 0 && (
-          <div className="px-5 py-6 text-center text-xs text-[color:var(--muted)]">Ничего не найдено</div>
-        )}
-      </nav>
-    </aside>
+          {filteredWorking.length > 0 && (
+            <>
+              <div className="mt-2 border-t border-[color:var(--border)] px-5 pb-1 pt-3 text-[10px] uppercase tracking-[0.2em] text-[color:var(--muted)]">
+                Локации сети
+              </div>
+              {filteredWorking.map(row)}
+            </>
+          )}
+
+          {filteredTemplates.length === 0 && filteredWorking.length === 0 && (
+            <div className="px-5 py-6 text-center text-xs text-[color:var(--muted)]">Ничего не найдено</div>
+          )}
+        </nav>
+      </aside>
+    </>
   );
 }

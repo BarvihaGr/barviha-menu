@@ -16,7 +16,7 @@ export function StatsView({ rows }: { rows: StatsRow[] }) {
   const byViews = [...rows].sort((a, b) => b.views - a.views);
 
   return (
-    <div className="flex flex-col gap-6 px-8 py-6">
+    <div className="flex flex-col gap-6 px-4 sm:px-8 py-6">
       {!STATS_ENABLED && (
         <div className="rounded-lg border border-[color:var(--border)] bg-[color:var(--surface)] px-4 py-3 text-xs text-[color:var(--muted)]">
           Счётчики просмотров и добавлений в корзину пока выключены — все цифры ниже нулевые.

@@ -7,7 +7,7 @@ import {
   usesArkaBarTemplate,
 } from '@barviha/db';
 import type { CatalogRealm } from '@barviha/db';
-import { Header } from '../Header';
+import { PageShell } from '../PageShell';
 import { AddContentEditor } from '../AddContentEditor';
 import { NotOnboarded } from '../../NotOnboarded';
 
@@ -18,10 +18,9 @@ export default async function AddPage({ params }: { params: Promise<{ slug: stri
 
   if (!isContentStoreSlug(slug)) {
     return (
-      <div>
-        <Header name={loc.name} slug={slug} />
+      <PageShell name={loc.name} slug={slug}>
         <NotOnboarded name={loc.name} />
-      </div>
+      </PageShell>
     );
   }
 
@@ -32,14 +31,13 @@ export default async function AddPage({ params }: { params: Promise<{ slug: stri
   ) as Record<CatalogRealm, { sub: string; label: string }[]>;
 
   return (
-    <div>
-      <Header name={loc.name} slug={slug} />
+    <PageShell name={loc.name} slug={slug}>
       <AddContentEditor
         slug={slug}
         isBarTemplate={isBarTemplate}
         catalogCategories={catalogCategories}
         barCategories={isBarTemplate ? getBarCategories(slug) : []}
       />
-    </div>
+    </PageShell>
   );
 }

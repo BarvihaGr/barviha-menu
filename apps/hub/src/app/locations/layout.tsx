@@ -16,9 +16,9 @@ export default function LocationsLayout({ children }: { children: React.ReactNod
   }));
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen flex-col overflow-hidden md:flex-row">
       <Sidebar templates={templates} working={working} />
-      <main className="min-w-0 flex-1 overflow-y-auto">{children}</main>
+      <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">{children}</main>
     </div>
   );
 }

@@ -20,7 +20,7 @@ export function LocationSettingsForm({ slug, settings }: { slug: string; setting
   }
 
   return (
-    <div className="flex max-w-md flex-col gap-4 px-8 py-6">
+    <div className="flex max-w-md flex-col gap-4 px-4 sm:px-8 py-6">
       <div className="flex items-center justify-between rounded-lg border border-[color:var(--border)] bg-[color:var(--surface)] p-4">
         <div>
           <div className="text-sm text-[color:var(--text)]">Локация активна</div>

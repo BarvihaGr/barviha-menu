@@ -7,7 +7,7 @@ import {
   isContentStoreSlug,
   usesArkaBarTemplate,
 } from '@barviha/db';
-import { Header } from '../Header';
+import { PageShell } from '../PageShell';
 import { BarEditor } from '../BarEditor';
 import { CatalogEditor } from '../CatalogEditor';
 import { NotOnboarded } from '../../NotOnboarded';
@@ -18,8 +18,7 @@ export default async function BarPage({ params }: { params: Promise<{ slug: stri
   if (!loc) notFound();
 
   return (
-    <div>
-      <Header name={loc.name} slug={slug} />
+    <PageShell name={loc.name} slug={slug}>
       {!isContentStoreSlug(slug) ? (
         <NotOnboarded name={loc.name} />
       ) : usesArkaBarTemplate(slug) ? (
@@ -35,6 +34,6 @@ export default async function BarPage({ params }: { params: Promise<{ slug: stri
           items={getCatalogItems(slug, 'bar').filter((it) => !it.is_archived)}
         />
       )}
-    </div>
+    </PageShell>
   );
 }
