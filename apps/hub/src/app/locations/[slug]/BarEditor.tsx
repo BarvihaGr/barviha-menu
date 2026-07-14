@@ -5,10 +5,20 @@ import { useRouter } from 'next/navigation';
 import type { ArkaMenuEntry, ArkaMenuItem } from '@barviha/db';
 import { apiPath } from '@/lib/base-path';
 import { PhotoUploader } from './PhotoUploader';
+import { GroupPhotoUploader } from './GroupPhotoUploader';
 import { SavedBadge } from './SavedBadge';
 
-export function BarEditor({ slug, sections }: { slug: string; sections: ArkaMenuEntry[] }) {
+export function BarEditor({
+  slug,
+  sections,
+  groupPhotos,
+}: {
+  slug: string;
+  sections: ArkaMenuEntry[];
+  groupPhotos: Record<string, string>;
+}) {
   const [query, setQuery] = useState('');
+  const [photos, setPhotos] = useState(groupPhotos);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -51,6 +61,16 @@ export function BarEditor({ slug, sections }: { slug: string; sections: ArkaMenu
         ) : (
           <div key={idx} className="border-b border-[color:var(--border)]">
             <div className="px-4 sm:px-8 pt-4 pb-1 text-sm font-medium text-[color:var(--text-soft)]">{entry.category}</div>
+            {entry.items.some((it) => it.type === 2) && (
+              <div className="px-4 sm:px-8 pb-2">
+                <GroupPhotoUploader
+                  slug={slug}
+                  category={entry.category}
+                  photo={photos[entry.category] ?? null}
+                  onSaved={(src) => setPhotos((p) => ({ ...p, [entry.category]: src }))}
+                />
+              </div>
+            )}
             <div className="divide-y divide-[color:var(--border)]">
               {entry.items.map((it) => (
                 <BarItemRow key={it.id} slug={slug} item={it} />

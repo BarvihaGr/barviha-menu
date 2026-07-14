@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { menuAssetUrl } from '@/lib/menu-origin';
 import { apiPath } from '@/lib/base-path';
+import { compressInBrowser } from '@/lib/compress-image';
 
 type Position = { x: number; y: number };
 type Rotation = 0 | 90 | 180 | 270;
@@ -17,31 +18,6 @@ function clamp(n: number, min: number, max: number): number {
 
 function cssTransform(t: Transform): string {
   return `rotate(${t.rotate}deg) scaleX(${t.flipH ? -1 : 1}) scaleY(${t.flipV ? -1 : 1}) scale(${t.zoom})`;
-}
-
-const UPLOAD_MAX_DIMENSION = 1600;
-const UPLOAD_QUALITY = 0.85;
-
-// Сжимаем в браузере до отправки — телефонное фото весит 5-10+ МБ, а прод
-// крутится на тесной VDS (2 vCPU, ~4ГБ), где то же самое сжатие на сервере
-// на секунду-две грузит оба ядра и память так, что виснет весь сайт (не
-// только бэк-офис). Здесь работы намного больше — у пользователя обычно
-// современный телефон/ноутбук, а не общая VDS на несколько сервисов.
-async function compressInBrowser(file: File): Promise<Blob> {
-  const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
-  const scale = Math.min(1, UPLOAD_MAX_DIMENSION / Math.max(bitmap.width, bitmap.height));
-  const w = Math.round(bitmap.width * scale);
-  const h = Math.round(bitmap.height * scale);
-  const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('canvas 2d context unavailable');
-  ctx.drawImage(bitmap, 0, 0, w, h);
-  bitmap.close();
-  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/webp', UPLOAD_QUALITY));
-  if (!blob) throw new Error('canvas.toBlob failed');
-  return blob;
 }
 
 type Patch = { photo?: string; photo_position?: Position | null; photo_transform?: Transform | null };

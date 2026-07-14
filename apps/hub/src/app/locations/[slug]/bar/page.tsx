@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import {
   MOCK_LOCATIONS,
   filterBarSections,
+  getBarGroupPhotos,
   getBarSections,
   getCatalogItems,
   isContentStoreSlug,
@@ -25,6 +26,7 @@ export default async function BarPage({ params }: { params: Promise<{ slug: stri
         <BarEditor
           slug={slug}
           sections={filterBarSections(getBarSections(slug), (it) => !it.is_archived)}
+          groupPhotos={getBarGroupPhotos(slug)}
         />
       ) : (
         // Киевская: Бар — обычные позиции (своя вёрстка CoffeeMenuList не задета).
