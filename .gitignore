@@ -72,6 +72,7 @@ scripts/_preview/
 # репо и конфликтовали с git pull на проде при каждой правке через админку
 # (см. project memory). Теперь это runtime-данные: локально остаются на диске
 # как были (просто больше не отслеживаются), на проде — симлинк/директория
-# вне git-дерева (/var/www/barviha-data/{content,menu-admin}).
-packages/db/content/
+# вне git-дерева (/var/www/barviha-data/{content,menu-admin}). Без слэша на
+# конце — на проде это симлинк, не директория, паттерн с "/" его не ловит.
+packages/db/content
 apps/menu/public/menu-admin/
