@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { LocationSettings } from '@barviha/db';
+import { apiPath } from '@/lib/base-path';
 import { SavedBadge } from './SavedBadge';
 
 export function LocationSettingsForm({ slug, settings }: { slug: string; settings: LocationSettings }) {
@@ -11,12 +12,12 @@ export function LocationSettingsForm({ slug, settings }: { slug: string; setting
   async function save(patch: Partial<LocationSettings>) {
     const next = { ...draft, ...patch };
     setDraft(next);
-    await fetch(`/api/locations/${slug}/location`, {
+    const res = await fetch(apiPath(`/api/locations/${slug}/location`), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(patch),
     });
-    setSavedAt(Date.now());
+    if (res.ok) setSavedAt(Date.now());
   }
 
   return (

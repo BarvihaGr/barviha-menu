@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { menuAssetUrl } from '@/lib/menu-origin';
+import { apiPath } from '@/lib/base-path';
 
 type Position = { x: number; y: number };
 type Rotation = 0 | 90 | 180 | 270;
@@ -54,10 +55,13 @@ export function PhotoUploader({
     form.append('slug', slug);
     form.append('realm', realm);
     form.append('id', id);
-    const res = await fetch('/api/upload', { method: 'POST', body: form });
+    const res = await fetch(apiPath('/api/upload'), { method: 'POST', body: form });
     const data = (await res.json()) as { ok: boolean; path?: string };
     setUploading(false);
-    if (data.ok && data.path) onChange({ photo: data.path, photo_position: null, photo_transform: null });
+    if (data.ok && data.path) {
+      onChange({ photo: data.path, photo_position: null, photo_transform: null });
+      setEditing(true);
+    }
   }
 
   return (
@@ -76,6 +80,8 @@ export function PhotoUploader({
           <img
             src={photoUrl}
             alt=""
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover"
             style={{ objectPosition: `${pos.x}% ${pos.y}%`, transform: cssTransform(tf) }}
           />

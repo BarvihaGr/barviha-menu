@@ -1,8 +1,9 @@
 import type { NextConfig } from 'next';
+import { BASE_PATH } from './src/lib/base-path';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  basePath: '/back-off',
+  basePath: BASE_PATH,
   transpilePackages: ['@barviha/db'],
   images: {
     remotePatterns: [

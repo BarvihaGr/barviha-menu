@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import type { FlagListItem } from '@barviha/db';
 import { menuAssetUrl } from '@/lib/menu-origin';
+import { apiPath } from '@/lib/base-path';
 
 const REALM_LABEL: Record<string, string> = { kitchen: 'Кухня', hookah: 'Кальяны', bar: 'Бар' };
 
@@ -22,7 +23,7 @@ export function FlagListEditor({
 
   async function restore(item: FlagListItem) {
     const patch = mode === 'stop-list' ? { is_available: true } : { is_archived: false };
-    await fetch(`/api/locations/${slug}/flag/${item.realm}/${item.id}`, {
+    await fetch(apiPath(`/api/locations/${slug}/flag/${item.realm}/${item.id}`), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(patch),
@@ -47,7 +48,7 @@ export function FlagListEditor({
             <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-[color:var(--border)] bg-[color:var(--surface-2)]">
               {photoUrl && (
                 // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu)
-                <img src={photoUrl} alt="" className="h-full w-full object-cover" />
+                <img src={photoUrl} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
               )}
             </div>
             <div className="min-w-0 flex-1">
