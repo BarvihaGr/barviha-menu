@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Home, BookOpen, MapPin, ShoppingBag } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
@@ -8,6 +7,7 @@ import { coffeeAccentStyle } from '@/lib/coffee-design';
 import { useKievTheme } from '@/store/kievTheme';
 import { KIEV_PALETTES } from './KievThemeProvider';
 import { cn } from '@/lib/utils';
+import { useIsClient } from '@/lib/use-is-client';
 
 interface Props {
   locationSlug: string;
@@ -30,8 +30,7 @@ export function LuxBottomNav({ locationSlug }: Props) {
 
   // Счётчик корзины — из localStorage только на клиенте (guard от hydration).
   const rawCount = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
   const cartCount = mounted ? rawCount : 0;
 
   const tabs = [

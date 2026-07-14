@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BarCategoryOption, CatalogRealm } from '@barviha/db';
 import { apiPath } from '@/lib/base-path';
@@ -281,11 +281,17 @@ function NewBarItemForm({
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  useEffect(() => {
+  // Подгоняем выбранный раздел при смене списка категорий (например, после
+  // добавления/удаления раздела) — правим стейт прямо во время рендера, не
+  // через useEffect: так React не делает лишний каскадный ре-рендер после
+  // коммита (см. https://react.dev/learn/you-might-not-need-an-effect).
+  const [prevCategories, setPrevCategories] = useState(categories);
+  if (categories !== prevCategories) {
+    setPrevCategories(categories);
     if (categories.length > 0 && !categories.some((c) => c.index === categoryIndex)) {
       setCategoryIndex(categories[0]!.index);
     }
-  }, [categories, categoryIndex]);
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();

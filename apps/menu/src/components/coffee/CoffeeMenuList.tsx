@@ -36,6 +36,15 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   const [active, setActive] = useState<Set<FilterKey>>(new Set());
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+  // Поиск гоняет Левенштейна + синонимы по всем блюдам локации (у Арки —
+  // 387 позиций) — на каждое нажатие клавиши это заметно тормозит ввод.
+  // Инпут остаётся мгновенным (query), а тяжёлый пересчёт в filteredPool
+  // откладываем на 250мс простоя.
+  const [debouncedQuery, setDebouncedQuery] = useState('');
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedQuery(query), 250);
+    return () => clearTimeout(id);
+  }, [query]);
 
   const chipBarRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
@@ -48,10 +57,10 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   // ── Фильтрованный пул (без секций) ────────────────────────────────
   const filteredPool = useMemo(() => {
     let pool = applyFilters(items, active);
-    const q = query.trim();
+    const q = debouncedQuery.trim();
     if (q) pool = searchItems(pool, q, pool.length).map((r) => r.item);
     return pool;
-  }, [items, active, query]);
+  }, [items, active, debouncedQuery]);
 
   // ── Секции из sub-поля или из статичной карты ──────────────────────
   const sections: SectionDef[] = useMemo(() => {

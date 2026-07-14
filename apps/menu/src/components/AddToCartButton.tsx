@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Minus, Plus } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -8,6 +7,7 @@ import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { cn } from '@/lib/utils';
 import { trackAdd } from '@/lib/stats';
+import { useIsClient } from '@/lib/use-is-client';
 
 interface Props {
   itemId: string;
@@ -28,8 +28,7 @@ export function AddToCartButton({ itemId, itemName, locationSlug, variant = 'ico
   const push = useToast((s) => s.push);
   const t = useTranslations();
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
   const shown = mounted ? qty : 0;
 
   const stop = (e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); };
