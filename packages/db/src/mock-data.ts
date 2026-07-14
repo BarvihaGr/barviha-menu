@@ -89,6 +89,14 @@ export const MOCK_LOCATIONS: Location[] = [
     address: 'г. Москва, ул. Киевская, 2',
     phone: '+7 (495) 000-00-00',
   },
+  {
+    // Временная песочница для обкатки боевого деплоя (VDS) — одноразовая копия
+    // 'arka' в packages/db/content/arka-test1. Удалить папку + эту запись,
+    // когда тесты деплоя закончены.
+    ...LOC('loc-arka-test1', 'arka-test1', 'Арка тест 1 (песочница)', ['lounge'], '/locations/arka/hero.mp4'),
+    address: 'г. Москва, ул. Киевская, 2',
+    phone: '+7 (495) 000-00-00',
+  },
   LOC('loc-baumanskaia', 'baumanskaia', 'Бауманская'),
   LOC('loc-domodedovo', 'domodedovo', 'Домодедово'),
   LOC('loc-erevan', 'erevan', 'Ереван'),
@@ -98,6 +106,10 @@ export const MOCK_LOCATIONS: Location[] = [
   // Независимая рабочая копия Киевской для сети — своя content-store папка
   // packages/db/content/kievskaia-network, склонирована от 'kievskaia'.
   LOC('loc-kievskaia-network', 'kievskaia-network', 'Киевская'),
+  // Временная песочница для обкатки боевого деплоя (VDS) — одноразовая копия
+  // 'kievskaia' в packages/db/content/kievskaia-test1. Удалить папку + эту
+  // запись, когда тесты деплоя закончены.
+  LOC('loc-kievskaia-test1', 'kievskaia-test1', 'Киевская тест 1 (песочница)'),
   LOC('loc-kolomenskaia', 'kolomenskaia', 'Коломенская'),
   LOC('loc-krasnaia-ploshchad', 'krasnaia-ploshchad', 'Красная Площадь'),
   LOC('loc-krylatskoe', 'barvixa-lounge-krylatskoe', 'Крылатское', ['lounge', 'karaoke']),
