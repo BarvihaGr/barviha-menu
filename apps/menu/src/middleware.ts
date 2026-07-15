@@ -3,8 +3,8 @@ import { routing } from './i18n/routing';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { WORKING_SLUGS } from '@barviha/db/onboarding';
-import { ARKA_GATE_COOKIE, ARKA_GATE_TOKEN } from './lib/arka-gate';
-import { TEST_LOC_GATE_COOKIE, TEST_LOC_GATE_TOKEN } from './lib/test-loc-gate';
+import { ARKA_GATE_COOKIE } from './lib/arka-gate';
+import { TEST_LOC_GATE_COOKIE } from './lib/test-loc-gate';
 
 const intlMiddleware = createMiddleware(routing);
 const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
@@ -61,40 +61,13 @@ export default function middleware(request: NextRequest) {
       return res;
     }
 
-    const lastSlug = request.cookies.get(LAST_LOC_COOKIE)?.value;
-    const switchedLocation = lastSlug !== slug;
-
-    // Арка — тестовая локация, закрыта паролем 0000. Пришли сюда с любой
-    // другой локации (или по прямой ссылке без cookie) — спрашиваем код,
-    // даже если старая cookie доступа ещё валидна.
-    if (slug === 'arka' && (switchedLocation || request.cookies.get(ARKA_GATE_COOKIE)?.value !== ARKA_GATE_TOKEN)) {
-      const url = request.nextUrl.clone();
-      url.pathname = `/${locale}/arka-gate`;
-      url.searchParams.set('next', pathname);
-      const res = NextResponse.redirect(url, { status: 302 });
-      res.cookies.delete(ARKA_GATE_COOKIE);
-      setLastLoc(res, 'arka');
-      return res;
-    }
-
-    // Киевская («Тест лок», эталон) — без пароля, открывается свободно.
-    if (slug === 'kievskaia') {
+    // По просьбе пользователя пароли на локациях (Арка + 25 рабочих клонов)
+    // убраны — все локации открываются свободно, как раньше была только
+    // Киевская. Инфраструктура гейтов (страницы /arka-gate, /test-loc-gate,
+    // их API-роуты) осталась в коде на случай, если пароли понадобится
+    // вернуть — просто не вызывается отсюда.
+    if (slug === 'arka' || slug === 'kievskaia' || isWorkingLocation) {
       const res = intlMiddleware(request);
-      setLastLoc(res, 'kievskaia');
-      return res;
-    }
-
-    // 25 рабочих локаций-клонов — закрыты общим паролем 0000. Переход сюда с
-    // любой другой локации (включая другую рабочую) — тоже спрашивает код.
-    if (
-      isWorkingLocation &&
-      (switchedLocation || request.cookies.get(TEST_LOC_GATE_COOKIE)?.value !== TEST_LOC_GATE_TOKEN)
-    ) {
-      const url = request.nextUrl.clone();
-      url.pathname = `/${locale}/test-loc-gate`;
-      url.searchParams.set('next', pathname);
-      const res = NextResponse.redirect(url, { status: 302 });
-      res.cookies.delete(TEST_LOC_GATE_COOKIE);
       setLastLoc(res, slug);
       return res;
     }
