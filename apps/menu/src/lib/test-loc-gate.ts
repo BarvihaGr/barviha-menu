@@ -10,4 +10,6 @@
  */
 export const TEST_LOC_GATE_COOKIE = 'test_loc_gate';
 export const TEST_LOC_GATE_TOKEN = process.env.TEST_LOC_GATE_TOKEN ?? 'dev-local-only-token';
-export const TEST_LOC_GATE_PASSWORD = process.env.TEST_LOC_GATE_PASSWORD ?? '0000';
+// 6 цифр — под стать реальному прод-паролю (см. .env.production.local),
+// UI (test-loc-gate/page.tsx CODE_LENGTH) рассчитан на 6 знаков.
+export const TEST_LOC_GATE_PASSWORD = process.env.TEST_LOC_GATE_PASSWORD ?? '000000';

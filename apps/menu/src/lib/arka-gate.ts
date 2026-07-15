@@ -11,7 +11,9 @@
  */
 export const ARKA_GATE_COOKIE = 'arka_gate';
 export const ARKA_GATE_TOKEN = process.env.ARKA_GATE_TOKEN ?? 'dev-local-only-token';
-export const ARKA_GATE_PASSWORD = process.env.ARKA_GATE_PASSWORD ?? '0000';
+// 6 цифр — под стать реальному прод-паролю (см. .env.production.local),
+// UI (arka-gate/page.tsx CODE_LENGTH) рассчитан на 6 знаков.
+export const ARKA_GATE_PASSWORD = process.env.ARKA_GATE_PASSWORD ?? '000000';
 // Сессионная cookie (без maxAge/expires) — держит доступ, пока браузер
 // открыт; закрыли браузер полностью — при следующем визите код спросит
 // заново. Осознанный выбор по просьбе пользователя (не 30 дней, как было).

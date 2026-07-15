@@ -11,7 +11,10 @@ import { Suspense, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { safeNextPath } from '@/lib/safe-next';
 
-const CODE_LENGTH = 4;
+// Пароль теперь случайный 6-значный (см. TEST_LOC_GATE_PASSWORD в
+// .env.production.local) — было 4, инпут обрезал ввод раньше, чем
+// набирался весь код, и правильный пароль было физически не ввести.
+const CODE_LENGTH = 6;
 
 function TestLocGateForm() {
   const params = useParams<{ locale: string }>();
@@ -62,8 +65,8 @@ function TestLocGateForm() {
         onChange={(e) => onDigits(e.target.value)}
         disabled={pending}
         aria-label="Код доступа"
-        className="w-[180px] rounded-2xl border border-white/15 bg-white/5 px-4 py-3.5 text-center text-[24px] tracking-[0.6em] text-white outline-none transition focus:border-white/40 disabled:opacity-50"
-        placeholder="••••"
+        className="w-[240px] rounded-2xl border border-white/15 bg-white/5 px-4 py-3.5 text-center text-[24px] tracking-[0.4em] text-white outline-none transition focus:border-white/40 disabled:opacity-50"
+        placeholder="••••••"
       />
       {error && <p className="text-[12px] text-red-400">Неверный код, попробуйте ещё раз</p>}
     </div>
