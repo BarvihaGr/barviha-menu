@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { apiPath } from '@/lib/base-path';
 
 interface LocationRow {
   slug: string;
@@ -11,8 +12,15 @@ interface LocationRow {
 
 export function Sidebar({ templates, working }: { templates: LocationRow[]; working: LocationRow[] }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
+
+  async function logout() {
+    await fetch(apiPath('/api/hub-logout'), { method: 'POST' });
+    router.push('/gate');
+    router.refresh();
+  }
 
   // Закрыть мобильную панель при переходе на другую локацию/вкладку — правим
   // стейт прямо во время рендера (без useEffect), см. React docs "Adjusting
@@ -132,6 +140,15 @@ export function Sidebar({ templates, working }: { templates: LocationRow[]; work
             <div className="px-5 py-6 text-center text-xs text-[color:var(--muted)]">Ничего не найдено</div>
           )}
         </nav>
+        <div className="border-t border-[color:var(--border)] p-3">
+          <button
+            type="button"
+            onClick={logout}
+            className="w-full rounded-lg px-3 py-2 text-left text-xs text-[color:var(--muted)] transition hover:bg-[color:var(--surface-2)] hover:text-[color:var(--danger)]"
+          >
+            Выйти
+          </button>
+        </div>
       </aside>
     </>
   );
