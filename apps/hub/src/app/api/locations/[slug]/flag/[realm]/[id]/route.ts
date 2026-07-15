@@ -1,12 +1,15 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { setItemFlag } from '@barviha/db';
+import { invalidSlugResponse } from '@/lib/valid-slug';
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string; realm: string; id: string }> },
 ) {
   const { slug, realm, id } = await params;
+  const slugErr = invalidSlugResponse(slug);
+  if (slugErr) return slugErr;
   if (realm !== 'kitchen' && realm !== 'hookah' && realm !== 'bar') {
     return NextResponse.json({ ok: false, error: 'bad realm' }, { status: 400 });
   }

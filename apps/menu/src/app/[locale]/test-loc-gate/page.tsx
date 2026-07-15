@@ -9,13 +9,14 @@
 
 import { Suspense, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
+import { safeNextPath } from '@/lib/safe-next';
 
 const CODE_LENGTH = 4;
 
 function TestLocGateForm() {
   const params = useParams<{ locale: string }>();
   const searchParams = useSearchParams();
-  const next = searchParams.get('next') || `/${params.locale}`;
+  const next = safeNextPath(searchParams.get('next'), `/${params.locale}`);
 
   const [code, setCode] = useState('');
   const [error, setError] = useState(false);

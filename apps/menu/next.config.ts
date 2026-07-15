@@ -27,6 +27,23 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
+  // Базовые security-заголовки — раньше их не было вообще ни на одном
+  // ответе. X-Frame-Options закрывает clickjacking (сайт в невидимом
+  // iframe поверх которого кликает жертва), остальные — стандартная
+  // гигиена, ничего не меняют в поведении самого приложения.
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
+        ],
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

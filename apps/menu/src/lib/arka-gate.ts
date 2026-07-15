@@ -3,10 +3,15 @@
  * открываться посторонним даже по прямой ссылке, пока меню в разработке).
  * Один и тот же код нужен и в middleware (проверка cookie), и в route handler
  * (проверка пароля + установка cookie) — вынесено сюда, чтобы не разъезжалось.
+ *
+ * TOKEN/PASSWORD — из env (репозиторий публичный на GitHub; литерал
+ * 'ok-v1' в коде означал, что куки arka_gate=ok-v1 давали доступ вообще
+ * без пароля — просто скопировав значение из исходников). Дефолты ниже —
+ * только для локальной разработки.
  */
 export const ARKA_GATE_COOKIE = 'arka_gate';
-export const ARKA_GATE_TOKEN = 'ok-v1';
-export const ARKA_GATE_PASSWORD = '0000';
+export const ARKA_GATE_TOKEN = process.env.ARKA_GATE_TOKEN ?? 'dev-local-only-token';
+export const ARKA_GATE_PASSWORD = process.env.ARKA_GATE_PASSWORD ?? '0000';
 // Сессионная cookie (без maxAge/expires) — держит доступ, пока браузер
 // открыт; закрыли браузер полностью — при следующем визите код спросит
 // заново. Осознанный выбор по просьбе пользователя (не 30 дней, как было).

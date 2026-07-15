@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import sharp from 'sharp';
 import { MENU_ORIGIN } from '@/lib/menu-origin';
 import { UPLOAD_RELAY_SECRET } from '@/lib/upload-relay';
+import { invalidSlugResponse } from '@/lib/valid-slug';
 
 // Телефонные фото с камеры легко весят 5-10+ МБ — без сжатия это грузит и
 // список позиций в бэк-офисе (десятки таких превью на странице), и живое
@@ -57,14 +58,24 @@ export async function POST(request: NextRequest) {
   if (file.size > MAX_UPLOAD_BYTES) {
     return NextResponse.json({ ok: false, error: 'file too large (max 20MB)' }, { status: 413 });
   }
+  const slugErr = invalidSlugResponse(slug);
+  if (slugErr) return slugErr;
 
   const filename = `${slugify(idHint)}-${Date.now()}.webp`;
   const srcBuf = Buffer.from(await file.arrayBuffer());
-  const outBuf = await sharp(srcBuf)
-    .rotate()
-    .resize({ width: MAX_DIMENSION, height: MAX_DIMENSION, fit: 'inside', withoutEnlargement: true })
-    .webp({ quality: WEBP_QUALITY })
-    .toBuffer();
+  let outBuf: Buffer;
+  try {
+    outBuf = await sharp(srcBuf)
+      .rotate()
+      .resize({ width: MAX_DIMENSION, height: MAX_DIMENSION, fit: 'inside', withoutEnlargement: true })
+      .webp({ quality: WEBP_QUALITY })
+      .toBuffer();
+  } catch {
+    // Не валидное изображение (битый файл, чужой формат, мусор под видом
+    // фото) — до этой правки sharp кидал необработанное исключение прямо в
+    // рантайм Next (500 без внятной причины для пользователя бэк-офиса).
+    return NextResponse.json({ ok: false, error: 'invalid image file' }, { status: 400 });
+  }
 
   const relayForm = new FormData();
   relayForm.append('file', new Blob([new Uint8Array(outBuf)], { type: 'image/webp' }), filename);

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { apiPath } from '@/lib/base-path';
+import { safeNextPath } from '@/lib/safe-next';
 
 export function GateForm() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export function GateForm() {
     });
     setLoading(false);
     if (res.ok) {
-      router.push(params.get('next') || '/');
+      router.push(safeNextPath(params.get('next'), '/'));
       router.refresh();
     } else {
       setError(true);

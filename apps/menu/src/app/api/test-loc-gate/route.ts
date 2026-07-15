@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { TEST_LOC_GATE_COOKIE, TEST_LOC_GATE_PASSWORD, TEST_LOC_GATE_TOKEN } from '@/lib/test-loc-gate';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 export async function POST(request: NextRequest) {
+  if (!checkRateLimit(request, 'test-loc-gate')) {
+    return NextResponse.json({ ok: false, error: 'too many attempts' }, { status: 429 });
+  }
   const body = await request.json().catch(() => null);
   const password = typeof body?.password === 'string' ? body.password : '';
 
