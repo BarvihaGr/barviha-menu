@@ -21,6 +21,10 @@ export const GEN_CATEGORIES: GenCategory[] = [
   { realm: "kitchen", sub: "healthy", label: "Правильное питание", order: 70 },
   { realm: "kitchen", sub: "lenten", label: "Постное меню", order: 80 },
   { realm: "kitchen", sub: "seasonal", label: "Сезонное предложение", order: 90 },
+  // Добавлено вручную при переносе позиций из xlsx-мастер-списка «макет NEW» (не из build_menu.py).
+  { realm: "kitchen", sub: "raw", label: "RAW", order: 11 },
+  { realm: "kitchen", sub: "bread-sauces", label: "Хлеб и соусы", order: 41 },
+  { realm: "kitchen", sub: "shashlik", label: "Шашлык", order: 27 },
   { realm: "bar", sub: "teas", label: "Чаи", order: 1 },
   { realm: "bar", sub: "teas-flower", label: "Цветочные чаи", order: 2 },
   { realm: "bar", sub: "teas-bodriye", label: "Чай «бодрых»", order: 3 },
@@ -36,6 +40,11 @@ export const GEN_CATEGORIES: GenCategory[] = [
   { realm: "bar", sub: "cocktails", label: "Коктейли", order: 45 },
   { realm: "bar", sub: "strong", label: "Крепкий алкоголь", order: 48 },
   { realm: "bar", sub: "beer", label: "Пиво и сидр", order: 50 },
+  // Добавлено вручную (см. комментарий выше) — только для kievskaia-network,
+  // у которой Бар на CatalogItem, а не на шаблоне Арки.
+  { realm: "bar", sub: "tisanes", label: "Тизаны", order: 6 },
+  { realm: "bar", sub: "tea-addons", label: "Добавки к чаю", order: 7 },
+  { realm: "bar", sub: "bar-snacks", label: "Снеки", order: 20 },
   { realm: "hookah", sub: "hookah", label: "Кальянная карта", order: 1 },
 ];
 
