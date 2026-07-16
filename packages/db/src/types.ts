@@ -249,6 +249,8 @@ export interface ResolvedMenuItem {
   /** Подкатегория-раздел внутри реалма (для группировки секциями). */
   sub?: string;
   subLabel?: string;
+  /** Позиция-баннер — рендерится на всю ширину сетки (широкая карточка с описанием) вместо обычной квадратной ячейки. */
+  is_featured?: boolean;
 }
 
 export interface HookahMood {

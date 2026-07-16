@@ -15,6 +15,7 @@ import { coffeeAccentStyle } from '@/lib/coffee-design';
 import { useKievTheme } from '@/store/kievTheme';
 import { KIEV_PALETTES } from './KievThemeProvider';
 import { CoffeeItemCard } from './CoffeeItemCard';
+import { FeaturedItemCard } from './FeaturedItemCard';
 
 interface SectionDef {
   id: string;
@@ -230,15 +231,24 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
 
               {/* Сетка карточек */}
               <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-8">
-                {s.items.map((item) => (
-                  <CoffeeItemCard
-                    key={item.id}
-                    item={item}
-                    name={pickItemName(item, locale)}
-                    description={null}
-                    locationSlug={locationSlug}
-                  />
-                ))}
+                {s.items.map((item) =>
+                  item.is_featured ? (
+                    <FeaturedItemCard
+                      key={item.id}
+                      item={item}
+                      name={pickItemName(item, locale)}
+                      locationSlug={locationSlug}
+                    />
+                  ) : (
+                    <CoffeeItemCard
+                      key={item.id}
+                      item={item}
+                      name={pickItemName(item, locale)}
+                      description={null}
+                      locationSlug={locationSlug}
+                    />
+                  ),
+                )}
               </div>
             </div>
           )

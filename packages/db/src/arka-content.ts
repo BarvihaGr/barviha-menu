@@ -212,6 +212,8 @@ export interface CatalogItem {
   is_available: boolean;
   /** В архиве (сезонное/неактуальное меню) — не показывается на живом меню независимо от is_available, и скрыто из обычных списков бэк-офиса (см. «Архив»). */
   is_archived?: boolean;
+  /** Позиция-баннер — рендерится на всю ширину сетки (широкая карточка с описанием) вместо обычной квадратной ячейки. */
+  is_featured?: boolean;
 }
 
 const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
@@ -306,6 +308,7 @@ export function toResolvedCatalogItem(it: CatalogItem): ResolvedMenuItem {
         : undefined,
     sub: it.sub,
     subLabel: subLabel(it.realm, it.sub),
+    is_featured: it.is_featured ?? false,
   };
 }
 
