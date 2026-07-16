@@ -75,17 +75,19 @@ const LOC = (
 export const MOCK_LOCATIONS: Location[] = [
   {
     // TODO: заменить на реальные address/phone для Арки.
-    // Тестовый эталон дизайна — не трогаем, живёт на /arka (см.
-    // TEMPLATE_SLUGS в onboarding.ts). Рабочая копия сети — 'arka-network'.
-    ...LOC('loc-arka', 'arka', 'Арка тест 1', ['lounge'], '/locations/arka/hero.mp4'),
+    // Живая рабочая локация сети — редактируется в бэк-офисе, открыта на
+    // «чистом» /arka (см. WORKING_SLUGS в onboarding.ts). Раньше жила на
+    // /arka-network — 2026-07-16 по просьбе пользователя переставлены
+    // местами со слотом теста, чтобы боевая ссылка была короткой.
+    ...LOC('loc-arka', 'arka', 'Арка', ['lounge'], '/locations/arka/hero.mp4'),
     address: 'г. Москва, ул. Киевская, 2',
     phone: '+7 (495) 000-00-00',
   },
   {
-    // Независимая рабочая копия Арки для сети (см. project memory) — своя
-    // content-store папка packages/db/content/arka-network, склонирована
-    // от 'arka' один раз, дальше правится в бэк-офисе отдельно от теста.
-    ...LOC('loc-arka-network', 'arka-network', 'Арка', ['lounge'], '/locations/arka/hero.mp4'),
+    // Тестовый эталон дизайна («Тест лок» в панели) — не трогаем правками
+    // для сети, застывший образец (см. TEMPLATE_SLUGS в onboarding.ts).
+    // Раньше жил на /arka — теперь на /arka-network (см. комментарий выше).
+    ...LOC('loc-arka-network', 'arka-network', 'Арка тест 1', ['lounge'], '/locations/arka/hero.mp4'),
     address: 'г. Москва, ул. Киевская, 2',
     phone: '+7 (495) 000-00-00',
   },

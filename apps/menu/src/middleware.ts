@@ -10,6 +10,7 @@ const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
 const SERVICE_PATHS = new Set([
   'kievskaia',
   'arka',
+  'arka-network',
   'arka-lab',
   'board',
   'buttons',
@@ -57,7 +58,7 @@ export default function middleware(request: NextRequest) {
 
     // Пароли на локациях (Арка + 25 рабочих клонов) убраны насовсем — все
     // локации открываются свободно, как раньше была только Киевская.
-    if (slug === 'arka' || slug === 'kievskaia' || isWorkingLocation) {
+    if (slug === 'arka' || slug === 'arka-network' || slug === 'kievskaia' || isWorkingLocation) {
       const res = intlMiddleware(request);
       setLastLoc(res, slug);
       return res;

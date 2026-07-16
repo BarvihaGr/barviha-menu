@@ -1,4 +1,4 @@
-import { WORKING_SLUGS } from '@barviha/db/onboarding';
+import { ARKA_STYLE_SLUGS, WORKING_SLUGS } from '@barviha/db/onboarding';
 import { getMetroColor } from './location-theme';
 
 const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
@@ -6,11 +6,12 @@ const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
 /**
  * Локации, у которых меню рендерится в дизайне Coffeemania
  * (левый сайдбар категорий + воздушная сетка карточек). Блюда — наши.
- * Единый стиль цвета и шрифтов у Арки и всех 25 рабочих клонов сети (см.
- * @barviha/db WORKING_SLUGS) — ARKA_PALETTE ниже. Киевская — единственное
- * исключение, свой отдельный эталон (KIEV_PALETTE), не трогаем.
+ * Единый стиль цвета и шрифтов у обеих Аркиных ссылок (ARKA_STYLE_SLUGS —
+ * 'arka' и 'arka-network', см. @barviha/db onboarding) и всех рабочих
+ * клонов сети — ARKA_PALETTE ниже. Киевская — единственное исключение,
+ * свой отдельный эталон (KIEV_PALETTE), не трогаем.
  */
-export const COFFEE_DESIGN_SLUGS = new Set(['arka', 'kievskaia']);
+export const COFFEE_DESIGN_SLUGS = new Set([...ARKA_STYLE_SLUGS, 'kievskaia']);
 
 export function isCoffeeDesign(slug: string): boolean {
   return COFFEE_DESIGN_SLUGS.has(slug) || WORKING_SLUG_SET.has(slug);
@@ -23,7 +24,7 @@ export function isCoffeeDesign(slug: string): boolean {
  *  - 'default' — воздушные плитки-категории. Сейчас не используется —
  *                весь единый стиль сети идёт через 'lux'.
  */
-const LUX_HOME_SLUGS = new Set(['arka', 'kievskaia']);
+const LUX_HOME_SLUGS = new Set([...ARKA_STYLE_SLUGS, 'kievskaia']);
 
 export function coffeeHomeVariant(slug: string): 'lux' | 'default' {
   return LUX_HOME_SLUGS.has(slug) || WORKING_SLUG_SET.has(slug) ? 'lux' : 'default';
@@ -38,16 +39,18 @@ const COFFEE_ACCENT_FROM: Record<string, string> = {};
 /** Прямой цвет акцента для отдельных coffee-локаций (перебивает ветку метро). */
 const COFFEE_ACCENT: Record<string, string> = {
   arka: '#C5A880', // как у Киевской — Арка временно 1:1 копия для теста
+  'arka-network': '#C5A880', // та же Арка, вторая ссылка (см. ARKA_STYLE_SLUGS)
   kievskaia: '#C5A880', // брендбук: матовое золото / шампань (приглушённый люкс)
 };
 
 /**
- * Акцентный цвет дизайна Coffeemania. Арка и все 25 рабочих клонов сети —
- * единый акцент Арки (COFFEE_ACCENT.arka). Киевская — свой отдельный эталон.
+ * Акцентный цвет дизайна Coffeemania. Обе Аркины ссылки и все рабочие клоны
+ * сети — единый акцент Арки (COFFEE_ACCENT.arka). Киевская — свой эталон.
  */
 export function getCoffeeAccent(slug: string): string {
+  if (COFFEE_ACCENT[slug]) return COFFEE_ACCENT[slug];
   if (WORKING_SLUG_SET.has(slug)) return COFFEE_ACCENT.arka!;
-  return COFFEE_ACCENT[slug] ?? getMetroColor(COFFEE_ACCENT_FROM[slug] ?? slug);
+  return getMetroColor(COFFEE_ACCENT_FROM[slug] ?? slug);
 }
 
 /** Токены палитры Coffeemania (фон/поверхности/текст/границы). */
@@ -123,6 +126,7 @@ const ARKA_PALETTE: CoffeePalette = {
 /** slug → палитра. Нет в карте (в т.ч. все рабочие клоны) → ARKA_PALETTE. */
 const COFFEE_PALETTE: Record<string, CoffeePalette> = {
   arka: ARKA_PALETTE,
+  'arka-network': ARKA_PALETTE,
   kievskaia: KIEV_PALETTE,
 };
 
