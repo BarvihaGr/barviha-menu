@@ -5,18 +5,18 @@ import { menuAssetUrl } from '@/lib/menu-origin';
 import { apiPath } from '@/lib/base-path';
 import { compressInBrowser } from '@/lib/compress-image';
 
-type Position = { x: number; y: number };
-type Rotation = 0 | 90 | 180 | 270;
-type Transform = { zoom: number; rotate: Rotation; flipH: boolean; flipV: boolean };
+export type Position = { x: number; y: number };
+export type Rotation = 0 | 90 | 180 | 270;
+export type Transform = { zoom: number; rotate: Rotation; flipH: boolean; flipV: boolean };
 
-const DEFAULT_POSITION: Position = { x: 50, y: 35 };
-const DEFAULT_TRANSFORM: Transform = { zoom: 1, rotate: 0, flipH: false, flipV: false };
+export const DEFAULT_POSITION: Position = { x: 50, y: 35 };
+export const DEFAULT_TRANSFORM: Transform = { zoom: 1, rotate: 0, flipH: false, flipV: false };
 
 function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n));
 }
 
-function cssTransform(t: Transform): string {
+export function cssTransform(t: Transform): string {
   return `rotate(${t.rotate}deg) scaleX(${t.flipH ? -1 : 1}) scaleY(${t.flipV ? -1 : 1}) scale(${t.zoom})`;
 }
 
@@ -130,7 +130,7 @@ export function PhotoUploader({
  * и на реальных карточках Арки. Перетаскивание — позиция, слайдер — зум,
  * кнопки — поворот на 90° и отражение. Сетка (правило третей) поверх кадра
  * помогает выровнять композицию. */
-function PositionEditor({
+export function PositionEditor({
   photoUrl,
   initialPos,
   initialTransform,

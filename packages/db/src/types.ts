@@ -217,6 +217,13 @@ export interface NutritionFacts {
   carbs: number;
 }
 
+/** Одна фотография позиции меню — со своим кадрированием. */
+export interface PhotoEntry {
+  src: string;
+  position: { x: number; y: number } | null;
+  transform: { zoom: number; rotate: 0 | 90 | 180 | 270; flipH: boolean; flipV: boolean } | null;
+}
+
 export interface ResolvedMenuItem {
   id: UUID;
   name: string;
@@ -227,6 +234,9 @@ export interface ResolvedMenuItem {
   description_en?: string | null;
   description_zh?: string | null;
   description_hy?: string | null;
+  /** Все фото позиции, первое — обложка/витрина. */
+  photos: PhotoEntry[];
+  /** Обложка (photos[0]) — производное поле, для мест, которым нужно только одно фото. */
   photo: string | null;
   /** Кадрирование фото в квадратной рамке карточки (0–100%, объектная позиция). Undefined/null — дефолт компонента. */
   photo_position?: { x: number; y: number } | null;

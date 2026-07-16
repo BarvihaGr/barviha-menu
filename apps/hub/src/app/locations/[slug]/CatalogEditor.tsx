@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import type { CatalogItem, CatalogRealm } from '@barviha/db';
 import { subLabel, subOrder } from '@barviha/db/catalog-shared';
 import { apiPath } from '@/lib/base-path';
-import { PhotoUploader } from './PhotoUploader';
+import { menuAssetUrl } from '@/lib/menu-origin';
+import { PhotoGalleryEditor } from './PhotoGalleryEditor';
+import { cssTransform, DEFAULT_POSITION, DEFAULT_TRANSFORM } from './PhotoUploader';
 import { SavedBadge } from './SavedBadge';
 
 export function CatalogEditor({
@@ -99,15 +101,7 @@ function CatalogItemRow({
         }}
         className="flex w-full items-center gap-3 text-left"
       >
-        <PhotoUploader
-          photo={draft.photo}
-          position={draft.photo_position}
-          transform={draft.photo_transform}
-          slug={slug}
-          realm={realm}
-          id={item.id}
-          onChange={(patch) => save(patch)}
-        />
+        <CoverThumbnail photos={draft.photos} />
         <div className="min-w-0 flex-1">
           <div className={`truncate text-sm ${draft.is_available ? 'text-[color:var(--text)]' : 'text-[color:var(--muted)] line-through'}`}>
             {draft.name}
@@ -124,6 +118,15 @@ function CatalogItemRow({
 
       {open && (
         <div className="mt-3 flex flex-col gap-3 rounded-lg border border-[color:var(--border)] bg-[color:var(--surface)] p-4">
+          <Field label="Фото (первое — на витрине)">
+            <PhotoGalleryEditor
+              photos={draft.photos}
+              slug={slug}
+              realm={realm}
+              id={item.id}
+              onChange={(photos) => save({ photos })}
+            />
+          </Field>
           <Field label="Название">
             <input
               defaultValue={draft.name}
@@ -195,5 +198,38 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       {label}
       {children}
     </label>
+  );
+}
+
+/** Обложка позиции (photos[0]) в свёрнутой строке списка — только показ,
+ * само редактирование галереи открывается через разворот строки. */
+function CoverThumbnail({ photos }: { photos: CatalogItem['photos'] }) {
+  const cover = photos[0];
+  const photoUrl = menuAssetUrl(cover?.src ?? null);
+  const pos = cover?.position ?? DEFAULT_POSITION;
+  const tf = cover?.transform ?? DEFAULT_TRANSFORM;
+  return (
+    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-[color:var(--border)] bg-[color:var(--surface-2)]">
+      {photoUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu), не оптимизируем
+        <img
+          src={photoUrl}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover"
+          style={{ objectPosition: `${pos.x}% ${pos.y}%`, transform: cssTransform(tf) }}
+        />
+      ) : (
+        <span className="flex h-full w-full items-center justify-center text-[9px] uppercase text-[color:var(--muted)]">
+          фото
+        </span>
+      )}
+      {photos.length > 1 && (
+        <span className="absolute bottom-0.5 right-0.5 rounded bg-black/60 px-1 text-[8px] font-medium text-white">
+          {photos.length}
+        </span>
+      )}
+    </div>
   );
 }

@@ -1,10 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
-import * as Dialog from '@radix-ui/react-dialog';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Expand, Minus, Plus, X } from 'lucide-react';
+import { Minus, Plus, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ItemLabel, ResolvedMenuItem } from '@barviha/db';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -13,6 +10,7 @@ import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import type { RelatedItem } from '@/components/RelatedItemsRail';
 import { trackAdd } from '@/lib/stats';
+import { PhotoGallery } from '@/components/PhotoGallery';
 
 interface Ingredient {
   name: string;
@@ -48,13 +46,7 @@ export function CoffeeItemDetail({
       <article className="min-w-0 overflow-hidden rounded-3xl border border-[var(--cm-border)] bg-[var(--cm-surface-2)]">
         <div className="px-3 pt-3 sm:px-4 sm:pt-4">
           <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-[var(--cm-surface)]">
-            {item.photo ? (
-              <CoffeePhotoViewer src={item.photo} alt={name} />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center text-7xl text-[#d8d6d0]">
-                ◍
-              </div>
-            )}
+            <PhotoGallery photos={item.photos} alt={name} />
             <CoffeeCloseButton fallbackHref={`/${locationSlug}`} />
             {item.labels.length > 0 && (
               <div className="absolute left-3 top-14 z-10 flex flex-col gap-1.5">
@@ -173,92 +165,6 @@ function CoffeeCloseButton({ fallbackHref }: { fallbackHref: string }) {
     >
       <X size={16} />
     </button>
-  );
-}
-
-/** Фото блюда: превью кадрированное, по тапу — на весь экран целиком. */
-function CoffeePhotoViewer({ src, alt }: { src: string; alt: string }) {
-  const [open, setOpen] = useState(false);
-  const t = useTranslations('item');
-
-  return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger asChild>
-        <button
-          type="button"
-          aria-label={t('viewPhoto')}
-          className="group absolute inset-0 cursor-zoom-in outline-none"
-        >
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            sizes="(max-width: 768px) 100vw, 768px"
-            priority
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-          <span className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/90 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition group-hover:bg-[var(--cm-surface-2)]">
-            <Expand size={16} />
-          </span>
-        </button>
-      </Dialog.Trigger>
-
-      <AnimatePresence>
-        {open && (
-          <Dialog.Portal forceMount>
-            <Dialog.Overlay asChild>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-[80] bg-[var(--cm-text)]/85 backdrop-blur-md"
-              />
-            </Dialog.Overlay>
-            <Dialog.Content
-              asChild
-              aria-describedby={undefined}
-              onOpenAutoFocus={(e) => e.preventDefault()}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.24, ease: 'easeOut' }}
-                className="fixed inset-0 z-[90] flex items-center justify-center p-4 sm:p-8"
-              >
-                <Dialog.Title className="sr-only">{alt}</Dialog.Title>
-
-                <Dialog.Close asChild>
-                  <button
-                    type="button"
-                    aria-label={t('closePhoto')}
-                    className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/90 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition hover:bg-[var(--cm-surface-2)] cursor-pointer"
-                  >
-                    <X size={20} />
-                  </button>
-                </Dialog.Close>
-
-                <Dialog.Close asChild>
-                  <button
-                    type="button"
-                    aria-label={t('closePhoto')}
-                    className="relative flex max-h-full max-w-full cursor-zoom-out items-center justify-center"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element -- произвольное соотношение сторон, нужен natural-size */}
-                    <img
-                      src={src}
-                      alt={alt}
-                      className="max-h-[88vh] max-w-[92vw] rounded-2xl object-contain shadow-2xl"
-                    />
-                  </button>
-                </Dialog.Close>
-              </motion.div>
-            </Dialog.Content>
-          </Dialog.Portal>
-        )}
-      </AnimatePresence>
-    </Dialog.Root>
   );
 }
 

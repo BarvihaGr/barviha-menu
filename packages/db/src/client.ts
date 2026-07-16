@@ -130,6 +130,7 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
       .replace(/\s+и\s+(?:\w+\s+)*соусом\s*$/i, '')
       .trim(),
     description: it.description,
+    photos: PHOTOS[it.id] ? [{ src: PHOTOS[it.id]!, position: null, transform: null }] : [],
     photo: PHOTOS[it.id] ?? null,
     composition: it.composition,
     category_id: it.realm,

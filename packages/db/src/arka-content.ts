@@ -17,7 +17,7 @@ import { getItemVariants } from './arka-shared';
 import type { ArkaMenuEntry, ArkaMenuItem } from './arka-shared';
 import { usesArkaBarTemplate } from './onboarding';
 import type { GenKbju } from './menu-types';
-import type { ResolvedMenuItem } from './types';
+import type { PhotoEntry, ResolvedMenuItem } from './types';
 
 export type { ArkaMenuEntry, ArkaMenuItem, ArkaMenuVariant } from './arka-shared';
 export { getItemVariants } from './arka-shared';
@@ -51,6 +51,9 @@ export function toResolvedBarItems(slug: string): ResolvedMenuItem[] {
         id: v.id,
         name: v.name,
         description: v.description,
+        photos: item.photo
+          ? [{ src: item.photo, position: item.photo_position ?? null, transform: item.photo_transform ?? null }]
+          : [],
         photo: item.photo,
         photo_position: item.photo_position ?? null,
         photo_transform: item.photo_transform ?? null,
@@ -204,11 +207,8 @@ export interface CatalogItem {
   composition: string | null;
   kbju: GenKbju | null;
   price: number;
-  photo: string | null;
-  /** Кадрирование фото в квадратной рамке карточки (0–100%, объектная позиция). Null/отсутствует — дефолт. */
-  photo_position?: { x: number; y: number } | null;
-  /** Зум/поворот/отражение поверх object-position. Null/отсутствует — дефолт (без изменений). */
-  photo_transform?: { zoom: number; rotate: 0 | 90 | 180 | 270; flipH: boolean; flipV: boolean } | null;
+  /** Все фото позиции, первое — обложка/витрина (см. PhotoEntry). */
+  photos: PhotoEntry[];
   is_available: boolean;
   /** В архиве (сезонное/неактуальное меню) — не показывается на живом меню независимо от is_available, и скрыто из обычных списков бэк-офиса (см. «Архив»). */
   is_archived?: boolean;
@@ -264,7 +264,7 @@ export function addCatalogItem(slug: string, realm: CatalogRealm, input: NewCata
     composition: input.composition ?? null,
     kbju: input.weight != null ? { weight: input.weight, prot: null, fat: null, carb: null, kcal: null } : null,
     price: input.price,
-    photo: null,
+    photos: [],
     is_available: true,
   };
   items.push(item);
@@ -289,9 +289,10 @@ export function toResolvedCatalogItem(it: CatalogItem): ResolvedMenuItem {
     id: it.id,
     name: it.name,
     description: it.description,
-    photo: it.photo,
-    photo_position: it.photo_position ?? null,
-    photo_transform: it.photo_transform ?? null,
+    photos: it.photos,
+    photo: it.photos[0]?.src ?? null,
+    photo_position: it.photos[0]?.position ?? null,
+    photo_transform: it.photos[0]?.transform ?? null,
     composition: it.composition,
     category_id: it.realm,
     price: it.price,
@@ -354,7 +355,7 @@ function allFlagItems(slug: string): FlagListItem[] {
       id: it.id,
       realm,
       name: it.name,
-      photo: it.photo,
+      photo: it.photos[0]?.src ?? null,
       price: it.price,
       is_available: it.is_available,
       is_archived: it.is_archived ?? false,

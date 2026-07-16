@@ -57,6 +57,7 @@ export function toResolvedArkaBarItems(slug: string): ResolvedMenuItem[] {
         id: v.id,
         name: v.name,
         description: v.description,
+        photos: item.photo ? [{ src: item.photo, position: item.photo_position ?? null, transform: item.photo_transform ?? null }] : [],
         photo: item.photo,
         composition: null,
         category_id: 'bar',

@@ -74,17 +74,17 @@ export function getStatsSummary(slug: string): StatsRow[] {
     id: it.id,
     realm: 'kitchen' as const,
     name: it.name,
-    photo: it.photo,
+    photo: it.photos[0]?.src ?? null,
   }));
   const hookah = getCatalogItems(slug, 'hookah').map((it) => ({
     id: it.id,
     realm: 'hookah' as const,
     name: it.name,
-    photo: it.photo,
+    photo: it.photos[0]?.src ?? null,
   }));
   const bar = usesArkaBarTemplate(slug)
     ? flattenBarVariants(getBarSections(slug)).map((it) => ({ ...it, realm: 'bar' as const }))
-    : getCatalogItems(slug, 'bar').map((it) => ({ id: it.id, realm: 'bar' as const, name: it.name, photo: it.photo }));
+    : getCatalogItems(slug, 'bar').map((it) => ({ id: it.id, realm: 'bar' as const, name: it.name, photo: it.photos[0]?.src ?? null }));
 
   return [...kitchen, ...hookah, ...bar].map((it) => {
     const s = stats[it.id] ?? { views: 0, adds: 0 };
