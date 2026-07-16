@@ -42,15 +42,15 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
         {visible && (
           <motion.div
             key="splash"
-            className="flex items-center justify-center"
-            style={{ position: 'fixed', inset: 0, zIndex: 9999, background: '#000', overflow: 'hidden' }}
+            // Фон — тот же бежевый, что и у самого видео (не чёрный). Видео —
+            // object-contain (целиком, дерево никогда не обрезается по бокам
+            // на узких/телефонных экранах), а поля вокруг совпадают по цвету
+            // с фоном видео — граница не видна, бежевый как будто продолжается.
+            style={{ position: 'fixed', inset: 0, zIndex: 9999, background: '#DDD2C1', overflow: 'hidden' }}
             animate={{ opacity: fading ? 0 : 1 }}
             transition={{ duration: 0.7, ease: 'easeInOut' }}
             onClick={dismiss}
           >
-            {/* Телефон/планшет — во весь экран (cover). От ноутбука (xl, 1280px+)
-                кадр «отдаляем»: видео чуть меньше вьюпорта, целиком видно (contain),
-                с чёрными полями вокруг — выглядит собраннее, не так плотно прижато к краям. */}
             <video
               ref={videoRef}
               src="/splash/smesh-dj.mp4"
@@ -58,7 +58,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
               muted
               playsInline
               preload="auto"
-              className="h-full w-full object-cover xl:h-auto xl:max-h-[80vh] xl:w-[min(85vw,1500px)] xl:rounded-2xl xl:object-contain xl:shadow-[0_40px_120px_-20px_rgba(0,0,0,0.85)]"
+              className="h-full w-full object-contain"
             />
           </motion.div>
         )}
