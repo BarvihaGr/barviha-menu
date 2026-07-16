@@ -3,8 +3,6 @@ import { routing } from './i18n/routing';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { WORKING_SLUGS } from '@barviha/db/onboarding';
-import { ARKA_GATE_COOKIE } from './lib/arka-gate';
-import { TEST_LOC_GATE_COOKIE } from './lib/test-loc-gate';
 
 const intlMiddleware = createMiddleware(routing);
 const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
@@ -13,8 +11,6 @@ const SERVICE_PATHS = new Set([
   'kievskaia',
   'arka',
   'arka-lab',
-  'arka-gate',
-  'test-loc-gate',
   'board',
   'buttons',
   'concepts',
@@ -55,17 +51,12 @@ export default function middleware(request: NextRequest) {
       const url = request.nextUrl.clone();
       url.pathname = `/${locale}/kievskaia${rest}`;
       const res = NextResponse.redirect(url, { status: 302 });
-      res.cookies.delete(ARKA_GATE_COOKIE);
-      res.cookies.delete(TEST_LOC_GATE_COOKIE);
       setLastLoc(res, 'kievskaia');
       return res;
     }
 
-    // По просьбе пользователя пароли на локациях (Арка + 25 рабочих клонов)
-    // убраны — все локации открываются свободно, как раньше была только
-    // Киевская. Инфраструктура гейтов (страницы /arka-gate, /test-loc-gate,
-    // их API-роуты) осталась в коде на случай, если пароли понадобится
-    // вернуть — просто не вызывается отсюда.
+    // Пароли на локациях (Арка + 25 рабочих клонов) убраны насовсем — все
+    // локации открываются свободно, как раньше была только Киевская.
     if (slug === 'arka' || slug === 'kievskaia' || isWorkingLocation) {
       const res = intlMiddleware(request);
       setLastLoc(res, slug);

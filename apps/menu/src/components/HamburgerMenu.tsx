@@ -61,7 +61,10 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase().replace(/ё/g, 'е');
+    // Тест лок (Арка/Киевская — эталоны дизайна) не показываем покупателю —
+    // они доступны только по прямой ссылке, для внутреннего использования.
     return [...locations]
+      .filter((l) => !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug))
       .filter((l) =>
         !query ||
         [l.name, l.name_en, l.name_zh, l.city]
@@ -70,17 +73,6 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
       )
       .sort((a, b) => locName(a, locale).localeCompare(locName(b, locale), 'ru'));
   }, [locations, q, locale]);
-
-  // Тест лок (Арка/Киевская — эталоны дизайна) отдельно от рабочих локаций
-  // сети — как группировка в бэк-офисе (apps/hub Sidebar).
-  const templateLocs = useMemo(
-    () => filtered.filter((l) => (TEMPLATE_SLUGS as readonly string[]).includes(l.slug)),
-    [filtered],
-  );
-  const workingLocs = useMemo(
-    () => filtered.filter((l) => !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug)),
-    [filtered],
-  );
 
   const switchLang = (next: Locale) => {
     setOpen(false);
@@ -230,32 +222,9 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
 
                     {/* Список локаций */}
                     <div className="overflow-y-auto flex-1 -mx-1">
-                      {templateLocs.length > 0 && (
-                        <>
-                          <div className="px-3 pb-1.5 pt-1 text-[10px] uppercase tracking-[0.2em] opacity-40">
-                            Тест лок
-                          </div>
-                          {templateLocs.map((l) => (
-                            <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
-                          ))}
-                        </>
-                      )}
-
-                      {workingLocs.length > 0 && (
-                        <>
-                          <div
-                            className={cn(
-                              'mt-2 border-t px-3 pb-1.5 pt-2.5 text-[10px] uppercase tracking-[0.2em] opacity-40',
-                              D.divider,
-                            )}
-                          >
-                            Локации сети
-                          </div>
-                          {workingLocs.map((l) => (
-                            <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
-                          ))}
-                        </>
-                      )}
+                      {filtered.map((l) => (
+                        <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
+                      ))}
 
                       {filtered.length === 0 && (
                         <div className="py-8 text-center text-[12px] opacity-30 uppercase tracking-[0.2em]">—</div>
