@@ -11,7 +11,7 @@ import { activeSectionsFor } from '@/lib/menu-sections';
 import { cn } from '@/lib/utils';
 import { applyFilters, type FilterKey, type FilterRealm } from '../FilterBar';
 import { FilterDrawer } from '../FilterDrawer';
-import { coffeeAccentStyle } from '@/lib/coffee-design';
+import { coffeeAccentStyle, isKievskaiaStyle } from '@/lib/coffee-design';
 import { useKievTheme } from '@/store/kievTheme';
 import { KIEV_PALETTES } from './KievThemeProvider';
 import { CoffeeItemCard } from './CoffeeItemCard';
@@ -51,7 +51,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   const kievVariant = useKievTheme((s) => s.variant);
-  const themeStyle = locationSlug === 'kievskaia'
+  const themeStyle = isKievskaiaStyle(locationSlug)
     ? { ...coffeeAccentStyle(locationSlug), ...(KIEV_PALETTES[kievVariant] as React.CSSProperties) }
     : coffeeAccentStyle(locationSlug);
 

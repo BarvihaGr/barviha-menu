@@ -14,6 +14,7 @@ import { ScrollMemory } from '@/components/ScrollMemory';
 import { getLocationAccent } from '@/lib/location-theme';
 import {
   isCoffeeDesign,
+  isKievskaiaStyle,
   getCoffeeAccent,
   coffeeAccentStyle,
   coffeeHomeVariant,
@@ -57,7 +58,7 @@ export default async function LocationLayout({
 
   const coffee = coffeeDesign;
   const lux = coffee && coffeeHomeVariant(location.slug) === 'lux';
-  const isKiev = location.slug === 'kievskaia';
+  const isKiev = isKievskaiaStyle(location.slug);
 
   const inner = (
     <>

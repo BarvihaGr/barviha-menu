@@ -3,7 +3,7 @@
 import { Home, BookOpen, MapPin, ShoppingBag } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
-import { coffeeAccentStyle } from '@/lib/coffee-design';
+import { coffeeAccentStyle, isKievskaiaStyle } from '@/lib/coffee-design';
 import { useKievTheme } from '@/store/kievTheme';
 import { KIEV_PALETTES } from './KievThemeProvider';
 import { cn } from '@/lib/utils';
@@ -24,7 +24,7 @@ export function LuxBottomNav({ locationSlug }: Props) {
   const base = `/${locationSlug}`;
   const kievVariant = useKievTheme((s) => s.variant);
   // Для Киевской — динамический стиль на основе текущей палитры
-  const navStyle = locationSlug === 'kievskaia'
+  const navStyle = isKievskaiaStyle(locationSlug)
     ? { ...coffeeAccentStyle(locationSlug), ...KIEV_PALETTES[kievVariant] }
     : coffeeAccentStyle(locationSlug);
 

@@ -1,4 +1,4 @@
-import { ARKA_STYLE_SLUGS, WORKING_SLUGS } from '@barviha/db/onboarding';
+import { ARKA_STYLE_SLUGS, KIEVSKAIA_STYLE_SLUGS, WORKING_SLUGS } from '@barviha/db/onboarding';
 import { getMetroColor } from './location-theme';
 
 const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
@@ -7,14 +7,23 @@ const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
  * Локации, у которых меню рендерится в дизайне Coffeemania
  * (левый сайдбар категорий + воздушная сетка карточек). Блюда — наши.
  * Единый стиль цвета и шрифтов у обеих Аркиных ссылок (ARKA_STYLE_SLUGS —
- * 'arka' и 'arka-network', см. @barviha/db onboarding) и всех рабочих
- * клонов сети — ARKA_PALETTE ниже. Киевская — единственное исключение,
- * свой отдельный эталон (KIEV_PALETTE), не трогаем.
+ * 'arka' и 'arka-network') и всех рабочих клонов сети — ARKA_PALETTE ниже.
+ * Обе Киевские ссылки (KIEVSKAIA_STYLE_SLUGS) — свой отдельный эталон
+ * (KIEV_PALETTE), не трогаем. Обе пары констант — из @barviha/db onboarding.
  */
-export const COFFEE_DESIGN_SLUGS = new Set([...ARKA_STYLE_SLUGS, 'kievskaia']);
+export const COFFEE_DESIGN_SLUGS = new Set<string>([...ARKA_STYLE_SLUGS, ...KIEVSKAIA_STYLE_SLUGS]);
 
 export function isCoffeeDesign(slug: string): boolean {
   return COFFEE_DESIGN_SLUGS.has(slug) || WORKING_SLUG_SET.has(slug);
+}
+
+/**
+ * Обе Киевские ссылки ('kievskaia' и 'kievskaia-network') — один и тот же
+ * особый функционал (KievThemeProvider, ручной переключатель палитры
+ * «Слоновая кость» / «Арка»), независимо от того, какая сейчас «Тест лок».
+ */
+export function isKievskaiaStyle(slug: string): boolean {
+  return (KIEVSKAIA_STYLE_SLUGS as readonly string[]).includes(slug);
 }
 
 /**
@@ -24,7 +33,7 @@ export function isCoffeeDesign(slug: string): boolean {
  *  - 'default' — воздушные плитки-категории. Сейчас не используется —
  *                весь единый стиль сети идёт через 'lux'.
  */
-const LUX_HOME_SLUGS = new Set([...ARKA_STYLE_SLUGS, 'kievskaia']);
+const LUX_HOME_SLUGS = new Set<string>([...ARKA_STYLE_SLUGS, ...KIEVSKAIA_STYLE_SLUGS]);
 
 export function coffeeHomeVariant(slug: string): 'lux' | 'default' {
   return LUX_HOME_SLUGS.has(slug) || WORKING_SLUG_SET.has(slug) ? 'lux' : 'default';
@@ -41,6 +50,7 @@ const COFFEE_ACCENT: Record<string, string> = {
   arka: '#C5A880', // как у Киевской — Арка временно 1:1 копия для теста
   'arka-network': '#C5A880', // та же Арка, вторая ссылка (см. ARKA_STYLE_SLUGS)
   kievskaia: '#C5A880', // брендбук: матовое золото / шампань (приглушённый люкс)
+  'kievskaia-network': '#C5A880', // та же Киевская, вторая ссылка (см. KIEVSKAIA_STYLE_SLUGS)
 };
 
 /**
@@ -128,6 +138,7 @@ const COFFEE_PALETTE: Record<string, CoffeePalette> = {
   arka: ARKA_PALETTE,
   'arka-network': ARKA_PALETTE,
   kievskaia: KIEV_PALETTE,
+  'kievskaia-network': KIEV_PALETTE,
 };
 
 /**

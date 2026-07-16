@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
-import { coffeeAccentStyle, getCoffeeAccent } from '@/lib/coffee-design';
+import { coffeeAccentStyle, getCoffeeAccent, isKievskaiaStyle } from '@/lib/coffee-design';
 import { useKievTheme } from '@/store/kievTheme';
 import { KIEV_PALETTES } from './KievThemeProvider';
 import { HamburgerMenu } from '../HamburgerMenu';
@@ -17,10 +17,10 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
   const homeHref = `/${locationSlug}`;
   const kievVariant = useKievTheme((s) => s.variant);
   const kievPalette = KIEV_PALETTES[kievVariant] as React.CSSProperties;
-  const headerStyle = locationSlug === 'kievskaia'
+  const headerStyle = isKievskaiaStyle(locationSlug)
     ? { ...coffeeAccentStyle(locationSlug), ...kievPalette }
     : coffeeAccentStyle(locationSlug);
-  const portalStyle: React.CSSProperties = locationSlug === 'kievskaia'
+  const portalStyle: React.CSSProperties = isKievskaiaStyle(locationSlug)
     ? { ['--cm-accent' as string]: getCoffeeAccent(locationSlug), ...kievPalette }
     : { ['--cm-accent' as string]: getCoffeeAccent(locationSlug) };
 
@@ -81,7 +81,7 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
           locations={locations}
           variant="coffee"
           themeStyle={portalStyle}
-          showPalettePicker={locationSlug === 'kievskaia'}
+          showPalettePicker={isKievskaiaStyle(locationSlug)}
         />
       </div>
     </header>

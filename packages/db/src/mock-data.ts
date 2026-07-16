@@ -94,12 +94,14 @@ export const MOCK_LOCATIONS: Location[] = [
   LOC('loc-baumanskaia', 'baumanskaia', 'Бауманская'),
   LOC('loc-domodedovo', 'domodedovo', 'Домодедово'),
   LOC('loc-erevan', 'erevan', 'Ереван'),
+  // Живая рабочая копия Киевской для сети — редактируется в бэк-офисе,
+  // открыта на «чистом» /kievskaia. Раньше жила на /kievskaia-network —
+  // 2026-07-17 по просьбе пользователя переставлена местами со слотом
+  // теста, чтобы боевая ссылка была короткой (см. onboarding.ts).
+  LOC('loc-kievskaia', 'kievskaia', 'Киевская'),
   // Тестовый эталон Киевской — свой отдельный дизайн Бара, не трогаем (см.
-  // TEMPLATE_SLUGS в onboarding.ts). Рабочая копия сети — 'kievskaia-network'.
-  LOC('loc-kievskaia', 'kievskaia', 'Киевская тест 1'),
-  // Независимая рабочая копия Киевской для сети — своя content-store папка
-  // packages/db/content/kievskaia-network, склонирована от 'kievskaia'.
-  LOC('loc-kievskaia-network', 'kievskaia-network', 'Киевская'),
+  // TEMPLATE_SLUGS в onboarding.ts). Раньше жил на /kievskaia.
+  LOC('loc-kievskaia-network', 'kievskaia-network', 'Киевская тест 1'),
   LOC('loc-kolomenskaia', 'kolomenskaia', 'Коломенская'),
   LOC('loc-krasnaia-ploshchad', 'krasnaia-ploshchad', 'Красная Площадь'),
   LOC('loc-krylatskoe', 'barvixa-lounge-krylatskoe', 'Крылатское', ['lounge', 'karaoke']),
