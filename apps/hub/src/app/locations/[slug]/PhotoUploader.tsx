@@ -162,7 +162,11 @@ function PositionEditor({
     if (!dragRef.current || !containerRef.current || !imgSizeRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const { w: iw, h: ih } = imgSizeRef.current;
-    const coverScale = Math.max(rect.width / iw, rect.height / ih);
+    // Лимит сдвига должен учитывать текущий зум — иначе для квадратной рамки
+    // и портретного фото overflowX считается в 0 при zoom=1, и сдвиг влево-
+    // вправо намертво блокируется, даже когда зум визуально даёт для него
+    // место (cssTransform применяет scale(tf.zoom) поверх object-position).
+    const coverScale = Math.max(rect.width / iw, rect.height / ih) * dragRef.current.zoom;
     const overflowX = iw * coverScale - rect.width;
     const overflowY = ih * coverScale - rect.height;
     // Экранное движение делим на zoom — при увеличении та же дистанция мышью
