@@ -116,10 +116,15 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   }, [hasMultipleSections, sections]);
 
   // ── Автоскролл активного чипа в видимую зону ──────────────────────
+  // behavior: 'auto' (не 'smooth') — иначе этот горизонтальный скролл ленты
+  // чипов запускается почти в тот же тик, что и вертикальный smooth-скролл
+  // страницы из jumpTo(). На Android Chrome два параллельных smooth-скролла
+  // конкурируют за один и тот же scroll-timeline и гасят друг друга — тап по
+  // чипу подсвечивал его, но страница к разделу не ехала вообще.
   useEffect(() => {
     if (!activeSection || !chipBarRef.current) return;
     const chip = chipBarRef.current.querySelector<HTMLElement>(`[data-sec="${activeSection}"]`);
-    chip?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    chip?.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
   }, [activeSection]);
 
   // ── Тап по чипу — прыжок к секции ────────────────────────────────
@@ -130,7 +135,12 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
     // подтвердит секцию по факту скролла — иначе на время smooth-скролла
     // мог светиться предыдущий активный чип.
     setActiveSection(id);
-    const headerH = 120;
+    // Меряем реальный нижний край стики-стека (шапка + категории + лента
+    // чипов) вместо фиксированного числа — раньше было захардкожено 120,
+    // что не совпадало с реальной высотой на мобиле (~105px) и на десктопе
+    // (~43px), из-за чего раздел мог уезжать не туда даже когда скролл всё же срабатывал.
+    const stickyBottom = chipBarRef.current?.closest<HTMLElement>('.sticky')?.getBoundingClientRect().bottom;
+    const headerH = stickyBottom ?? 120;
     const top = el.getBoundingClientRect().top + window.scrollY - headerH;
     window.scrollTo({ top, behavior: 'smooth' });
   };
