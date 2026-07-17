@@ -14,13 +14,15 @@ import { ItemCloseButton } from '@/components/ItemCloseButton';
 import { CoffeeItemDetail } from '@/components/coffee/CoffeeItemDetail';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
 import { toResolvedArkaBarItems } from '@/lib/arka-bar-loader';
+import { decodeRouteParam } from '@/lib/decode-param';
 
 export default async function ItemDetailPage({
   params,
 }: {
   params: Promise<{ locale: string; locationSlug: string; itemId: string }>;
 }) {
-  const { locale, locationSlug, itemId } = await params;
+  const { locale, locationSlug, itemId: rawItemId } = await params;
+  const itemId = decodeRouteParam(rawItemId);
   setRequestLocale(locale);
   const t = await getTranslations('item');
 
