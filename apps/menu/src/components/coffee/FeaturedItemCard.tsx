@@ -20,10 +20,11 @@ interface Props {
 }
 
 /**
- * Широкая карточка-баннер на всю ширину сетки — для позиций с is_featured
- * (см. ResolvedMenuItem). В остальном тот же функционал, что у CoffeeItemCard
- * (переход на детальную, добавление в корзину), но фото не квадратное, а
- * широкое, и под названием сразу видно описание — как единое групповое фото.
+ * Широкая карточка на всю ширину сетки — для позиций с is_featured (см.
+ * ResolvedMenuItem). Фото не квадратное, а широкое (во всю ширину), но
+ * название/описание/цена — под фото, как в обычной карточке (см.
+ * CoffeeItemCard), а не оверлеем поверх снимка: на светлых фото
+ * белый текст поверх градиента было не прочитать.
  */
 export function FeaturedItemCard({ item, name, locationSlug }: Props) {
   const add = useCart((s) => s.add);
@@ -52,7 +53,7 @@ export function FeaturedItemCard({ item, name, locationSlug }: Props) {
       transition={{ duration: 0.38, ease: [0.25, 0.1, 0.25, 1] }}
     >
       <Link href={`/${locationSlug}/item/${item.id}`} className="block focus:outline-none">
-        {/* Широкое фото-баннер */}
+        {/* Широкое фото */}
         <div className="relative aspect-[3/2] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
           {item.photo ? (
             <Image
@@ -72,36 +73,35 @@ export function FeaturedItemCard({ item, name, locationSlug }: Props) {
               ◍
             </div>
           )}
-          {/* Затемнение снизу — чтобы текст поверх фото не терялся, если фото поставят позже */}
-          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+        </div>
 
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-6">
-            <div className="min-w-0">
-              <h3 className="font-[family-name:var(--font-display)] text-[20px] sm:text-[26px] font-light uppercase tracking-[0.05em] text-white">
-                {displayName}
-              </h3>
-              {item.description && (
-                <p className="mt-1 max-w-xl text-[12.5px] sm:text-[13.5px] leading-snug text-white/80 line-clamp-2">
-                  {item.description}
-                </p>
-              )}
-              <span className="mt-2 block text-[15px] font-semibold text-white">
-                {formatPrice(item.price)}
-              </span>
-            </div>
-
-            <button
-              type="button"
-              onClick={addToCart}
-              aria-label={`${t('item.addToCart')} ${displayName}`}
-              className={cnBump(
-                bump,
-                'grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[var(--cm-accent)] text-[var(--cm-text)] shadow-sm transition-all duration-200 active:scale-90 cursor-pointer',
-              )}
-            >
-              <Plus className="h-5 w-5" strokeWidth={2.2} />
-            </button>
+        {/* Инфо под фото */}
+        <div className="flex items-end justify-between gap-4 pt-3">
+          <div className="min-w-0">
+            <h3 className="font-[family-name:var(--font-display)] text-[18px] sm:text-[22px] font-light uppercase tracking-[0.05em] text-[var(--cm-text)]">
+              {displayName}
+            </h3>
+            {item.description && (
+              <p className="mt-1 max-w-xl text-[12.5px] sm:text-[13.5px] leading-snug text-[var(--cm-muted)]">
+                {item.description}
+              </p>
+            )}
+            <span className="mt-2 block text-[15px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
+              {formatPrice(item.price)}
+            </span>
           </div>
+
+          <button
+            type="button"
+            onClick={addToCart}
+            aria-label={`${t('item.addToCart')} ${displayName}`}
+            className={cnBump(
+              bump,
+              'grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[var(--cm-accent)] text-[var(--cm-text)] shadow-sm transition-all duration-200 active:scale-90 cursor-pointer',
+            )}
+          >
+            <Plus className="h-5 w-5" strokeWidth={2.2} />
+          </button>
         </div>
       </Link>
     </motion.article>
