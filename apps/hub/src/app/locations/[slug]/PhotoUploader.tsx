@@ -10,7 +10,12 @@ export type Rotation = 0 | 90 | 180 | 270;
 export type Transform = { zoom: number; rotate: Rotation; flipH: boolean; flipV: boolean };
 
 export const DEFAULT_POSITION: Position = { x: 50, y: 35 };
-export const DEFAULT_TRANSFORM: Transform = { zoom: 1, rotate: 0, flipH: false, flipV: false };
+// Минимальный зум чуть больше 1 (не ровно cover-fit): при zoom=1 у не-квадратного
+// фото одна из осей (высота — у альбомных, ширина — у портретных) садится в рамку
+// впритык, без единого пикселя запаса — двигать в эту сторону физически некуда.
+// Небольшой запас (14%) даёт место для сдвига сразу по обеим осям.
+export const MIN_ZOOM = 1.14;
+export const DEFAULT_TRANSFORM: Transform = { zoom: MIN_ZOOM, rotate: 0, flipH: false, flipV: false };
 
 function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n));
@@ -116,7 +121,10 @@ export function PhotoUploader({
           }}
           onSave={(nextPos, nextTransform) => {
             const isDefault =
-              nextTransform.zoom === 1 && nextTransform.rotate === 0 && !nextTransform.flipH && !nextTransform.flipV;
+              nextTransform.zoom === MIN_ZOOM &&
+              nextTransform.rotate === 0 &&
+              !nextTransform.flipH &&
+              !nextTransform.flipV;
             onChange({ photo_position: nextPos, photo_transform: isDefault ? null : nextTransform });
             setEditing(false);
           }}
@@ -236,7 +244,7 @@ export function PositionEditor({
           <span className="text-[10px] uppercase tracking-[0.1em] text-[color:var(--muted)]">Зум</span>
           <input
             type="range"
-            min={1}
+            min={MIN_ZOOM}
             max={3}
             step={0.05}
             value={tf.zoom}

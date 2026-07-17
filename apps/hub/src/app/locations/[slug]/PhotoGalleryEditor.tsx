@@ -5,7 +5,7 @@ import type { PhotoEntry } from '@barviha/db';
 import { menuAssetUrl } from '@/lib/menu-origin';
 import { apiPath } from '@/lib/base-path';
 import { compressInBrowser } from '@/lib/compress-image';
-import { PositionEditor, cssTransform, DEFAULT_POSITION, DEFAULT_TRANSFORM } from './PhotoUploader';
+import { PositionEditor, cssTransform, DEFAULT_POSITION, DEFAULT_TRANSFORM, MIN_ZOOM } from './PhotoUploader';
 
 const MAX_PHOTOS = 6;
 
@@ -188,7 +188,10 @@ export function PhotoGalleryEditor({
           }}
           onSave={(nextPos, nextTransform) => {
             const isDefault =
-              nextTransform.zoom === 1 && nextTransform.rotate === 0 && !nextTransform.flipH && !nextTransform.flipV;
+              nextTransform.zoom === MIN_ZOOM &&
+              nextTransform.rotate === 0 &&
+              !nextTransform.flipH &&
+              !nextTransform.flipV;
             const next = [...photos];
             next[editingIndex] = { ...next[editingIndex]!, position: nextPos, transform: isDefault ? null : nextTransform };
             onChange(next);
