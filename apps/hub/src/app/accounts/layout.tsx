@@ -1,8 +1,8 @@
 import { getSessionAccount } from '@/lib/auth/session';
 import { getSidebarLocations } from '@/lib/sidebar-locations';
-import { Sidebar } from './Sidebar';
+import { Sidebar } from '../locations/Sidebar';
 
-export default async function LocationsLayout({ children }: { children: React.ReactNode }) {
+export default async function AccountsLayout({ children }: { children: React.ReactNode }) {
   const session = await getSessionAccount();
   const { templates, working } = getSidebarLocations(session);
 

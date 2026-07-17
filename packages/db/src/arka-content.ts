@@ -218,8 +218,28 @@ export interface CatalogItem {
 
 const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
 
+/** Форма позиции до перехода на массив photos — единственное фото плюс кадрирование. */
+interface LegacyPhotoFields {
+  photo?: string | null;
+  photo_position?: PhotoEntry['position'];
+  photo_transform?: PhotoEntry['transform'];
+}
+
+/** Ни один файл content-store фактически ещё не переписан в новом формате
+ * (все позиции на диске — старый одиночный `photo`, не `photos[]`) —
+ * приводим на чтении, без миграции самих файлов, чтобы не мешать
+ * параллельной работе над галереей фото (она пишет уже в новом формате). */
+function normalizePhotos(it: CatalogItem & LegacyPhotoFields): PhotoEntry[] {
+  if (Array.isArray(it.photos)) return it.photos;
+  if (it.photo) {
+    return [{ src: it.photo, position: it.photo_position ?? null, transform: it.photo_transform ?? null }];
+  }
+  return [];
+}
+
 export function getCatalogItems(slug: string, realm: CatalogRealm): CatalogItem[] {
-  return readContentJson<CatalogItem[]>(`${slug}/${realm}.json`);
+  const items = readContentJson<(CatalogItem & LegacyPhotoFields)[]>(`${slug}/${realm}.json`);
+  return items.map((it) => ({ ...it, photos: normalizePhotos(it) }));
 }
 
 export function updateCatalogItem(

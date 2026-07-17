@@ -11,17 +11,25 @@
     "./arka-shared": "./src/arka-shared.ts",
     "./onboarding": "./src/onboarding.ts",
     "./catalog-shared": "./src/catalog-shared.ts",
-    "./stats-flag": "./src/stats-flag.ts"
+    "./stats-flag": "./src/stats-flag.ts",
+    "./accounts": "./src/accounts.ts",
+    "./supabase-client": "./src/supabase-client.ts"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed-accounts": "set -a; . ../../apps/hub/.env.seed.local; set +a; tsx scripts/seed-accounts.ts"
   },
   "dependencies": {
-    "react": "^19"
+    "@supabase/supabase-js": "^2",
+    "bcryptjs": "^2",
+    "react": "^19",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2",
     "@types/node": "^20",
     "@types/react": "^19",
+    "tsx": "^4.23.1",
     "typescript": "^5.6.3"
   }
 }

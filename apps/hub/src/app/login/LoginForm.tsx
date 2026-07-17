@@ -5,9 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { apiPath } from '@/lib/base-path';
 import { safeNextPath } from '@/lib/safe-next';
 
-export function GateForm() {
+export function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -16,10 +17,10 @@ export function GateForm() {
     e.preventDefault();
     setLoading(true);
     setError(false);
-    const res = await fetch(apiPath('/api/hub-gate'), {
+    const res = await fetch(apiPath('/api/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
+      body: JSON.stringify({ login, password }),
     });
     setLoading(false);
     if (res.ok) {
@@ -32,6 +33,19 @@ export function GateForm() {
 
   return (
     <form onSubmit={onSubmit} className="mt-6 flex w-full flex-col gap-3">
+      <input
+        type="text"
+        autoFocus
+        autoCapitalize="none"
+        autoCorrect="off"
+        value={login}
+        onChange={(e) => {
+          setLogin(e.target.value);
+          setError(false);
+        }}
+        placeholder="Логин"
+        className="w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] py-3 px-4 text-center text-lg text-[color:var(--text)] outline-none focus:border-[color:var(--accent)]"
+      />
       <div className="relative">
         <svg
           viewBox="0 0 24 24"
@@ -45,20 +59,19 @@ export function GateForm() {
         </svg>
         <input
           type="password"
-          autoFocus
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
             setError(false);
           }}
-          placeholder="Код доступа"
+          placeholder="Пароль"
           className="w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)] py-3 pl-10 pr-4 text-center text-lg tracking-widest text-[color:var(--text)] outline-none focus:border-[color:var(--accent)]"
         />
       </div>
-      {error && <p className="text-center text-sm text-[color:var(--danger)]">Неверный код</p>}
+      {error && <p className="text-center text-sm text-[color:var(--danger)]">Неверный логин или пароль</p>}
       <button
         type="submit"
-        disabled={loading || !password}
+        disabled={loading || !login || !password}
         className="group flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-[color:var(--accent-text)] transition disabled:opacity-50"
         style={{ background: 'linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--accent-2)))' }}
       >

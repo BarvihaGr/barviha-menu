@@ -2,7 +2,7 @@
 // акцентных точек: это «витрина» перед входом, а не рабочий экран, где
 // пестрота мешала бы. Свечение + эмблема + HUD-подписи — в двух акцентах
 // проекта (розовый/циан), тот же «глитч» двойной обводкой, что и везде.
-export function GateBackground() {
+export function LoginBackground() {
   return (
     <div className="pointer-events-none fixed inset-0 overflow-hidden">
       <div

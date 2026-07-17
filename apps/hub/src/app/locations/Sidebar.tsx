@@ -10,15 +10,25 @@ interface LocationRow {
   name: string;
 }
 
-export function Sidebar({ templates, working }: { templates: LocationRow[]; working: LocationRow[] }) {
+type Role = 'big_boss' | 'boss_location' | 'manager' | null;
+
+export function Sidebar({
+  templates,
+  working,
+  role,
+}: {
+  templates: LocationRow[];
+  working: LocationRow[];
+  role: Role;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
 
   async function logout() {
-    await fetch(apiPath('/api/hub-logout'), { method: 'POST' });
-    router.push('/gate');
+    await fetch(apiPath('/api/logout'), { method: 'POST' });
+    router.push('/login');
     router.refresh();
   }
 
@@ -141,6 +151,16 @@ export function Sidebar({ templates, working }: { templates: LocationRow[]; work
           )}
         </nav>
         <div className="border-t border-[color:var(--border)] p-3">
+          {(role === 'big_boss' || role === 'boss_location') && (
+            <Link
+              href="/accounts"
+              className={`mb-1 block rounded-lg px-3 py-2 text-left text-xs transition hover:bg-[color:var(--surface-2)] ${
+                pathname === '/accounts' ? 'text-[color:var(--accent)]' : 'text-[color:var(--muted)]'
+              }`}
+            >
+              {role === 'big_boss' ? 'Аккаунты' : 'Менеджеры'}
+            </Link>
+          )}
           <button
             type="button"
             onClick={logout}

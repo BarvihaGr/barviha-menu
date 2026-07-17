@@ -17,6 +17,13 @@ export async function PATCH(
     | { is_available?: boolean; is_archived?: boolean }
     | null;
   if (!patch) return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
+  // Этот роут обслуживает и Стоп-лист (is_available), и Архив (is_archived) —
+  // middleware.ts не может отличить их по пути (не читает тело, см. там же),
+  // поэтому роль manager (доступ только к Стоп-листу) точечно режется здесь,
+  // по факту наличия is_archived в патче, а не по URL.
+  if (request.headers.get('x-hub-role') === 'manager' && 'is_archived' in patch) {
+    return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 });
+  }
   try {
     setItemFlag(slug, realm, id, patch);
   } catch (e) {

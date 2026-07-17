@@ -1,10 +1,13 @@
 /**
- * In-memory rate limiter на IP для /api/hub-gate — единственный пароль на
- * весь бэк-офис (весь контент сети + загрузка фото), без него его можно
- * перебирать скриптом сколько угодно раз в секунду. Один Node-процесс в
- * fork-режиме (pm2), состояние в памяти — see apps/menu/src/lib/rate-limit.ts
- * (тот же паттерн, продублировано — разные приложения, общий импорт
- * невозможен).
+ * In-memory rate limiter — состояние в памяти одного Node-процесса
+ * (pm2, fork-режим), see apps/menu/src/lib/rate-limit.ts (тот же паттерн,
+ * продублировано — разные приложения, общий импорт невозможен).
+ *
+ * Изначально — только по IP для /api/hub-gate (единственный пароль на весь
+ * бэк-офис). После перехода на аккаунты (см. /api/login) лимит по IP одному
+ * не защищает конкретный логин (например «Spider») от распределённого
+ * перебора с разных адресов — checkRateLimitByKey даёт лимитировать по
+ * произвольному ключу вдобавок к IP.
  */
 const WINDOW_MS = 5 * 60 * 1000;
 const MAX_ATTEMPTS = 10;
@@ -18,15 +21,20 @@ function clientIp(request: Request): string {
 }
 
 /** true — запрос разрешён. false — превышен лимит, отдавай 429. */
-export function checkRateLimit(request: Request, bucket: string): boolean {
-  const key = `${bucket}:${clientIp(request)}`;
+export function checkRateLimitByKey(bucket: string, key: string): boolean {
+  const fullKey = `${bucket}:${key}`;
   const now = Date.now();
-  const entry = hits.get(key);
+  const entry = hits.get(fullKey);
   if (!entry || entry.resetAt < now) {
-    hits.set(key, { count: 1, resetAt: now + WINDOW_MS });
+    hits.set(fullKey, { count: 1, resetAt: now + WINDOW_MS });
     return true;
   }
   if (entry.count >= MAX_ATTEMPTS) return false;
   entry.count += 1;
   return true;
+}
+
+/** true — запрос разрешён. false — превышен лимит, отдавай 429. Лимит по IP запросившего. */
+export function checkRateLimit(request: Request, bucket: string): boolean {
+  return checkRateLimitByKey(bucket, clientIp(request));
 }

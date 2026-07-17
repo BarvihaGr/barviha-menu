@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { HUB_GATE_COOKIE } from '@/lib/hub-gate';
+import { SESSION_COOKIE } from '@/lib/auth/session';
 
 export async function POST() {
   const res = NextResponse.json({ ok: true });
-  res.cookies.set(HUB_GATE_COOKIE, '', { path: '/', maxAge: 0 });
+  res.cookies.set(SESSION_COOKIE, '', { path: '/', maxAge: 0 });
   return res;
 }

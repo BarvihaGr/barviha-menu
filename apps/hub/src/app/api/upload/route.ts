@@ -60,6 +60,15 @@ export async function POST(request: NextRequest) {
   }
   const slugErr = invalidSlugResponse(slug);
   if (slugErr) return slugErr;
+  // manager вообще блокируется в middleware.ts (нет вкладок с фото); здесь —
+  // привязка boss_location к своей локации, которую middleware не видит
+  // (slug приходит в FormData, а не в URL — тело нельзя прочитать в
+  // мидлвари без порчи стрима для этого хендлера).
+  const role = request.headers.get('x-hub-role');
+  const ownLocation = request.headers.get('x-hub-location');
+  if (role && role !== 'big_boss' && ownLocation !== slug) {
+    return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 });
+  }
 
   const filename = `${slugify(idHint)}-${Date.now()}.webp`;
   const srcBuf = Buffer.from(await file.arrayBuffer());
