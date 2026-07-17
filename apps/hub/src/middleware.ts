@@ -43,6 +43,13 @@ export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   if (PUBLIC_PATHS.has(pathname)) return NextResponse.next();
 
+  // Старый /gate удалён при переходе на аккаунты, но у части сотрудников
+  // остались сохранённые ссылки/ярлыки на него — без этого редиректа они
+  // упирались в 404 вместо входа.
+  if (pathname === '/gate' || pathname.startsWith('/gate/')) {
+    return redirectTo(request, '/');
+  }
+
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   const verified = token ? await verifySession(token) : null;
 
