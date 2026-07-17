@@ -53,7 +53,7 @@ export function FeaturedItemCard({ item, name, locationSlug }: Props) {
     >
       <Link href={`/${locationSlug}/item/${item.id}`} className="block focus:outline-none">
         {/* Широкое фото-баннер */}
-        <div className="relative aspect-[21/9] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
+        <div className="relative aspect-[3/2] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
           {item.photo ? (
             <Image
               src={item.photo}
