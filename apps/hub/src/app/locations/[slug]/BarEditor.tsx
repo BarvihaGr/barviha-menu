@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { ArkaMenuEntry, ArkaMenuItem } from '@barviha/db';
+import type { ArkaMenuEntry, ArkaMenuItem, PhotoEntry } from '@barviha/db';
 import { apiPath } from '@/lib/base-path';
 import { PhotoUploader } from './PhotoUploader';
 import { GroupPhotoUploader } from './GroupPhotoUploader';
@@ -15,7 +15,7 @@ export function BarEditor({
 }: {
   slug: string;
   sections: ArkaMenuEntry[];
-  groupPhotos: Record<string, string>;
+  groupPhotos: Record<string, PhotoEntry>;
 }) {
   const [query, setQuery] = useState('');
   const [photos, setPhotos] = useState(groupPhotos);
@@ -67,13 +67,27 @@ export function BarEditor({
                   slug={slug}
                   category={entry.category}
                   photo={photos[entry.category] ?? null}
-                  onSaved={(src) => setPhotos((p) => ({ ...p, [entry.category]: src }))}
+                  onSaved={(entryPhoto) => setPhotos((p) => ({ ...p, [entry.category]: entryPhoto }))}
+                  onRemoved={() =>
+                    setPhotos((p) => {
+                      const next = { ...p };
+                      delete next[entry.category];
+                      return next;
+                    })
+                  }
                 />
               </div>
             )}
             <div className="divide-y divide-[color:var(--border)]">
-              {entry.items.map((it) => (
-                <BarItemRow key={it.id} slug={slug} item={it} />
+              {entry.items.map((it, i) => (
+                <BarItemRow
+                  key={it.id}
+                  slug={slug}
+                  item={it}
+                  canReorder={!query.trim()}
+                  canMoveUp={i > 0}
+                  canMoveDown={i < entry.items.length - 1}
+                />
               ))}
             </div>
           </div>
@@ -86,11 +100,24 @@ export function BarEditor({
   );
 }
 
-function BarItemRow({ slug, item }: { slug: string; item: ArkaMenuItem }) {
+function BarItemRow({
+  slug,
+  item,
+  canReorder,
+  canMoveUp,
+  canMoveDown,
+}: {
+  slug: string;
+  item: ArkaMenuItem;
+  canReorder: boolean;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
+}) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(item);
   const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [moving, setMoving] = useState(false);
 
   async function save(patch: Partial<ArkaMenuItem>) {
     const next = { ...draft, ...patch };
@@ -104,6 +131,17 @@ function BarItemRow({ slug, item }: { slug: string; item: ArkaMenuItem }) {
     if (patch.is_archived) router.refresh();
   }
 
+  async function move(direction: 'up' | 'down') {
+    setMoving(true);
+    const res = await fetch(apiPath(`/api/locations/${slug}/bar/${item.id}/move`), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ direction }),
+    });
+    if (res.ok) router.refresh();
+    setMoving(false);
+  }
+
   return (
     <div className="px-4 sm:px-8 py-3">
       <div
@@ -115,6 +153,28 @@ function BarItemRow({ slug, item }: { slug: string; item: ArkaMenuItem }) {
         }}
         className="flex w-full items-center gap-3 text-left"
       >
+        {canReorder && (
+          <div className="flex shrink-0 flex-col gap-0.5" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => move('up')}
+              disabled={!canMoveUp || moving}
+              title="Переставить выше"
+              className="flex h-5 w-5 items-center justify-center rounded border border-[color:var(--border)] text-[10px] text-[color:var(--muted)] disabled:opacity-30"
+            >
+              ▲
+            </button>
+            <button
+              type="button"
+              onClick={() => move('down')}
+              disabled={!canMoveDown || moving}
+              title="Переставить ниже"
+              className="flex h-5 w-5 items-center justify-center rounded border border-[color:var(--border)] text-[10px] text-[color:var(--muted)] disabled:opacity-30"
+            >
+              ▼
+            </button>
+          </div>
+        )}
         <PhotoUploader
           photo={draft.photo}
           position={draft.photo_position}

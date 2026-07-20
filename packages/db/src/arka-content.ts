@@ -26,7 +26,9 @@ export { getItemVariants } from './arka-shared';
 
 interface BarFile {
   sections: ArkaMenuEntry[];
-  groupPhotos: Record<string, string>;
+  /** На диске исторически просто путь-строка (без кадрирования) — читаем
+   * оба варианта (см. normalizeGroupPhoto), пишем уже в новом формате. */
+  groupPhotos: Record<string, string | PhotoEntry>;
 }
 
 function flattenBarItems(sections: ArkaMenuEntry[]): ArkaMenuItem[] {
@@ -37,8 +39,15 @@ export function getBarSections(slug: string): ArkaMenuEntry[] {
   return readContentJson<BarFile>(`${slug}/bar.json`).sections;
 }
 
-export function getBarGroupPhotos(slug: string): Record<string, string> {
-  return readContentJson<BarFile>(`${slug}/bar.json`).groupPhotos;
+function normalizeGroupPhoto(v: string | PhotoEntry): PhotoEntry {
+  return typeof v === 'string' ? { src: v, position: null, transform: null } : v;
+}
+
+export function getBarGroupPhotos(slug: string): Record<string, PhotoEntry> {
+  const raw = readContentJson<BarFile>(`${slug}/bar.json`).groupPhotos;
+  const out: Record<string, PhotoEntry> = {};
+  for (const [category, v] of Object.entries(raw)) out[category] = normalizeGroupPhoto(v);
+  return out;
 }
 
 /** "Фейковые" ResolvedMenuItem для Бара — чтобы работали корзина и /item/[itemId]. */
@@ -88,10 +97,47 @@ export function updateBarItem(slug: string, id: string, patch: Partial<ArkaMenuI
   writeContentJson(`${slug}/bar.json`, file);
 }
 
+/** Новая загрузка общего фото категории — кадрирование сбрасывается (новый кадр). */
 export function updateBarGroupPhoto(slug: string, category: string, src: string): void {
   const file = readContentJson<BarFile>(`${slug}/bar.json`);
-  file.groupPhotos[category] = src;
+  file.groupPhotos[category] = { src, position: null, transform: null };
   writeContentJson(`${slug}/bar.json`, file);
+}
+
+/** Правка позиции/зума общего фото категории — без замены самого файла фото. */
+export function updateBarGroupPhotoCrop(
+  slug: string,
+  category: string,
+  patch: { position?: PhotoEntry['position']; transform?: PhotoEntry['transform'] },
+): void {
+  const file = readContentJson<BarFile>(`${slug}/bar.json`);
+  const current = file.groupPhotos[category];
+  if (!current) throw new Error(`Общее фото категории не найдено: ${slug}/${category}`);
+  file.groupPhotos[category] = { ...normalizeGroupPhoto(current), ...patch };
+  writeContentJson(`${slug}/bar.json`, file);
+}
+
+export function removeBarGroupPhoto(slug: string, category: string): void {
+  const file = readContentJson<BarFile>(`${slug}/bar.json`);
+  delete file.groupPhotos[category];
+  writeContentJson(`${slug}/bar.json`, file);
+}
+
+/** Сдвиг позиции Бара (шаблон Арки) на место соседней внутри своего раздела
+ * (entry.items) — раздел позиции ищем перебором, id уникален по файлу. */
+export function moveBarItem(slug: string, id: string, direction: 'up' | 'down'): void {
+  const file = readContentJson<BarFile>(`${slug}/bar.json`);
+  for (const entry of file.sections) {
+    if (entry.kind !== 'category') continue;
+    const idx = entry.items.findIndex((i) => i.id === id);
+    if (idx < 0) continue;
+    const j = direction === 'up' ? idx - 1 : idx + 1;
+    if (j < 0 || j >= entry.items.length) return;
+    [entry.items[idx], entry.items[j]] = [entry.items[j]!, entry.items[idx]!];
+    writeContentJson(`${slug}/bar.json`, file);
+    return;
+  }
+  throw new Error(`Позиция бара не найдена: ${slug}/${id}`);
 }
 
 /** Уникальный ключ для новой позиции — не для показа, просто внутренний id. */
@@ -252,6 +298,22 @@ export function updateCatalogItem(
   const idx = items.findIndex((i) => i.id === id);
   if (idx < 0) throw new Error(`Позиция ${realm} не найдена: ${slug}/${id}`);
   items[idx] = { ...items[idx]!, ...patch };
+  writeContentJson(`${slug}/${realm}.json`, items);
+}
+
+/** Сдвиг позиции на место соседней внутри своей подкатегории (sub) — порядок
+ * между подкатегориями задаёт subOrder, не порядок в файле, поэтому ищем
+ * ближайшего соседа с тем же sub, а не просто idx±1. */
+export function moveCatalogItem(slug: string, realm: CatalogRealm, id: string, direction: 'up' | 'down'): void {
+  const items = getCatalogItems(slug, realm);
+  const idx = items.findIndex((i) => i.id === id);
+  if (idx < 0) throw new Error(`Позиция ${realm} не найдена: ${slug}/${id}`);
+  const sub = items[idx]!.sub;
+  const step = direction === 'up' ? -1 : 1;
+  let j = idx + step;
+  while (j >= 0 && j < items.length && items[j]!.sub !== sub) j += step;
+  if (j < 0 || j >= items.length) return;
+  [items[idx], items[j]] = [items[j]!, items[idx]!];
   writeContentJson(`${slug}/${realm}.json`, items);
 }
 

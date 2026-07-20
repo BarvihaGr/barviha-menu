@@ -7,7 +7,9 @@
  */
 
 import Image from 'next/image';
+import type { PhotoEntry } from '@barviha/db';
 import type { ArkaMenuEntry, ArkaMenuItem } from '@/lib/arka-menu-data';
+import { photoTransformCss } from '@/lib/photo-transform';
 import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
 
 /**
@@ -15,10 +17,20 @@ import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
  * не отдельной строкой, а поверх фото, крупно, капсом. Показывается только
  * когда для категории есть кадр в ARKA_GROUP_PHOTOS; иначе — обычный <h2>.
  */
-function CategoryPhoto({ category, src }: { category: string; src: string }) {
+function CategoryPhoto({ category, photo }: { category: string; photo: PhotoEntry }) {
   return (
     <div className="relative mb-5 aspect-[16/9] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
-      <Image src={src} alt={category} fill sizes="(max-width: 640px) 100vw, 800px" className="object-cover" />
+      <Image
+        src={photo.src}
+        alt={category}
+        fill
+        sizes="(max-width: 640px) 100vw, 800px"
+        className="object-cover"
+        style={{
+          objectPosition: photo.position ? `${photo.position.x}% ${photo.position.y}%` : undefined,
+          transform: photoTransformCss(photo.transform),
+        }}
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
       <h2 className="absolute bottom-4 left-5 font-[family-name:var(--font-display)] text-[30px] font-semibold uppercase leading-none tracking-[0.03em] text-white sm:bottom-6 sm:left-7 sm:text-[42px]">
         {category}
@@ -36,7 +48,7 @@ function CategoryBlock({
   category: string;
   items: ArkaMenuItem[];
   locationSlug: string;
-  groupPhotos: Record<string, string>;
+  groupPhotos: Record<string, PhotoEntry>;
 }) {
   const type1 = items.filter((i) => i.type === 1);
   const type2 = items.filter((i) => i.type === 2);
@@ -45,7 +57,7 @@ function CategoryBlock({
   return (
     <section className="py-8 first:pt-0">
       {groupPhoto ? (
-        <CategoryPhoto category={category} src={groupPhoto} />
+        <CategoryPhoto category={category} photo={groupPhoto} />
       ) : (
         <h2 className="mb-4 font-[family-name:var(--font-display)] text-[20px] font-semibold uppercase leading-none tracking-[0.03em] text-[var(--cm-text-soft)]">
           {category}
@@ -74,7 +86,7 @@ export function ArkaMenuSections({
 }: {
   sections: ArkaMenuEntry[];
   locationSlug: string;
-  groupPhotos: Record<string, string>;
+  groupPhotos: Record<string, PhotoEntry>;
 }) {
   return (
     <div className="min-w-0">

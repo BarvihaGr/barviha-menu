@@ -25,7 +25,7 @@ export function cssTransform(t: Transform): string {
   return `rotate(${t.rotate}deg) scaleX(${t.flipH ? -1 : 1}) scaleY(${t.flipV ? -1 : 1}) scale(${t.zoom})`;
 }
 
-type Patch = { photo?: string; photo_position?: Position | null; photo_transform?: Transform | null };
+type Patch = { photo?: string | null; photo_position?: Position | null; photo_transform?: Transform | null };
 
 export function PhotoUploader({
   photo,
@@ -119,6 +119,10 @@ export function PhotoUploader({
             setEditing(false);
             inputRef.current?.click();
           }}
+          onRemove={() => {
+            setEditing(false);
+            onChange({ photo: null, photo_position: null, photo_transform: null });
+          }}
           onSave={(nextPos, nextTransform) => {
             const isDefault =
               nextTransform.zoom === MIN_ZOOM &&
@@ -145,6 +149,8 @@ export function PositionEditor({
   onSave,
   onCancel,
   onReplace,
+  onRemove,
+  aspectClassName = 'aspect-square',
 }: {
   photoUrl: string;
   initialPos: Position;
@@ -152,6 +158,10 @@ export function PositionEditor({
   onSave: (pos: Position, transform: Transform) => void;
   onCancel: () => void;
   onReplace: () => void;
+  onRemove?: () => void;
+  /** Форма кадра превью — по умолчанию квадрат (карточки товаров), у общего
+   * фото категории кадр 16:9 (см. GroupPhotoUploader). */
+  aspectClassName?: string;
 }) {
   const [pos, setPos] = useState<Position>(initialPos);
   const [tf, setTf] = useState<Transform>(initialTransform);
@@ -218,7 +228,7 @@ export function PositionEditor({
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
-          className={`relative aspect-square w-full touch-none overflow-hidden rounded-[16px] bg-[color:var(--surface-2)] ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+          className={`relative ${aspectClassName} w-full touch-none overflow-hidden rounded-[16px] bg-[color:var(--surface-2)] ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         >
           {/* eslint-disable-next-line @next/next/no-img-element -- редактор позиции, нужен натуральный размер картинки */}
           <img
@@ -288,13 +298,24 @@ export function PositionEditor({
         </div>
 
         <div className="mt-4 flex items-center justify-between gap-2">
-          <button
-            type="button"
-            onClick={onReplace}
-            className="text-xs text-[color:var(--muted)] underline underline-offset-2"
-          >
-            заменить фото
-          </button>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={onReplace}
+              className="text-xs text-[color:var(--muted)] underline underline-offset-2"
+            >
+              заменить фото
+            </button>
+            {onRemove && (
+              <button
+                type="button"
+                onClick={onRemove}
+                className="text-xs text-[color:var(--danger)] underline underline-offset-2"
+              >
+                удалить фото
+              </button>
+            )}
+          </div>
           <div className="flex gap-2">
             <button
               type="button"

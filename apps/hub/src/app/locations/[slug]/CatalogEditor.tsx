@@ -51,8 +51,16 @@ export function CatalogEditor({
             {g.label} <span className="text-xs text-[color:var(--muted)]">· {g.items.length}</span>
           </div>
           <div className="divide-y divide-[color:var(--border)]">
-            {g.items.map((it) => (
-              <CatalogItemRow key={it.id} slug={slug} realm={realm} item={it} />
+            {g.items.map((it, i) => (
+              <CatalogItemRow
+                key={it.id}
+                slug={slug}
+                realm={realm}
+                item={it}
+                canReorder={!query.trim()}
+                canMoveUp={i > 0}
+                canMoveDown={i < g.items.length - 1}
+              />
             ))}
           </div>
         </div>
@@ -68,15 +76,22 @@ function CatalogItemRow({
   slug,
   realm,
   item,
+  canReorder,
+  canMoveUp,
+  canMoveDown,
 }: {
   slug: string;
   realm: CatalogRealm;
   item: CatalogItem;
+  canReorder: boolean;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(item);
   const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [moving, setMoving] = useState(false);
 
   async function save(patch: Partial<CatalogItem>) {
     const next = { ...draft, ...patch };
@@ -90,6 +105,17 @@ function CatalogItemRow({
     if (patch.is_archived) router.refresh();
   }
 
+  async function move(direction: 'up' | 'down') {
+    setMoving(true);
+    const res = await fetch(apiPath(`/api/locations/${slug}/catalog/${realm}/${item.id}/move`), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ direction }),
+    });
+    if (res.ok) router.refresh();
+    setMoving(false);
+  }
+
   return (
     <div className="px-4 sm:px-8 py-3">
       <div
@@ -101,6 +127,28 @@ function CatalogItemRow({
         }}
         className="flex w-full items-center gap-3 text-left"
       >
+        {canReorder && (
+          <div className="flex shrink-0 flex-col gap-0.5" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => move('up')}
+              disabled={!canMoveUp || moving}
+              title="Переставить выше"
+              className="flex h-5 w-5 items-center justify-center rounded border border-[color:var(--border)] text-[10px] text-[color:var(--muted)] disabled:opacity-30"
+            >
+              ▲
+            </button>
+            <button
+              type="button"
+              onClick={() => move('down')}
+              disabled={!canMoveDown || moving}
+              title="Переставить ниже"
+              className="flex h-5 w-5 items-center justify-center rounded border border-[color:var(--border)] text-[10px] text-[color:var(--muted)] disabled:opacity-30"
+            >
+              ▼
+            </button>
+          </div>
+        )}
         <CoverThumbnail photos={draft.photos} />
         <div className="min-w-0 flex-1">
           <div className={`truncate text-sm ${draft.is_available ? 'text-[color:var(--text)]' : 'text-[color:var(--muted)] line-through'}`}>

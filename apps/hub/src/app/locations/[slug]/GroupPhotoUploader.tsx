@@ -1,9 +1,11 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import type { PhotoEntry } from '@barviha/db';
 import { menuAssetUrl } from '@/lib/menu-origin';
 import { apiPath } from '@/lib/base-path';
 import { compressInBrowser } from '@/lib/compress-image';
+import { PositionEditor, cssTransform, DEFAULT_POSITION, DEFAULT_TRANSFORM, MIN_ZOOM } from './PhotoUploader';
 
 function slugifyForId(s: string): string {
   return s
@@ -15,23 +17,43 @@ function slugifyForId(s: string): string {
 
 /** Общее фото на всю категорию (баннер 16:9 — как «СМУЗИ» на живом меню):
  * показывается вместо отдельных фото у позиций с типом карточки «2».
- * В отличие от PhotoUploader — без кадрирования (позиция/зум тут не
- * применимы, groupPhotos в данных — просто строка-путь, не объект). */
+ * Кадрирование — та же модалка PositionEditor, что и у обычных позиций, но
+ * с рамкой превью 16:9 вместо квадрата (см. aspectClassName). */
 export function GroupPhotoUploader({
   slug,
   category,
   photo,
   onSaved,
+  onRemoved,
 }: {
   slug: string;
   category: string;
-  photo: string | null;
-  onSaved: (src: string) => void;
+  photo: PhotoEntry | null;
+  onSaved: (entry: PhotoEntry) => void;
+  onRemoved: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const photoUrl = menuAssetUrl(photo);
+  const photoUrl = menuAssetUrl(photo?.src ?? null);
+  const pos = photo?.position ?? DEFAULT_POSITION;
+  const tf = photo?.transform ?? DEFAULT_TRANSFORM;
+
+  async function removePhoto() {
+    setError(null);
+    try {
+      const res = await fetch(apiPath(`/api/locations/${slug}/bar-group-photo`), {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category }),
+      });
+      if (!res.ok) throw new Error(`delete failed: ${res.status}`);
+      onRemoved();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'не удалось удалить фото');
+    }
+  }
 
   async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -61,7 +83,8 @@ export function GroupPhotoUploader({
         body: JSON.stringify({ category, src: data.path }),
       });
       if (!patchRes.ok) throw new Error(`save failed: ${patchRes.status}`);
-      onSaved(data.path);
+      onSaved({ src: data.path, position: null, transform: null });
+      setEditing(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'не удалось загрузить фото');
     } finally {
@@ -69,33 +92,90 @@ export function GroupPhotoUploader({
     }
   }
 
+  async function saveCrop(nextPos: typeof pos, nextTransform: typeof tf) {
+    const isDefault =
+      nextTransform.zoom === MIN_ZOOM && nextTransform.rotate === 0 && !nextTransform.flipH && !nextTransform.flipV;
+    const transform = isDefault ? null : nextTransform;
+    setEditing(false);
+    const res = await fetch(apiPath(`/api/locations/${slug}/bar-group-photo`), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ category, position: nextPos, transform }),
+    });
+    if (res.ok && photo) onSaved({ ...photo, position: nextPos, transform });
+  }
+
   return (
     <div className="mb-2">
-      <button
-        type="button"
-        onClick={() => inputRef.current?.click()}
-        className="group relative aspect-[16/9] w-full max-w-sm overflow-hidden rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)]"
-      >
-        {photoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu)
-          <img src={photoUrl} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
-        ) : (
-          <span className="flex h-full w-full items-center justify-center text-xs uppercase text-[color:var(--muted)]">
-            общее фото категории
-          </span>
-        )}
-        <span
-          className={`absolute inset-0 flex items-center justify-center text-xs font-medium transition ${
-            uploading
-              ? 'bg-black/50 text-white'
-              : 'bg-black/0 text-transparent group-hover:bg-black/50 group-hover:text-white'
-          }`}
+      <div className="relative w-full max-w-sm">
+        <button
+          type="button"
+          onClick={() => {
+            if (photoUrl) setEditing(true);
+            else inputRef.current?.click();
+          }}
+          className="group relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)]"
         >
-          {uploading ? 'Загружаю…' : photoUrl ? 'заменить' : 'загрузить'}
-        </span>
-      </button>
+          {photoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu), не оптимизируем
+            <img
+              src={photoUrl}
+              alt=""
+              className="h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+              style={{ objectPosition: `${pos.x}% ${pos.y}%`, transform: cssTransform(tf) }}
+            />
+          ) : (
+            <span className="flex h-full w-full items-center justify-center text-xs uppercase text-[color:var(--muted)]">
+              общее фото категории
+            </span>
+          )}
+          <span
+            className={`absolute inset-0 flex items-center justify-center text-xs font-medium transition ${
+              uploading
+                ? 'bg-black/50 text-white'
+                : 'bg-black/0 text-transparent group-hover:bg-black/50 group-hover:text-white'
+            }`}
+          >
+            {uploading ? 'Загружаю…' : photoUrl ? 'кадрировать' : 'загрузить'}
+          </span>
+        </button>
+        {photoUrl && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              void removePhoto();
+            }}
+            title="Удалить фото"
+            className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border border-[color:var(--border)] bg-[color:var(--surface)] text-xs text-[color:var(--muted)] shadow-sm"
+          >
+            ✕
+          </button>
+        )}
+      </div>
       {error && <p className="mt-1 text-xs text-[color:var(--danger)]">Не получилось: {error}</p>}
       <input ref={inputRef} type="file" accept="image/*" onChange={onFile} className="hidden" />
+
+      {editing && photoUrl && (
+        <PositionEditor
+          photoUrl={photoUrl}
+          initialPos={pos}
+          initialTransform={tf}
+          aspectClassName="aspect-[16/9]"
+          onCancel={() => setEditing(false)}
+          onReplace={() => {
+            setEditing(false);
+            inputRef.current?.click();
+          }}
+          onRemove={() => {
+            setEditing(false);
+            void removePhoto();
+          }}
+          onSave={(nextPos, nextTransform) => saveCrop(nextPos, nextTransform)}
+        />
+      )}
     </div>
   );
 }

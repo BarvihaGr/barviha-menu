@@ -4,7 +4,7 @@
 // 25 рабочих локаций-клонов (см. @barviha/db WORKING_SLUGS) — у каждой своя
 // независимая копия контента под тем же slug.
 import { getBarSections, getBarGroupPhotos, getItemVariants } from '@barviha/db';
-import type { ArkaMenuEntry, ArkaMenuItem, ResolvedMenuItem } from '@barviha/db';
+import type { ArkaMenuEntry, ArkaMenuItem, PhotoEntry, ResolvedMenuItem } from '@barviha/db';
 
 /**
  * Позиции со снятым «актуально» (стоп-лист) и позиции в архиве не должны
@@ -35,7 +35,7 @@ export function loadArkaBarSections(slug: string): ArkaMenuEntry[] {
   return result;
 }
 
-export function loadArkaBarGroupPhotos(slug: string): Record<string, string> {
+export function loadArkaBarGroupPhotos(slug: string): Record<string, PhotoEntry> {
   return getBarGroupPhotos(slug);
 }
 
