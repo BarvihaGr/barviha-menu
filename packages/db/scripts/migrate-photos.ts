@@ -24,7 +24,7 @@ const KIEVSKAIA_STYLE_SLUGS = new Set(['kievskaia', 'kievskaia-network']);
 interface OldItem {
   photo?: string | null;
   photo_position?: { x: number; y: number } | null;
-  photo_transform?: { zoom: number; rotate: 0 | 90 | 180 | 270; flipH: boolean; flipV: boolean } | null;
+  photo_transform?: { zoom: number; rotate: number; flipH: boolean; flipV: boolean } | null;
   photos?: unknown;
   [key: string]: unknown;
 }

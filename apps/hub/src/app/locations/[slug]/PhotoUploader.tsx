@@ -6,7 +6,9 @@ import { apiPath } from '@/lib/base-path';
 import { compressInBrowser } from '@/lib/compress-image';
 
 export type Position = { x: number; y: number };
-export type Rotation = 0 | 90 | 180 | 270;
+/** Градусы поворота — любое значение (0–359), не только кратное 90: точный
+ * поворот (слайдер «наклон») складывается с быстрыми поворотами на 90°. */
+export type Rotation = number;
 export type Transform = { zoom: number; rotate: Rotation; flipH: boolean; flipV: boolean };
 
 export const DEFAULT_POSITION: Position = { x: 50, y: 35 };
@@ -204,12 +206,17 @@ export function PositionEditor({
   }
 
   function rotate() {
-    setTf((t) => ({ ...t, rotate: ((t.rotate + 90) % 360) as Rotation }));
+    setTf((t) => ({ ...t, rotate: (t.rotate + 90) % 360 }));
   }
 
   function reset() {
     setPos(DEFAULT_POSITION);
     setTf(DEFAULT_TRANSFORM);
+  }
+
+  const NUDGE_STEP = 4;
+  function nudge(dx: number, dy: number) {
+    setPos((p) => ({ x: clamp(p.x + dx, 0, 100), y: clamp(p.y + dy, 0, 100) }));
   }
 
   return (
@@ -251,7 +258,7 @@ export function PositionEditor({
         </div>
 
         <div className="mt-3 flex items-center gap-2">
-          <span className="text-[10px] uppercase tracking-[0.1em] text-[color:var(--muted)]">Зум</span>
+          <span className="w-9 shrink-0 text-[10px] uppercase tracking-[0.1em] text-[color:var(--muted)]">Зум</span>
           <input
             type="range"
             min={MIN_ZOOM}
@@ -261,6 +268,68 @@ export function PositionEditor({
             onChange={(e) => setTf((t) => ({ ...t, zoom: Number(e.target.value) }))}
             className="flex-1"
           />
+          <span className="w-10 shrink-0 text-right text-[10px] tabular-nums text-[color:var(--muted)]">
+            {Math.round((tf.zoom / MIN_ZOOM) * 100)}%
+          </span>
+        </div>
+
+        <div className="mt-3 flex items-center gap-2">
+          <span className="w-9 shrink-0 text-[10px] uppercase tracking-[0.1em] text-[color:var(--muted)]">Наклон</span>
+          <input
+            type="range"
+            min={-180}
+            max={180}
+            step={1}
+            value={((tf.rotate % 360) + 540) % 360 - 180}
+            onChange={(e) => setTf((t) => ({ ...t, rotate: Number(e.target.value) }))}
+            className="flex-1"
+          />
+          <span className="w-10 shrink-0 text-right text-[10px] tabular-nums text-[color:var(--muted)]">
+            {Math.round(((tf.rotate % 360) + 540) % 360 - 180)}°
+          </span>
+        </div>
+
+        <div className="mt-3 flex items-center gap-2">
+          <span className="w-9 shrink-0 text-[10px] uppercase tracking-[0.1em] text-[color:var(--muted)]">
+            Позиция
+          </span>
+          {/* Стрелки — точная подстройка позиции без перетаскивания (см. drag выше). */}
+          <div className="grid grid-cols-3 grid-rows-2 gap-0.5">
+            <div />
+            <button
+              type="button"
+              onClick={() => nudge(0, -NUDGE_STEP)}
+              title="Сдвинуть вверх"
+              className="flex h-6 w-6 items-center justify-center rounded border border-[color:var(--border)] text-[11px] text-[color:var(--text-soft)]"
+            >
+              ↑
+            </button>
+            <div />
+            <button
+              type="button"
+              onClick={() => nudge(-NUDGE_STEP, 0)}
+              title="Сдвинуть влево"
+              className="flex h-6 w-6 items-center justify-center rounded border border-[color:var(--border)] text-[11px] text-[color:var(--text-soft)]"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              onClick={() => nudge(0, NUDGE_STEP)}
+              title="Сдвинуть вниз"
+              className="flex h-6 w-6 items-center justify-center rounded border border-[color:var(--border)] text-[11px] text-[color:var(--text-soft)]"
+            >
+              ↓
+            </button>
+            <button
+              type="button"
+              onClick={() => nudge(NUDGE_STEP, 0)}
+              title="Сдвинуть вправо"
+              className="flex h-6 w-6 items-center justify-center rounded border border-[color:var(--border)] text-[11px] text-[color:var(--text-soft)]"
+            >
+              →
+            </button>
+          </div>
         </div>
 
         <div className="mt-3 flex items-center gap-2">

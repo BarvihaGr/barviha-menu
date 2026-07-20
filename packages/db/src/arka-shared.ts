@@ -20,7 +20,7 @@ export interface ArkaMenuItem {
   /** Кадрирование фото в квадратной рамке карточки (0–100%, объектная позиция). Null/отсутствует — дефолт. */
   photo_position?: { x: number; y: number } | null;
   /** Зум/поворот/отражение поверх object-position. Null/отсутствует — дефолт (без изменений). */
-  photo_transform?: { zoom: number; rotate: 0 | 90 | 180 | 270; flipH: boolean; flipV: boolean } | null;
+  photo_transform?: { zoom: number; rotate: number; flipH: boolean; flipV: boolean } | null;
   is_available: boolean;
   /** В архиве (сезонное/неактуальное меню) — не показывается на живом меню независимо от is_available, и скрыто из обычных списков бэк-офиса (см. «Архив»). */
   is_archived?: boolean;

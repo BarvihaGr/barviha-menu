@@ -221,7 +221,7 @@ export interface NutritionFacts {
 export interface PhotoEntry {
   src: string;
   position: { x: number; y: number } | null;
-  transform: { zoom: number; rotate: 0 | 90 | 180 | 270; flipH: boolean; flipV: boolean } | null;
+  transform: { zoom: number; rotate: number; flipH: boolean; flipV: boolean } | null;
 }
 
 export interface ResolvedMenuItem {
@@ -241,7 +241,7 @@ export interface ResolvedMenuItem {
   /** Кадрирование фото в квадратной рамке карточки (0–100%, объектная позиция). Undefined/null — дефолт компонента. */
   photo_position?: { x: number; y: number } | null;
   /** Зум/поворот/отражение поверх object-position. Undefined/null — дефолт (без изменений). */
-  photo_transform?: { zoom: number; rotate: 0 | 90 | 180 | 270; flipH: boolean; flipV: boolean } | null;
+  photo_transform?: { zoom: number; rotate: number; flipH: boolean; flipV: boolean } | null;
   composition: string | null;
   composition_en?: string | null;
   composition_zh?: string | null;

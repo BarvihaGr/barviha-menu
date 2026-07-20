@@ -1,4 +1,4 @@
-export type PhotoTransform = { zoom: number; rotate: 0 | 90 | 180 | 270; flipH: boolean; flipV: boolean } | null | undefined;
+export type PhotoTransform = { zoom: number; rotate: number; flipH: boolean; flipV: boolean } | null | undefined;
 
 /** CSS transform для зума/поворота/отражения фото, заданных в бэк-офисе
  * (см. apps/hub PhotoUploader). Применяется поверх object-position — квадрат
