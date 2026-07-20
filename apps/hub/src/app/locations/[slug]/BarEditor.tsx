@@ -60,9 +60,9 @@ export function BarEditor({
           </div>
         ) : (
           <div key={idx} className="border-b border-[color:var(--border)]">
-            <div className="px-4 sm:px-8 pt-4 pb-1 text-sm font-medium text-[color:var(--text-soft)]">{entry.category}</div>
-            {entry.items.some((it) => it.type === 2) && (
-              <div className="px-4 sm:px-8 pb-2">
+            <div className="flex items-center gap-2 px-4 sm:px-8 pt-4 pb-1">
+              <span className="text-sm font-medium text-[color:var(--text-soft)]">{entry.category}</span>
+              {entry.items.some((it) => it.type === 2) && (
                 <GroupPhotoUploader
                   slug={slug}
                   category={entry.category}
@@ -76,8 +76,8 @@ export function BarEditor({
                     })
                   }
                 />
-              </div>
-            )}
+              )}
+            </div>
             <div className="divide-y divide-[color:var(--border)]">
               {entry.items.map((it, i) => (
                 <BarItemRow

@@ -106,56 +106,59 @@ export function GroupPhotoUploader({
   }
 
   return (
-    <div className="mb-2">
-      <div className="relative w-full max-w-sm">
+    <div className="relative shrink-0">
+      <button
+        type="button"
+        onClick={() => {
+          if (photoUrl) setEditing(true);
+          else inputRef.current?.click();
+        }}
+        title={photoUrl ? 'Общее фото категории — открыть кадрирование' : 'Загрузить общее фото категории'}
+        className="group relative h-11 w-20 shrink-0 overflow-hidden rounded-lg border border-[color:var(--border)] bg-[color:var(--surface-2)]"
+      >
+        {photoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu), не оптимизируем
+          <img
+            src={photoUrl}
+            alt=""
+            className="h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+            style={{ objectPosition: `${pos.x}% ${pos.y}%`, transform: cssTransform(tf) }}
+          />
+        ) : (
+          <span className="flex h-full w-full items-center justify-center text-[8px] uppercase leading-tight text-[color:var(--muted)]">
+            общее фото
+          </span>
+        )}
+        <span
+          className={`absolute inset-0 flex items-center justify-center text-[9px] font-medium transition ${
+            uploading
+              ? 'bg-black/50 text-white'
+              : 'bg-black/0 text-transparent group-hover:bg-black/50 group-hover:text-white'
+          }`}
+        >
+          {uploading ? '…' : photoUrl ? 'кадр' : '+'}
+        </span>
+      </button>
+      {photoUrl && (
         <button
           type="button"
-          onClick={() => {
-            if (photoUrl) setEditing(true);
-            else inputRef.current?.click();
+          onClick={(e) => {
+            e.stopPropagation();
+            void removePhoto();
           }}
-          className="group relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-[color:var(--border)] bg-[color:var(--surface-2)]"
+          title="Удалить фото"
+          className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-[color:var(--border)] bg-[color:var(--surface)] text-[9px] text-[color:var(--muted)] shadow-sm"
         >
-          {photoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element -- фото отдаёт другой Next-сервер (apps/menu), не оптимизируем
-            <img
-              src={photoUrl}
-              alt=""
-              className="h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-              style={{ objectPosition: `${pos.x}% ${pos.y}%`, transform: cssTransform(tf) }}
-            />
-          ) : (
-            <span className="flex h-full w-full items-center justify-center text-xs uppercase text-[color:var(--muted)]">
-              общее фото категории
-            </span>
-          )}
-          <span
-            className={`absolute inset-0 flex items-center justify-center text-xs font-medium transition ${
-              uploading
-                ? 'bg-black/50 text-white'
-                : 'bg-black/0 text-transparent group-hover:bg-black/50 group-hover:text-white'
-            }`}
-          >
-            {uploading ? 'Загружаю…' : photoUrl ? 'кадрировать' : 'загрузить'}
-          </span>
+          ✕
         </button>
-        {photoUrl && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              void removePhoto();
-            }}
-            title="Удалить фото"
-            className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border border-[color:var(--border)] bg-[color:var(--surface)] text-xs text-[color:var(--muted)] shadow-sm"
-          >
-            ✕
-          </button>
-        )}
-      </div>
-      {error && <p className="mt-1 text-xs text-[color:var(--danger)]">Не получилось: {error}</p>}
+      )}
+      {error && (
+        <p className="absolute left-0 top-full z-10 mt-1 w-max max-w-[12rem] text-[10px] text-[color:var(--danger)]">
+          Не получилось: {error}
+        </p>
+      )}
       <input ref={inputRef} type="file" accept="image/*" onChange={onFile} className="hidden" />
 
       {editing && photoUrl && (
