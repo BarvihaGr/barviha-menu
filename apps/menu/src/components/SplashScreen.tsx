@@ -63,13 +63,14 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
             transition={{ duration: 0.7, ease: 'easeInOut' }}
             onClick={dismiss}
           >
-            <video
-              ref={videoRef}
-              src="/splash/smesh-dj.mp4"
-              autoPlay
-              muted
-              playsInline
-              preload="auto"
+            {/*
+              Маска — на обёртке, не на самом <video>. У WebKit/iOS Safari
+              есть баг: mask-image прямо на видео-элементе может сорвать
+              автовоспроизведение (вместо кадров — статичная плашка с play).
+              Обёртка того же размера/пропорций видео решает то же самое
+              визуально, но видео остаётся немаскированным и играет как надо.
+            */}
+            <div
               className="h-auto w-full max-h-full"
               style={{
                 aspectRatio: '1920 / 1072',
@@ -78,7 +79,17 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
                 maskImage:
                   'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
               }}
-            />
+            >
+              <video
+                ref={videoRef}
+                src="/splash/smesh-dj.mp4"
+                autoPlay
+                muted
+                playsInline
+                preload="auto"
+                className="h-full w-full object-cover"
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
