@@ -187,7 +187,7 @@ function ArkaTimelessRow({ item, locationSlug }: { item: ArkaMenuItem; locationS
   const variants = getItemVariants(item);
   const primary = variants[0]!;
   return (
-    <div className="flex flex-col gap-3 border-b border-[var(--cm-border)] py-6">
+    <div className="flex flex-col gap-3 border-b border-[var(--cm-border)] py-4">
       <Link href={`/${locationSlug}/item/${primary.id}`} className="min-w-0 focus:outline-none">
         <h4 className="break-words font-[family-name:var(--font-display)] text-[19px] font-medium uppercase leading-[1.2] tracking-[0.02em] text-[var(--cm-text)] sm:text-[21px]">
           {item.name}

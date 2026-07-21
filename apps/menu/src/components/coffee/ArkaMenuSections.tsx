@@ -15,7 +15,7 @@ import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
 /**
  * Общее фото на категорию (как «КОФЕ» на timeless.club/menu/bar) — заголовок
  * не отдельной строкой, а поверх фото, крупно, капсом. Показывается только
- * когда для категории есть кадр в ARKA_GROUP_PHOTOS; иначе — обычный <h2>.
+ * когда для категории есть кадр в groupPhotos; иначе — обычный <h2>.
  */
 function CategoryPhoto({ category, photo }: { category: string; photo: PhotoEntry }) {
   return (
@@ -39,6 +39,10 @@ function CategoryPhoto({ category, photo }: { category: string; photo: PhotoEntr
   );
 }
 
+/** Единственная категория, у которой подпись не на фото, а под ним, стилем
+ * заголовка «Винная карта» — по прямой просьбе, не трогать остальные. */
+const CAPTION_BELOW_PHOTO = 'Игристые и шампанские вина';
+
 function CategoryBlock({
   category,
   items,
@@ -55,8 +59,27 @@ function CategoryBlock({
   const groupPhoto = groupPhotos[category];
 
   return (
-    <section className="py-8 first:pt-0">
-      {groupPhoto ? (
+    <section className="py-5 first:pt-0">
+      {groupPhoto && category === CAPTION_BELOW_PHOTO ? (
+        <>
+          <div className="relative mb-5 aspect-[16/9] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
+            <Image
+              src={groupPhoto.src}
+              alt={category}
+              fill
+              sizes="(max-width: 640px) 100vw, 800px"
+              className="object-cover"
+              style={{
+                objectPosition: groupPhoto.position ? `${groupPhoto.position.x}% ${groupPhoto.position.y}%` : undefined,
+                transform: photoTransformCss(groupPhoto.transform),
+              }}
+            />
+          </div>
+          <h2 className="mb-4 font-[family-name:var(--font-display)] text-[32px] font-semibold uppercase leading-none tracking-[0.02em] text-[var(--cm-accent)]">
+            {category}
+          </h2>
+        </>
+      ) : groupPhoto ? (
         <CategoryPhoto category={category} photo={groupPhoto} />
       ) : (
         <h2 className="mb-4 font-[family-name:var(--font-display)] text-[20px] font-semibold uppercase leading-none tracking-[0.03em] text-[var(--cm-text-soft)]">
@@ -93,7 +116,7 @@ export function ArkaMenuSections({
       {sections.map((entry, idx) => {
         if (entry.kind === 'header') {
           return (
-            <div key={idx} className="pt-10 pb-2 first:pt-0">
+            <div key={idx} className="pt-6 pb-2 first:pt-0">
               <h2 className="font-[family-name:var(--font-display)] text-[32px] font-semibold uppercase leading-none tracking-[0.02em] text-[var(--cm-accent)]">
                 {entry.title}
               </h2>
