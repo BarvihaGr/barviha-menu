@@ -19,6 +19,17 @@ interface Props {
   socials?: { label: string; href: string }[];
 }
 
+/** Фиксированный размер (52/72px) переполнял экран на длинных однословных
+ * названиях («Менделеевская» и т.п.) — на телефоне некуда переноситься по
+ * словам. Подбираем размер по длине названия, чтобы влезало на любой ширине. */
+function heroTitleSizeClass(name: string): string {
+  const len = name.length;
+  if (len <= 5) return 'text-[48px] sm:text-[72px]';
+  if (len <= 8) return 'text-[38px] sm:text-[64px]';
+  if (len <= 11) return 'text-[32px] sm:text-[56px]';
+  return 'text-[26px] sm:text-[46px]';
+}
+
 
 export function CoffeeLuxHome({
   locationSlug,
@@ -75,7 +86,7 @@ export function CoffeeLuxHome({
           >
             <div>
               <h1
-                className="font-[family-name:var(--font-display)] text-[52px] font-light uppercase leading-none tracking-[0.1em] text-white sm:text-[72px]"
+                className={`font-[family-name:var(--font-display)] font-light uppercase leading-none tracking-[0.1em] text-white ${heroTitleSizeClass(locationName)}`}
                 style={{ textShadow: '0 2px 32px rgba(0,0,0,0.85), 0 1px 6px rgba(0,0,0,0.9)' }}
               >
                 {locationName}

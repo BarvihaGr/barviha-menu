@@ -75,7 +75,10 @@ export function ItemPhotoViewer({ src, alt }: Props) {
                   <button
                     type="button"
                     aria-label={t('closePhoto')}
-                    className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white/90 backdrop-blur-sm transition hover:border-gold hover:text-gold cursor-pointer"
+                    // top-4 залезал под чёлку/статус-бар на iPhone (кнопка
+                    // пряталась под системным UI и не нажималась) — сдвигаем
+                    // ниже safe-area-inset-top, поверх обычного отступа.
+                    className="absolute right-4 top-[calc(env(safe-area-inset-top)+1rem)] z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white/90 backdrop-blur-sm transition hover:border-gold hover:text-gold cursor-pointer"
                   >
                     <X size={20} />
                   </button>
