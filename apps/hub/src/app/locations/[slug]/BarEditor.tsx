@@ -78,18 +78,52 @@ export function BarEditor({
                 />
               )}
             </div>
-            <div className="divide-y divide-[color:var(--border)]">
-              {entry.items.map((it, i) => (
-                <BarItemRow
-                  key={it.id}
-                  slug={slug}
-                  item={it}
-                  canReorder={!query.trim()}
-                  canMoveUp={i > 0}
-                  canMoveDown={i < entry.items.length - 1}
-                />
-              ))}
-            </div>
+            {/* На сайте (ArkaMenuSections/CategoryBlock) type1 и type2 —
+             * две отдельные группы (сетка фото, затем список без фото), а
+             * не единый список. Сырой порядок файла их перемешивает, из-за
+             * чего в бэк-офисе позиции выглядели «в рандоме» относительно
+             * сайта — группируем так же, чтобы порядок совпадал 1:1. */}
+            {(() => {
+              const type1 = entry.items.filter((it) => it.type === 1);
+              const type2 = entry.items.filter((it) => it.type === 2);
+              return (
+                <>
+                  {type1.length > 0 && (
+                    <div className="divide-y divide-[color:var(--border)]">
+                      {type1.map((it, i) => (
+                        <BarItemRow
+                          key={it.id}
+                          slug={slug}
+                          item={it}
+                          canReorder={!query.trim()}
+                          canMoveUp={i > 0}
+                          canMoveDown={i < type1.length - 1}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  {type1.length > 0 && type2.length > 0 && (
+                    <div className="px-4 sm:px-8 py-1.5 text-[10px] uppercase tracking-[0.15em] text-[color:var(--muted)]">
+                      Без своего фото — общее фото категории
+                    </div>
+                  )}
+                  {type2.length > 0 && (
+                    <div className="divide-y divide-[color:var(--border)]">
+                      {type2.map((it, i) => (
+                        <BarItemRow
+                          key={it.id}
+                          slug={slug}
+                          item={it}
+                          canReorder={!query.trim()}
+                          canMoveUp={i > 0}
+                          canMoveDown={i < type2.length - 1}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </div>
         ),
       )}

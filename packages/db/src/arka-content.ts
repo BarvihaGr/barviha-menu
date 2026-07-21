@@ -124,15 +124,28 @@ export function removeBarGroupPhoto(slug: string, category: string): void {
 }
 
 /** Сдвиг позиции Бара (шаблон Арки) на место соседней внутри своего раздела
- * (entry.items) — раздел позиции ищем перебором, id уникален по файлу. */
+ * (entry.items) — раздел позиции ищем перебором, id уникален по файлу.
+ * Переставляем только внутри своего типа (1/2): на сайте (ArkaMenuSections)
+ * type1 и type2 рендерятся двумя отдельными группами — сеткой фото и
+ * списком без фото, — а не единым списком, поэтому и «вверх/вниз» должны
+ * двигать позицию в пределах её группы, иначе стрелка молча переставляла бы
+ * позицию к соседу другого типа и итоговый порядок расходился бы с тем, что
+ * видно на сайте. */
 export function moveBarItem(slug: string, id: string, direction: 'up' | 'down'): void {
   const file = readContentJson<BarFile>(`${slug}/bar.json`);
   for (const entry of file.sections) {
     if (entry.kind !== 'category') continue;
     const idx = entry.items.findIndex((i) => i.id === id);
     if (idx < 0) continue;
-    const j = direction === 'up' ? idx - 1 : idx + 1;
-    if (j < 0 || j >= entry.items.length) return;
+    const type = entry.items[idx]!.type;
+    const sameTypeIndices = entry.items.reduce<number[]>((acc, it, i) => {
+      if (it.type === type) acc.push(i);
+      return acc;
+    }, []);
+    const pos = sameTypeIndices.indexOf(idx);
+    const targetPos = direction === 'up' ? pos - 1 : pos + 1;
+    if (targetPos < 0 || targetPos >= sameTypeIndices.length) return;
+    const j = sameTypeIndices[targetPos]!;
     [entry.items[idx], entry.items[j]] = [entry.items[j]!, entry.items[idx]!];
     writeContentJson(`${slug}/bar.json`, file);
     return;
