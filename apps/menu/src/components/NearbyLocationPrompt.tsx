@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { AnimatePresence, motion } from 'framer-motion';
+import { MapPin } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 
 const DISMISS_KEY = 'nearby-location-dismissed';
@@ -31,7 +34,9 @@ function haversineKm(a: { lat: number; lon: number }, b: { lat: number; lon: num
  * ТОЛЬКО если у текущей локации уже проставлены координаты в бэк-офисе
  * (Настройки → координаты) — так фича включается локация-за-локацией без
  * правок кода, пока проставлены только Киевская/Павелецкая/Менделеевская.
- * Ничего не решает за человека — только баннер-предложение, дальше выбор его.
+ * Ничего не решает за человека — только гейт-модалка-предложение, дальше
+ * выбор его. Центрированная модалка (не баннер-полоска сверху) — чтобы
+ * читалось как осознанный вопрос, а не фоновое уведомление о cookies.
  */
 export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: string; locations: LocPoint[] }) {
   const [nearest, setNearest] = useState<LocPoint | null>(null);
@@ -70,33 +75,75 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
     );
   }, [currentSlug, locations]);
 
-  if (!nearest) return null;
-
   function dismiss() {
     sessionStorage.setItem(DISMISS_KEY, '1');
     setNearest(null);
   }
 
   return (
-    <div className="fixed inset-x-0 top-0 z-[70] flex justify-center px-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
-      <div className="flex w-full max-w-md items-center gap-3 rounded-2xl border border-white/10 bg-black/90 px-4 py-3 text-white shadow-lg backdrop-blur-md">
-        <span className="flex-1 text-sm leading-snug">Вы рядом с «{nearest.name}» — открыть её меню?</span>
-        <Link
-          href={`/${nearest.slug}`}
-          onClick={() => sessionStorage.setItem(DISMISS_KEY, '1')}
-          className="shrink-0 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-black"
-        >
-          Открыть
-        </Link>
-        <button
-          type="button"
-          onClick={dismiss}
-          title="Закрыть"
-          className="shrink-0 text-lg leading-none text-white/60"
-        >
-          ×
-        </button>
-      </div>
-    </div>
+    <Dialog.Root open={nearest != null} onOpenChange={(v) => !v && dismiss()}>
+      <AnimatePresence>
+        {nearest && (
+          <Dialog.Portal forceMount>
+            <Dialog.Overlay asChild>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 z-[85] bg-black/75 backdrop-blur-sm"
+              />
+            </Dialog.Overlay>
+            <Dialog.Content
+              asChild
+              aria-describedby={undefined}
+              onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+              <motion.div
+                initial={{ opacity: 0, x: '-50%', y: 'calc(-50% + 16px)', scale: 0.96 }}
+                animate={{ opacity: 1, x: '-50%', y: '-50%', scale: 1 }}
+                exit={{ opacity: 0, x: '-50%', y: 'calc(-50% + 16px)', scale: 0.96 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="fixed left-1/2 top-1/2 z-[95] w-[min(380px,calc(100vw-2rem))] rounded-sm border border-gold bg-card text-center shadow-2xl"
+              >
+                <div className="flex flex-col items-center gap-4 px-7 pb-7 pt-8">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-gold/40 bg-gold/10">
+                    <MapPin size={22} className="text-gold" />
+                  </span>
+
+                  <div className="flex flex-col gap-1.5">
+                    <div className="text-[9px] uppercase tracking-[0.25em] text-muted">Вы рядом</div>
+                    <Dialog.Title className="text-base leading-snug text-cream">
+                      Вы находитесь рядом с «{nearest?.name}» — открыть меню этой локации?
+                    </Dialog.Title>
+                  </div>
+
+                  <div className="mt-1 flex w-full flex-col gap-2.5">
+                    <Dialog.Close asChild>
+                      <Link
+                        href={`/${nearest?.slug}`}
+                        onClick={() => sessionStorage.setItem(DISMISS_KEY, '1')}
+                        className="w-full rounded-sm bg-gold py-3 text-xs font-medium uppercase tracking-[0.15em] text-black transition hover:bg-gold-light"
+                      >
+                        Открыть меню
+                      </Link>
+                    </Dialog.Close>
+                    <Dialog.Close asChild>
+                      <button
+                        type="button"
+                        onClick={dismiss}
+                        className="w-full rounded-sm border border-[color:var(--border)] py-3 text-xs uppercase tracking-[0.15em] text-muted transition hover:text-cream"
+                      >
+                        Остаться здесь
+                      </button>
+                    </Dialog.Close>
+                  </div>
+                </div>
+              </motion.div>
+            </Dialog.Content>
+          </Dialog.Portal>
+        )}
+      </AnimatePresence>
+    </Dialog.Root>
   );
 }

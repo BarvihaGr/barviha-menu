@@ -1,5 +1,3 @@
-// Деплой-маркер: триггерит пересборку Railway (watch на apps/menu).
-// Правки в packages/db теперь тоже деплоятся — см. watchPatterns в railway.toml.
 import createNextIntlPlugin from 'next-intl/plugin';
 import type { NextConfig } from 'next';
 
