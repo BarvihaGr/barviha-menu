@@ -15,6 +15,7 @@ import type { ArkaMenuEntry, ArkaMenuItem, PhotoEntry, ResolvedMenuItem } from '
  */
 export function loadArkaBarSections(slug: string): ArkaMenuEntry[] {
   const sections = getBarSections(slug);
+  const groupPhotos = getBarGroupPhotos(slug);
   const result: ArkaMenuEntry[] = [];
   let pendingHeader: ArkaMenuEntry | null = null;
   let headerUsed = false;
@@ -25,7 +26,10 @@ export function loadArkaBarSections(slug: string): ArkaMenuEntry[] {
       continue;
     }
     const items = entry.items.filter((it) => it.is_available && !it.is_archived);
-    if (items.length === 0) continue;
+    // Категория без доступных позиций всё равно показываем, если у неё есть
+    // фото-баннер — это вводная картинка раздела (напр. «Безалкогольная
+    // продукция» перед Лимонадами/Смузи), без своих собственных позиций.
+    if (items.length === 0 && !groupPhotos[entry.category]) continue;
     if (pendingHeader && !headerUsed) {
       result.push(pendingHeader);
       headerUsed = true;

@@ -82,7 +82,7 @@ function CategoryBlock({
       ) : groupPhoto ? (
         <CategoryPhoto category={category} photo={groupPhoto} />
       ) : (
-        <h2 className="mb-4 font-[family-name:var(--font-display)] text-[20px] font-semibold uppercase leading-none tracking-[0.03em] text-[var(--cm-text-soft)]">
+        <h2 className="mb-4 border-b border-[var(--cm-border)] pb-2 font-[family-name:var(--font-display)] text-[24px] font-semibold uppercase leading-none tracking-[0.04em] text-[var(--cm-accent)]">
           {category}
         </h2>
       )}
