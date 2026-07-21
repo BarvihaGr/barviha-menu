@@ -9,6 +9,21 @@ import '../globals.css';
 export const metadata: Metadata = {
   title: 'Барвиха Лаунж — Меню',
   description: 'Premium digital menu — Barvikha Lounge',
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
+  // «Добавить на экран Домой» на iPhone — без этого блока Safari открывает
+  // PWA в мини-браузере со своей шапкой вместо полноэкранного standalone-режима.
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Барвиха',
+  },
 };
 
 // viewport-fit=cover — без него env(safe-area-inset-*) на iPhone равны 0,
@@ -17,6 +32,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
+  themeColor: '#0C0A08',
 };
 
 export function generateStaticParams() {
