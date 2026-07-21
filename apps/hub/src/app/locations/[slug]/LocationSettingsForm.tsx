@@ -59,6 +59,30 @@ export function LocationSettingsForm({ slug, settings }: { slug: string; setting
           className="input"
         />
       </label>
+
+      <div className="flex flex-col gap-1">
+        <span className="text-xs text-[color:var(--muted)]">
+          Координаты (для «предложить ближайшую локацию» на живом меню)
+        </span>
+        <div className="flex gap-2">
+          <input
+            type="number"
+            step="any"
+            placeholder="Широта, напр. 55.743466"
+            defaultValue={draft.latitude ?? ''}
+            onBlur={(e) => save({ latitude: e.target.value ? Number(e.target.value) : null })}
+            className="input"
+          />
+          <input
+            type="number"
+            step="any"
+            placeholder="Долгота, напр. 37.562721"
+            defaultValue={draft.longitude ?? ''}
+            onBlur={(e) => save({ longitude: e.target.value ? Number(e.target.value) : null })}
+            className="input"
+          />
+        </div>
+      </div>
     </div>
   );
 }

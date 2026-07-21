@@ -73,7 +73,14 @@ function getLocationById(id: string): Location | undefined {
 function withContentStoreOverrides(loc: Location): Location {
   if (!isContentStoreSlug(loc.slug)) return loc;
   const s = getLocationSettings(loc.slug);
-  return { ...loc, address: s.address, phone: s.phone ?? undefined, is_active: s.is_active };
+  return {
+    ...loc,
+    address: s.address,
+    phone: s.phone ?? undefined,
+    is_active: s.is_active,
+    latitude: s.latitude,
+    longitude: s.longitude,
+  };
 }
 
 // ── Карты подкатегорий (для подписи/порядка/группировки) ──

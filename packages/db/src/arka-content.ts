@@ -403,10 +403,21 @@ export interface LocationSettings {
   address: string | null;
   phone: string | null;
   is_active: boolean;
+  /** Координаты для геолокации («предложить ближайшую локацию» на живом
+   * меню) — заполняются постепенно, см. apps/menu NearbyLocationPrompt. */
+  latitude: number | null;
+  longitude: number | null;
 }
 
 export function getLocationSettings(slug: string): LocationSettings {
-  return readContentJson<LocationSettings>(`${slug}/location.json`);
+  const raw = readContentJson<Partial<LocationSettings>>(`${slug}/location.json`);
+  return {
+    address: raw.address ?? null,
+    phone: raw.phone ?? null,
+    is_active: raw.is_active ?? true,
+    latitude: raw.latitude ?? null,
+    longitude: raw.longitude ?? null,
+  };
 }
 
 export function updateLocationSettings(slug: string, patch: Partial<LocationSettings>): void {

@@ -21,6 +21,10 @@ export interface Location {
   address: string | null;
   /** Контактный телефон локации в международном формате (+7…) */
   phone?: string | null;
+  /** Координаты для «предложить ближайшую локацию» на живом меню (см.
+   * apps/menu NearbyLocationPrompt) — null, пока не проставлены в бэк-офисе. */
+  latitude?: number | null;
+  longitude?: number | null;
   features: LocationFeature[];
   brand_color: string | null;
   /** Hero background video (mp4) for the home screen. Filled from content drop. */

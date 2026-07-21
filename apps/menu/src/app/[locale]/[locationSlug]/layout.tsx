@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { getClient } from '@barviha/db';
 import { LocationClosedScreen } from '@/components/LocationClosedScreen';
+import { NearbyLocationPrompt } from '@/components/NearbyLocationPrompt';
 import { LocationHeader } from '@/components/LocationHeader';
 import { CoffeeHeader } from '@/components/coffee/CoffeeHeader';
 import { LuxBottomNav } from '@/components/coffee/LuxBottomNav';
@@ -62,6 +63,7 @@ export default async function LocationLayout({
 
   const inner = (
     <>
+      <NearbyLocationPrompt currentSlug={location.slug} locations={locations} />
       {coffee ? (
         <CoffeeHeader locationSlug={location.slug} locations={locations} />
       ) : (
