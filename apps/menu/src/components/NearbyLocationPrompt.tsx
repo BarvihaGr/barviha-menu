@@ -123,7 +123,7 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
                       <Link
                         href={`/${nearest?.slug}`}
                         onClick={() => sessionStorage.setItem(DISMISS_KEY, '1')}
-                        className="w-full rounded-sm bg-gold py-3 text-xs font-medium uppercase tracking-[0.15em] text-black transition hover:bg-gold-light"
+                        className="w-full rounded-sm bg-[#C9A876] py-3 text-xs font-medium uppercase tracking-[0.15em] text-[#2C0A00] transition hover:bg-[#D8BC90]"
                       >
                         Открыть меню
                       </Link>
