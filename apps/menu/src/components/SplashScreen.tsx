@@ -42,11 +42,23 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
         {visible && (
           <motion.div
             key="splash"
-            // Фон — тот же бежевый, что и у самого видео (не чёрный). Видео —
-            // object-contain (целиком, дерево никогда не обрезается по бокам
-            // на узких/телефонных экранах), а поля вокруг совпадают по цвету
-            // с фоном видео — граница не видна, бежевый как будто продолжается.
-            style={{ position: 'fixed', inset: 0, zIndex: 9999, background: '#DDD2C1', overflow: 'hidden' }}
+            // Фон — тот же бежевый, что и у видео. На телефоне (узкий
+            // контейнер, видео 16:9) по краям остаются поля этого цвета —
+            // сам стык раньше был виден как ровный прямоугольник, потому
+            // что край видео обрывался резко. Вместо этого видео зажато в
+            // рамку строго по своим пропорциям (aspect-ratio, без лишнего
+            // пустого поля внутри неё), а верх/низ этой рамки растушёваны
+            // маской-градиентом — край тает в фон плавно, без единой линии.
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              background: '#DDD2C1',
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
             animate={{ opacity: fading ? 0 : 1 }}
             transition={{ duration: 0.7, ease: 'easeInOut' }}
             onClick={dismiss}
@@ -58,7 +70,14 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
               muted
               playsInline
               preload="auto"
-              className="h-full w-full object-contain"
+              className="h-auto w-full max-h-full"
+              style={{
+                aspectRatio: '1920 / 1072',
+                WebkitMaskImage:
+                  'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
+                maskImage:
+                  'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
+              }}
             />
           </motion.div>
         )}
