@@ -59,7 +59,10 @@ export function CoffeeHeader({ locationSlug, locations }: Props) {
         </svg>
       </div>
 
-      <div className="relative mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 py-1.5 sm:gap-3 sm:px-6">
+      <div
+        className="relative mx-auto flex max-w-[1200px] items-center justify-between gap-2 px-4 pb-1.5 sm:gap-3 sm:px-6"
+        style={{ paddingTop: 'calc(0.375rem + env(safe-area-inset-top, 0px))' }}
+      >
         <Link
           href={homeHref}
           className="flex min-w-0 items-center cursor-pointer"

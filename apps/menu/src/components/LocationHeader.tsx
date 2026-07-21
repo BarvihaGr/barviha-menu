@@ -14,7 +14,10 @@ export function LocationHeader({ locationSlug, locations }: Props) {
 
   return (
     <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-4 sm:px-6 py-3.5">
+      <div
+        className="mx-auto flex max-w-[1200px] items-center justify-between px-4 pb-3.5 sm:px-6"
+        style={{ paddingTop: 'calc(0.875rem + env(safe-area-inset-top, 0px))' }}
+      >
 
         <Link href={homeHref} className="flex flex-col cursor-pointer" aria-label="Barvikha Group">
           <span
