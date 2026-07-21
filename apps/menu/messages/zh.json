@@ -141,6 +141,10 @@
     "address": "地址",
     "phone": "電話",
     "directions": "查看路線",
+    "chooseMapApp": "选择地图应用",
+    "yandexMaps": "Яндекс Карты",
+    "twoGis": "2GIS",
+    "googleMaps": "Google Maps",
     "addressTBD": "地址即將公佈",
     "phoneTBD": "電話即將公佈"
   },

@@ -9,6 +9,7 @@ import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import { getMetroColor } from '@/lib/location-theme';
 import { cn } from '@/lib/utils';
+import { DirectionsMenu } from './DirectionsMenu';
 
 function locName(l: Location, locale: string): string {
   if (locale === 'en' && l.name_en) return l.name_en;
@@ -20,6 +21,8 @@ interface Props {
   locationName: string;
   address: string | null;
   phone: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
   accent: string;
   /** Список всех локаций для переключения внутри модалки. */
   locations?: Location[];
@@ -36,23 +39,12 @@ interface Props {
   themeStyle?: React.CSSProperties;
 }
 
-/**
- * Маршрут "от меня" → адрес. Google Maps Directions API (api=1) без
- * origin — по спецификации Google гарантированно строит маршрут от текущей
- * геопозиции. Раньше была ссылка на Яндекс (rtext=~<текст адреса>), но при
- * неудачном клиентском геокодинге текста Яндекс молча открывал карту
- * просто на текущей позиции, без маршрута.
- * Универсально работает в десктопе и на мобиле; смартфон спросит,
- * открыть ли в нативном приложении.
- */
-function directionsUrl(address: string): string {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}&travelmode=driving`;
-}
-
 export function LocationInfoModal({
   locationName,
   address,
   phone,
+  latitude,
+  longitude,
   accent,
   locations,
   currentSlug,
@@ -177,24 +169,24 @@ export function LocationInfoModal({
                     </div>
                   )}
                   {address ? (
-                    <a
-                      href={directionsUrl(address)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group/row flex items-start gap-3 rounded-sm border border-[color:var(--border)] bg-background/40 px-4 py-3.5 hover:border-gold transition cursor-pointer"
-                    >
-                      <MapPin size={18} className="mt-0.5 shrink-0 text-gold" />
-                      <div className="flex-1 min-w-0">
-                        <div className="text-[9px] uppercase tracking-[0.25em] text-muted">
-                          {t('address')}
+                    <DirectionsMenu address={address} latitude={latitude} longitude={longitude}>
+                      <button
+                        type="button"
+                        className="group/row flex w-full items-start gap-3 rounded-sm border border-[color:var(--border)] bg-background/40 px-4 py-3.5 text-left hover:border-gold transition cursor-pointer"
+                      >
+                        <MapPin size={18} className="mt-0.5 shrink-0 text-gold" />
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[9px] uppercase tracking-[0.25em] text-muted">
+                            {t('address')}
+                          </div>
+                          <div className="mt-1 text-sm text-foreground leading-snug">{address}</div>
+                          <div className="mt-2 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-gold group-hover/row:text-gold-light transition">
+                            <Navigation size={11} />
+                            {t('directions')}
+                          </div>
                         </div>
-                        <div className="mt-1 text-sm text-foreground leading-snug">{address}</div>
-                        <div className="mt-2 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-gold group-hover/row:text-gold-light transition">
-                          <Navigation size={11} />
-                          {t('directions')}
-                        </div>
-                      </div>
-                    </a>
+                      </button>
+                    </DirectionsMenu>
                   ) : (
                     <div className="flex items-start gap-3 rounded-sm border border-[color:var(--border)] bg-background/40 px-4 py-3.5 opacity-60">
                       <MapPin size={18} className="mt-0.5 shrink-0 text-muted" />

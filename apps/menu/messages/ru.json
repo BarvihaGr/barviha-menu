@@ -142,6 +142,10 @@
     "address": "Адрес",
     "phone": "Телефон",
     "directions": "Построить маршрут",
+    "chooseMapApp": "Открыть маршрут в",
+    "yandexMaps": "Яндекс Карты",
+    "twoGis": "2ГИС",
+    "googleMaps": "Google Maps",
     "addressTBD": "Адрес уточняется",
     "phoneTBD": "Телефон уточняется"
   },

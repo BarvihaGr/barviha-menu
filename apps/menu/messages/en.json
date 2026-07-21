@@ -142,6 +142,10 @@
     "address": "Address",
     "phone": "Phone",
     "directions": "Get directions",
+    "chooseMapApp": "Open directions in",
+    "yandexMaps": "Yandex Maps",
+    "twoGis": "2GIS",
+    "googleMaps": "Google Maps",
     "addressTBD": "Address coming soon",
     "phoneTBD": "Phone coming soon"
   },

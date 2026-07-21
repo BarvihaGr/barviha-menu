@@ -59,6 +59,8 @@ interface Props {
   locationName: string;
   address: string | null;
   phone: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
   /** Акцентный цвет локации — для полосы в модалке инфо. */
   accent: string;
   /** Все локации для переключения внутри модалки инфо. */
@@ -74,7 +76,7 @@ interface Props {
  * во всплывающей модалке), по центру Домик (главная локации), справа Корзина.
  * Активный пункт — акцентным цветом (--dock-accent).
  */
-export function FloatingCartButton({ locationSlug, locationName, address, phone, accent, locations, dockAccent }: Props) {
+export function FloatingCartButton({ locationSlug, locationName, address, phone, latitude, longitude, accent, locations, dockAccent }: Props) {
   const rawCount = useCart((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
   const mounted = useIsClient();
   const count = mounted ? rawCount : 0;
@@ -105,6 +107,8 @@ export function FloatingCartButton({ locationSlug, locationName, address, phone,
           locationName={locationName}
           address={address}
           phone={phone}
+          latitude={latitude}
+          longitude={longitude}
           accent={accent}
           locations={locations}
           currentSlug={locationSlug}

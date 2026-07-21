@@ -29,6 +29,8 @@ export default async function ContactsPage({
       locationSlug={location.slug}
       phone={phone}
       address={address}
+      latitude={location.latitude}
+      longitude={location.longitude}
       hours="Пн–Вс 12:00 – 01:00"
     />
   );

@@ -3,25 +3,16 @@
 import { Wifi } from 'lucide-react';
 import { Phone, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
+import { DirectionsMenu } from '../DirectionsMenu';
 
 interface Props {
   locationSlug: string;
   phone: string | null;
   address: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
   hours: string;
   wifi?: { ssid: string; password: string };
-}
-
-/**
- * Маршрут «от меня» до адреса. Google Maps Directions API (api=1) без
- * origin — по документации Google это гарантированно строит маршрут от
- * текущей геопозиции, а не просто открывает карту на ней (в отличие от
- * Яндекс-ссылки rtext=~<текст>, которая была раньше: при неудачном
- * клиентском геокодинге текста адреса Яндекс молча падал на «просто
- * показать мою позицию» без маршрута — это и была жалоба пользователя).
- */
-function directionsUrl(address: string): string {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}&travelmode=driving`;
 }
 
 /**
@@ -34,7 +25,7 @@ const LOCATION_WIFI: Record<string, { ssid: string; password: string }> = {
   kievskaia: { ssid: 'Barvikha_Kiev', password: 'barvikha2024' },
 };
 
-export function CoffeeLuxContacts({ locationSlug, phone, address, hours, wifi }: Props) {
+export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, longitude, hours, wifi }: Props) {
   const wifiData = wifi ?? LOCATION_WIFI[locationSlug];
   const rows = [
     phone
@@ -128,17 +119,17 @@ export function CoffeeLuxContacts({ locationSlug, phone, address, hours, wifi }:
             <MapPin size={34} strokeWidth={1.5} className="relative text-[color:var(--cm-accent)]" />
           </div>
           {address && (
-            <a
-              href={directionsUrl(address)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between gap-3 px-5 py-4 transition-colors hover:bg-[var(--cm-surface-2)] cursor-pointer"
-            >
-              <span className="font-[family-name:var(--font-sans)] text-[14px] text-[var(--cm-text)]">
-                Как добраться
-              </span>
-              <ArrowRight size={18} strokeWidth={1.5} className="text-[color:var(--cm-accent)]" />
-            </a>
+            <DirectionsMenu address={address} latitude={latitude} longitude={longitude}>
+              <button
+                type="button"
+                className="flex w-full items-center justify-between gap-3 px-5 py-4 transition-colors hover:bg-[var(--cm-surface-2)] cursor-pointer"
+              >
+                <span className="font-[family-name:var(--font-sans)] text-[14px] text-[var(--cm-text)]">
+                  Как добраться
+                </span>
+                <ArrowRight size={18} strokeWidth={1.5} className="text-[color:var(--cm-accent)]" />
+              </button>
+            </DirectionsMenu>
           )}
         </div>
       </div>

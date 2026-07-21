@@ -80,6 +80,8 @@ export default async function LocationLayout({
           locationName={locationName}
           address={location.address}
           phone={location.phone ?? null}
+          latitude={location.latitude}
+          longitude={location.longitude}
           accent={accent}
           locations={locations}
           dockAccent={getCoffeeAccent(location.slug)}
