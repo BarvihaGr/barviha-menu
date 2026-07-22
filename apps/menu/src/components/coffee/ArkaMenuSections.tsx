@@ -23,7 +23,7 @@ import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
 function CategoryPhoto({ category, photo }: { category: string; photo: PhotoEntry }) {
   return (
     <>
-      <div className="relative mb-5 aspect-[3/2] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
+      <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
         <Image
           src={photo.src}
           alt={category}
