@@ -30,7 +30,7 @@ export async function GET(
   return NextResponse.json(
     {
       name: `Барвиха Лаунж — ${name}`,
-      short_name: name,
+      short_name: `Меню ${name}`,
       description: `Меню — Barvikha Lounge ${name}`,
       start_url: scope,
       scope,

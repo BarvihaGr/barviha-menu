@@ -51,7 +51,7 @@ export async function generateMetadata({
     appleWebApp: {
       capable: true,
       statusBarStyle: 'black-translucent',
-      title: name,
+      title: `Меню ${name}`,
     },
   };
 }
