@@ -13,35 +13,35 @@ import { photoTransformCss } from '@/lib/photo-transform';
 import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
 
 /**
- * Общее фото на категорию (как «КОФЕ» на timeless.club/menu/bar) — заголовок
- * не отдельной строкой, а поверх фото, крупно, капсом. Показывается только
- * когда для категории есть кадр в groupPhotos; иначе — обычный <h2>.
+ * Общее фото на категорию (как «КОФЕ» на timeless.club/menu/bar) — крупная
+ * рамка под реальные пропорции фото (3:2, как у карточки «Кальян Барвиха»,
+ * см. FeaturedItemCard), заголовок под фото обычным текстом, а не оверлеем
+ * на градиенте — на светлых/контрастных кадрах оверлей плохо читался и
+ * выглядел баннером, а не частью карточки. Показывается только когда для
+ * категории есть кадр в groupPhotos; иначе — обычный <h2>.
  */
 function CategoryPhoto({ category, photo }: { category: string; photo: PhotoEntry }) {
   return (
-    <div className="relative mb-5 aspect-[16/9] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
-      <Image
-        src={photo.src}
-        alt={category}
-        fill
-        sizes="(max-width: 640px) 100vw, 800px"
-        className="object-cover"
-        style={{
-          objectPosition: photo.position ? `${photo.position.x}% ${photo.position.y}%` : undefined,
-          transform: photoTransformCss(photo.transform),
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-      <h2 className="absolute bottom-4 left-5 font-[family-name:var(--font-display)] text-[30px] font-semibold uppercase leading-none tracking-[0.03em] text-white sm:bottom-6 sm:left-7 sm:text-[42px]">
+    <>
+      <div className="relative mb-5 aspect-[3/2] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
+        <Image
+          src={photo.src}
+          alt={category}
+          fill
+          sizes="(max-width: 640px) 100vw, 800px"
+          className="object-cover"
+          style={{
+            objectPosition: photo.position ? `${photo.position.x}% ${photo.position.y}%` : undefined,
+            transform: photoTransformCss(photo.transform),
+          }}
+        />
+      </div>
+      <h2 className="mb-4 font-[family-name:var(--font-display)] text-[32px] font-semibold uppercase leading-none tracking-[0.02em] text-[var(--cm-accent)]">
         {category}
       </h2>
-    </div>
+    </>
   );
 }
-
-/** Единственная категория, у которой подпись не на фото, а под ним, стилем
- * заголовка «Винная карта» — по прямой просьбе, не трогать остальные. */
-const CAPTION_BELOW_PHOTO = 'Игристые и шампанские вина';
 
 function CategoryBlock({
   category,
@@ -60,26 +60,7 @@ function CategoryBlock({
 
   return (
     <section className="py-5 first:pt-0">
-      {groupPhoto && category === CAPTION_BELOW_PHOTO ? (
-        <>
-          <div className="relative mb-5 aspect-[16/9] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
-            <Image
-              src={groupPhoto.src}
-              alt={category}
-              fill
-              sizes="(max-width: 640px) 100vw, 800px"
-              className="object-cover"
-              style={{
-                objectPosition: groupPhoto.position ? `${groupPhoto.position.x}% ${groupPhoto.position.y}%` : undefined,
-                transform: photoTransformCss(groupPhoto.transform),
-              }}
-            />
-          </div>
-          <h2 className="mb-4 font-[family-name:var(--font-display)] text-[32px] font-semibold uppercase leading-none tracking-[0.02em] text-[var(--cm-accent)]">
-            {category}
-          </h2>
-        </>
-      ) : groupPhoto ? (
+      {groupPhoto ? (
         <CategoryPhoto category={category} photo={groupPhoto} />
       ) : (
         <h2 className="mb-4 border-b border-[var(--cm-border)] pb-2 font-[family-name:var(--font-display)] text-[24px] font-semibold uppercase leading-none tracking-[0.04em] text-[var(--cm-accent)]">
