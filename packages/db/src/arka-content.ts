@@ -228,6 +228,11 @@ export function addBarItem(slug: string, categoryIndex: number, input: NewBarIte
  * заголовок-секция (kind: 'header') не показывается, если под ним не
  * осталось ни одной категории. Используется бэк-офисом, чтобы прятать
  * архив из обычной вкладки «Бар» (см. getArchiveItems/getStopListItems).
+ *
+ * Категории, у которых позиций не было ещё ДО фильтра (пустой items —
+ * banner-контейнер вроде «Безалкогольная продукция», нужен только чтобы
+ * держать общее фото-обложку), под это правило не подпадают — предикат
+ * ничего у них не «отфильтровал», прятать нечего.
  */
 export function filterBarSections(
   sections: ArkaMenuEntry[],
@@ -243,7 +248,7 @@ export function filterBarSections(
       continue;
     }
     const items = entry.items.filter(predicate);
-    if (items.length === 0) continue;
+    if (entry.items.length > 0 && items.length === 0) continue;
     if (pendingHeader && !headerUsed) {
       result.push(pendingHeader);
       headerUsed = true;
