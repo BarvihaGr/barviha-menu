@@ -62,7 +62,7 @@ export function BarEditor({
           <div key={idx} className="border-b border-[color:var(--border)]">
             <div className="flex items-center gap-2 px-4 sm:px-8 pt-4 pb-1">
               <span className="text-sm font-medium text-[color:var(--text-soft)]">{entry.category}</span>
-              {entry.items.some((it) => it.type === 2) && (
+              {(entry.items.length === 0 || entry.items.some((it) => it.type === 2)) && (
                 <GroupPhotoUploader
                   slug={slug}
                   category={entry.category}
