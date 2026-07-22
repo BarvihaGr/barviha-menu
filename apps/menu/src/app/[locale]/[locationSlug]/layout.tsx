@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
+import type { Metadata } from 'next';
 import { getClient } from '@barviha/db';
 import { LocationClosedScreen } from '@/components/LocationClosedScreen';
 import { NearbyLocationPrompt } from '@/components/NearbyLocationPrompt';
@@ -21,6 +22,39 @@ import {
   coffeeHomeVariant,
 } from '@/lib/coffee-design';
 import { cn } from '@/lib/utils';
+
+/**
+ * Заголовок/манифест/подпись под иконкой — per-локация, а не общие на весь
+ * сайт (см. api/manifest/[locale]/[locationSlug] — там же объяснение бага
+ * с «Добавить на экран Домой», который эта функция чинит вместе с ним).
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; locationSlug: string }>;
+}): Promise<Metadata> {
+  const { locale, locationSlug } = await params;
+  const db = getClient();
+  const location = await db.getLocationBySlug(locationSlug);
+  if (!location) return {};
+
+  const name =
+    locale === 'en' && location.name_en
+      ? location.name_en
+      : locale === 'zh' && location.name_zh
+        ? location.name_zh
+        : location.name;
+
+  return {
+    title: `Барвиха Лаунж — ${name}`,
+    manifest: `/api/manifest/${locale}/${locationSlug}`,
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'black-translucent',
+      title: name,
+    },
+  };
+}
 
 export default async function LocationLayout({
   children,
