@@ -12,7 +12,7 @@
  * меню, и бэк-офис (hub).
  */
 import { readContentJson, writeContentJson } from './content-store';
-import { subLabel, subOrder } from './catalog-shared';
+import { subLabel, subOrder, allSubsForRealm } from './catalog-shared';
 import { getItemVariants } from './arka-shared';
 import type { ArkaMenuEntry, ArkaMenuItem } from './arka-shared';
 import { usesArkaBarTemplate } from './onboarding';
@@ -59,7 +59,13 @@ export function toResolvedBarItems(slug: string): ResolvedMenuItem[] {
       getItemVariants(item).map((v) => ({
         id: v.id,
         name: v.name,
+        name_en: item.name_en ?? undefined,
+        name_zh: item.name_zh ?? undefined,
+        name_hy: item.name_hy ?? undefined,
         description: v.description,
+        description_en: item.description_en ?? undefined,
+        description_zh: item.description_zh ?? undefined,
+        description_hy: item.description_hy ?? undefined,
         photos: item.photo
           ? [{ src: item.photo, position: item.photo_position ?? null, transform: item.photo_transform ?? null }]
           : [],
@@ -267,8 +273,17 @@ export interface CatalogItem {
   realm: CatalogRealm;
   sub: string;
   name: string;
+  name_en?: string | null;
+  name_zh?: string | null;
+  name_hy?: string | null;
   description: string | null;
+  description_en?: string | null;
+  description_zh?: string | null;
+  description_hy?: string | null;
   composition: string | null;
+  composition_en?: string | null;
+  composition_zh?: string | null;
+  composition_hy?: string | null;
   kbju: GenKbju | null;
   price: number;
   /** Все фото позиции, первое — обложка/витрина (см. PhotoEntry). */
@@ -335,9 +350,17 @@ export function moveCatalogItem(slug: string, realm: CatalogRealm, id: string, d
   writeContentJson(`${slug}/${realm}.json`, items);
 }
 
-/** Категории, реально встречающиеся у этой локации в разделе (для выпадающего списка в форме добавления). */
+/** Категории для выпадающего списка в форме добавления — и уже встречающиеся
+ * у этой локации, и все канонические из общего справочника (см.
+ * allSubsForRealm), даже если позиций в них у локации пока 0. Без этого
+ * категория вроде «Сезонное предложение» не появлялась в списке, пока не
+ * заведена хотя бы одна такая позиция — приходилось набирать название
+ * вручную через «+ Новая категория», рискуя разойтись с канонической
+ * подписью. Кастомные подразделы локации (не из справочника, например
+ * подразделы Кальянов) остаются как есть. */
 export function getCatalogCategories(slug: string, realm: CatalogRealm): { sub: string; label: string }[] {
-  const subs = [...new Set(getCatalogItems(slug, realm).map((it) => it.sub))];
+  const usedSubs = getCatalogItems(slug, realm).map((it) => it.sub);
+  const subs = [...new Set([...usedSubs, ...allSubsForRealm(realm).map((c) => c.sub)])];
   return subs
     .map((sub) => ({ sub, label: subLabel(realm, sub) }))
     .sort((a, b) => subOrder(realm, a.sub) - subOrder(realm, b.sub));
@@ -388,12 +411,21 @@ export function toResolvedCatalogItem(it: CatalogItem): ResolvedMenuItem {
   return {
     id: it.id,
     name: it.name,
+    name_en: it.name_en ?? undefined,
+    name_zh: it.name_zh ?? undefined,
+    name_hy: it.name_hy ?? undefined,
     description: it.description,
+    description_en: it.description_en ?? undefined,
+    description_zh: it.description_zh ?? undefined,
+    description_hy: it.description_hy ?? undefined,
     photos: it.photos,
     photo: it.photos[0]?.src ?? null,
     photo_position: it.photos[0]?.position ?? null,
     photo_transform: it.photos[0]?.transform ?? null,
     composition: it.composition,
+    composition_en: it.composition_en ?? undefined,
+    composition_zh: it.composition_zh ?? undefined,
+    composition_hy: it.composition_hy ?? undefined,
     category_id: it.realm,
     price: it.price,
     weight: kb && kb.weight != null ? `${kb.weight}` : null,
@@ -425,6 +457,9 @@ export interface LocationSettings {
    * меню) — заполняются постепенно, см. apps/menu NearbyLocationPrompt. */
   latitude: number | null;
   longitude: number | null;
+  /** Часы работы — свободная строка («Пн–Вс 12:00 – 01:00»), показывается
+   * на странице контактов живого меню. */
+  hours: string | null;
 }
 
 export function getLocationSettings(slug: string): LocationSettings {
@@ -435,6 +470,7 @@ export function getLocationSettings(slug: string): LocationSettings {
     is_active: raw.is_active ?? true,
     latitude: raw.latitude ?? null,
     longitude: raw.longitude ?? null,
+    hours: raw.hours ?? null,
   };
 }
 
