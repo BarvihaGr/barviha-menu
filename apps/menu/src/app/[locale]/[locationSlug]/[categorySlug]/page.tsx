@@ -69,6 +69,7 @@ export default async function CategoryPage({
                 sections={loadArkaBarSections(locationSlug)}
                 groupPhotos={loadArkaBarGroupPhotos(locationSlug)}
                 locationSlug={locationSlug}
+                locale={locale as Locale}
               />
             ) : (
               <div className="min-w-0">

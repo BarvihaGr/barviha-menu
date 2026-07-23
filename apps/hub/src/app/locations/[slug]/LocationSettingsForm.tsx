@@ -60,6 +60,16 @@ export function LocationSettingsForm({ slug, settings }: { slug: string; setting
         />
       </label>
 
+      <label className="flex flex-col gap-1 text-xs text-[color:var(--muted)]">
+        Часы работы
+        <input
+          placeholder="напр. Пн–Вс 12:00 – 01:00"
+          defaultValue={draft.hours ?? ''}
+          onBlur={(e) => save({ hours: e.target.value || null })}
+          className="input"
+        />
+      </label>
+
       <div className="flex flex-col gap-1">
         <span className="text-xs text-[color:var(--muted)]">
           Координаты (для «предложить ближайшую локацию» на живом меню)

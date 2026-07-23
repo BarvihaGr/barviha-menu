@@ -128,6 +128,19 @@ export function Sidebar({
           />
         </div>
         <nav className="flex-1 overflow-y-auto py-2">
+          {(role === 'big_boss' || role === 'boss_location') && (
+            <Link
+              href="/locations"
+              className={`flex items-center gap-2 border-l-2 px-5 py-2.5 text-sm font-medium transition-colors ${
+                pathname === '/locations'
+                  ? 'border-l-[color:var(--accent)] bg-[color:var(--surface-2)] text-[color:var(--text)]'
+                  : 'border-l-transparent text-[color:var(--text-soft)] hover:bg-[color:var(--surface-2)]/60'
+              }`}
+            >
+              Дашборд
+            </Link>
+          )}
+
           {filteredTemplates.length > 0 && (
             <>
               <div className="px-5 pb-1 pt-3 text-[10px] uppercase tracking-[0.2em] text-[color:var(--muted)]">

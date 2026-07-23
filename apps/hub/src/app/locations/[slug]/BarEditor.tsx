@@ -7,6 +7,7 @@ import { apiPath } from '@/lib/base-path';
 import { PhotoUploader } from './PhotoUploader';
 import { GroupPhotoUploader } from './GroupPhotoUploader';
 import { SavedBadge } from './SavedBadge';
+import { TranslationFields } from './TranslationFields';
 
 export function BarEditor({
   slug,
@@ -279,6 +280,7 @@ function BarItemRow({
               актуально
             </label>
           </div>
+          <TranslationFields draft={draft} save={save} />
           <button
             type="button"
             onClick={() => save({ is_archived: true })}

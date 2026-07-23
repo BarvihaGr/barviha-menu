@@ -60,7 +60,13 @@ export function toResolvedArkaBarItems(slug: string): ResolvedMenuItem[] {
       getItemVariants(item).map((v) => ({
         id: v.id,
         name: v.name,
+        name_en: item.name_en ?? undefined,
+        name_zh: item.name_zh ?? undefined,
+        name_hy: item.name_hy ?? undefined,
         description: v.description,
+        description_en: item.description_en ?? undefined,
+        description_zh: item.description_zh ?? undefined,
+        description_hy: item.description_hy ?? undefined,
         photos: item.photo ? [{ src: item.photo, position: item.photo_position ?? null, transform: item.photo_transform ?? null }] : [],
         photo: item.photo,
         composition: null,

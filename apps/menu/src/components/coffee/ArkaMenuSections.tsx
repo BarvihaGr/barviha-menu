@@ -10,6 +10,7 @@ import Image from 'next/image';
 import type { PhotoEntry } from '@barviha/db';
 import type { ArkaMenuEntry, ArkaMenuItem } from '@/lib/arka-menu-data';
 import { photoTransformCss } from '@/lib/photo-transform';
+import type { Locale } from '@/i18n/routing';
 import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
 
 /**
@@ -48,11 +49,13 @@ function CategoryBlock({
   items,
   locationSlug,
   groupPhotos,
+  locale,
 }: {
   category: string;
   items: ArkaMenuItem[];
   locationSlug: string;
   groupPhotos: Record<string, PhotoEntry>;
+  locale: Locale;
 }) {
   const type1 = items.filter((i) => i.type === 1);
   const type2 = items.filter((i) => i.type === 2);
@@ -71,14 +74,14 @@ function CategoryBlock({
       {type1.length > 0 && (
         <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-4">
           {type1.map((it, i) => (
-            <ArkaFullCard key={`${it.name}-${i}`} item={it} locationSlug={locationSlug} />
+            <ArkaFullCard key={`${it.name}-${i}`} item={it} locationSlug={locationSlug} locale={locale} />
           ))}
         </div>
       )}
 
       {type1.length > 0 && type2.length > 0 && <div className="my-7 h-px w-full bg-[var(--cm-border)]" />}
 
-      {type2.length > 0 && <ArkaGroupCard items={type2} locationSlug={locationSlug} />}
+      {type2.length > 0 && <ArkaGroupCard items={type2} locationSlug={locationSlug} locale={locale} />}
     </section>
   );
 }
@@ -87,10 +90,12 @@ export function ArkaMenuSections({
   sections,
   locationSlug,
   groupPhotos,
+  locale,
 }: {
   sections: ArkaMenuEntry[];
   locationSlug: string;
   groupPhotos: Record<string, PhotoEntry>;
+  locale: Locale;
 }) {
   return (
     <div className="min-w-0">
@@ -111,6 +116,7 @@ export function ArkaMenuSections({
             items={entry.items}
             locationSlug={locationSlug}
             groupPhotos={groupPhotos}
+            locale={locale}
           />
         );
       })}

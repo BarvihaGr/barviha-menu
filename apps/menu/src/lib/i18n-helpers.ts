@@ -2,7 +2,34 @@ import type { Category, HookahMood, ItemLabel, ResolvedMenuItem } from '@barviha
 import type { Locale } from '@/i18n/routing';
 import { ITEM_TRANSLATIONS } from './item-translations';
 
-export function pickItemName(item: ResolvedMenuItem, locale: Locale): string {
+/** Минимальная форма, которой достаточно для выбора перевода — под неё
+ * структурно подходит и ResolvedMenuItem, и ArkaMenuItem (Бар «Арки»),
+ * без явного приведения типов на стороне вызова. */
+interface NamedTranslatable {
+  id: string;
+  name: string;
+  name_en?: string | null;
+  name_zh?: string | null;
+  name_hy?: string | null;
+}
+
+interface DescribedTranslatable {
+  id: string;
+  description: string | null;
+  description_en?: string | null;
+  description_zh?: string | null;
+  description_hy?: string | null;
+}
+
+interface ComposedTranslatable {
+  id: string;
+  composition: string | null;
+  composition_en?: string | null;
+  composition_zh?: string | null;
+  composition_hy?: string | null;
+}
+
+export function pickItemName(item: NamedTranslatable, locale: Locale): string {
   const tr = ITEM_TRANSLATIONS[item.id];
   if (locale === 'en') return item.name_en ?? tr?.name_en ?? item.name;
   if (locale === 'zh') return item.name_zh ?? tr?.name_zh ?? item.name;
@@ -10,7 +37,7 @@ export function pickItemName(item: ResolvedMenuItem, locale: Locale): string {
   return item.name;
 }
 
-export function pickItemDescription(item: ResolvedMenuItem, locale: Locale): string | null {
+export function pickItemDescription(item: DescribedTranslatable, locale: Locale): string | null {
   const tr = ITEM_TRANSLATIONS[item.id];
   if (locale === 'en') return item.description_en ?? tr?.description_en ?? item.description;
   if (locale === 'zh') return item.description_zh ?? tr?.description_zh ?? item.description;
@@ -18,7 +45,7 @@ export function pickItemDescription(item: ResolvedMenuItem, locale: Locale): str
   return item.description;
 }
 
-export function pickItemComposition(item: ResolvedMenuItem, locale: Locale): string | null {
+export function pickItemComposition(item: ComposedTranslatable, locale: Locale): string | null {
   const tr = ITEM_TRANSLATIONS[item.id];
   if (locale === 'en') return item.composition_en ?? tr?.composition_en ?? item.composition;
   if (locale === 'zh') return item.composition_zh ?? tr?.composition_zh ?? item.composition;

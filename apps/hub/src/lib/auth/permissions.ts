@@ -32,7 +32,7 @@ export function visibleTabsFor(role: AccountRole): TabKey[] {
 
 /** Куда вести после логина / при попытке зайти туда, куда нельзя. */
 export function defaultPathFor(session: SessionClaims): string {
-  if (session.role === 'big_boss' || !session.locationSlug) return '/locations/arka';
+  if (session.role === 'big_boss' || !session.locationSlug) return '/locations';
   return session.role === 'manager'
     ? `/locations/${session.locationSlug}/stop-list`
     : `/locations/${session.locationSlug}`;

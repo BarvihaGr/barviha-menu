@@ -28,6 +28,8 @@ import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { photoTransformCss, type PhotoTransform } from '@/lib/photo-transform';
 import { trackAdd } from '@/lib/stats';
+import { pickItemName, pickItemDescription } from '@/lib/i18n-helpers';
+import type { Locale } from '@/i18n/routing';
 
 function formatRub(n: number): string {
   return n.toLocaleString('ru-RU');
@@ -148,10 +150,12 @@ function TimelessVariantLine({ variant, locationSlug }: { variant: ArkaMenuVaria
 /** Тип 1 — полная карточка (своё фото). Фото+название+описание — тоже
  * ссылка (на первую вариацию), чтобы вся верхняя часть карточки открывала
  * карточку товара, а не только строка цены. */
-export function ArkaFullCard({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
+export function ArkaFullCard({ item, locationSlug, locale }: { item: ArkaMenuItem; locationSlug: string; locale: Locale }) {
   const variants = getItemVariants(item);
   const primary = variants[0]!;
   const photoSrc = item.photo ?? undefined;
+  const name = pickItemName(item, locale);
+  const description = pickItemDescription(item, locale);
   return (
     <article className="flex min-w-0 flex-col">
       <Link href={`/${locationSlug}/item/${primary.id}`} className="contents focus:outline-none">
@@ -164,10 +168,10 @@ export function ArkaFullCard({ item, locationSlug }: { item: ArkaMenuItem; locat
         />
         <div className="flex flex-1 flex-col pt-2.5">
           <h3 className="break-words font-[family-name:var(--font-display)] text-[14px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
-            {item.name}
+            {name}
           </h3>
-          {item.description && (
-            <p className="mt-1 break-words text-[11.5px] leading-snug text-[var(--cm-muted)]">{item.description}</p>
+          {description && (
+            <p className="mt-1 break-words text-[11.5px] leading-snug text-[var(--cm-muted)]">{description}</p>
           )}
         </div>
       </Link>
@@ -183,17 +187,19 @@ export function ArkaFullCard({ item, locationSlug }: { item: ArkaMenuItem; locat
 /** Тип 2 — позиция без фото, в стиле Timeless: крупное название сверху,
  * объём + цена снизу, без фото и без плейсхолдера. Название — тоже ссылка
  * (на первую вариацию), чтобы вся ячейка открывала карточку товара. */
-function ArkaTimelessRow({ item, locationSlug }: { item: ArkaMenuItem; locationSlug: string }) {
+function ArkaTimelessRow({ item, locationSlug, locale }: { item: ArkaMenuItem; locationSlug: string; locale: Locale }) {
   const variants = getItemVariants(item);
   const primary = variants[0]!;
+  const name = pickItemName(item, locale);
+  const description = pickItemDescription(item, locale);
   return (
     <div className="flex flex-col gap-3 border-b border-[var(--cm-border)] py-4">
       <Link href={`/${locationSlug}/item/${primary.id}`} className="min-w-0 focus:outline-none">
         <h4 className="break-words font-[family-name:var(--font-display)] text-[19px] font-medium uppercase leading-[1.2] tracking-[0.02em] text-[var(--cm-text)] sm:text-[21px]">
-          {item.name}
+          {name}
         </h4>
-        {item.description && (
-          <p className="mt-1.5 break-words text-[12px] leading-snug text-[var(--cm-muted)]">{item.description}</p>
+        {description && (
+          <p className="mt-1.5 break-words text-[12px] leading-snug text-[var(--cm-muted)]">{description}</p>
         )}
       </Link>
       <div className="flex flex-col gap-1.5">
@@ -211,14 +217,16 @@ function ArkaTimelessRow({ item, locationSlug }: { item: ArkaMenuItem; locationS
 export function ArkaGroupCard({
   items,
   locationSlug,
+  locale,
 }: {
   items: ArkaMenuItem[];
   locationSlug: string;
+  locale: Locale;
 }) {
   return (
     <div className="grid grid-cols-1 gap-x-10 sm:grid-cols-2">
       {items.map((it, i) => (
-        <ArkaTimelessRow key={`${it.name}-${i}`} item={it} locationSlug={locationSlug} />
+        <ArkaTimelessRow key={`${it.name}-${i}`} item={it} locationSlug={locationSlug} locale={locale} />
       ))}
     </div>
   );

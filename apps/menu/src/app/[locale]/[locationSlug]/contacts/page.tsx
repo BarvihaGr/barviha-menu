@@ -20,9 +20,10 @@ export default async function ContactsPage({
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) notFound();
 
-  // Плейсхолдеры для Киевской (реальные адрес/часы заменить в данных локации).
+  // Плейсхолдеры, пока в бэк-офисе не заполнены реальные данные локации.
   const phone = location.phone ?? '+7 (999) 796-91-11';
   const address = location.address ?? 'Москва, площадь Киевского Вокзала, 2';
+  const hours = location.hours ?? 'Пн–Вс 12:00 – 01:00';
 
   return (
     <CoffeeLuxContacts
@@ -31,7 +32,7 @@ export default async function ContactsPage({
       address={address}
       latitude={location.latitude}
       longitude={location.longitude}
-      hours="Пн–Вс 12:00 – 01:00"
+      hours={hours}
     />
   );
 }

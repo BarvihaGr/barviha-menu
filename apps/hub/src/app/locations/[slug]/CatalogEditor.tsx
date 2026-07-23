@@ -9,6 +9,7 @@ import { menuAssetUrl } from '@/lib/menu-origin';
 import { PhotoGalleryEditor } from './PhotoGalleryEditor';
 import { cssTransform, DEFAULT_POSITION, DEFAULT_TRANSFORM } from './PhotoUploader';
 import { SavedBadge } from './SavedBadge';
+import { TranslationFields } from './TranslationFields';
 
 export function CatalogEditor({
   slug,
@@ -227,6 +228,53 @@ function CatalogItemRow({
               актуально
             </label>
           </div>
+          <div className="flex gap-3">
+            <Field label="Ккал">
+              <input
+                type="number"
+                defaultValue={draft.kbju?.kcal ?? ''}
+                onBlur={(e) => {
+                  const kcal = e.target.value ? Number(e.target.value) : null;
+                  save({ kbju: { ...(draft.kbju ?? { weight: null, prot: null, fat: null, carb: null }), kcal } });
+                }}
+                className="input"
+              />
+            </Field>
+            <Field label="Белки, г">
+              <input
+                type="number"
+                defaultValue={draft.kbju?.prot ?? ''}
+                onBlur={(e) => {
+                  const prot = e.target.value ? Number(e.target.value) : null;
+                  save({ kbju: { ...(draft.kbju ?? { weight: null, fat: null, carb: null, kcal: null }), prot } });
+                }}
+                className="input"
+              />
+            </Field>
+            <Field label="Жиры, г">
+              <input
+                type="number"
+                defaultValue={draft.kbju?.fat ?? ''}
+                onBlur={(e) => {
+                  const fat = e.target.value ? Number(e.target.value) : null;
+                  save({ kbju: { ...(draft.kbju ?? { weight: null, prot: null, carb: null, kcal: null }), fat } });
+                }}
+                className="input"
+              />
+            </Field>
+            <Field label="Углеводы, г">
+              <input
+                type="number"
+                defaultValue={draft.kbju?.carb ?? ''}
+                onBlur={(e) => {
+                  const carb = e.target.value ? Number(e.target.value) : null;
+                  save({ kbju: { ...(draft.kbju ?? { weight: null, prot: null, fat: null, kcal: null }), carb } });
+                }}
+                className="input"
+              />
+            </Field>
+          </div>
+          <TranslationFields draft={draft} save={save} hasComposition />
           <button
             type="button"
             onClick={() => save({ is_archived: true })}

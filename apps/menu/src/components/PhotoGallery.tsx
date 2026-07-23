@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import type { PhotoEntry } from '@barviha/db';
 
 const SWIPE_THRESHOLD = 60;
+const AUTOPLAY_MS = 4200;
 
 /**
  * Фото блюда в карточке товара — как CoffeePhotoViewer раньше (кроп-превью
@@ -22,6 +23,18 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
   const t = useTranslations('item');
   const draggedRef = useRef(false);
 
+  const canSwipe = photos.length > 1;
+
+  // Мягкое автолистание — пока карточка открыта и не в полноэкранном зуме.
+  // setTimeout (не interval) перезапускается на каждую смену index, поэтому
+  // ручной свайп естественно сбрасывает отсчёт до следующего кадра, а не
+  // конкурирует с таймером.
+  useEffect(() => {
+    if (!canSwipe || open) return;
+    const id = setTimeout(() => setIndex((i) => (i + 1) % photos.length), AUTOPLAY_MS);
+    return () => clearTimeout(id);
+  }, [index, canSwipe, open, photos.length]);
+
   if (photos.length === 0) {
     return (
       <div className="absolute inset-0 flex items-center justify-center text-7xl text-[#d8d6d0]">
@@ -32,7 +45,6 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
 
   const activeIndex = Math.min(index, photos.length - 1);
   const active = photos[activeIndex]!;
-  const canSwipe = photos.length > 1;
 
   function onDragEnd(_: unknown, info: PanInfo) {
     if (Math.abs(info.offset.x) > 10) draggedRef.current = true;
@@ -58,26 +70,58 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
         onDragEnd={onDragEnd}
         onClick={onFrameClick}
       >
-        <Image
-          src={active.src}
-          alt={alt}
-          fill
-          sizes="(max-width: 768px) 100vw, 768px"
-          priority={activeIndex === 0}
-          draggable={false}
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        />
+        {/* Кросс-фейд + очень медленное «дыхание» масштаба (Ken Burns) —
+         * мягкий переход между кадрами слайд-шоу, без резких сдвигов. Ключ
+         * на src, а не на index — работает одинаково и от автоплея, и от
+         * ручного свайпа. */}
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={active.src}
+            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 1.035 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              opacity: { duration: 0.9, ease: 'easeInOut' },
+              scale: { duration: AUTOPLAY_MS / 1000 + 0.9, ease: 'easeOut' },
+            }}
+          >
+            <Image
+              src={active.src}
+              alt={alt}
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority={activeIndex === 0}
+              draggable={false}
+              className="object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
         <span className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/90 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition group-hover:bg-[var(--cm-surface-2)]">
           <Expand size={16} />
         </span>
         {canSwipe && (
           <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
-            {photos.map((_, i) => (
-              <span
-                key={i}
-                className={`h-1.5 rounded-full transition-all ${i === activeIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/50'}`}
-              />
-            ))}
+            {photos.map((_, i) => {
+              const isActive = i === activeIndex;
+              return (
+                <span
+                  key={i}
+                  className={`relative h-1.5 overflow-hidden rounded-full transition-[width] ${isActive ? 'w-4 bg-white/35' : 'w-1.5 bg-white/50'}`}
+                >
+                  {isActive && !open && (
+                    <motion.span
+                      key={activeIndex}
+                      className="absolute inset-y-0 left-0 rounded-full bg-white"
+                      initial={{ width: '0%' }}
+                      animate={{ width: '100%' }}
+                      transition={{ duration: AUTOPLAY_MS / 1000, ease: 'linear' }}
+                    />
+                  )}
+                  {isActive && open && <span className="absolute inset-0 rounded-full bg-white" />}
+                </span>
+              );
+            })}
           </div>
         )}
       </motion.div>

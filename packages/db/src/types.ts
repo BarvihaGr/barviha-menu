@@ -33,6 +33,8 @@ export interface Location {
   has_hookah?: boolean;
   /** Меню локации доступно онлайн (бэк-офис). По умолчанию true, если не задано. */
   is_active?: boolean;
+  /** Часы работы — свободная строка («Пн–Вс 12:00 – 01:00»). */
+  hours?: string | null;
   created_at: string;
 }
 

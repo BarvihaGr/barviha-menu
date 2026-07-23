@@ -12,10 +12,16 @@
 export interface ArkaMenuItem {
   id: string;
   name: string;
+  name_en?: string | null;
+  name_zh?: string | null;
+  name_hy?: string | null;
   type: 1 | 2;
   priceParts: string[];
   volume: string | null;
   description: string | null;
+  description_en?: string | null;
+  description_zh?: string | null;
+  description_hy?: string | null;
   photo: string | null;
   /** Кадрирование фото в квадратной рамке карточки (0–100%, объектная позиция). Null/отсутствует — дефолт. */
   photo_position?: { x: number; y: number } | null;

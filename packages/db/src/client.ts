@@ -66,9 +66,9 @@ function getLocationById(id: string): Location | undefined {
 
 /**
  * Арка + рабочие клоны — на редактируемом content-store (см. arka-content.ts,
- * packages/db/content/<slug>/**). Адрес/телефон/is_active панель правит там;
- * здесь просто накладываем поверх статичной заготовки из mock-data. Киевская
- * этот путь не проходит — без изменений (см. onboarding.ts).
+ * packages/db/content/<slug>/**). Адрес/телефон/is_active/часы работы панель
+ * правит там; здесь просто накладываем поверх статичной заготовки из
+ * mock-data. Киевская тоже входит в этот путь (см. onboarding.ts).
  */
 function withContentStoreOverrides(loc: Location): Location {
   if (!isContentStoreSlug(loc.slug)) return loc;
@@ -80,6 +80,7 @@ function withContentStoreOverrides(loc: Location): Location {
     is_active: s.is_active,
     latitude: s.latitude,
     longitude: s.longitude,
+    hours: s.hours,
   };
 }
 

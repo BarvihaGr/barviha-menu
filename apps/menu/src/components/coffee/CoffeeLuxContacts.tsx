@@ -12,7 +12,7 @@ interface Props {
   latitude?: number | null;
   longitude?: number | null;
   hours: string;
-  wifi?: { ssid: string; password: string };
+  wifi?: { ssid: string };
 }
 
 /**
@@ -20,9 +20,10 @@ interface Props {
  * «лейбл / значение» c тонкими золотыми иконками, мини-карта и ссылка
  * «Как добраться». Тёмный люкс-минимализм.
  */
-// Wi-Fi для Киевской — заменить на реальные данные
-const LOCATION_WIFI: Record<string, { ssid: string; password: string }> = {
-  kievskaia: { ssid: 'Barvikha_Kiev', password: 'barvikha2024' },
+// Wi-Fi — просто витрина названия сети, без пароля/подключения (гости
+// подключаются вручную по названию сети).
+const LOCATION_WIFI: Record<string, { ssid: string }> = {
+  kievskaia: { ssid: 'Barvikha Free' },
 };
 
 export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, longitude, hours, wifi }: Props) {
@@ -81,27 +82,19 @@ export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, long
           })}
         </div>
 
-        {/* Wi-Fi */}
+        {/* Wi-Fi — только название сети, без кнопки подключения */}
         {wifiData && (
-          <a
-            href={`WIFI:T:WPA;S:${wifiData.ssid};P:${wifiData.password};;`}
-            className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-[var(--cm-border)] bg-[var(--cm-surface)] px-5 py-4 transition-colors hover:bg-[var(--cm-surface-2)] cursor-pointer"
-          >
-            <div className="flex items-center gap-4">
-              <Wifi size={20} strokeWidth={1.5} className="text-[color:var(--cm-accent)]" />
-              <div>
-                <div className="font-[family-name:var(--font-sans)] text-[12px] uppercase tracking-[0.18em] text-[var(--cm-muted)]">
-                  Бесплатный Wi-Fi
-                </div>
-                <div className="mt-0.5 font-[family-name:var(--font-sans)] text-[15px] text-[var(--cm-text)]">
-                  {wifiData.ssid}
-                </div>
+          <div className="mt-6 flex items-center gap-4 rounded-2xl border border-[var(--cm-border)] bg-[var(--cm-surface)] px-5 py-4">
+            <Wifi size={20} strokeWidth={1.5} className="text-[color:var(--cm-accent)]" />
+            <div>
+              <div className="font-[family-name:var(--font-sans)] text-[12px] uppercase tracking-[0.18em] text-[var(--cm-muted)]">
+                Бесплатный Wi-Fi
+              </div>
+              <div className="mt-0.5 font-[family-name:var(--font-sans)] text-[15px] text-[var(--cm-text)]">
+                {wifiData.ssid}
               </div>
             </div>
-            <span className="font-[family-name:var(--font-sans)] text-[13px] text-[color:var(--cm-accent)]">
-              Подключиться →
-            </span>
-          </a>
+          </div>
         )}
 
         {/* Мини-карта + как добраться */}
