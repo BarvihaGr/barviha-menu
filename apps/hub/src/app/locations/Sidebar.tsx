@@ -12,6 +12,16 @@ interface LocationRow {
 
 type Role = 'big_boss' | 'boss_location' | 'manager' | null;
 
+// Разделы «пульта управления» сверх диджитал-меню — см. память
+// project-hub-control-tower-vision. Пока страницы-заглушки «скоро», но
+// доступ уже сейчас ограничен той же ролью, что и «Дашборд»/«Аккаунты».
+const CONTROL_TOWER_LINKS: { href: string; label: string }[] = [
+  { href: '/landings', label: 'Лендинги' },
+  { href: '/main-site', label: 'Главный сайт' },
+  { href: '/karaoke', label: 'Караоке' },
+  { href: '/stats', label: 'Статистика сети' },
+];
+
 export function Sidebar({
   templates,
   working,
@@ -140,6 +150,21 @@ export function Sidebar({
               Дашборд
             </Link>
           )}
+
+          {(role === 'big_boss' || role === 'boss_location') &&
+            CONTROL_TOWER_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`flex items-center gap-2 border-l-2 px-5 py-2.5 text-sm font-medium transition-colors ${
+                  pathname === link.href
+                    ? 'border-l-[color:var(--accent)] bg-[color:var(--surface-2)] text-[color:var(--text)]'
+                    : 'border-l-transparent text-[color:var(--text-soft)] hover:bg-[color:var(--surface-2)]/60'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
 
           {filteredTemplates.length > 0 && (
             <>
