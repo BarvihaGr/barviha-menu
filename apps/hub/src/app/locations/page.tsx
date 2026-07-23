@@ -26,8 +26,8 @@ export default async function LocationsDashboardPage() {
   const geoCount = working.filter((l) => l.latitude != null && l.longitude != null).length;
 
   return (
-    <div className="flex flex-col gap-6 px-4 py-6 sm:px-8">
-      <div>
+    <div className="flex h-full flex-col overflow-hidden">
+      <div className="shrink-0 px-4 pt-6 sm:px-8">
         <h1 className="glitch-text text-xl font-black tracking-tight text-[color:var(--text)]">
           Пульт управления
         </h1>
@@ -36,17 +36,19 @@ export default async function LocationsDashboardPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {working.map((loc) => (
-          <LocationCard
-            key={loc.slug}
-            slug={loc.slug}
-            name={loc.name}
-            address={loc.address}
-            isActive={loc.is_active !== false}
-            hasGeo={loc.latitude != null && loc.longitude != null}
-          />
-        ))}
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-8">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {working.map((loc) => (
+            <LocationCard
+              key={loc.slug}
+              slug={loc.slug}
+              name={loc.name}
+              address={loc.address}
+              isActive={loc.is_active !== false}
+              hasGeo={loc.latitude != null && loc.longitude != null}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
