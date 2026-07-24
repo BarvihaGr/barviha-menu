@@ -280,6 +280,22 @@ export function PositionEditor({
     setTf((t) => ({ ...t, rotate: clamp(deg, -180, 180) }));
   }
 
+  // Числовые поля зума/наклона — черновик ввода отдельно от применённого
+  // значения. Раньше поле было напрямую привязано к посчитанному %, и на
+  // КАЖДЫЙ введённый символ тут же перерисовывалось уже применённым (и
+  // клампнутым) числом — ввести «60» было невозможно, после первой цифры
+  // поле переписывало себя. Применяем только по уходу фокуса/Enter.
+  const [zoomDraft, setZoomDraft] = useState<string | null>(null);
+  const [tiltDraft, setTiltDraft] = useState<string | null>(null);
+  function commitZoomDraft() {
+    if (zoomDraft !== null && zoomDraft.trim() !== '') setZoomPercent(Number(zoomDraft));
+    setZoomDraft(null);
+  }
+  function commitTiltDraft() {
+    if (tiltDraft !== null && tiltDraft.trim() !== '') setTiltDeg(Number(tiltDraft));
+    setTiltDraft(null);
+  }
+
   function rotate() {
     setTf((t) => ({ ...t, rotate: (t.rotate + 90) % 360 }));
   }
@@ -365,8 +381,16 @@ export function PositionEditor({
             <input
               type="number"
               inputMode="numeric"
-              value={zoomPercent}
-              onChange={(e) => setZoomPercent(Number(e.target.value))}
+              value={zoomDraft ?? zoomPercent}
+              onChange={(e) => setZoomDraft(e.target.value)}
+              onFocus={(e) => {
+                setZoomDraft(String(zoomPercent));
+                e.currentTarget.select();
+              }}
+              onBlur={commitZoomDraft}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') e.currentTarget.blur();
+              }}
               className="w-full bg-transparent py-1 text-right text-[11px] tabular-nums text-[color:var(--text)] outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
             <span className="text-[10px] text-[color:var(--muted)]">%</span>
@@ -388,8 +412,16 @@ export function PositionEditor({
             <input
               type="number"
               inputMode="numeric"
-              value={tiltDeg}
-              onChange={(e) => setTiltDeg(Number(e.target.value))}
+              value={tiltDraft ?? tiltDeg}
+              onChange={(e) => setTiltDraft(e.target.value)}
+              onFocus={(e) => {
+                setTiltDraft(String(tiltDeg));
+                e.currentTarget.select();
+              }}
+              onBlur={commitTiltDraft}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') e.currentTarget.blur();
+              }}
               className="w-full bg-transparent py-1 text-right text-[11px] tabular-nums text-[color:var(--text)] outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             />
             <span className="text-[10px] text-[color:var(--muted)]">°</span>
