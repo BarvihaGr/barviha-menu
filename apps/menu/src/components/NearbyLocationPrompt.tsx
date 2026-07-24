@@ -114,7 +114,7 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
                   <div className="flex flex-col gap-1.5">
                     <div className="text-[9px] uppercase tracking-[0.25em] text-muted">Вы рядом</div>
                     <Dialog.Title className="text-base leading-snug text-cream">
-                      Вы находитесь рядом с «{nearest?.name}» — открыть меню этой локации?
+                      Вы находитесь рядом с «Барвиха Lounge {nearest?.name}» — открыть меню локации?
                     </Dialog.Title>
                   </div>
 
