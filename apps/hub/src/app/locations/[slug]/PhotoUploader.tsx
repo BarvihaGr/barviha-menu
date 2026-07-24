@@ -18,6 +18,13 @@ export const DEFAULT_POSITION: Position = { x: 50, y: 35 };
 // Небольшой запас (14%) даёт место для сдвига сразу по обеим осям.
 export const MIN_ZOOM = 1.14;
 export const DEFAULT_TRANSFORM: Transform = { zoom: MIN_ZOOM, rotate: 0, flipH: false, flipV: false };
+// Нижняя граница зума В РЕДАКТОРЕ (не дефолт — тот остаётся MIN_ZOOM). Ниже
+// MIN_ZOOM фото уже не закрывает рамку целиком — по короткой оси видны поля
+// фона рамки (то самое «отдалить»): это осознанный выбор, не баг, — раньше
+// зум нельзя было опустить ниже 100% вообще, теперь можно, если нужно
+// показать фото целиком, не обрезая.
+const ZOOM_MIN_ABS = 0.4;
+const ZOOM_MAX_ABS = 3;
 
 function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n));
@@ -247,7 +254,9 @@ export function PositionEditor({
     setDragging(false);
   }
 
-  function setZoom(nextZoom: number) {
+  function setZoom(nextZoomRaw: number) {
+    if (!Number.isFinite(nextZoomRaw)) return;
+    const nextZoom = clamp(nextZoomRaw, ZOOM_MIN_ABS, ZOOM_MAX_ABS);
     // Меняем зум — люфт меняется вместе с ним, переносим текущий сдвиг
     // пропорционально, чтобы кадр не «прыгал» в сторону при вращении слайдера.
     const prevMax = maxOffsetNow(tf.zoom);
@@ -257,6 +266,18 @@ export function PositionEditor({
       y: prevMax.y > 0 ? clamp((o.y / prevMax.y) * nextMax.y, -nextMax.y, nextMax.y) : 0,
     }));
     setTf((t) => ({ ...t, zoom: nextZoom }));
+  }
+
+  // Проценты зума в UI — относительно MIN_ZOOM (та же «точка отсчёта 100%»,
+  // что была всегда), просто теперь диапазон не обрезан снизу этой точкой.
+  const zoomPercent = Math.round((tf.zoom / MIN_ZOOM) * 100);
+  function setZoomPercent(percent: number) {
+    setZoom((percent / 100) * MIN_ZOOM);
+  }
+  const tiltDeg = Math.round(((tf.rotate % 360) + 540) % 360 - 180);
+  function setTiltDeg(deg: number) {
+    if (!Number.isFinite(deg)) return;
+    setTf((t) => ({ ...t, rotate: clamp(deg, -180, 180) }));
   }
 
   function rotate() {
@@ -333,16 +354,23 @@ export function PositionEditor({
           <span className="w-9 shrink-0 text-[10px] uppercase tracking-[0.1em] text-[color:var(--muted)]">Зум</span>
           <input
             type="range"
-            min={MIN_ZOOM}
-            max={3}
-            step={0.05}
+            min={ZOOM_MIN_ABS}
+            max={ZOOM_MAX_ABS}
+            step={0.02}
             value={tf.zoom}
             onChange={(e) => setZoom(Number(e.target.value))}
             className="flex-1"
           />
-          <span className="w-10 shrink-0 text-right text-[10px] tabular-nums text-[color:var(--muted)]">
-            {Math.round((tf.zoom / MIN_ZOOM) * 100)}%
-          </span>
+          <div className="flex w-16 shrink-0 items-center gap-0.5 rounded border border-[color:var(--border)] bg-[color:var(--surface-2)] px-1">
+            <input
+              type="number"
+              inputMode="numeric"
+              value={zoomPercent}
+              onChange={(e) => setZoomPercent(Number(e.target.value))}
+              className="w-full bg-transparent py-1 text-right text-[11px] tabular-nums text-[color:var(--text)] outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            />
+            <span className="text-[10px] text-[color:var(--muted)]">%</span>
+          </div>
         </div>
 
         <div className="mt-3 flex items-center gap-2">
@@ -356,9 +384,16 @@ export function PositionEditor({
             onChange={(e) => setTf((t) => ({ ...t, rotate: Number(e.target.value) }))}
             className="flex-1"
           />
-          <span className="w-10 shrink-0 text-right text-[10px] tabular-nums text-[color:var(--muted)]">
-            {Math.round(((tf.rotate % 360) + 540) % 360 - 180)}°
-          </span>
+          <div className="flex w-16 shrink-0 items-center gap-0.5 rounded border border-[color:var(--border)] bg-[color:var(--surface-2)] px-1">
+            <input
+              type="number"
+              inputMode="numeric"
+              value={tiltDeg}
+              onChange={(e) => setTiltDeg(Number(e.target.value))}
+              className="w-full bg-transparent py-1 text-right text-[11px] tabular-nums text-[color:var(--text)] outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            />
+            <span className="text-[10px] text-[color:var(--muted)]">°</span>
+          </div>
         </div>
 
         <div className="mt-3 flex items-center gap-2">
