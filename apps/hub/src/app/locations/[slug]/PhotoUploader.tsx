@@ -189,14 +189,24 @@ export function PositionEditor({
     const coverScale = Math.max(rect.width / iw, rect.height / ih) * dragRef.current.zoom;
     const overflowX = iw * coverScale - rect.width;
     const overflowY = ih * coverScale - rect.height;
+    // У близко-квадратных/чуть кадрированных фото на MIN_ZOOM реальный люфт
+    // по одной из осей — считанные пиксели (при zoom=1.14 это ~14% от
+    // размера рамки), а вся шкала 0–100% натянута именно на этот крошечный
+    // диапазон — из-за этого любой чуть более резкий сдвиг мышью/пальцем
+    // мгновенно улетал в крайнее положение, плавно двигать было невозможно.
+    // Не даём знаменателю быть меньше разумного минимума в пикселях — сама
+    // граница (0/100%) не меняется, меняется только «скорость» перетаскивания.
+    const DRAG_RANGE_FLOOR = 140;
+    const dragRangeX = Math.max(overflowX, DRAG_RANGE_FLOOR);
+    const dragRangeY = Math.max(overflowY, DRAG_RANGE_FLOOR);
     // Экранное движение делим на zoom — при увеличении та же дистанция мышью
     // соответствует меньшему смещению кадра (см. cssTransform: scale(zoom)
     // применяется поверх уже закадрированного объектом object-position фото).
     const dx = (e.clientX - dragRef.current.startX) / dragRef.current.zoom;
     const dy = (e.clientY - dragRef.current.startY) / dragRef.current.zoom;
     const next = { ...dragRef.current.pos };
-    if (overflowX > 0.5) next.x = clamp(dragRef.current.pos.x - (dx / overflowX) * 100, 0, 100);
-    if (overflowY > 0.5) next.y = clamp(dragRef.current.pos.y - (dy / overflowY) * 100, 0, 100);
+    if (overflowX > 0.5) next.x = clamp(dragRef.current.pos.x - (dx / dragRangeX) * 100, 0, 100);
+    if (overflowY > 0.5) next.y = clamp(dragRef.current.pos.y - (dy / dragRangeY) * 100, 0, 100);
     setPos(next);
   }
 
