@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { apiPath } from '@/lib/base-path';
@@ -51,6 +51,65 @@ export function Sidebar({
     setPrevPathname(pathname);
     setOpen(false);
   }
+
+  // Свайп с левого края экрана — открыть панель локаций (как системный жест
+  // «назад»/открыть меню в нативных приложениях), свайп влево по открытой
+  // панели — закрыть. Только горизонтальные жесты (вертикальный — это скролл
+  // списка, не трогаем); passive-слушатели — не мешаем нативному скроллу.
+  useEffect(() => {
+    const EDGE_ZONE_PX = 28;
+    const SWIPE_THRESHOLD_PX = 60;
+    let startX = 0;
+    let startY = 0;
+    let mode: 'open' | 'close' | null = null;
+
+    function onTouchStart(e: TouchEvent) {
+      const t = e.touches[0];
+      if (!t) return;
+      if (!open && t.clientX <= EDGE_ZONE_PX) {
+        mode = 'open';
+      } else if (open) {
+        mode = 'close';
+      } else {
+        mode = null;
+        return;
+      }
+      startX = t.clientX;
+      startY = t.clientY;
+    }
+
+    function onTouchMove(e: TouchEvent) {
+      if (!mode) return;
+      const t = e.touches[0];
+      if (!t) return;
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if (Math.abs(dy) > Math.abs(dx)) {
+        mode = null; // вертикальный жест — это скролл, не свайп панели
+        return;
+      }
+      if (mode === 'open' && dx > SWIPE_THRESHOLD_PX) {
+        setOpen(true);
+        mode = null;
+      } else if (mode === 'close' && dx < -SWIPE_THRESHOLD_PX) {
+        setOpen(false);
+        mode = null;
+      }
+    }
+
+    function onTouchEnd() {
+      mode = null;
+    }
+
+    document.addEventListener('touchstart', onTouchStart, { passive: true });
+    document.addEventListener('touchmove', onTouchMove, { passive: true });
+    document.addEventListener('touchend', onTouchEnd, { passive: true });
+    return () => {
+      document.removeEventListener('touchstart', onTouchStart);
+      document.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [open]);
 
   const q = query.trim().toLowerCase();
   const filteredTemplates = templates.filter((loc) => !q || loc.name.toLowerCase().includes(q));

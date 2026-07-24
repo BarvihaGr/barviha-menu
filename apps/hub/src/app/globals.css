@@ -22,6 +22,20 @@
   --ok: #33e0a3;
 }
 
+/* AppShell рассчитан на ровно h-screen с собственными скролл-контейнерами
+ * внутри (см. main/nav — overflow-y-auto) — но САМА страница (html/body)
+ * ничем не была заблокирована от нативного оттягивания. На iOS Safari
+ * (особенно в standalone-режиме «Добавить на экран Домой») это давало
+ * классический rubber-band: потянул вниз — видно чёрный холст под страницей,
+ * шапка на миг отрывается и «плывёт». overscroll-behavior отключает именно
+ * этот отскок, оставляя обычный скролл внутри контейнеров как есть. */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 body {
   background-color: var(--bg);
   background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1.2px);
