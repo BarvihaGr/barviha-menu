@@ -140,10 +140,45 @@ export function PhotoUploader({
   );
 }
 
-/** Модалка кадрирования: превью — та же квадратная рамка с object-cover, что
- * и на реальных карточках Арки. Перетаскивание — позиция, слайдер — зум,
- * кнопки — поворот на 90° и отражение. Сетка (правило третей) поверх кадра
- * помогает выровнять композицию. */
+/**
+ * Переводит offset (px, сдвиг картинки от центра рамки — положительный x
+ * двигает картинку вправо, значит видно её левую часть) в старый формат
+ * хранения (object-position %, 0 = левый/верхний край картинки, 100 =
+ * правый/нижний). Формулы подобраны так, что при рендере через
+ * object-position:${x}% + cssTransform(scale(zoom)) — как везде на сайте —
+ * результат совпадает пиксель-в-пиксель с тем, что видно в редакторе.
+ */
+function offsetToPos(offset: { x: number; y: number }, maxOffset: { x: number; y: number }): Position {
+  const px = maxOffset.x > 0 ? clamp(50 - (50 * offset.x) / maxOffset.x, 0, 100) : 50;
+  const py = maxOffset.y > 0 ? clamp(50 - (50 * offset.y) / maxOffset.y, 0, 100) : 50;
+  return { x: px, y: py };
+}
+
+function posToOffset(pos: Position, maxOffset: { x: number; y: number }): { x: number; y: number } {
+  return {
+    x: ((50 - pos.x) / 50) * maxOffset.x,
+    y: ((50 - pos.y) / 50) * maxOffset.y,
+  };
+}
+
+/** Насколько картинку (при данном zoom) можно сдвинуть от центра рамки и
+ * всё ещё полностью закрывать её — это же и есть половина «люфта» кадра. */
+function computeMaxOffset(rect: { width: number; height: number }, img: { w: number; h: number }, zoom: number) {
+  const baseScale = Math.max(rect.width / img.w, rect.height / img.h);
+  const renderedW = img.w * baseScale * zoom;
+  const renderedH = img.h * baseScale * zoom;
+  return {
+    x: Math.max(0, (renderedW - rect.width) / 2),
+    y: Math.max(0, (renderedH - rect.height) / 2),
+  };
+}
+
+/** Модалка кадрирования: перетаскивание идёт в пикселях 1:1 с курсором/пальцем
+ * (не в процентах «люфта» — та схема на почти-квадратных/сильно вытянутых
+ * фото либо намертво блокировала ось, либо мгновенно улетала в край при
+ * лёгком движении). Рядом — маленький живой предпросмотр в форме реальной
+ * карточки сайта, чтобы сразу было видно итоговый результат, не только
+ * рамку редактора. Кнопки ↑↓←→ и слайдер зума работают в тех же пикселях. */
 export function PositionEditor({
   photoUrl,
   initialPos,
@@ -165,49 +200,46 @@ export function PositionEditor({
    * фото категории кадр 16:9 (см. GroupPhotoUploader). */
   aspectClassName?: string;
 }) {
-  const [pos, setPos] = useState<Position>(initialPos);
   const [tf, setTf] = useState<Transform>(initialTransform);
   const containerRef = useRef<HTMLDivElement>(null);
   const imgSizeRef = useRef<{ w: number; h: number } | null>(null);
-  const dragRef = useRef<{ startX: number; startY: number; pos: Position; zoom: number } | null>(null);
+  const [ready, setReady] = useState(false);
+  // offset — сдвиг картинки в пикселях от центра рамки при ТЕКУЩЕМ zoom.
+  // Держим его, а не pos% как основной стейт: перетаскивание/стрелки в px
+  // не зависят от размера «люфта» и не требуют пересчёта на каждый чих.
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const dragRef = useRef<{ startX: number; startY: number; offset: { x: number; y: number } } | null>(null);
   const [dragging, setDragging] = useState(false);
+
+  function maxOffsetNow(zoom: number) {
+    if (!containerRef.current || !imgSizeRef.current) return { x: 0, y: 0 };
+    return computeMaxOffset(containerRef.current.getBoundingClientRect(), imgSizeRef.current, zoom);
+  }
+
+  // Как только знаем реальный размер картинки и рамки — переводим сохранённую
+  // pos% в стартовый offset (один раз, до первого взаимодействия).
+  function initOffsetOnce() {
+    if (ready) return;
+    const mo = maxOffsetNow(tf.zoom);
+    setOffset(posToOffset(initialPos, mo));
+    setReady(true);
+  }
 
   function onPointerDown(e: React.PointerEvent) {
     e.currentTarget.setPointerCapture(e.pointerId);
-    dragRef.current = { startX: e.clientX, startY: e.clientY, pos, zoom: tf.zoom };
+    dragRef.current = { startX: e.clientX, startY: e.clientY, offset };
     setDragging(true);
   }
 
   function onPointerMove(e: React.PointerEvent) {
-    if (!dragRef.current || !containerRef.current || !imgSizeRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const { w: iw, h: ih } = imgSizeRef.current;
-    // Лимит сдвига должен учитывать текущий зум — иначе для квадратной рамки
-    // и портретного фото overflowX считается в 0 при zoom=1, и сдвиг влево-
-    // вправо намертво блокируется, даже когда зум визуально даёт для него
-    // место (cssTransform применяет scale(tf.zoom) поверх object-position).
-    const coverScale = Math.max(rect.width / iw, rect.height / ih) * dragRef.current.zoom;
-    const overflowX = iw * coverScale - rect.width;
-    const overflowY = ih * coverScale - rect.height;
-    // У близко-квадратных/чуть кадрированных фото на MIN_ZOOM реальный люфт
-    // по одной из осей — считанные пиксели (при zoom=1.14 это ~14% от
-    // размера рамки), а вся шкала 0–100% натянута именно на этот крошечный
-    // диапазон — из-за этого любой чуть более резкий сдвиг мышью/пальцем
-    // мгновенно улетал в крайнее положение, плавно двигать было невозможно.
-    // Не даём знаменателю быть меньше разумного минимума в пикселях — сама
-    // граница (0/100%) не меняется, меняется только «скорость» перетаскивания.
-    const DRAG_RANGE_FLOOR = 140;
-    const dragRangeX = Math.max(overflowX, DRAG_RANGE_FLOOR);
-    const dragRangeY = Math.max(overflowY, DRAG_RANGE_FLOOR);
-    // Экранное движение делим на zoom — при увеличении та же дистанция мышью
-    // соответствует меньшему смещению кадра (см. cssTransform: scale(zoom)
-    // применяется поверх уже закадрированного объектом object-position фото).
-    const dx = (e.clientX - dragRef.current.startX) / dragRef.current.zoom;
-    const dy = (e.clientY - dragRef.current.startY) / dragRef.current.zoom;
-    const next = { ...dragRef.current.pos };
-    if (overflowX > 0.5) next.x = clamp(dragRef.current.pos.x - (dx / dragRangeX) * 100, 0, 100);
-    if (overflowY > 0.5) next.y = clamp(dragRef.current.pos.y - (dy / dragRangeY) * 100, 0, 100);
-    setPos(next);
+    if (!dragRef.current) return;
+    const mo = maxOffsetNow(tf.zoom);
+    const dx = e.clientX - dragRef.current.startX;
+    const dy = e.clientY - dragRef.current.startY;
+    setOffset({
+      x: clamp(dragRef.current.offset.x + dx, -mo.x, mo.x),
+      y: clamp(dragRef.current.offset.y + dy, -mo.y, mo.y),
+    });
   }
 
   function onPointerUp() {
@@ -215,28 +247,57 @@ export function PositionEditor({
     setDragging(false);
   }
 
+  function setZoom(nextZoom: number) {
+    // Меняем зум — люфт меняется вместе с ним, переносим текущий сдвиг
+    // пропорционально, чтобы кадр не «прыгал» в сторону при вращении слайдера.
+    const prevMax = maxOffsetNow(tf.zoom);
+    const nextMax = maxOffsetNow(nextZoom);
+    setOffset((o) => ({
+      x: prevMax.x > 0 ? clamp((o.x / prevMax.x) * nextMax.x, -nextMax.x, nextMax.x) : 0,
+      y: prevMax.y > 0 ? clamp((o.y / prevMax.y) * nextMax.y, -nextMax.y, nextMax.y) : 0,
+    }));
+    setTf((t) => ({ ...t, zoom: nextZoom }));
+  }
+
   function rotate() {
     setTf((t) => ({ ...t, rotate: (t.rotate + 90) % 360 }));
   }
 
   function reset() {
-    setPos(DEFAULT_POSITION);
     setTf(DEFAULT_TRANSFORM);
+    setOffset({ x: 0, y: 0 });
   }
 
-  const NUDGE_STEP = 4;
+  const NUDGE_STEP_PX = 18;
   function nudge(dx: number, dy: number) {
-    setPos((p) => ({ x: clamp(p.x + dx, 0, 100), y: clamp(p.y + dy, 0, 100) }));
+    const mo = maxOffsetNow(tf.zoom);
+    setOffset((o) => ({ x: clamp(o.x + dx, -mo.x, mo.x), y: clamp(o.y + dy, -mo.y, mo.y) }));
   }
+
+  const mo = maxOffsetNow(tf.zoom);
+  const pos = offsetToPos(offset, mo);
+  const previewStyle: React.CSSProperties = {
+    objectPosition: `${pos.x}% ${pos.y}%`,
+    transform: cssTransform(tf),
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onCancel}>
       <div
-        className="w-full max-w-xs rounded-xl border border-[color:var(--border)] bg-[color:var(--surface)] p-4"
+        className="w-full max-w-sm rounded-xl border border-[color:var(--border)] bg-[color:var(--surface)] p-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-3 text-xs text-[color:var(--muted)]">
-          Кадрирование фото — потяните, чтобы выбрать позицию
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <div className="text-xs text-[color:var(--muted)]">Потяните фото, чтобы выбрать кадр</div>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <span className="text-[9px] uppercase tracking-[0.1em] text-[color:var(--muted)]">На сайте</span>
+            <div
+              className={`overflow-hidden rounded-md border border-[color:var(--border)] shadow-sm ${aspectClassName === 'aspect-square' ? 'h-11 w-11' : 'h-9 w-16'}`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- живой мини-превью того же кадра */}
+              <img src={photoUrl} alt="" className="h-full w-full object-cover" style={previewStyle} />
+            </div>
+          </div>
         </div>
 
         <div
@@ -254,9 +315,10 @@ export function PositionEditor({
             draggable={false}
             onLoad={(e) => {
               imgSizeRef.current = { w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight };
+              initOffsetOnce();
             }}
             className="absolute inset-0 h-full w-full select-none object-cover"
-            style={{ objectPosition: `${pos.x}% ${pos.y}%`, transform: cssTransform(tf) }}
+            style={previewStyle}
           />
           {/* Сетка — правило третей, ориентир для кадрирования. */}
           <div className="pointer-events-none absolute inset-0">
@@ -275,7 +337,7 @@ export function PositionEditor({
             max={3}
             step={0.05}
             value={tf.zoom}
-            onChange={(e) => setTf((t) => ({ ...t, zoom: Number(e.target.value) }))}
+            onChange={(e) => setZoom(Number(e.target.value))}
             className="flex-1"
           />
           <span className="w-10 shrink-0 text-right text-[10px] tabular-nums text-[color:var(--muted)]">
@@ -308,7 +370,7 @@ export function PositionEditor({
             <div />
             <button
               type="button"
-              onClick={() => nudge(0, -NUDGE_STEP)}
+              onClick={() => nudge(0, -NUDGE_STEP_PX)}
               title="Сдвинуть вверх"
               className="flex h-6 w-6 items-center justify-center rounded border border-[color:var(--border)] text-[11px] text-[color:var(--text-soft)]"
             >
@@ -317,7 +379,7 @@ export function PositionEditor({
             <div />
             <button
               type="button"
-              onClick={() => nudge(-NUDGE_STEP, 0)}
+              onClick={() => nudge(-NUDGE_STEP_PX, 0)}
               title="Сдвинуть влево"
               className="flex h-6 w-6 items-center justify-center rounded border border-[color:var(--border)] text-[11px] text-[color:var(--text-soft)]"
             >
@@ -325,7 +387,7 @@ export function PositionEditor({
             </button>
             <button
               type="button"
-              onClick={() => nudge(0, NUDGE_STEP)}
+              onClick={() => nudge(0, NUDGE_STEP_PX)}
               title="Сдвинуть вниз"
               className="flex h-6 w-6 items-center justify-center rounded border border-[color:var(--border)] text-[11px] text-[color:var(--text-soft)]"
             >
@@ -333,7 +395,7 @@ export function PositionEditor({
             </button>
             <button
               type="button"
-              onClick={() => nudge(NUDGE_STEP, 0)}
+              onClick={() => nudge(NUDGE_STEP_PX, 0)}
               title="Сдвинуть вправо"
               className="flex h-6 w-6 items-center justify-center rounded border border-[color:var(--border)] text-[11px] text-[color:var(--text-soft)]"
             >
