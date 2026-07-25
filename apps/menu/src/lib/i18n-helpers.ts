@@ -134,3 +134,65 @@ export function pickSubLabel(sub: string, fallback: string, locale: Locale): str
   if (!tr || locale === 'ru') return fallback;
   return tr[locale] ?? fallback;
 }
+
+/**
+ * Переводы заголовков секций Бара «Арки» (bar.json `sections[].category` /
+ * `.title` — «Безалкогольная продукция», «Лимонады», «Винная карта» и т.п.).
+ * Ключ — точный русский текст из контента (в этих файлах нет slug-а на
+ * секцию), поэтому маппинг по строке, как и в предыдущих версиях меню.
+ */
+const BAR_CATEGORY_TR: Record<string, { en: string; zh: string; hy: string }> = {
+  'Безалкогольная продукция': { en: 'Non-Alcoholic Beverages', zh: '無酒精飲品', hy: 'Ոչ ալկոհոլային ըմպելիքներ' },
+  Лимонады: { en: 'Lemonades', zh: '檸檬水', hy: 'Լիմոնադներ' },
+  Смузи: { en: 'Smoothies', zh: '冰沙', hy: 'Սմուզի' },
+  Милкшейки: { en: 'Milkshakes', zh: '奶昔', hy: 'Կաթնային կոկտեյլներ' },
+  'Молочный коктейль': { en: 'Milkshake', zh: '奶昔', hy: 'Կաթնային կոկտեյլ' },
+  Соки: { en: 'Juices', zh: '果汁', hy: 'Հյութեր' },
+  Сок: { en: 'Juice', zh: '果汁', hy: 'Հյութ' },
+  'Вода с газом / без': { en: 'Still / Sparkling Water', zh: '靜水／氣泡水', hy: 'Հանգիստ / գազավորված ջուր' },
+  Чаи: { en: 'Teas', zh: '茶', hy: 'Թեյեր' },
+  'Авторские чаи': { en: 'Signature Teas', zh: '招牌茶', hy: 'Հեղինակային թեյեր' },
+  'Премиальные чаи': { en: 'Premium Teas', zh: '優質茶', hy: 'Պրեմիում թեյեր' },
+  Тизаны: { en: 'Tisanes', zh: '花草茶', hy: 'Դեղաբույսերի թեյեր' },
+  'Классические чаи': { en: 'Classic Teas', zh: '經典茶', hy: 'Դասական թեյեր' },
+  'Чайные добавки': { en: 'Tea Add-ins', zh: '茶點綴', hy: 'Թեյի հավելումներ' },
+  Кофе: { en: 'Coffee', zh: '咖啡', hy: 'Սուրճ' },
+  Добавки: { en: 'Add-ins', zh: '添加', hy: 'Հավելումներ' },
+  Коктейли: { en: 'Cocktails', zh: '雞尾酒', hy: 'Կոկտեյլներ' },
+  'Авторские коктейли': { en: 'Signature Cocktails', zh: '招牌雞尾酒', hy: 'Հեղինակային կոկտեյլներ' },
+  'Классические коктейли': { en: 'Classic Cocktails', zh: '經典雞尾酒', hy: 'Դասական կոկտեյլներ' },
+  Шоты: { en: 'Shots', zh: '烈酒杯', hy: 'Շոթեր' },
+  'Игристые и шампанские вина': {
+    en: 'Sparkling & Champagne Wines',
+    zh: '氣泡酒與香檳',
+    hy: 'Փրփրուն և շամպայն գինիներ',
+  },
+  'Белые вина': { en: 'White Wines', zh: '白葡萄酒', hy: 'Սպիտակ գինիներ' },
+  'Розовые вина': { en: 'Rosé Wines', zh: '桃紅葡萄酒', hy: 'Վարդագույն գինիներ' },
+  'Красные вина': { en: 'Red Wines', zh: '紅葡萄酒', hy: 'Կարմիր գինիներ' },
+  'Крепкий алкоголь': { en: 'Spirits', zh: '烈酒', hy: 'Ուժեղ ալկոհոլ' },
+  Текила: { en: 'Tequila', zh: '龍舌蘭', hy: 'Տեկիլա' },
+  Джин: { en: 'Gin', zh: '琴酒', hy: 'Ջին' },
+  Ром: { en: 'Rum', zh: '蘭姆酒', hy: 'Ռոմ' },
+  Коньяк: { en: 'Cognac', zh: '干邑白蘭地', hy: 'Կոնյակ' },
+  'Виски односолодовый': { en: 'Single Malt Whisky', zh: '單一麥芽威士忌', hy: 'Մեկ ածիկի վիսկի' },
+  'Виски купажированный': { en: 'Blended Whisky', zh: '調和威士忌', hy: 'Համադրված վիսկի' },
+  Водка: { en: 'Vodka', zh: '伏特加', hy: 'Օղի' },
+  Пиво: { en: 'Beer', zh: '啤酒', hy: 'Գարեջուր' },
+  Настойки: { en: 'House Infusions', zh: '自製利口酒', hy: 'Թրմուկներ' },
+  'Аперетивы / Биттеры / Ликёры': {
+    en: 'Aperitifs / Bitters / Liqueurs',
+    zh: '開胃酒／苦精／利口酒',
+    hy: 'Ապերիտիվներ / Բիթերներ / Լիկյորներ',
+  },
+  Закуски: { en: 'Snacks', zh: '小食', hy: 'Խորտիկներ' },
+  Сладости: { en: 'Sweets', zh: '甜食', hy: 'Քաղցրավենիք' },
+  'Винная карта': { en: 'Wine List', zh: '酒單', hy: 'Գինու քարտ' },
+};
+
+/** Перевод заголовка секции Бара «Арки» — `text` берётся прямо из контента (без slug-а). */
+export function pickBarCategoryName(text: string, locale: Locale): string {
+  const tr = BAR_CATEGORY_TR[text];
+  if (!tr || locale === 'ru') return text;
+  return tr[locale] ?? text;
+}

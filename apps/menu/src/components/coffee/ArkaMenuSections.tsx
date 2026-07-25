@@ -11,6 +11,7 @@ import type { PhotoEntry } from '@barviha/db';
 import type { ArkaMenuEntry, ArkaMenuItem } from '@/lib/arka-menu-data';
 import { photoTransformCss } from '@/lib/photo-transform';
 import type { Locale } from '@/i18n/routing';
+import { pickBarCategoryName } from '@/lib/i18n-helpers';
 import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
 
 /**
@@ -21,13 +22,14 @@ import { ArkaFullCard, ArkaGroupCard } from './ArkaCardTypes';
  * выглядел баннером, а не частью карточки. Показывается только когда для
  * категории есть кадр в groupPhotos; иначе — обычный <h2>.
  */
-function CategoryPhoto({ category, photo }: { category: string; photo: PhotoEntry }) {
+function CategoryPhoto({ category, photo, locale }: { category: string; photo: PhotoEntry; locale: Locale }) {
+  const label = pickBarCategoryName(category, locale);
   return (
     <>
       <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
         <Image
           src={photo.src}
-          alt={category}
+          alt={label}
           fill
           sizes="(max-width: 640px) 100vw, 800px"
           className="object-cover"
@@ -38,7 +40,7 @@ function CategoryPhoto({ category, photo }: { category: string; photo: PhotoEntr
         />
       </div>
       <h2 className="mb-4 font-[family-name:var(--font-display)] text-[32px] font-semibold uppercase leading-none tracking-[0.02em] text-[var(--cm-accent)]">
-        {category}
+        {label}
       </h2>
     </>
   );
@@ -64,10 +66,10 @@ function CategoryBlock({
   return (
     <section className="py-5 first:pt-0">
       {groupPhoto ? (
-        <CategoryPhoto category={category} photo={groupPhoto} />
+        <CategoryPhoto category={category} photo={groupPhoto} locale={locale} />
       ) : (
         <h2 className="mb-4 border-b border-[var(--cm-border)] pb-2 font-[family-name:var(--font-display)] text-[24px] font-semibold uppercase leading-none tracking-[0.04em] text-[var(--cm-accent)]">
-          {category}
+          {pickBarCategoryName(category, locale)}
         </h2>
       )}
 
@@ -104,7 +106,7 @@ export function ArkaMenuSections({
           return (
             <div key={idx} className="pt-6 pb-2 first:pt-0">
               <h2 className="font-[family-name:var(--font-display)] text-[32px] font-semibold uppercase leading-none tracking-[0.02em] text-[var(--cm-accent)]">
-                {entry.title}
+                {pickBarCategoryName(entry.title, locale)}
               </h2>
             </div>
           );
