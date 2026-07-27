@@ -19,6 +19,7 @@ const SUB_ORDER = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.or
  * Сортировка по цене внутри каждого подраздела сохраняется.
  */
 const HOOKAH_SUB_ORDER = new Map<string, number>([
+  ['hookah/АКЦИИ', 0],
   ['hookah/Авторские', 1],
   ['hookah/Чаши', 2],
   ['hookah/Фрукты', 3],
