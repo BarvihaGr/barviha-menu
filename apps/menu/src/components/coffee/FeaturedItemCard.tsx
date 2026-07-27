@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
@@ -12,6 +12,8 @@ import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { photoTransformCss } from '@/lib/photo-transform';
 import { trackAdd } from '@/lib/stats';
+
+const AUTOPLAY_MS = 4200;
 
 interface Props {
   item: ResolvedMenuItem;
@@ -31,6 +33,23 @@ export function FeaturedItemCard({ item, name, locationSlug }: Props) {
   const push = useToast((s) => s.push);
   const t = useTranslations();
   const [bump, setBump] = useState(false);
+  const [index, setIndex] = useState(0);
+
+  const photos = item.photos;
+  const canCycle = photos.length > 1;
+
+  // Автолистание фото баннера — карточка кликабельна целиком (переход на
+  // страницу позиции), поэтому тут только пассивный кросс-фейд без свайпа
+  // и зума (в отличие от PhotoGallery на странице позиции) — иначе клик по
+  // фото конфликтовал бы с переходом по ссылке.
+  useEffect(() => {
+    if (!canCycle) return;
+    const id = setTimeout(() => setIndex((i) => (i + 1) % photos.length), AUTOPLAY_MS);
+    return () => clearTimeout(id);
+  }, [index, canCycle, photos.length]);
+
+  const activeIndex = Math.min(index, photos.length - 1);
+  const active = photos[activeIndex];
 
   const displayName = capitalizeRu(name.replace(/,.*$/, ''));
 
@@ -53,24 +72,65 @@ export function FeaturedItemCard({ item, name, locationSlug }: Props) {
       transition={{ duration: 0.38, ease: [0.25, 0.1, 0.25, 1] }}
     >
       <Link href={`/${locationSlug}/item/${item.id}`} className="block focus:outline-none">
-        {/* Широкое фото */}
+        {/* Широкое фото — кросс-фейд + мягкое «дыхание» масштаба (Ken Burns)
+         * между кадрами, пока их больше одного. Ключ на src, не на index —
+         * так переход выглядит одинаково при первом кадре и на повторе цикла. */}
         <div className="relative aspect-[3/2] w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
-          {item.photo ? (
-            <Image
-              src={item.photo}
-              alt={displayName}
-              fill
-              sizes="100vw"
-              style={{
-                filter: 'var(--cm-photo, none)',
-                objectPosition: item.photo_position ? `${item.photo_position.x}% ${item.photo_position.y}%` : 'center',
-                transform: photoTransformCss(item.photo_transform),
-              }}
-              className="object-cover transition duration-500 group-hover:scale-[1.03]"
-            />
+          {active ? (
+            <AnimatePresence mode="sync">
+              <motion.div
+                key={active.src}
+                className="absolute inset-0"
+                initial={{ opacity: 0, scale: 1.035 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: { duration: 0.9, ease: 'easeInOut' },
+                  scale: { duration: AUTOPLAY_MS / 1000 + 0.9, ease: 'easeOut' },
+                }}
+              >
+                <Image
+                  src={active.src}
+                  alt={displayName}
+                  fill
+                  sizes="100vw"
+                  priority={activeIndex === 0}
+                  style={{
+                    filter: 'var(--cm-photo, none)',
+                    objectPosition: active.position ? `${active.position.x}% ${active.position.y}%` : 'center',
+                    transform: photoTransformCss(active.transform),
+                  }}
+                  className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                />
+              </motion.div>
+            </AnimatePresence>
           ) : (
             <div className="absolute inset-0 flex items-center justify-center text-4xl text-[var(--cm-muted-dim)]">
               ◍
+            </div>
+          )}
+
+          {canCycle && (
+            <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+              {photos.map((_, i) => {
+                const isActive = i === activeIndex;
+                return (
+                  <span
+                    key={i}
+                    className={`relative h-1.5 overflow-hidden rounded-full transition-[width] ${isActive ? 'w-4 bg-white/35' : 'w-1.5 bg-white/50'}`}
+                  >
+                    {isActive && (
+                      <motion.span
+                        key={activeIndex}
+                        className="absolute inset-y-0 left-0 rounded-full bg-white"
+                        initial={{ width: '0%' }}
+                        animate={{ width: '100%' }}
+                        transition={{ duration: AUTOPLAY_MS / 1000, ease: 'linear' }}
+                      />
+                    )}
+                  </span>
+                );
+              })}
             </div>
           )}
         </div>
