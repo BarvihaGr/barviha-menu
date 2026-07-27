@@ -61,12 +61,13 @@ export function LocationSettingsForm({ slug, settings }: { slug: string; setting
       </label>
 
       <label className="flex flex-col gap-1 text-xs text-[color:var(--muted)]">
-        Часы работы
-        <input
-          placeholder="напр. Пн–Вс 12:00 – 01:00"
+        Часы работы (каждый день — с новой строки, показывается на сайте в столбик)
+        <textarea
+          placeholder={'Понедельник 12:00 - 03:00\nВторник 12:00 - 03:00\n…'}
           defaultValue={draft.hours ?? ''}
           onBlur={(e) => save({ hours: e.target.value || null })}
-          className="input"
+          rows={7}
+          className="input resize-y"
         />
       </label>
 

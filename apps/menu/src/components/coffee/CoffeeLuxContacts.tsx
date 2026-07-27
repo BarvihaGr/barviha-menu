@@ -60,7 +60,7 @@ export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, long
                   <div className="font-[family-name:var(--font-sans)] text-[12px] uppercase tracking-[0.18em] text-[var(--cm-muted)]">
                     {r.label}
                   </div>
-                  <div className="mt-1 font-[family-name:var(--font-sans)] text-[16px] text-[var(--cm-text)]">
+                  <div className="mt-1 whitespace-pre-line font-[family-name:var(--font-sans)] text-[16px] text-[var(--cm-text)]">
                     {r.value}
                   </div>
                 </div>
