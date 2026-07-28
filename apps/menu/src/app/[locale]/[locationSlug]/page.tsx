@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { getClient } from '@barviha/db';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -17,6 +19,17 @@ import { getBookingUrl } from '@/lib/booking';
 
 /** Порядок слотов слева-направо: Кальяны | Кухня | Бар. */
 const HOME_CATEGORIES = ['hookah', 'kitchen', 'bar'] as const;
+
+/** Гео-видео lux-дизайна: у большинства локаций общий ролик (/locations/arka),
+ * но у некоторых — своё (см. public/locations/<slug>/hero.mp4), например
+ * Павелецкая. Проверяем наличие файла на диске, не хардкодим список слагов. */
+function getLuxHeroPaths(slug: string): { video: string; poster: string } {
+  const ownVideo = join(process.cwd(), 'public', 'locations', slug, 'hero.mp4');
+  if (existsSync(ownVideo)) {
+    return { video: `/locations/${slug}/hero.mp4`, poster: `/locations/${slug}/poster.jpg` };
+  }
+  return { video: '/locations/arka/hero.mp4', poster: '/locations/arka/poster.jpg' };
+}
 
 export default async function LocationHome({
   params,
@@ -51,6 +64,7 @@ export default async function LocationHome({
 
   // Lux-дизайн «дорогой минимализм» (Ереван) — тёмный hero c бронью и меню.
   if (isCoffeeDesign(locationSlug) && coffeeHomeVariant(locationSlug) === 'lux') {
+    const heroPaths = getLuxHeroPaths(location.slug);
     return (
       <CoffeeLuxHome
         locationSlug={location.slug}
@@ -60,6 +74,8 @@ export default async function LocationHome({
         menuLabel={tHome('menu')}
         locale={locale as Locale}
         socials={[]}
+        heroVideo={heroPaths.video}
+        heroPoster={heroPaths.poster}
       />
     );
   }

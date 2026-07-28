@@ -17,6 +17,10 @@ interface Props {
   menuLabel: string;
   locale: Locale;
   socials?: { label: string; href: string }[];
+  /** Видео/постер геро — своё для локации, если есть (см. page.tsx), иначе
+   * общее /locations/arka/hero.mp4. */
+  heroVideo?: string;
+  heroPoster?: string;
 }
 
 /** Фиксированный размер (52/72px) переполнял экран на длинных однословных
@@ -37,6 +41,8 @@ export function CoffeeLuxHome({
   locationCity,
   menuHref,
   menuLabel,
+  heroVideo = '/locations/arka/hero.mp4',
+  heroPoster = '/locations/arka/poster.jpg',
 }: Props) {
   const style = coffeeAccentStyle(locationSlug);
   const searchParams = useSearchParams();
@@ -61,8 +67,8 @@ export function CoffeeLuxHome({
         {/* Видео-фон */}
         <div className="absolute inset-0">
           <AutoPlayVideo
-            src="/locations/arka/hero.mp4"
-            poster="/locations/arka/poster.jpg"
+            src={heroVideo}
+            poster={heroPoster}
             className="h-full w-full object-cover"
             style={{ filter: 'brightness(0.65) saturate(1.1)' }}
           />
