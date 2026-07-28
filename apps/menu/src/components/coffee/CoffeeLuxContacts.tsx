@@ -99,17 +99,31 @@ export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, long
 
         {/* Мини-карта + как добраться */}
         <div className="mt-8 overflow-hidden rounded-2xl border border-[var(--cm-border)] bg-[var(--cm-surface)]">
-          <div className="relative flex h-40 items-center justify-center bg-[var(--cm-surface-2)]">
-            {/* Стилизованная сетка-«карта» */}
-            <div
-              className="absolute inset-0 opacity-40"
-              style={{
-                backgroundImage:
-                  'linear-gradient(var(--cm-border) 1px, transparent 1px), linear-gradient(90deg, var(--cm-border) 1px, transparent 1px)',
-                backgroundSize: '28px 28px',
-              }}
-            />
-            <MapPin size={34} strokeWidth={1.5} className="relative text-[color:var(--cm-accent)]" />
+          <div className="relative h-40 overflow-hidden bg-[var(--cm-surface-2)]">
+            {latitude != null && longitude != null ? (
+              // Просто превью-картинка (pointer-events-none) — интерактив не
+              // нужен, тап всё равно ведёт на «Как добраться» ниже. bbox —
+              // небольшой квадрат вокруг точки (~400м), маркер точно на ней.
+              <iframe
+                title="Расположение на карте"
+                className="pointer-events-none h-full w-full border-0 grayscale-[20%] contrast-[1.08] brightness-[0.97]"
+                loading="lazy"
+                src={`https://www.openstreetmap.org/export/embed.html?bbox=${longitude - 0.006}%2C${latitude - 0.003}%2C${longitude + 0.006}%2C${latitude + 0.003}&layer=mapnik&marker=${latitude}%2C${longitude}`}
+              />
+            ) : (
+              <div className="relative flex h-full items-center justify-center">
+                {/* Стилизованная сетка-«карта» — запасной вариант, пока у локации нет координат */}
+                <div
+                  className="absolute inset-0 opacity-40"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(var(--cm-border) 1px, transparent 1px), linear-gradient(90deg, var(--cm-border) 1px, transparent 1px)',
+                    backgroundSize: '28px 28px',
+                  }}
+                />
+                <MapPin size={34} strokeWidth={1.5} className="relative text-[color:var(--cm-accent)]" />
+              </div>
+            )}
           </div>
           {address && (
             <DirectionsMenu address={address} latitude={latitude} longitude={longitude}>
