@@ -4,6 +4,7 @@ import { Wifi } from 'lucide-react';
 import { Phone, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
 import { DirectionsMenu } from '../DirectionsMenu';
+import { LocationMap } from '../LocationMap';
 
 interface Props {
   locationSlug: string;
@@ -101,14 +102,10 @@ export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, long
         <div className="mt-8 overflow-hidden rounded-2xl border border-[var(--cm-border)] bg-[var(--cm-surface)]">
           <div className="relative h-40 overflow-hidden bg-[var(--cm-surface-2)]">
             {latitude != null && longitude != null ? (
-              // Просто превью-картинка (pointer-events-none) — интерактив не
-              // нужен, тап всё равно ведёт на «Как добраться» ниже. bbox —
-              // небольшой квадрат вокруг точки (~400м), маркер точно на ней.
-              <iframe
-                title="Расположение на карте"
-                className="pointer-events-none h-full w-full border-0 grayscale-[20%] contrast-[1.08] brightness-[0.97]"
-                loading="lazy"
-                src={`https://www.openstreetmap.org/export/embed.html?bbox=${longitude - 0.006}%2C${latitude - 0.003}%2C${longitude + 0.006}%2C${latitude + 0.003}&layer=mapnik&marker=${latitude}%2C${longitude}`}
+              <LocationMap
+                latitude={latitude}
+                longitude={longitude}
+                className="pointer-events-none h-full w-full grayscale-[20%] contrast-[1.08] brightness-[0.97]"
               />
             ) : (
               <div className="relative flex h-full items-center justify-center">
