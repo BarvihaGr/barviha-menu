@@ -41,7 +41,7 @@ export function LocationMap({ latitude, longitude, className }: Props) {
       touchZoom: false,
       boxZoom: false,
       keyboard: false,
-      attributionControl: true,
+      attributionControl: false,
     });
     mapRef.current = map;
 
