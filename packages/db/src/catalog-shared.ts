@@ -18,12 +18,15 @@ const SUB_ORDER = new Map(GEN_CATEGORIES.map((c) => [`${c.realm}/${c.sub}`, c.or
  * hookahPriceOrder снова перемешает подразделы между собой по цене.
  * Сортировка по цене внутри каждого подраздела сохраняется.
  */
-const HOOKAH_SUB_ORDER = new Map<string, number>([
+const SUB_ORDER_OVERRIDE = new Map<string, number>([
   ['hookah/АКЦИИ', 0],
   ['hookah/Авторские', 1],
   ['hookah/Чаши', 2],
   ['hookah/Фрукты', 3],
   ['hookah/Электро чаши', 4],
+  // «Летнее меню» — новый раздел (не из menu-generated.ts), ставим сразу
+  // после «Завтраки» (order 8), чтобы был на виду в начале списка Кухни.
+  ['kitchen/summer-menu', 9],
 ]);
 
 /**
@@ -31,8 +34,12 @@ const HOOKAH_SUB_ORDER = new Map<string, number>([
  * из «ФУЛЛ ИНФО», см. его шапку — руками не редактируем). Например,
  * «Хлеб и соусы» — соусы как отдельная позиция везде скрыты
  * (is_available: false), в разделе реально остаётся только хлеб.
+ * «Летнее меню» — новый раздел, которого нет в справочнике вовсе.
  */
-const SUB_LABEL_OVERRIDE = new Map<string, string>([['kitchen/bread-sauces', 'Хлеб']]);
+const SUB_LABEL_OVERRIDE = new Map<string, string>([
+  ['kitchen/bread-sauces', 'Хлеб'],
+  ['kitchen/summer-menu', 'Летнее меню'],
+]);
 
 export function subLabel(realm: string, sub: string | undefined): string {
   const key = `${realm}/${sub}`;
@@ -41,7 +48,7 @@ export function subLabel(realm: string, sub: string | undefined): string {
 
 export function subOrder(realm: string, sub: string | undefined): number {
   const key = `${realm}/${sub}`;
-  return HOOKAH_SUB_ORDER.get(key) ?? SUB_ORDER.get(key) ?? 99;
+  return SUB_ORDER_OVERRIDE.get(key) ?? SUB_ORDER.get(key) ?? 99;
 }
 
 /** Полный список категорий реалма из общего справочника (menu-generated.ts) —

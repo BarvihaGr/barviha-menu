@@ -126,6 +126,7 @@ const SUB_LABEL_TR: Record<string, { en: string; zh: string; hy: string }> = {
   strong: { en: 'Spirits', zh: '烈酒', hy: 'Ուժեղ ալկոհոլ' },
   beer: { en: 'Beer & Cider', zh: '啤酒與蘋果酒', hy: 'Գարեջուր և սիդր' },
   hookah: { en: 'Hookah Menu', zh: '水煙菜單', hy: 'Կալյանի քարտ' },
+  'summer-menu': { en: 'Summer Menu', zh: '夏季菜單', hy: 'Ամառային մենյու' },
 };
 
 /** Перевод названия подкатегории. `sub` — slug, `fallback` — русский subLabel. */
