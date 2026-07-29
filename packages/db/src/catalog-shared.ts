@@ -26,8 +26,17 @@ const HOOKAH_SUB_ORDER = new Map<string, number>([
   ['hookah/Электро чаши', 4],
 ]);
 
+/**
+ * Точечные переопределения лейблов из menu-generated.ts (файл автогенерится
+ * из «ФУЛЛ ИНФО», см. его шапку — руками не редактируем). Например,
+ * «Хлеб и соусы» — соусы как отдельная позиция везде скрыты
+ * (is_available: false), в разделе реально остаётся только хлеб.
+ */
+const SUB_LABEL_OVERRIDE = new Map<string, string>([['kitchen/bread-sauces', 'Хлеб']]);
+
 export function subLabel(realm: string, sub: string | undefined): string {
-  return SUB_LABEL.get(`${realm}/${sub}`) ?? sub ?? '';
+  const key = `${realm}/${sub}`;
+  return SUB_LABEL_OVERRIDE.get(key) ?? SUB_LABEL.get(key) ?? sub ?? '';
 }
 
 export function subOrder(realm: string, sub: string | undefined): number {
@@ -46,5 +55,5 @@ export function allSubsForRealm(realm: string): { sub: string; label: string }[]
   return GEN_CATEGORIES.filter((c) => c.realm === realm)
     .slice()
     .sort((a, b) => a.order - b.order)
-    .map((c) => ({ sub: c.sub, label: c.label }));
+    .map((c) => ({ sub: c.sub, label: subLabel(c.realm, c.sub) }));
 }
