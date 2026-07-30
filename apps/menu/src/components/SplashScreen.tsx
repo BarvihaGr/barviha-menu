@@ -50,53 +50,34 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
         {visible && (
           <motion.div
             key="splash"
-            // Фон — тот же бежевый, что и у видео. Видео теперь берётся под
-            // формат экрана (портретное 9:16 на телефоне, широкое 16:9 на
-            // планшете/десктопе), поэтому зазор по краям минимален, но на
-            // случай неточного совпадения пропорций всё равно зажимаем
-            // видео в рамку строго по его пропорциям (aspect-ratio) и
-            // растушёвываем верх/низ рамки маской-градиентом — край тает в
-            // фон плавно, без единой резкой линии.
+            // Фон — тот же бежевый, что и у видео, виден только на долю
+            // секунды до первого кадра. Видео берётся под формат экрана
+            // (портретное 9:16 на телефоне, широкое 16:9 на планшете/
+            // десктопе) и растягивается на весь экран через object-cover —
+            // никакой рамки по aspect-ratio и никаких полей/линий по краям,
+            // лишнее просто обрезается (реальные пропорции экранов почти
+            // никогда не совпадают с ровным 9:16 или 16:9 один в один).
             style={{
               position: 'fixed',
               inset: 0,
               zIndex: 9999,
               background: '#DDD2C1',
               overflow: 'hidden',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
             }}
             animate={{ opacity: fading ? 0 : 1 }}
             transition={{ duration: 0.7, ease: 'easeInOut' }}
             onClick={dismiss}
           >
             {isMobile !== null && (
-              // Маска — на обёртке, не на самом <video>. У WebKit/iOS Safari
-              // есть баг: mask-image прямо на видео-элементе может сорвать
-              // автовоспроизведение (вместо кадров — статичная плашка с play).
-              // Обёртка того же размера/пропорций видео решает то же самое
-              // визуально, но видео остаётся немаскированным и играет как надо.
-              <div
-                className="h-auto w-full max-h-full"
-                style={{
-                  aspectRatio: isMobile ? '1080 / 1920' : '1920 / 1068',
-                  WebkitMaskImage:
-                    'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
-                  maskImage:
-                    'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
-                }}
-              >
-                <video
-                  ref={videoRef}
-                  src={isMobile ? '/splash/splash-9x16.mp4' : '/splash/splash-16x9.mp4'}
-                  autoPlay
-                  muted
-                  playsInline
-                  preload="auto"
-                  className="h-full w-full object-cover"
-                />
-              </div>
+              <video
+                ref={videoRef}
+                src={isMobile ? '/splash/splash-9x16.mp4' : '/splash/splash-16x9.mp4'}
+                autoPlay
+                muted
+                playsInline
+                preload="auto"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
             )}
           </motion.div>
         )}
