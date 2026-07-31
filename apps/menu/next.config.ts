@@ -5,6 +5,15 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Позволяет деплой-скрипту собирать в отдельную папку (.next-building) и
+  // атомарно подменять её на боевую .next одним rename — иначе `next build`
+  // поверх работающего .next у живого `next start` время от времени ловит
+  // гонку (сервер читает файл манифеста в момент, когда сборка его как раз
+  // переписывает) и падает с ошибками вида "client reference manifest does
+  // not exist" / "Failed to find Server Action" — что раньше вызывало шквал
+  // рестартов pm2 прямо во время работы пользователя в бэк-офисе и роняло
+  // сохранения на середине запроса. См. scripts/deploy.sh.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   transpilePackages: ['@barviha/ui', '@barviha/db'],
   images: {
     remotePatterns: [

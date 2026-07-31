@@ -3,6 +3,10 @@ import { BASE_PATH } from './src/lib/base-path';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // См. apps/menu/next.config.ts — атомарная подмена .next при деплое
+  // (scripts/deploy.sh), чтобы рестарт не ловил половину пересобранного
+  // билда.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   basePath: BASE_PATH,
   transpilePackages: ['@barviha/db'],
   images: {

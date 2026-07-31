@@ -9,7 +9,6 @@
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { cache } from 'react';
 
 let cachedRoot: string | null = null;
 
@@ -29,15 +28,24 @@ function contentDir(): string {
   return join(cachedRoot, 'packages/db/content');
 }
 
-// Дедупим само чтение с диска (блокирующий readFileSync) в рамках одного
-// запроса через React cache() — например, bar.json иначе читается дважды
-// за один рендер категории (sections + groupPhotos). JSON.parse оставляем
-// вне кеша: он дешёвый и типобезопасность readContentJson<T> так не теряется.
-const readFileCached = cache((full: string): string => readFileSync(full, 'utf-8'));
-
+// ВАЖНО: раньше чтение файла кешировалось через React cache() — это
+// корректно дедуплицирует чтение в рамках одного рендера ТОЛЬКО внутри
+// React Server Component дерева (Next выставляет per-request границу через
+// AsyncLocalStorage сам). Route Handlers бэк-офиса (apps/hub/.../route.ts) в
+// это дерево не входят — там cache() тихо деградировал в обычный кеш на
+// уровне модуля, живущий, пока жив процесс. В итоге ЛЮБОЕ сохранение поля
+// позиции (updateCatalogItem и другие read-modify-write в arka-content.ts)
+// читало один и тот же протухший снимок файла с самого первого чтения после
+// старта процесса, накатывало поверх только свой патч и перезаписывало файл
+// — стирая все остальные правки, сделанные другими сохранениями с момента
+// того первого чтения (кроме самого последнего по времени). Именно поэтому
+// в бэк-офисе «то сохраняется, то нет»: свежесть чтения зависела от того,
+// когда процесс последний раз перезапускался. Читаем файл с диска каждый
+// раз без кеша — здесь это локальный JSON, чтение дешёвое, а корректность
+// важнее микро-оптимизации.
 export function readContentJson<T>(relPath: string): T {
   const full = join(contentDir(), relPath);
-  return JSON.parse(readFileCached(full)) as T;
+  return JSON.parse(readFileSync(full, 'utf-8')) as T;
 }
 
 export function writeContentJson<T>(relPath: string, data: T): void {
