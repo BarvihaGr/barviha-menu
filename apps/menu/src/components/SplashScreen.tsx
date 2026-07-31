@@ -36,8 +36,14 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
     // видео может просто зависнуть в paused на первом кадре (readyState ещё
     // не дорос, а браузер не переопрашивает автоплей позже). Явно пробуем
     // play() сами и повторяем на loadeddata/canplay, пока не наберётся данных.
+    // NotAllowedError — отдельный случай: это не «рано», а жёсткий отказ ОС
+    // (напр. iOS Low Power Mode блокирует автоплей видео на уровне системы) —
+    // повторами это не обойти, поэтому сразу закрываем заставку, а не
+    // заставляем гостя 6 секунд смотреть на бежевый экран с иконкой play.
     const tryPlay = () => {
-      video?.play().catch(() => {});
+      video?.play().catch((err: DOMException) => {
+        if (err?.name === 'NotAllowedError') dismiss();
+      });
     };
     if (video) {
       tryPlay();
