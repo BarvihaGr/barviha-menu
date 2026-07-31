@@ -45,12 +45,12 @@ export function ItemCard({ item, name, locationSlug }: Props) {
         </div>
 
         {/* Контент */}
-        <div className="relative flex-1 px-3 pt-2.5 pb-[44px] sm:px-3.5 sm:pt-3">
-          <h3 className="text-[13px] sm:text-[14px] font-normal tracking-[0.01em] text-foreground leading-[1.45] line-clamp-2">
+        <div className="flex flex-1 flex-col px-3 pt-2.5 pb-3 sm:px-3.5 sm:pt-3">
+          <h3 className="text-[13px] sm:text-[14px] font-normal tracking-[0.01em] text-foreground leading-[1.45]">
             {name}
           </h3>
 
-          <div className="absolute bottom-3 left-3 right-3 sm:left-3.5 sm:right-3.5 flex items-center justify-between gap-2">
+          <div className="mt-auto flex items-center justify-between gap-2 pt-2.5">
             <span className="text-[13px] sm:text-[14px] font-semibold text-gold leading-none">
               {formatPrice(item.price)}
             </span>

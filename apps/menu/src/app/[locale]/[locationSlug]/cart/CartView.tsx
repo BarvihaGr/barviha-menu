@@ -115,7 +115,7 @@ export function CartView({ allItems, locationSlug }: Props) {
                     {/* Контент */}
                     <div className="flex flex-1 min-w-0 flex-col justify-between py-0.5">
                       {/* Название */}
-                      <p className="font-[family-name:var(--font-display)] text-sm text-cream leading-snug line-clamp-2">
+                      <p className="font-[family-name:var(--font-display)] text-sm text-cream leading-snug">
                         {name}
                       </p>
                       {/* Нижняя строка: qty + цена */}

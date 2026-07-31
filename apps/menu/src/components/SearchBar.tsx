@@ -55,7 +55,7 @@ export function SearchBar({ items, locationSlug }: Props) {
                 className="flex items-center justify-between gap-3 border-b border-[color:var(--border)] px-4 py-3 last:border-b-0 hover:bg-black/30 transition cursor-pointer"
               >
                 <div className="min-w-0">
-                  <div className="text-sm text-foreground truncate">{pickItemName(item, locale)}</div>
+                  <div className="text-sm text-foreground">{pickItemName(item, locale)}</div>
                   <div className="text-[11px] text-muted truncate">
                     {pickItemDescription(item, locale)}
                   </div>
