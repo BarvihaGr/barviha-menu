@@ -32,12 +32,24 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
 
     const maxTimer = setTimeout(dismiss, 6000);
     const video = videoRef.current;
+    // На медленной сети/первом коннекте одного autoPlay-атрибута не хватает —
+    // видео может просто зависнуть в paused на первом кадре (readyState ещё
+    // не дорос, а браузер не переопрашивает автоплей позже). Явно пробуем
+    // play() сами и повторяем на loadeddata/canplay, пока не наберётся данных.
+    const tryPlay = () => {
+      video?.play().catch(() => {});
+    };
     if (video) {
+      tryPlay();
+      video.addEventListener('loadeddata', tryPlay);
+      video.addEventListener('canplay', tryPlay);
       video.addEventListener('ended', dismiss);
     }
 
     return () => {
       clearTimeout(maxTimer);
+      video?.removeEventListener('loadeddata', tryPlay);
+      video?.removeEventListener('canplay', tryPlay);
       video?.removeEventListener('ended', dismiss);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
