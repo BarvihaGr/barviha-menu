@@ -128,6 +128,12 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   }, [activeSection]);
 
   // ── Тап по чипу — прыжок к секции ────────────────────────────────
+  // Раньше отступ под стики-шапку вычислялся вручную (getBoundingClientRect
+  // + window.scrollY в момент клика) — зависело от того, что вся раскладка
+  // (шапка/картинки/чипы) уже успела точно посчитаться именно к этому тику.
+  // На части устройств/браузеров это давало неверный или нулевой отступ —
+  // scrollIntoView + scroll-margin-top на самой секции (см. JSX ниже)
+  // надёжнее: отступ живёт в CSS, а не пересчитывается JS на каждый тап.
   const jumpTo = (id: string) => {
     const el = sectionRefs.current.get(id);
     if (!el) return;
@@ -135,14 +141,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
     // подтвердит секцию по факту скролла — иначе на время smooth-скролла
     // мог светиться предыдущий активный чип.
     setActiveSection(id);
-    // Меряем реальный нижний край стики-стека (шапка + категории + лента
-    // чипов) вместо фиксированного числа — раньше было захардкожено 120,
-    // что не совпадало с реальной высотой на мобиле (~105px) и на десктопе
-    // (~43px), из-за чего раздел мог уезжать не туда даже когда скролл всё же срабатывал.
-    const stickyBottom = chipBarRef.current?.closest<HTMLElement>('.sticky')?.getBoundingClientRect().bottom;
-    const headerH = stickyBottom ?? 120;
-    const top = el.getBoundingClientRect().top + window.scrollY - headerH;
-    window.scrollTo({ top, behavior: 'smooth' });
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const isEmpty = sections.every((s) => s.items.length === 0);
@@ -230,7 +229,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
                 if (el) sectionRefs.current.set(s.id, el);
                 else sectionRefs.current.delete(s.id);
               }}
-              className="mb-8"
+              className="mb-8 scroll-mt-[105px] lg:scroll-mt-[43px]"
             >
               {/* Заголовок секции */}
               {hasMultipleSections && s.label && (
