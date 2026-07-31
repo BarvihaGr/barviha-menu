@@ -7,6 +7,19 @@ import { MapPin } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 
 const DISMISS_KEY = 'nearby-location-dismissed';
+/** Кэш последней позиции — localStorage (переживает закрытие вкладки/сессии,
+ * в отличие от DISMISS_KEY). Пока кэш свежий, вообще не дёргаем
+ * getCurrentPosition заново — это и есть «не спрашивать каждый раз»: сам
+ * системный диалог разрешения браузер помнит сам, но КАЖДЫЙ новый вызов API
+ * (например, при открытии PWA с экрана «Домой», где sessionStorage каждый
+ * раз пустой) для части браузеров/режимов — повод спросить заново. Меньше
+ * вызовов — меньше поводов спрашивать. */
+const POSITION_CACHE_KEY = 'nearby-location-position';
+const POSITION_MAX_AGE_MS = 3 * 60 * 60 * 1000; // 3 часа
+/** Если человек явно отказал в доступе — не долбим его тем же вопросом на
+ * каждой новой сессии, ждём сутки. */
+const DENIED_KEY = 'nearby-location-denied-at';
+const DENIED_RETRY_MS = 24 * 60 * 60 * 1000;
 /** Дальше этого радиуса ближайшая локация не считается «рядом» — не
  * навязываем переключение, если человек просто дома/в другом районе.
  * 1.5 км был слишком строг: geolocation без enableHighAccuracy (по
@@ -57,28 +70,73 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
     );
     if (others.length === 0) return;
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const here = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-        let best: LocPoint | null = null;
-        let bestDist = Infinity;
-        for (const c of others) {
-          const d = haversineKm(here, { lat: c.latitude, lon: c.longitude });
-          if (d < bestDist) {
-            bestDist = d;
-            best = c;
-          }
+    function pickNearest(here: { lat: number; lon: number }) {
+      let best: LocPoint | null = null;
+      let bestDist = Infinity;
+      for (const c of others) {
+        const d = haversineKm(here, { lat: c.latitude, lon: c.longitude });
+        if (d < bestDist) {
+          bestDist = d;
+          best = c;
         }
-        if (best && bestDist <= NEARBY_RADIUS_KM) setNearest(best);
-      },
-      () => {
-        // Отказ в доступе или таймаут — молча ничего не показываем, не навязываемся.
-      },
-      // enableHighAccuracy — реальный GPS-чип, а не позиционирование по
-      // вышкам/Wi-Fi (то давало погрешность в 1-2 км и фича не срабатывала
-      // вблизи заведения). Таймаут увеличен — GPS-фикс медленнее сетевого.
-      { enableHighAccuracy: true, timeout: 12000, maximumAge: 5 * 60 * 1000 },
-    );
+      }
+      if (best && bestDist <= NEARBY_RADIUS_KM) setNearest(best);
+    }
+
+    // 1) Свежая кэшированная позиция — используем её, вообще не трогая
+    // geolocation API (ни разрешения, ни системного диалога).
+    const cachedRaw = localStorage.getItem(POSITION_CACHE_KEY);
+    if (cachedRaw) {
+      try {
+        const cached = JSON.parse(cachedRaw) as { lat: number; lon: number; at: number };
+        if (Date.now() - cached.at < POSITION_MAX_AGE_MS) {
+          pickNearest({ lat: cached.lat, lon: cached.lon });
+          return;
+        }
+      } catch {
+        // битый кэш — игнорируем, пойдём обычным путём ниже
+      }
+    }
+
+    // 2) Недавно явно отказали в доступе — не спрашиваем повторно раньше срока.
+    const deniedAt = Number(localStorage.getItem(DENIED_KEY) ?? 0);
+    if (deniedAt && Date.now() - deniedAt < DENIED_RETRY_MS) return;
+
+    function requestPosition() {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const here = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+          localStorage.setItem(POSITION_CACHE_KEY, JSON.stringify({ ...here, at: Date.now() }));
+          localStorage.removeItem(DENIED_KEY);
+          pickNearest(here);
+        },
+        (err) => {
+          // code 1 = PERMISSION_DENIED — запоминаем, чтобы не спрашивать
+          // на каждой следующей сессии, пока не пройдут сутки.
+          if (err.code === 1) localStorage.setItem(DENIED_KEY, String(Date.now()));
+        },
+        // enableHighAccuracy — реальный GPS-чип, а не позиционирование по
+        // вышкам/Wi-Fi (то давало погрешность в 1-2 км и фича не срабатывала
+        // вблизи заведения). Таймаут увеличен — GPS-фикс медленнее сетевого.
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 5 * 60 * 1000 },
+      );
+    }
+
+    // 3) Permissions API, если есть — уже выданное разрешение не покажет
+    // системный диалог повторно в любом случае, но так мы ещё и пропускаем
+    // вызов вовсе, если человек уже отказал на уровне браузера (state
+    // 'denied'), не дожидаясь колбэка с ошибкой.
+    if (navigator.permissions?.query) {
+      navigator.permissions
+        .query({ name: 'geolocation' })
+        .then((status) => {
+          if (status.state === 'denied') return;
+          requestPosition();
+        })
+        .catch(requestPosition);
+    } else {
+      requestPosition();
+    }
   }, [currentSlug, locations]);
 
   function dismiss() {
