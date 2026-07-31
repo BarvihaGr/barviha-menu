@@ -8,8 +8,11 @@ import { Link } from '@/i18n/navigation';
 
 const DISMISS_KEY = 'nearby-location-dismissed';
 /** Дальше этого радиуса ближайшая локация не считается «рядом» — не
- * навязываем переключение, если человек просто дома/в другом районе. */
-const NEARBY_RADIUS_KM = 1.5;
+ * навязываем переключение, если человек просто дома/в другом районе.
+ * 1.5 км был слишком строг: geolocation без enableHighAccuracy (по
+ * вышкам/Wi-Fi, не по GPS-чипу) в городе легко ошибается на 1-2 км, из-за
+ * чего фича не срабатывала даже стоя у самого заведения (напр. Митино). */
+const NEARBY_RADIUS_KM = 3;
 
 interface LocPoint {
   slug: string;
@@ -71,7 +74,10 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
       () => {
         // Отказ в доступе или таймаут — молча ничего не показываем, не навязываемся.
       },
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 5 * 60 * 1000 },
+      // enableHighAccuracy — реальный GPS-чип, а не позиционирование по
+      // вышкам/Wi-Fi (то давало погрешность в 1-2 км и фича не срабатывала
+      // вблизи заведения). Таймаут увеличен — GPS-фикс медленнее сетевого.
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 5 * 60 * 1000 },
     );
   }, [currentSlug, locations]);
 
