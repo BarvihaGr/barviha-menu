@@ -22,7 +22,11 @@ export type FilterRealm = 'bar' | 'kitchen' | 'hookah' | 'desserts';
 
 export const FILTERS_BY_REALM: Record<FilterRealm, FilterKey[]> = {
   bar: ['noAlcohol', 'withAlcohol', 'withIce', 'sparkling'],
-  kitchen: ['spicy', 'vegan', 'noMeat', 'withMeat', 'sweet'],
+  // 'vegan' временно снят: определение по тексту состава ненадёжно (у части
+  // блюд поле composition вообще не содержит ингредиентов — там КБЖУ или
+  // маркетинговый текст), из-за чего стейк рибай и куриная грудка попадали
+  // в «веган». Вернуть, когда появится ручная разметка (не автодетект).
+  kitchen: ['spicy', 'noMeat', 'withMeat', 'sweet'],
   hookah: [],
   desserts: ['sweet'],
 };
