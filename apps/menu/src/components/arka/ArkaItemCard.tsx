@@ -15,7 +15,7 @@ interface Props {
  * магазин). Своя реализация, не CoffeeItemCard.
  */
 export function ArkaItemCard({ item, name, description }: Props) {
-  const displayName = capitalizeRu(name.replace(/,.*$/, ''));
+  const displayName = capitalizeRu(name);
   const weightStr = item.weight != null ? `${item.weight} г` : null;
 
   return (

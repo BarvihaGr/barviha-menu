@@ -51,7 +51,7 @@ export function FeaturedItemCard({ item, name, locationSlug }: Props) {
     setIndex((i) => (i + 1) % photos.length);
   }
 
-  const displayName = capitalizeRu(name.replace(/,.*$/, ''));
+  const displayName = capitalizeRu(name);
 
   const addToCart = (e: React.MouseEvent) => {
     e.preventDefault();

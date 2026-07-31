@@ -26,7 +26,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
   const t = useTranslations();
   const [bump, setBump] = useState(false);
 
-  const displayName = capitalizeRu(name.replace(/,.*$/, ''));
+  const displayName = capitalizeRu(name);
   const weightStr = item.weight != null ? `${item.weight} г` : null;
 
   const addToCart = (e: React.MouseEvent) => {
@@ -76,10 +76,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
         {/* Инфо под фото */}
         <div className="flex flex-col flex-1 pt-2.5 pb-1">
           {/* Название */}
-          <h3
-            className="text-[13.5px] font-medium leading-[1.3] text-[var(--cm-text)] overflow-hidden"
-            style={{ maxHeight: 'calc(1.3em * 2)' }}
-          >
+          <h3 className="text-[13.5px] font-medium leading-[1.3] text-[var(--cm-text)]">
             {displayName}
           </h3>
 
