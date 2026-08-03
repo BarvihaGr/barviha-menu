@@ -64,7 +64,7 @@ export function CoffeeItemDetail({
               {capitalizeRu(name)}
             </h1>
             {item.weight && (
-              <div className="mt-2 text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--cm-accent)]">
+              <div className="mt-2 text-[12px] font-medium uppercase tracking-[0.16em] text-[var(--cm-accent-on-bg)]">
                 {item.weight} {t('grams')}
               </div>
             )}
@@ -75,7 +75,7 @@ export function CoffeeItemDetail({
               text={description}
               moreLabel={t('more')}
               lessLabel={t('less')}
-              className="text-[15px] leading-relaxed text-[#5c5c5c]"
+              className="text-[15px] leading-relaxed text-[var(--cm-muted)]"
             />
           )}
 
