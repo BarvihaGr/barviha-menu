@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { z } from 'zod';
 import { setItemFlag } from '@barviha/db';
 import { invalidSlugResponse } from '@/lib/valid-slug';
 import { decodeRouteParam } from '@/lib/decode-param';
+
+const FlagPatchSchema = z.object({ is_available: z.boolean().optional(), is_archived: z.boolean().optional() }).strict();
 
 export async function PATCH(
   request: NextRequest,
@@ -15,10 +18,9 @@ export async function PATCH(
   if (realm !== 'kitchen' && realm !== 'hookah' && realm !== 'bar') {
     return NextResponse.json({ ok: false, error: 'bad realm' }, { status: 400 });
   }
-  const patch = (await request.json().catch(() => null)) as
-    | { is_available?: boolean; is_archived?: boolean }
-    | null;
-  if (!patch) return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
+  const parsed = FlagPatchSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
+  const patch = parsed.data;
   // Этот роут обслуживает и Стоп-лист (is_available), и Архив (is_archived) —
   // middleware.ts не может отличить их по пути (не читает тело, см. там же),
   // поэтому роль manager (доступ только к Стоп-листу) точечно режется здесь,

@@ -4,15 +4,24 @@ import { z } from 'zod';
 import { DUMMY_PASSWORD_HASH, findAccountByLoginKey, touchLastLogin, verifyPassword } from '@barviha/db/accounts';
 import { SESSION_COOKIE, SESSION_COOKIE_OPTIONS, signSession } from '@/lib/auth/session';
 import { checkRateLimitByKey } from '@/lib/rate-limit';
+import { securityLog } from '@/lib/security-log';
 
 const BodySchema = z.object({
   login: z.string().min(1).max(100),
   password: z.string().min(1).max(200),
 });
 
+/**
+ * Берём ПОСЛЕДНИЙ адрес из X-Forwarded-For, не первый — см. обоснование в
+ * apps/hub/src/lib/rate-limit.ts (security-audit: первый элемент подделывается
+ * клиентом, что обнуляет лимит login-ip, оставляя только login-name-бакет).
+ */
 function clientIp(request: NextRequest): string {
   const fwd = request.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0]!.trim();
+  if (fwd) {
+    const parts = fwd.split(',').map((p) => p.trim()).filter(Boolean);
+    if (parts.length > 0) return parts[parts.length - 1]!;
+  }
   return request.headers.get('x-real-ip') ?? 'unknown';
 }
 
@@ -23,9 +32,12 @@ export async function POST(request: NextRequest) {
   }
   const loginKey = parsed.data.login.trim().toLowerCase();
 
+  const ip = clientIp(request);
+
   // Лимит и по IP, и отдельно по имени логина — иначе конкретный логин
   // (например "Spider") можно перебирать распределённо, с разных IP.
-  if (!checkRateLimitByKey('login-ip', clientIp(request)) || !checkRateLimitByKey('login-name', loginKey)) {
+  if (!checkRateLimitByKey('login-ip', ip) || !checkRateLimitByKey('login-name', loginKey)) {
+    securityLog('login_rate_limited', { login: loginKey, ip });
     return NextResponse.json({ ok: false, error: 'слишком много попыток' }, { status: 429 });
   }
 
@@ -37,9 +49,11 @@ export async function POST(request: NextRequest) {
   const passwordOk = await verifyPassword(parsed.data.password, account?.password_hash ?? DUMMY_PASSWORD_HASH);
 
   if (!account || !passwordOk || !account.is_active) {
+    securityLog('login_failed', { login: loginKey, ip, reason: !account ? 'no_account' : !passwordOk ? 'bad_password' : 'inactive' });
     return NextResponse.json({ ok: false, error: 'неверный логин или пароль' }, { status: 401 });
   }
 
+  securityLog('login_success', { login: loginKey, ip, accountId: account.id, role: account.role });
   await touchLastLogin(account.id);
 
   const token = await signSession({

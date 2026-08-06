@@ -14,6 +14,8 @@ import {
   defaultPathFor,
   tabFromLocationPath,
 } from '@/lib/auth/permissions';
+import { checkRateLimitByKey } from '@/lib/rate-limit';
+import { securityLog } from '@/lib/security-log';
 
 /**
  * Единая точка контроля доступа — и страницы, и API (см. matcher ниже, он
@@ -27,6 +29,14 @@ import {
 
 const PUBLIC_PATHS = new Set(['/login', '/api/login']);
 
+// Общий потолок тела запроса для JSON API-роутов (security-audit, этап 5) —
+// без него request.json() в самом хендлере буферизует в память ЛЮБОЙ
+// присланный объём до того, как Zod вообще успеет что-то отклонить по
+// длине полей. /api/upload — исключение: там уже свой, больший лимит под
+// файлы (см. api/upload/route.ts, MAX_UPLOAD_BYTES) и своя проверка
+// Content-Length до чтения тела.
+const MAX_JSON_BODY_BYTES = 1024 * 1024; // 1 МБ — с большим запасом над любым реальным JSON-патчем
+
 function redirectTo(request: NextRequest, destination: string, next?: string) {
   const url = request.nextUrl.clone();
   url.pathname = destination;
@@ -35,12 +45,24 @@ function redirectTo(request: NextRequest, destination: string, next?: string) {
   return NextResponse.redirect(url);
 }
 
-function forbidden() {
+function forbidden(pathname: string, accountId: string) {
+  // 403 здесь означает "залогинен, но лезет не в свою локацию/вкладку" —
+  // самый интересный для мониторинга случай (в отличие от обычного 401
+  // у гостя без сессии), поэтому логируем именно его.
+  securityLog('forbidden', { pathname, accountId });
   return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 });
 }
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith('/api/') && pathname !== '/api/upload') {
+    const declaredLength = Number(request.headers.get('content-length') ?? '');
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_JSON_BODY_BYTES) {
+      return NextResponse.json({ ok: false, error: 'payload too large' }, { status: 413 });
+    }
+  }
+
   if (PUBLIC_PATHS.has(pathname)) return NextResponse.next();
 
   // Старый /gate удалён при переходе на аккаунты, но у части сотрудников
@@ -55,11 +77,22 @@ export default async function middleware(request: NextRequest) {
 
   if (!verified) {
     if (pathname.startsWith('/api/')) {
+      if (token) securityLog('invalid_session_token', { pathname });
       return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
     }
     return redirectTo(request, '/login', pathname);
   }
   const { claims } = verified;
+
+  // Общий лимит на API для уже аутентифицированного аккаунта — не про
+  // подбор пароля (это login-ip/login-name), а backstop от сорвавшегося
+  // скрипта/скомпрометированной сессии, которая долбит API в цикле
+  // (security-audit, этап 5). Потолок нарочно щедрый — обычное частое
+  // редактирование (blur на каждое поле) в него не упирается.
+  if (pathname.startsWith('/api/') && !checkRateLimitByKey('api-account', claims.sub, { windowMs: 60_000, maxAttempts: 300 })) {
+    securityLog('api_rate_limited', { pathname, accountId: claims.sub });
+    return NextResponse.json({ ok: false, error: 'too many requests' }, { status: 429 });
+  }
 
   const locMatch = pathname.match(/^\/locations\/([^/]+)(?:\/.*)?$/);
   const apiLocMatch = pathname.match(/^\/api\/locations\/([^/]+)(?:\/.*)?$/);
@@ -71,19 +104,19 @@ export default async function middleware(request: NextRequest) {
     }
   } else if (apiLocMatch) {
     const slug = apiLocMatch[1]!;
-    if (!canAccessLocation(claims, slug)) return forbidden();
+    if (!canAccessLocation(claims, slug)) return forbidden(pathname, claims.sub);
     if (claims.role === 'manager' && apiLocationPathIsStopListOnly(pathname, slug) !== true) {
-      return forbidden();
+      return forbidden(pathname, claims.sub);
     }
   } else if (pathname === '/accounts' || pathname.startsWith('/accounts/')) {
     if (claims.role === 'manager') return redirectTo(request, defaultPathFor(claims));
   } else if (pathname === '/api/accounts' || pathname.startsWith('/api/accounts/')) {
-    if (claims.role === 'manager') return forbidden();
+    if (claims.role === 'manager') return forbidden(pathname, claims.sub);
   } else if (pathname === '/api/upload') {
     // manager вообще не должен грузить фото (нет такой вкладки); привязку
     // boss_location к своей локации — сама форма не раскрывает без порчи
     // стрима — проверяет сам роут по forwarded-заголовкам ниже.
-    if (claims.role === 'manager') return forbidden();
+    if (claims.role === 'manager') return forbidden(pathname, claims.sub);
   }
 
   const headers = new Headers(request.headers);

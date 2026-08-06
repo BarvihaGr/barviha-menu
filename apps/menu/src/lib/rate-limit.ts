@@ -12,9 +12,21 @@ const MAX_ATTEMPTS = 15;
 
 const hits = new Map<string, { count: number; resetAt: number }>();
 
+/**
+ * Берём ПОСЛЕДНИЙ адрес из X-Forwarded-For, не первый. nginx перед нами
+ * пишет заголовок через $proxy_add_x_forwarded_for — это цепочка "то, что
+ * прислал клиент" + ", " + реальный IP клиента, добавленный самим nginx в
+ * конец. Первый элемент полностью подконтролен клиенту (можно послать
+ * X-Forwarded-For: 1.2.3.4 и обнулять его на каждый запрос) — с ним лимит
+ * по IP тривиально обходится сменой заголовка. Последний элемент — то, что
+ * реально видел nginx на TCP-уровне, его подделать нельзя (см. security-audit).
+ */
 function clientIp(request: Request): string {
   const fwd = request.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0]!.trim();
+  if (fwd) {
+    const parts = fwd.split(',').map((p) => p.trim()).filter(Boolean);
+    if (parts.length > 0) return parts[parts.length - 1]!;
+  }
   return request.headers.get('x-real-ip') ?? 'unknown';
 }
 

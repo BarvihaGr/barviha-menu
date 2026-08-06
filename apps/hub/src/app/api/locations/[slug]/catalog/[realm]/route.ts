@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { addCatalogItem } from '@barviha/db';
 import { invalidSlugResponse } from '@/lib/valid-slug';
+import { NewCatalogItemSchema } from '@/lib/catalog-schemas';
 
 export async function POST(
   request: NextRequest,
@@ -13,23 +14,15 @@ export async function POST(
   if (realm !== 'kitchen' && realm !== 'hookah' && realm !== 'bar') {
     return NextResponse.json({ ok: false, error: 'bad realm' }, { status: 400 });
   }
-  const body = (await request.json().catch(() => null)) as
-    | {
-        name?: string;
-        sub?: string;
-        price?: number;
-        weight?: number | null;
-        description?: string | null;
-        composition?: string | null;
-      }
-    | null;
-  if (!body || !body.name?.trim() || !body.sub?.trim()) {
-    return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
+  const parsed = NewCatalogItemSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json({ ok: false, error: parsed.error.issues[0]?.message ?? 'некорректные данные' }, { status: 400 });
   }
+  const body = parsed.data;
   const item = addCatalogItem(slug, realm, {
-    name: body.name.trim(),
-    sub: body.sub.trim(),
-    price: Number(body.price) || 0,
+    name: body.name,
+    sub: body.sub,
+    price: body.price ?? 0,
     weight: body.weight ?? null,
     description: body.description ?? null,
     composition: body.composition ?? null,

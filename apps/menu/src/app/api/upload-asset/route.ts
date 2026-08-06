@@ -60,6 +60,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
 
+  // Content-Length ДО formData() — formData() буферизует всё тело в память
+  // перед тем, как file.size вообще можно проверить (security-audit, этап
+  // 3); этот эндпоинт публично достижим, так что дешёвая ранняя отсечка
+  // важнее здесь, чем у внутреннего hub-роута.
+  const declaredLength = Number(request.headers.get('content-length') ?? '');
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_UPLOAD_BYTES + 1024 * 1024) {
+    return NextResponse.json({ ok: false, error: 'file too large (max 20MB)' }, { status: 413 });
+  }
+
   const form = await request.formData();
   const file = form.get('file');
   const slug = slugify(String(form.get('slug') ?? ''));

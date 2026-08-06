@@ -1,19 +1,16 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { removeBarGroupPhoto, updateBarGroupPhoto, updateBarGroupPhotoCrop } from '@barviha/db';
-import type { PhotoEntry } from '@barviha/db';
 import { invalidSlugResponse } from '@/lib/valid-slug';
+import { BarGroupPhotoDeleteSchema, BarGroupPhotoPatchSchema } from '@/lib/catalog-schemas';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const slugErr = invalidSlugResponse(slug);
   if (slugErr) return slugErr;
-  const body = (await request.json().catch(() => null)) as
-    | { category?: string; src?: string; position?: PhotoEntry['position']; transform?: PhotoEntry['transform'] }
-    | null;
-  if (!body?.category) {
-    return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
-  }
+  const parsed = BarGroupPhotoPatchSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
+  const body = parsed.data;
   if (body.src) {
     updateBarGroupPhoto(slug, body.category, body.src);
   } else if ('position' in body || 'transform' in body) {
@@ -32,10 +29,8 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
   const { slug } = await params;
   const slugErr = invalidSlugResponse(slug);
   if (slugErr) return slugErr;
-  const body = (await request.json().catch(() => null)) as { category?: string } | null;
-  if (!body?.category) {
-    return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
-  }
-  removeBarGroupPhoto(slug, body.category);
+  const parsed = BarGroupPhotoDeleteSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
+  removeBarGroupPhoto(slug, parsed.data.category);
   return NextResponse.json({ ok: true });
 }

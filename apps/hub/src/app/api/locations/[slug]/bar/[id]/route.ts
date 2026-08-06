@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { updateBarItem } from '@barviha/db';
-import type { ArkaMenuItem } from '@barviha/db';
 import { invalidSlugResponse } from '@/lib/valid-slug';
 import { decodeRouteParam } from '@/lib/decode-param';
+import { BarItemPatchSchema } from '@/lib/catalog-schemas';
 
 export async function PATCH(
   request: NextRequest,
@@ -13,10 +13,12 @@ export async function PATCH(
   const id = decodeRouteParam(rawId);
   const slugErr = invalidSlugResponse(slug);
   if (slugErr) return slugErr;
-  const patch = (await request.json().catch(() => null)) as Partial<ArkaMenuItem> | null;
-  if (!patch) return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
+  const parsed = BarItemPatchSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json({ ok: false, error: parsed.error.issues[0]?.message ?? 'некорректные данные' }, { status: 400 });
+  }
   try {
-    updateBarItem(slug, id, patch);
+    updateBarItem(slug, id, parsed.data);
   } catch (e) {
     return NextResponse.json({ ok: false, error: String(e) }, { status: 404 });
   }

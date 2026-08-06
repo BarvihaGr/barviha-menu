@@ -8,7 +8,7 @@
  * резолвим не от cwd, а подъёмом вверх до pnpm-workspace.yaml.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve, sep } from 'node:path';
 
 let cachedRoot: string | null = null;
 
@@ -28,6 +28,25 @@ function contentDir(): string {
   return join(cachedRoot, 'packages/db/content');
 }
 
+/**
+ * Защита от path traversal (security-audit): relPath почти всегда
+ * `${slug}/...`, а slug у части вызывающих роутов приходит прямо из URL без
+ * проверки по allowlist (см. apps/menu/src/app/api/stats/[slug]/add) —
+ * `slug = "../../../etc"` без этой проверки ушёл бы через join() за пределы
+ * packages/db/content. Резолвим относительно contentDir() и требуем, чтобы
+ * результат оставался внутри неё, независимо от того, проверил ли слуг сам
+ * вызывающий код — единая точка защиты для всех текущих и будущих читателей/
+ * писателей content-store.
+ */
+function resolveContentPath(relPath: string): string {
+  const root = contentDir();
+  const full = resolve(root, relPath);
+  if (full !== root && !full.startsWith(root + sep)) {
+    throw new Error(`content-store: путь выходит за пределы content/ (${relPath})`);
+  }
+  return full;
+}
+
 // ВАЖНО: раньше чтение файла кешировалось через React cache() — это
 // корректно дедуплицирует чтение в рамках одного рендера ТОЛЬКО внутри
 // React Server Component дерева (Next выставляет per-request границу через
@@ -44,12 +63,12 @@ function contentDir(): string {
 // раз без кеша — здесь это локальный JSON, чтение дешёвое, а корректность
 // важнее микро-оптимизации.
 export function readContentJson<T>(relPath: string): T {
-  const full = join(contentDir(), relPath);
+  const full = resolveContentPath(relPath);
   return JSON.parse(readFileSync(full, 'utf-8')) as T;
 }
 
 export function writeContentJson<T>(relPath: string, data: T): void {
-  const full = join(contentDir(), relPath);
+  const full = resolveContentPath(relPath);
   mkdirSync(dirname(full), { recursive: true });
   writeFileSync(full, JSON.stringify(data, null, 2) + '\n', 'utf-8');
 }

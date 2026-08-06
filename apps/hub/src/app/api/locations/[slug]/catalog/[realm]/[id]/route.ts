@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { updateCatalogItem } from '@barviha/db';
-import type { CatalogItem } from '@barviha/db';
 import { invalidSlugResponse } from '@/lib/valid-slug';
 import { decodeRouteParam } from '@/lib/decode-param';
+import { CatalogItemPatchSchema } from '@/lib/catalog-schemas';
 
 export async function PATCH(
   request: NextRequest,
@@ -16,10 +16,12 @@ export async function PATCH(
   if (realm !== 'kitchen' && realm !== 'hookah' && realm !== 'bar') {
     return NextResponse.json({ ok: false, error: 'bad realm' }, { status: 400 });
   }
-  const patch = (await request.json().catch(() => null)) as Partial<CatalogItem> | null;
-  if (!patch) return NextResponse.json({ ok: false, error: 'bad body' }, { status: 400 });
+  const parsed = CatalogItemPatchSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json({ ok: false, error: parsed.error.issues[0]?.message ?? 'некорректные данные' }, { status: 400 });
+  }
   try {
-    updateCatalogItem(slug, realm, id, patch);
+    updateCatalogItem(slug, realm, id, parsed.data);
   } catch (e) {
     return NextResponse.json({ ok: false, error: String(e) }, { status: 404 });
   }

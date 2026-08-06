@@ -46,6 +46,16 @@ function slugify(s: string): string {
  * данных). См. project memory про этот баг.
  */
 export async function POST(request: NextRequest) {
+  // Проверяем Content-Length ДО request.formData() — formData() буферизует
+  // всё тело в память процесса перед тем, как что-либо можно проверить;
+  // проверка file.size ниже (после formData()) отсекает слишком большой
+  // файл только когда он уже целиком в памяти (security-audit, этап 3) —
+  // не защита от OOM сама по себе, но дешёвая и не пропускает честных
+  // клиентов (у multipart есть небольшой оверхед сверх размера файла).
+  const declaredLength = Number(request.headers.get('content-length') ?? '');
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_UPLOAD_BYTES + 1024 * 1024) {
+    return NextResponse.json({ ok: false, error: 'file too large (max 20MB)' }, { status: 413 });
+  }
   const form = await request.formData();
   const file = form.get('file');
   const slug = String(form.get('slug') ?? 'arka');
