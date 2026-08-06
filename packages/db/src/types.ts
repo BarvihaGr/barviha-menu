@@ -8,6 +8,11 @@ export type UUID = string;
 
 export type LocationFeature = 'karaoke' | 'vip_karaoke' | 'veranda' | 'lounge' | 'terrace';
 export type ItemLabel = 'new' | 'hit' | 'chef_pick' | 'premium' | 'spicy' | 'vegan';
+/** Ручные теги позиции меню для фильтров на живом меню — выставляются в
+ * бэк-офисе по каждому блюду вручную (не детектятся автоматически по
+ * тексту названия/описания/состава — это ненадёжно, см. историю фильтра
+ * «с мясом»/«без мяса» в apps/menu FilterBar.tsx). */
+export type MenuTag = 'meat' | 'fish' | 'salad' | 'sweet' | 'halal' | 'healthy';
 export type CartStatus = 'open' | 'submitted' | 'cancelled';
 export type OrderStatus = 'pending' | 'confirmed' | 'in_progress' | 'ready' | 'served' | 'cancelled';
 
@@ -256,6 +261,8 @@ export interface ResolvedMenuItem {
   price: number;
   weight: string | null;
   labels: ItemLabel[];
+  /** См. MenuTag — ручная разметка для фильтров (мясное/рыба/салат/сладкое/халяль/ПП). Undefined = не размечено (мок-данные/легаси-датасет). */
+  tags?: MenuTag[];
   is_available: boolean;
   is_premium: boolean;
   is_alcoholic: boolean;

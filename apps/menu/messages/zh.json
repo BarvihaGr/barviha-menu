@@ -50,8 +50,13 @@
     "vegan": "素食",
     "withMeat": "含肉",
     "noMeat": "無肉",
+    "withFish": "含魚",
+    "noFish": "無魚",
+    "salad": "沙拉",
     "salty": "鹹味",
     "sweet": "甜",
+    "halal": "清真",
+    "healthy": "健康餐",
     "reset": "重置",
     "close": "完成"
   },

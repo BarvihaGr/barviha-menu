@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { CatalogItem, CatalogRealm } from '@barviha/db';
+import type { CatalogItem, CatalogRealm, ItemLabel, MenuTag } from '@barviha/db';
 import { subLabel, subOrder } from '@barviha/db/catalog-shared';
 import { apiPath } from '@/lib/base-path';
 import { menuAssetUrl } from '@/lib/menu-origin';
@@ -10,6 +10,25 @@ import { PhotoGalleryEditor } from './PhotoGalleryEditor';
 import { cssTransform, DEFAULT_POSITION, DEFAULT_TRANSFORM } from './PhotoUploader';
 import { SavedBadge } from './SavedBadge';
 import { TranslationFields } from './TranslationFields';
+
+/** Метки-бейджи (показываются на карточке блюда). */
+const LABEL_OPTIONS: { key: ItemLabel; text: string }[] = [
+  { key: 'spicy', text: 'Острое' },
+  { key: 'vegan', text: 'Веган' },
+];
+
+/** Теги только для фильтров на живом меню (без бейджа на карточке) — см.
+ * FilterBar в apps/menu. Раньше эти фильтры пытались угадывать по тексту
+ * названия/состава и регулярно ошибались (курица/рыба попадали в «с
+ * мясом» и т.п.) — теперь это ручная разметка каждого блюда здесь. */
+const TAG_OPTIONS: { key: MenuTag; text: string }[] = [
+  { key: 'meat', text: 'Мясное' },
+  { key: 'fish', text: 'Рыба/морепродукты' },
+  { key: 'salad', text: 'Салат' },
+  { key: 'sweet', text: 'Сладкое' },
+  { key: 'halal', text: 'Халяль' },
+  { key: 'healthy', text: 'ПП' },
+];
 
 export function CatalogEditor({
   slug,
@@ -104,6 +123,18 @@ function CatalogItemRow({
     });
     if (res.ok) setSavedAt(Date.now());
     if (patch.is_archived) router.refresh();
+  }
+
+  function toggleLabel(key: ItemLabel) {
+    const current = draft.labels ?? [];
+    const next = current.includes(key) ? current.filter((l) => l !== key) : [...current, key];
+    save({ labels: next });
+  }
+
+  function toggleTag(key: MenuTag) {
+    const current = draft.tags ?? [];
+    const next = current.includes(key) ? current.filter((tg) => tg !== key) : [...current, key];
+    save({ tags: next });
   }
 
   async function move(direction: 'up' | 'down') {
@@ -228,6 +259,30 @@ function CatalogItemRow({
               актуально
             </label>
           </div>
+          <Field label="Метки для фильтров на живом меню">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 pt-0.5">
+              {LABEL_OPTIONS.map((o) => (
+                <label key={o.key} className="flex items-center gap-1.5 text-sm text-[color:var(--text-soft)]">
+                  <input
+                    type="checkbox"
+                    checked={(draft.labels ?? []).includes(o.key)}
+                    onChange={() => toggleLabel(o.key)}
+                  />
+                  {o.text}
+                </label>
+              ))}
+              {TAG_OPTIONS.map((o) => (
+                <label key={o.key} className="flex items-center gap-1.5 text-sm text-[color:var(--text-soft)]">
+                  <input
+                    type="checkbox"
+                    checked={(draft.tags ?? []).includes(o.key)}
+                    onChange={() => toggleTag(o.key)}
+                  />
+                  {o.text}
+                </label>
+              ))}
+            </div>
+          </Field>
           <div className="flex gap-3">
             <Field label="Ккал">
               <input

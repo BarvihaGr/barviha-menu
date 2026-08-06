@@ -146,6 +146,7 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
     // Только число (граммы). Единицу подставляет UI по локали — см. item page (t('grams')).
     weight: kb && kb.weight != null ? `${kb.weight}` : null,
     labels: detectLabels(it),
+    tags: [],
     is_available: true,
     is_premium: false,
     is_alcoholic: it.realm === 'bar' && ALCOHOL_SUBS.has(it.sub),

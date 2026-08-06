@@ -50,8 +50,13 @@
     "vegan": "Vegan",
     "withMeat": "With meat",
     "noMeat": "No meat",
+    "withFish": "With fish",
+    "noFish": "No fish",
+    "salad": "Salads",
     "salty": "Salty",
     "sweet": "Sweet",
+    "halal": "Halal",
+    "healthy": "Healthy",
     "reset": "Reset",
     "close": "Done",
     "emptyFilters": "No dishes match the selected filters"

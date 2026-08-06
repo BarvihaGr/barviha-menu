@@ -14,48 +14,30 @@ export type FilterKey =
   | 'vegan'
   | 'withMeat'
   | 'noMeat'
+  | 'withFish'
+  | 'noFish'
+  | 'salad'
   | 'salty'
-  | 'sweet';
+  | 'sweet'
+  | 'halal'
+  | 'healthy';
 
 /** Раздел определяет какие фильтры доступны. */
 export type FilterRealm = 'bar' | 'kitchen' | 'hookah' | 'desserts';
 
 export const FILTERS_BY_REALM: Record<FilterRealm, FilterKey[]> = {
   bar: ['noAlcohol', 'withAlcohol', 'withIce', 'sparkling'],
-  // 'vegan' временно снят: определение по тексту состава ненадёжно (у части
-  // блюд поле composition вообще не содержит ингредиентов — там КБЖУ или
-  // маркетинговый текст), из-за чего стейк рибай и куриная грудка попадали
-  // в «веган». Вернуть, когда появится ручная разметка (не автодетект).
-  kitchen: ['spicy', 'noMeat', 'withMeat', 'sweet'],
+  // Все фильтры ниже, кроме 'salty' (осталась текстовым эвристиком, не
+  // просили переводить), теперь читают ручную разметку блюда из бэк-офиса
+  // (item.labels/item.tags) — см. applyFilters ниже. Раньше это был
+  // текстовый детект по названию/составу, который регулярно ошибался
+  // (курица/рыба попадали в «с мясом», стейк — в «веган» и т.п.).
+  kitchen: ['spicy', 'noMeat', 'withMeat', 'withFish', 'noFish', 'salad', 'sweet', 'vegan', 'halal', 'healthy'],
   hookah: [],
   desserts: ['sweet'],
 };
 
-// Список специально широкий (включает птицу и морепродукты) — «животный
-// белок», используется для «без мяса»: иначе ролл с угрём, куриное бедро
-// или гребешок ошибочно считались «без мяса». Расширен 2026-07-30 —
-// реальные блюда меню (угорь, гребешок, краб, икра, сельдь, баранина,
-// цыплёнок, свиная отбивная) не матчились исходным списком и «выпадали» из
-// обоих фильтров сразу. Добавлен корень «мясн»/«мясо» — «Мясная тарелка»
-// (composition пустой, в description только «ассорти мясных деликатесов»)
-// ни разу не матчилась конкретными видами мяса и проходила фильтр «без мяса».
-const ANIMAL_PROTEIN_RE =
-  /говяд|телятин|свин|бекон|курин|цыпл|утк|утин|индей|баран|ягнят|кролик|ростбиф|брезаол|тартар|стейк|рибай|бургер|котлет|ветчин|карбонад|колбас|сосис|лосос|тун|рыб|креветк|кальмар|миди|осьминог|форель|угор|угр[её]|гребеш|краб|икр|сельд|анчоус|мясн|мясо/i;
-
-// «С мясом» — пользователь явно попросил (2026-07-31), чтобы это значило
-// именно мясо (говядина и т.п.), без рыбы/морепродуктов и без курицы —
-// раньше он был завязан на тот же ANIMAL_PROTEIN_RE, что и «без мяса», и под
-// «с мясом» попадали куриные и рыбные блюда. Курица/рыба по-прежнему считаются
-// «животным белком» для «без мяса» (см. выше) — там это правильно.
-const FISH_SEAFOOD_RE =
-  /лосос|тун|рыб|креветк|кальмар|миди|осьминог|форель|угор|угр[её]|гребеш|краб|икр|сельд|анчоус/i;
-const POULTRY_RE = /куриц|курин|цыпл/i;
-
-// карамель (с ь) — не матчит «карамелизацию» в несладких блюдах (ролл/овощи)
-const SWEET_RE =
-  /шокол|тирамис|чизкей|мороже|карамель|ваниль|сорбе|медовик|торт|фондан|пирожн|зефир|мармелад/i;
-const SALT_RE =
-  /солён|соленый|пикант|умами|копчён/i;
+const SALT_RE = /солён|соленый|пикант|умами|копчён/i;
 
 /** Применить выбранные фильтры к списку блюд. */
 export function applyFilters(
@@ -70,6 +52,7 @@ export function applyFilters(
     // Для вкусовых фильтров — только название + описание (без состава)
     const tasteHaystack = description + ' ' + i.name.toLowerCase();
     const labels = i.labels as ItemLabel[];
+    const tags = i.tags ?? [];
 
     if (active.has('noAlcohol') && i.is_alcoholic) return false;
     if (active.has('withAlcohol') && !i.is_alcoholic) return false;
@@ -79,16 +62,15 @@ export function applyFilters(
     // tasteHaystack (без состава): содов/тоник — ингредиенты коктейлей, не признак игристого
     if (active.has('sparkling') && !/игрист|просекко|шампан|sparkling|cava|кава/i.test(tasteHaystack))
       return false;
-    if (
-      active.has('withMeat') &&
-      !(ANIMAL_PROTEIN_RE.test(haystack) && !FISH_SEAFOOD_RE.test(haystack) && !POULTRY_RE.test(haystack))
-    )
-      return false;
-    if (active.has('noMeat') && ANIMAL_PROTEIN_RE.test(haystack)) return false;
+    if (active.has('withMeat') && !tags.includes('meat')) return false;
+    if (active.has('noMeat') && tags.includes('meat')) return false;
+    if (active.has('withFish') && !tags.includes('fish')) return false;
+    if (active.has('noFish') && tags.includes('fish')) return false;
+    if (active.has('salad') && !tags.includes('salad')) return false;
     if (active.has('salty') && !SALT_RE.test(tasteHaystack)) return false;
-    // Основная проверка: sub==='desserts' надёжно ловит десерты без ложных срабатываний.
-    // Резерв SWEET_RE: ловит сладкие снеки (шоколадный миндаль, вафли в шоколаде).
-    if (active.has('sweet') && i.sub !== 'desserts' && !SWEET_RE.test(tasteHaystack)) return false;
+    if (active.has('sweet') && !tags.includes('sweet')) return false;
+    if (active.has('halal') && !tags.includes('halal')) return false;
+    if (active.has('healthy') && !tags.includes('healthy')) return false;
     return true;
   });
 }

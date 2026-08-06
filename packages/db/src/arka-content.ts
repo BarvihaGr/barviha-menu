@@ -17,7 +17,7 @@ import { getItemVariants } from './arka-shared';
 import type { ArkaMenuEntry, ArkaMenuItem } from './arka-shared';
 import { usesArkaBarTemplate } from './onboarding';
 import type { GenKbju } from './menu-types';
-import type { PhotoEntry, ResolvedMenuItem } from './types';
+import type { ItemLabel, MenuTag, PhotoEntry, ResolvedMenuItem } from './types';
 
 export type { ArkaMenuEntry, ArkaMenuItem, ArkaMenuVariant } from './arka-shared';
 export { getItemVariants } from './arka-shared';
@@ -77,6 +77,7 @@ export function toResolvedBarItems(slug: string): ResolvedMenuItem[] {
         price: v.price,
         weight: item.volume,
         labels: [],
+        tags: [],
         is_available: item.is_available,
         is_premium: false,
         is_alcoholic: false,
@@ -293,6 +294,10 @@ export interface CatalogItem {
   is_archived?: boolean;
   /** Позиция-баннер — рендерится на всю ширину сетки (широкая карточка с описанием) вместо обычной квадратной ячейки. */
   is_featured?: boolean;
+  /** Острое/веган — выставляются вручную в бэк-офисе (см. MenuTag комментарий про отказ от автодетекта по тексту). */
+  labels?: ItemLabel[];
+  /** Ручные теги для фильтров живого меню — мясное/рыба/салат/сладкое/халяль/ПП. */
+  tags?: MenuTag[];
 }
 
 const ALCOHOL_SUBS = new Set(['wine', 'strong', 'cocktails', 'beer']);
@@ -395,19 +400,9 @@ export function addCatalogItem(slug: string, realm: CatalogRealm, input: NewCata
   return item;
 }
 
-function detectLabelsFromText(text: string): ResolvedMenuItem['labels'] {
-  const SPICY_RE = /остр[ыоеаяийё]|перец.{0,5}чили|чили.{0,5}перц|халапень|кайенн|спайси|spicy|кимчи|васаби|жгуч/i;
-  const VEGAN_RE = /\bвеган\b|\bvegan\b/i;
-  const labels: ResolvedMenuItem['labels'] = [];
-  if (SPICY_RE.test(text)) labels.push('spicy');
-  if (VEGAN_RE.test(text)) labels.push('vegan');
-  return labels;
-}
-
 export function toResolvedCatalogItem(it: CatalogItem): ResolvedMenuItem {
   const kb = it.kbju;
   const r = (n: number | null | undefined) => (n == null ? 0 : Math.round(n));
-  const text = [it.name, it.description, it.composition].filter(Boolean).join(' ');
   return {
     id: it.id,
     name: it.name,
@@ -429,7 +424,8 @@ export function toResolvedCatalogItem(it: CatalogItem): ResolvedMenuItem {
     category_id: it.realm,
     price: it.price,
     weight: kb && kb.weight != null ? `${kb.weight}` : null,
-    labels: detectLabelsFromText(text),
+    labels: it.labels ?? [],
+    tags: it.tags ?? [],
     is_available: it.is_available,
     is_premium: false,
     is_alcoholic: it.realm === 'bar' && ALCOHOL_SUBS.has(it.sub),
