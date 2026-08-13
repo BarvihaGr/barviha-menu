@@ -59,11 +59,11 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
   // Панель адаптируется: если выбрана Арка — тёмные токены
   const isDark = variant === 'dark' || (showPalettePicker === true && kievVariant === 'arka');
 
-  const filtered = useMemo(() => {
+  const groups = useMemo(() => {
     const query = q.trim().toLowerCase().replace(/ё/g, 'е');
     // Тест лок (Арка/Киевская — эталоны дизайна) не показываем покупателю —
     // они доступны только по прямой ссылке, для внутреннего использования.
-    return [...locations]
+    const filtered = [...locations]
       .filter((l) => !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug))
       .filter((l) =>
         !query ||
@@ -72,6 +72,19 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
           .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query)),
       )
       .sort((a, b) => locName(a, locale).localeCompare(locName(b, locale), 'ru'));
+
+    const byCity = new Map<string, Location[]>();
+    for (const l of filtered) {
+      const city = l.city ?? '';
+      if (!byCity.has(city)) byCity.set(city, []);
+      byCity.get(city)!.push(l);
+    }
+    // Москва — самая крупная группа, показываем первой; остальные города — по алфавиту.
+    return [...byCity.entries()].sort(([a], [b]) => {
+      if (a === 'Москва') return -1;
+      if (b === 'Москва') return 1;
+      return a.localeCompare(b, 'ru');
+    });
   }, [locations, q, locale]);
 
   const switchLang = (next: Locale) => {
@@ -220,13 +233,20 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                       )}
                     </div>
 
-                    {/* Список локаций */}
+                    {/* Список локаций, сгруппированный по городам */}
                     <div className="overflow-y-auto flex-1 -mx-1">
-                      {filtered.map((l) => (
-                        <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
+                      {groups.map(([city, locs]) => (
+                        <div key={city}>
+                          <p className={cn('px-3 pt-3 pb-1 text-[10px] uppercase tracking-[0.18em] opacity-45 first:pt-1')}>
+                            {city}
+                          </p>
+                          {locs.map((l) => (
+                            <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
+                          ))}
+                        </div>
                       ))}
 
-                      {filtered.length === 0 && (
+                      {groups.length === 0 && (
                         <div className="py-8 text-center text-[12px] opacity-30 uppercase tracking-[0.2em]">—</div>
                       )}
                     </div>
@@ -270,9 +290,6 @@ function LocationRow({
       <span className="flex-1 truncate leading-tight">
         {locName(l, locale)}
       </span>
-      {l.city && l.city !== locName(l, locale) && (
-        <span className="shrink-0 text-[11px] opacity-40">{l.city}</span>
-      )}
     </Link>
   );
 }

@@ -79,7 +79,23 @@ const LOC = (
   created_at: '2026-01-01T00:00:00Z',
 });
 
-export const MOCK_LOCATIONS: Location[] = [
+/** Город каждой локации (по реальному адресу в packages/db/content/<slug>/location.json).
+ * Локации без записи здесь по умолчанию — Москва (их большинство). */
+const CITY_BY_SLUG: Record<string, string> = {
+  arka: 'Тула',
+  likerka: 'Тула',
+  domodedovo: 'Домодедово',
+  erevan: 'Ереван',
+  maxackala: 'Махачкала',
+  nevskii: 'Санкт-Петербург',
+  'niznii-novgorod': 'Нижний Новгород',
+  penza: 'Пенза',
+  rublevka: 'Московская область',
+  'barvixa-lounge-saratov': 'Саратов',
+  taskent: 'Ташкент',
+};
+
+const RAW_LOCATIONS: Location[] = [
   {
     // TODO: заменить на реальные address/phone для Арки.
     // Живая рабочая локация сети — редактируется в бэк-офисе, открыта на
@@ -135,6 +151,11 @@ export const MOCK_LOCATIONS: Location[] = [
   LOC('loc-cska', 'cska', 'ЦСКА'),
   LOC('loc-iugo-zapadnaia', 'iugo-zapadnaia', 'Юго-Западная'),
 ];
+
+export const MOCK_LOCATIONS: Location[] = RAW_LOCATIONS.map((l) => ({
+  ...l,
+  city: CITY_BY_SLUG[l.slug] ?? 'Москва',
+}));
 
 // Back-compat: код, который импортит MOCK_LOCATION, продолжит работать
 export const MOCK_LOCATION: Location = MOCK_LOCATIONS[0]!;

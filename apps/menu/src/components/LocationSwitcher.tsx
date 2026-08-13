@@ -29,7 +29,7 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
 
   const current = locations.find((l) => l.slug === currentSlug);
   const currentAccent = getMetroColor(currentSlug);
-  const filtered = useMemo(() => {
+  const groups = useMemo(() => {
     const query = q.trim().toLowerCase().replace(/ё/g, 'е');
     const list = query
       ? locations.filter((l) =>
@@ -38,7 +38,20 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
             .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query)),
         )
       : locations;
-    return [...list].sort((a, b) => locName(a, locale).localeCompare(locName(b, locale)));
+    const filtered = [...list].sort((a, b) => locName(a, locale).localeCompare(locName(b, locale)));
+
+    const byCity = new Map<string, Location[]>();
+    for (const l of filtered) {
+      const city = l.city ?? '';
+      if (!byCity.has(city)) byCity.set(city, []);
+      byCity.get(city)!.push(l);
+    }
+    // Москва — самая крупная группа, показываем первой; остальные города — по алфавиту.
+    return [...byCity.entries()].sort(([a], [b]) => {
+      if (a === 'Москва') return -1;
+      if (b === 'Москва') return 1;
+      return a.localeCompare(b, 'ru');
+    });
   }, [locations, q, locale]);
 
   return (
@@ -87,31 +100,35 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
                 )}
               </div>
               <div className="max-h-[60vh] overflow-y-auto py-1">
-                {filtered.map((l) => {
-                  const a = getMetroColor(l.slug);
-                  return (
-                    <Link
-                      key={l.id}
-                      href={`/${l.slug}`}
-                      onClick={() => setOpen(false)}
-                      className={cn(
-                        'flex items-center gap-2.5 px-3 py-2.5 text-xs transition hover:bg-black/30 cursor-pointer border-l-2',
-                        l.slug === currentSlug ? 'text-gold' : 'text-foreground',
-                      )}
-                      style={{ borderLeftColor: l.slug === currentSlug ? a : 'transparent' }}
-                    >
-                      <span
-                        className="inline-block h-2.5 w-2.5 rounded-full shrink-0"
-                        style={{ background: a, boxShadow: `0 0 6px ${a}` }}
-                      />
-                      <span className="truncate flex-1">{locName(l, locale)}</span>
-                      {l.city && l.city !== locName(l, locale) && (
-                        <span className="shrink-0 text-[10px] text-muted">{l.city}</span>
-                      )}
-                    </Link>
-                  );
-                })}
-                {filtered.length === 0 && (
+                {groups.map(([city, locs]) => (
+                  <div key={city}>
+                    <p className="px-3 pt-2.5 pb-1 text-[10px] uppercase tracking-[0.18em] text-muted/70 first:pt-1.5">
+                      {city}
+                    </p>
+                    {locs.map((l) => {
+                      const a = getMetroColor(l.slug);
+                      return (
+                        <Link
+                          key={l.id}
+                          href={`/${l.slug}`}
+                          onClick={() => setOpen(false)}
+                          className={cn(
+                            'flex items-center gap-2.5 px-3 py-2.5 text-xs transition hover:bg-black/30 cursor-pointer border-l-2',
+                            l.slug === currentSlug ? 'text-gold' : 'text-foreground',
+                          )}
+                          style={{ borderLeftColor: l.slug === currentSlug ? a : 'transparent' }}
+                        >
+                          <span
+                            className="inline-block h-2.5 w-2.5 rounded-full shrink-0"
+                            style={{ background: a, boxShadow: `0 0 6px ${a}` }}
+                          />
+                          <span className="truncate flex-1">{locName(l, locale)}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ))}
+                {groups.length === 0 && (
                   <div className="px-3 py-6 text-center text-[11px] uppercase tracking-[0.2em] text-muted">—</div>
                 )}
               </div>
