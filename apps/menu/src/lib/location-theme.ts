@@ -100,3 +100,15 @@ const METRO_BY_SLUG: Record<string, string> = {
 export function getMetroColor(slug: string): string {
   return METRO_BY_SLUG[slug] ?? METRO_GOLD;
 }
+
+/**
+ * Схлопывает город локации в группу заголовка списка (переключатель
+ * локации — HamburgerMenu/LocationSwitcher): Москва — своя группа, ближнее
+ * Подмосковье (Домодедово, Рублёвка/«Московская область») — общая
+ * «Приближённые города к Москве», остальные города — каждый своей группой.
+ */
+export function regionFor(city: string): string {
+  if (city === 'Москва') return 'Москва';
+  if (city === 'Домодедово' || city === 'Московская область') return 'Приближённые города к Москве';
+  return city;
+}

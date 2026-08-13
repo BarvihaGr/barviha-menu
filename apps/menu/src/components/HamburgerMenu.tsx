@@ -2,14 +2,14 @@
 
 import { useMemo, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Menu, X, Search, Check } from 'lucide-react';
+import { Menu, X, Search, Check, ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
 import type { Location } from '@barviha/db';
 import { TEMPLATE_SLUGS } from '@barviha/db/onboarding';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
-import { getMetroColor } from '@/lib/location-theme';
+import { getMetroColor, regionFor } from '@/lib/location-theme';
 import { useKievTheme } from '@/store/kievTheme';
 import { cn } from '@/lib/utils';
 
@@ -48,6 +48,20 @@ const PALETTE_OPTIONS = [
 export function HamburgerMenu({ locationSlug, locations, variant = 'dark', themeStyle, showPalettePicker }: Props) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState('');
+  // Раскрыта по умолчанию только группа текущей локации — остальные свёрнуты,
+  // список локаций длинный (30+), сворачивание держит панель компактной.
+  const [openRegions, setOpenRegions] = useState<Set<string>>(() => {
+    const current = locations.find((l) => l.slug === locationSlug);
+    return new Set([regionFor(current?.city ?? 'Москва')]);
+  });
+  const toggleRegion = (region: string) => {
+    setOpenRegions((prev) => {
+      const next = new Set(prev);
+      if (next.has(region)) next.delete(region);
+      else next.add(region);
+      return next;
+    });
+  };
   const locale = useLocale() as Locale;
   const pathname = usePathname();
   const router = useRouter();
@@ -73,19 +87,26 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
       )
       .sort((a, b) => locName(a, locale).localeCompare(locName(b, locale), 'ru'));
 
-    const byCity = new Map<string, Location[]>();
+    const byRegion = new Map<string, Location[]>();
     for (const l of filtered) {
-      const city = l.city ?? '';
-      if (!byCity.has(city)) byCity.set(city, []);
-      byCity.get(city)!.push(l);
+      const region = regionFor(l.city ?? '');
+      if (!byRegion.has(region)) byRegion.set(region, []);
+      byRegion.get(region)!.push(l);
     }
-    // Москва — самая крупная группа, показываем первой; остальные города — по алфавиту.
-    return [...byCity.entries()].sort(([a], [b]) => {
+    // Москва — самая крупная группа, показываем первой; «Приближённые города
+    // к Москве» — сразу за ней; остальные — по алфавиту.
+    return [...byRegion.entries()].sort(([a], [b]) => {
       if (a === 'Москва') return -1;
       if (b === 'Москва') return 1;
+      if (a === 'Приближённые города к Москве') return -1;
+      if (b === 'Приближённые города к Москве') return 1;
       return a.localeCompare(b, 'ru');
     });
   }, [locations, q, locale]);
+
+  // Пока идёт поиск — показываем все совпадения сразу, игнорируя свёрнутость
+  // (пользователь ищет конкретное место, ему не нужно сначала разворачивать группу).
+  const isSearching = q.trim().length > 0;
 
   const switchLang = (next: Locale) => {
     setOpen(false);
@@ -233,18 +254,41 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                       )}
                     </div>
 
-                    {/* Список локаций, сгруппированный по городам */}
+                    {/* Список локаций, сгруппированный по городам — каждая группа сворачивается */}
                     <div className="overflow-y-auto flex-1 -mx-1">
-                      {groups.map(([city, locs]) => (
-                        <div key={city}>
-                          <p className={cn('px-3 pt-3 pb-1 text-[10px] uppercase tracking-[0.18em] opacity-45 first:pt-1')}>
-                            {city}
-                          </p>
-                          {locs.map((l) => (
-                            <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
-                          ))}
-                        </div>
-                      ))}
+                      {groups.map(([region, locs]) => {
+                        const isOpen = isSearching || openRegions.has(region);
+                        return (
+                          <div key={region}>
+                            <button
+                              type="button"
+                              onClick={() => toggleRegion(region)}
+                              className="flex w-full items-center justify-between gap-2 px-3 pt-3 pb-1 text-left cursor-pointer"
+                            >
+                              <span className="text-[10px] uppercase tracking-[0.18em] opacity-45">{region}</span>
+                              <ChevronDown
+                                size={13}
+                                className={cn('shrink-0 opacity-40 transition-transform', isOpen && 'rotate-180')}
+                              />
+                            </button>
+                            <AnimatePresence initial={false}>
+                              {isOpen && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: 'auto', opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.2, ease: 'easeInOut' }}
+                                  className="overflow-hidden"
+                                >
+                                  {locs.map((l) => (
+                                    <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
+                                  ))}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        );
+                      })}
 
                       {groups.length === 0 && (
                         <div className="py-8 text-center text-[12px] opacity-30 uppercase tracking-[0.2em]">—</div>

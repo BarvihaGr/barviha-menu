@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { CatalogItem, CatalogRealm, ItemLabel, MenuTag } from '@barviha/db';
 import { subLabel, subOrder } from '@barviha/db/catalog-shared';
@@ -92,7 +92,9 @@ export function CatalogEditor({
   );
 }
 
-function CatalogItemRow({
+// memo: список позиций каталога может быть большим — без этого каждая строка
+// перерендеривается на любой ввод в поиске, даже свёрнутая и без изменений.
+const CatalogItemRow = memo(function CatalogItemRow({
   slug,
   realm,
   item,
@@ -341,7 +343,7 @@ function CatalogItemRow({
       )}
     </div>
   );
-}
+});
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (

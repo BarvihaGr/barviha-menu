@@ -12,7 +12,20 @@
 const WINDOW_MS = 5 * 60 * 1000;
 const MAX_ATTEMPTS = 10;
 
+// Без чистки старых записей карта растёт, пока жив процесс — за недели
+// аптайма на pm2 это медленная утечка памяти (security-audit, этап 5).
+const CLEANUP_INTERVAL_MS = 30 * 60 * 1000;
+
 const hits = new Map<string, { count: number; resetAt: number }>();
+let lastCleanup = Date.now();
+
+function cleanupIfDue(now: number): void {
+  if (now - lastCleanup < CLEANUP_INTERVAL_MS) return;
+  lastCleanup = now;
+  for (const [key, entry] of hits) {
+    if (entry.resetAt < now) hits.delete(key);
+  }
+}
 
 /**
  * Берём ПОСЛЕДНИЙ адрес из X-Forwarded-For, не первый — см. точно такой же
@@ -44,6 +57,7 @@ export function checkRateLimitByKey(
   const maxAttempts = opts?.maxAttempts ?? MAX_ATTEMPTS;
   const fullKey = `${bucket}:${key}`;
   const now = Date.now();
+  cleanupIfDue(now);
   const entry = hits.get(fullKey);
   if (!entry || entry.resetAt < now) {
     hits.set(fullKey, { count: 1, resetAt: now + windowMs });

@@ -4,6 +4,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { UPLOAD_RELAY_SECRET } from '@/lib/upload-relay';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 /**
  * Принимает уже обработанное фото (сжатое, webp) от apps/hub и пишет его в
@@ -55,6 +56,16 @@ function looksLikeWebp(buf: Buffer): boolean {
 }
 
 export async function POST(request: NextRequest) {
+  // Публично достижимый write-эндпоинт, единственная защита — секрет в
+  // заголовке; без лимита по IP его можно долбить неограниченно, подбирая
+  // секрет или просто забивая диск/трафик (security-audit, этап 5). Потолок
+  // мягкий (не 15 как у gate-паролей) — весь трафик сюда идёт с одного IP
+  // (сервер-релей apps/hub, см. комментарий класса выше), и во время
+  // активного редактирования меню оттуда может прилететь много фото подряд.
+  if (!checkRateLimit(request, 'upload-asset', { windowMs: 5 * 60 * 1000, maxAttempts: 100 })) {
+    return NextResponse.json({ ok: false, error: 'too many requests' }, { status: 429 });
+  }
+
   const secret = request.headers.get('x-upload-secret');
   if (!secretMatches(secret)) {
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });

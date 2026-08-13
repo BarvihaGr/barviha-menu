@@ -25,9 +25,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Local env files
-.env
-.env*.local
+# Local env files (security-audit, этап 4: старый паттерн ловил только
+# .env и .env*.local — .env.production проходил мимо и реально утёк в git,
+# см. apps/hub/.env.production; .env* ловит любой вариант имени)
+.env*
+!.env.example
 
 # Vercel / Railway
 .vercel

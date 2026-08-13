@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { useTranslations } from 'next-intl';
@@ -20,7 +20,11 @@ interface Props {
   locationSlug: string;
 }
 
-export function CoffeeItemCard({ item, name, locationSlug }: Props) {
+// memo: список меню — до ~387 позиций на локацию (см. комментарий в
+// CoffeeMenuList про дебаунс поиска) — без этого каждая карточка
+// перерендеривается на любое изменение родителя (ввод в поиск, тап фильтра),
+// даже если её собственные item/name/locationSlug не менялись.
+export const CoffeeItemCard = memo(function CoffeeItemCard({ item, name, locationSlug }: Props) {
   const add = useCart((s) => s.add);
   const push = useToast((s) => s.push);
   const t = useTranslations();
@@ -108,7 +112,7 @@ export function CoffeeItemCard({ item, name, locationSlug }: Props) {
       </Link>
     </motion.article>
   );
-}
+});
 
 function cnBump(active: boolean, base: string): string {
   return active ? `${base} scale-90` : base;

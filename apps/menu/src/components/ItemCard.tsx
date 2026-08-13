@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { memo } from 'react';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import { formatPrice } from '@/lib/utils';
@@ -13,7 +14,10 @@ interface Props {
   locationSlug: string;
 }
 
-export function ItemCard({ item, name, locationSlug }: Props) {
+// memo: та же причина, что у CoffeeItemCard/FeaturedItemCard в apps/menu —
+// большие меню, не даём перерендерить всю сетку карточек на каждый
+// ввод в поиск/переключение фильтра.
+export const ItemCard = memo(function ItemCard({ item, name, locationSlug }: Props) {
   return (
     <article className="h-full">
       <Link
@@ -60,4 +64,4 @@ export function ItemCard({ item, name, locationSlug }: Props) {
       </Link>
     </article>
   );
-}
+});

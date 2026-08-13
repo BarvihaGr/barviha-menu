@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { ArkaMenuEntry, ArkaMenuItem, PhotoEntry } from '@barviha/db';
 import { apiPath } from '@/lib/base-path';
@@ -135,7 +135,9 @@ export function BarEditor({
   );
 }
 
-function BarItemRow({
+// memo: список позиций бара может быть большим — без этого каждая строка
+// перерендеривается на любой ввод в поиске, даже свёрнутая и без изменений.
+const BarItemRow = memo(function BarItemRow({
   slug,
   item,
   canReorder,
@@ -292,7 +294,7 @@ function BarItemRow({
       )}
     </div>
   );
-}
+});
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (

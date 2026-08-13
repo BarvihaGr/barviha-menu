@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { useTranslations } from 'next-intl';
@@ -26,7 +26,9 @@ interface Props {
  * CoffeeItemCard), а не оверлеем поверх снимка: на светлых фото
  * белый текст поверх градиента было не прочитать.
  */
-export function FeaturedItemCard({ item, name, locationSlug }: Props) {
+// memo: та же причина, что у CoffeeItemCard — большие меню, не даём
+// перерендерить все featured-карточки на каждый ввод в поиск/фильтр.
+export const FeaturedItemCard = memo(function FeaturedItemCard({ item, name, locationSlug }: Props) {
   const add = useCart((s) => s.add);
   const push = useToast((s) => s.push);
   const t = useTranslations();
@@ -152,7 +154,7 @@ export function FeaturedItemCard({ item, name, locationSlug }: Props) {
       </Link>
     </motion.article>
   );
-}
+});
 
 function cnBump(active: boolean, base: string): string {
   return active ? `${base} scale-90` : base;
