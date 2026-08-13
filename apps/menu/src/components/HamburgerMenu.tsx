@@ -9,7 +9,7 @@ import type { Location } from '@barviha/db';
 import { TEMPLATE_SLUGS } from '@barviha/db/onboarding';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
-import { getMetroColor, regionFor } from '@/lib/location-theme';
+import { getMetroColor, LOCATION_GROUPS } from '@/lib/location-theme';
 import { useKievTheme } from '@/store/kievTheme';
 import { cn } from '@/lib/utils';
 
@@ -51,8 +51,8 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
   // Раскрыта по умолчанию только группа текущей локации — остальные свёрнуты,
   // список локаций длинный (30+), сворачивание держит панель компактной.
   const [openRegions, setOpenRegions] = useState<Set<string>>(() => {
-    const current = locations.find((l) => l.slug === locationSlug);
-    return new Set([regionFor(current?.city ?? 'Москва')]);
+    const g = LOCATION_GROUPS.find((g) => g.collapsible && g.slugs.includes(locationSlug));
+    return new Set(g ? [g.label] : []);
   });
   const toggleRegion = (region: string) => {
     setOpenRegions((prev) => {
@@ -75,34 +75,25 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
 
   const groups = useMemo(() => {
     const query = q.trim().toLowerCase().replace(/ё/g, 'е');
+    const bySlug = new Map(locations.map((l) => [l.slug, l]));
     // Тест лок (Арка/Киевская — эталоны дизайна) не показываем покупателю —
     // они доступны только по прямой ссылке, для внутреннего использования.
-    const filtered = [...locations]
-      .filter((l) => !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug))
-      .filter((l) =>
-        !query ||
-        [l.name, l.name_en, l.name_zh, l.city]
-          .filter(Boolean)
-          .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query)),
-      )
-      .sort((a, b) => locName(a, locale).localeCompare(locName(b, locale), 'ru'));
-
-    const byRegion = new Map<string, Location[]>();
-    for (const l of filtered) {
-      const region = regionFor(l.city ?? '');
-      if (!byRegion.has(region)) byRegion.set(region, []);
-      byRegion.get(region)!.push(l);
-    }
-    // Москва — самая крупная группа, показываем первой; «Приближённые города
-    // к Москве» — сразу за ней; остальные — по алфавиту.
-    return [...byRegion.entries()].sort(([a], [b]) => {
-      if (a === 'Москва') return -1;
-      if (b === 'Москва') return 1;
-      if (a === 'Приближённые города к Москве') return -1;
-      if (b === 'Приближённые города к Москве') return 1;
-      return a.localeCompare(b, 'ru');
-    });
-  }, [locations, q, locale]);
+    // Порядок групп и локаций внутри — фиксированный, см. LOCATION_GROUPS.
+    return LOCATION_GROUPS.map((g) => ({
+      label: g.label,
+      collapsible: g.collapsible,
+      locs: g.slugs
+        .map((slug) => bySlug.get(slug))
+        .filter((l): l is Location => l != null && !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug))
+        .filter(
+          (l) =>
+            !query ||
+            [l.name, l.name_en, l.name_zh, l.city]
+              .filter(Boolean)
+              .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query)),
+        ),
+    })).filter((g) => g.locs.length > 0);
+  }, [locations, q]);
 
   // Пока идёт поиск — показываем все совпадения сразу, игнорируя свёрнутость
   // (пользователь ищет конкретное место, ему не нужно сначала разворачивать группу).
@@ -254,18 +245,28 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                       )}
                     </div>
 
-                    {/* Список локаций, сгруппированный по городам — каждая группа сворачивается */}
+                    {/* Список локаций, сгруппированный по городам — группы с несколькими
+                        локациями сворачиваются, группы из одной локации идут сразу списком. */}
                     <div className="overflow-y-auto flex-1 -mx-1">
-                      {groups.map(([region, locs]) => {
-                        const isOpen = isSearching || openRegions.has(region);
+                      {groups.map((g) => {
+                        if (!g.collapsible) {
+                          return (
+                            <div key={g.label}>
+                              {g.locs.map((l) => (
+                                <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
+                              ))}
+                            </div>
+                          );
+                        }
+                        const isOpen = isSearching || openRegions.has(g.label);
                         return (
-                          <div key={region}>
+                          <div key={g.label}>
                             <button
                               type="button"
-                              onClick={() => toggleRegion(region)}
+                              onClick={() => toggleRegion(g.label)}
                               className="flex w-full items-center justify-between gap-2 px-3 pt-3 pb-1 text-left cursor-pointer"
                             >
-                              <span className="text-[10px] uppercase tracking-[0.18em] opacity-45">{region}</span>
+                              <span className="text-[10px] uppercase tracking-[0.18em] opacity-45">{g.label}</span>
                               <ChevronDown
                                 size={13}
                                 className={cn('shrink-0 opacity-40 transition-transform', isOpen && 'rotate-180')}
@@ -280,7 +281,7 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                                   transition={{ duration: 0.2, ease: 'easeInOut' }}
                                   className="overflow-hidden"
                                 >
-                                  {locs.map((l) => (
+                                  {g.locs.map((l) => (
                                     <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
                                   ))}
                                 </motion.div>

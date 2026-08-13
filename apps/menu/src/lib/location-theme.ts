@@ -101,14 +101,50 @@ export function getMetroColor(slug: string): string {
   return METRO_BY_SLUG[slug] ?? METRO_GOLD;
 }
 
-/**
- * Схлопывает город локации в группу заголовка списка (переключатель
- * локации — HamburgerMenu/LocationSwitcher): Москва — своя группа, ближнее
- * Подмосковье (Домодедово, Рублёвка/«Московская область») — общая
- * «Приближённые города к Москве», остальные города — каждый своей группой.
- */
-export function regionFor(city: string): string {
-  if (city === 'Москва') return 'Москва';
-  if (city === 'Домодедово' || city === 'Московская область') return 'Приближённые города к Москве';
-  return city;
+export interface LocationGroupDef {
+  label: string;
+  /** true — заголовок кликабельный (стрелочка, сворачивается);
+   * false — группа из одной локации, рендерится сразу списком без заголовка. */
+  collapsible: boolean;
+  /** slug'и локаций строго в этом порядке — не по алфавиту, порядок задан вручную. */
+  slugs: string[];
 }
+
+/**
+ * Порядок групп и локаций внутри них в переключателе локации
+ * (HamburgerMenu/LocationSwitcher) — фиксированный, задан вручную
+ * (не выводится из данных локации и не сортируется по алфавиту).
+ */
+export const LOCATION_GROUPS: LocationGroupDef[] = [
+  {
+    label: 'Москва',
+    collapsible: true,
+    slugs: [
+      'krasnaia-ploshchad',
+      'kievskaia',
+      'moskva-siti',
+      'paveletskaia',
+      'mendeleevskaia',
+      'baumanskaia',
+      'mitino',
+      'kolomenskaia',
+      'seligerskaia',
+      'ramenki',
+      'iugo-zapadnaia',
+      'cska',
+      'marino',
+      'tepliy-stan',
+      'otradnoe',
+      'barvixa-lounge-krylatskoe',
+    ],
+  },
+  { label: 'Московская область', collapsible: true, slugs: ['domodedovo', 'rublevka'] },
+  { label: 'Тула', collapsible: true, slugs: ['arka', 'likerka'] },
+  { label: 'Санкт-Петербург', collapsible: true, slugs: ['nevskii'] },
+  { label: 'Пенза', collapsible: false, slugs: ['penza'] },
+  { label: 'Ереван', collapsible: false, slugs: ['erevan'] },
+  { label: 'Нижний Новгород', collapsible: false, slugs: ['niznii-novgorod'] },
+  { label: 'Махачкала', collapsible: false, slugs: ['maxackala'] },
+  { label: 'Саратов', collapsible: false, slugs: ['barvixa-lounge-saratov'] },
+  { label: 'Ташкент', collapsible: false, slugs: ['taskent'] },
+];
