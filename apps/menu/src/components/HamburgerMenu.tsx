@@ -113,6 +113,8 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
     closeBtn:   'text-muted hover:text-cream hover:bg-white/6',
     divider:    'border-white/8',
     label:      'text-[10px] uppercase tracking-[0.22em] text-muted/55 mb-2.5',
+    groupLabel: 'text-[12px] font-medium uppercase tracking-[0.12em] text-gold/75',
+    groupChevron: 'text-gold/60',
     langOn:     'border-gold text-gold bg-gold/12',
     langOff:    'border-white/12 text-muted hover:border-gold/45 hover:text-cream/80',
     search:     'bg-white/5 border-white/10 focus-within:border-gold/40 text-foreground placeholder:text-muted/50',
@@ -126,6 +128,8 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
     closeBtn:   'text-[#aaa] hover:text-[#333] hover:bg-black/5',
     divider:    'border-[#efefed]',
     label:      'text-[10px] uppercase tracking-[0.22em] text-[#b0ada8] mb-2.5',
+    groupLabel: 'text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--cm-accent,#c49262)]',
+    groupChevron: 'text-[var(--cm-accent,#c49262)]/70',
     langOn:     'border-[var(--cm-accent,#c49262)] text-[var(--cm-accent,#c49262)] bg-[var(--cm-accent,#c49262)]/10',
     langOff:    'border-[#dedad5] text-[#888] hover:border-[var(--cm-accent,#c49262)]/50 hover:text-[#333]',
     search:     'bg-[#f5f4f1] border-[#e8e5e0] focus-within:border-[var(--cm-accent,#c49262)]/40 text-[#333] placeholder:text-[#b0ada8]',
@@ -266,10 +270,10 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                               onClick={() => toggleRegion(g.label)}
                               className="flex w-full items-center justify-between gap-2 px-3 pt-3 pb-1 text-left cursor-pointer"
                             >
-                              <span className="text-[10px] uppercase tracking-[0.18em] opacity-45">{g.label}</span>
+                              <span className={D.groupLabel}>{g.label}</span>
                               <ChevronDown
-                                size={13}
-                                className={cn('shrink-0 opacity-40 transition-transform', isOpen && 'rotate-180')}
+                                size={15}
+                                className={cn('shrink-0 transition-transform', D.groupChevron, isOpen && 'rotate-180')}
                               />
                             </button>
                             <AnimatePresence initial={false}>
