@@ -8,18 +8,29 @@ import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
-import { getMetroColor, LOCATION_GROUPS } from '@/lib/location-theme';
+import {
+  getMetroColor,
+  LOCATION_GROUPS,
+  buildLocationTree,
+  findOpenLocationPath,
+  type ResolvedLocationNode,
+} from '@/lib/location-theme';
 
 interface Props {
   locations: Location[];
   currentSlug: string;
 }
 
+/** Одна и та же строка текста — и для заголовков групп/стран, и для точек: чтобы всё выглядело одним шрифтом и цветом. */
+const ITEM_TEXT_CLASS = 'text-xs text-gold';
+
 function locName(l: Location, locale: Locale): string {
   if (locale === 'en' && l.name_en) return l.name_en;
   if (locale === 'zh' && l.name_zh) return l.name_zh;
   return l.name;
 }
+
+type ResolvedNode = ResolvedLocationNode<Location>;
 
 export function LocationSwitcher({ locations, currentSlug }: Props) {
   const [open, setOpen] = useState(false);
@@ -29,38 +40,28 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
 
   const current = locations.find((l) => l.slug === currentSlug);
   const currentAccent = getMetroColor(currentSlug);
-  // Раскрыта по умолчанию только группа текущей локации — остальные свёрнуты.
-  const [openRegions, setOpenRegions] = useState<Set<string>>(() => {
-    const g = LOCATION_GROUPS.find((g) => g.collapsible && g.slugs.includes(currentSlug));
-    return new Set(g ? [g.label] : []);
-  });
-  const toggleRegion = (region: string) => {
-    setOpenRegions((prev) => {
+  // Раскрыт по умолчанию только путь до текущей локации — остальные ветки свёрнуты.
+  const [openKeys, setOpenKeys] = useState<Set<string>>(
+    () => new Set(findOpenLocationPath(LOCATION_GROUPS, currentSlug) ?? []),
+  );
+  const toggleKey = (key: string) => {
+    setOpenKeys((prev) => {
       const next = new Set(prev);
-      if (next.has(region)) next.delete(region);
-      else next.add(region);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
       return next;
     });
   };
 
-  const groups = useMemo(() => {
+  const tree = useMemo(() => {
     const query = q.trim().toLowerCase().replace(/ё/g, 'е');
     const bySlug = new Map(locations.map((l) => [l.slug, l]));
-    // Порядок групп и локаций внутри — фиксированный, см. LOCATION_GROUPS.
-    return LOCATION_GROUPS.map((g) => ({
-      label: g.label,
-      collapsible: g.collapsible,
-      locs: g.slugs
-        .map((slug) => bySlug.get(slug))
-        .filter((l): l is Location => Boolean(l))
-        .filter(
-          (l) =>
-            !query ||
-            [l.name, l.name_en, l.name_zh, l.city]
-              .filter(Boolean)
-              .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query)),
-        ),
-    })).filter((g) => g.locs.length > 0);
+    const matches = (l: Location) =>
+      !query ||
+      [l.name, l.name_en, l.name_zh, l.city]
+        .filter(Boolean)
+        .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query));
+    return buildLocationTree(LOCATION_GROUPS, bySlug, matches);
   }, [locations, q]);
 
   // Пока идёт поиск — показываем все совпадения сразу, игнорируя свёрнутость.
@@ -112,49 +113,20 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
                 )}
               </div>
               <div className="max-h-[60vh] overflow-y-auto py-1">
-                {groups.map((g) => {
-                  if (!g.collapsible) {
-                    return (
-                      <div key={g.label}>
-                        {g.locs.map((l) => (
-                          <LocationLink key={l.id} l={l} locale={locale} currentSlug={currentSlug} onNavigate={() => setOpen(false)} />
-                        ))}
-                      </div>
-                    );
-                  }
-                  const isOpen = isSearching || openRegions.has(g.label);
-                  return (
-                    <div key={g.label}>
-                      <button
-                        type="button"
-                        onClick={() => toggleRegion(g.label)}
-                        className="flex w-full items-center justify-between gap-2 px-3 pt-2.5 pb-1 text-left cursor-pointer first:pt-1.5"
-                      >
-                        <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-gold">{g.label}</span>
-                        <ChevronDown
-                          size={15}
-                          className={cn('shrink-0 text-gold/60 transition-transform', isOpen && 'rotate-180')}
-                        />
-                      </button>
-                      <AnimatePresence initial={false}>
-                        {isOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.2, ease: 'easeInOut' }}
-                            className="overflow-hidden"
-                          >
-                            {g.locs.map((l) => (
-                              <LocationLink key={l.id} l={l} locale={locale} currentSlug={currentSlug} onNavigate={() => setOpen(false)} />
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  );
-                })}
-                {groups.length === 0 && (
+                {tree.map((node) => (
+                  <LocationTreeNode
+                    key={node.key}
+                    node={node}
+                    depth={0}
+                    openKeys={openKeys}
+                    toggleKey={toggleKey}
+                    isSearching={isSearching}
+                    currentSlug={currentSlug}
+                    locale={locale}
+                    onNavigate={() => setOpen(false)}
+                  />
+                ))}
+                {tree.length === 0 && (
                   <div className="px-3 py-6 text-center text-[11px] uppercase tracking-[0.2em] text-muted">—</div>
                 )}
               </div>
@@ -166,13 +138,111 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
   );
 }
 
+function LocationTreeNode({
+  node,
+  depth,
+  openKeys,
+  toggleKey,
+  isSearching,
+  currentSlug,
+  locale,
+  onNavigate,
+}: {
+  node: ResolvedNode;
+  depth: number;
+  openKeys: Set<string>;
+  toggleKey: (key: string) => void;
+  isSearching: boolean;
+  currentSlug: string;
+  locale: Locale;
+  onNavigate: () => void;
+}) {
+  const indentStyle = depth > 0 ? { paddingLeft: `${12 + depth * 12}px` } : undefined;
+
+  // Не сворачиваемая ветка (одна вложенная локация/группа) — рендерим детей сразу, без заголовка.
+  if (!node.collapsible) {
+    if (node.locs) {
+      return (
+        <div>
+          {node.locs.map((l) => (
+            <LocationLink key={l.id} l={l} depth={depth} locale={locale} currentSlug={currentSlug} onNavigate={onNavigate} />
+          ))}
+        </div>
+      );
+    }
+    return (
+      <div>
+        {node.children!.map((c) => (
+          <LocationTreeNode
+            key={c.key}
+            node={c}
+            depth={depth}
+            openKeys={openKeys}
+            toggleKey={toggleKey}
+            isSearching={isSearching}
+            currentSlug={currentSlug}
+            locale={locale}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  const isOpen = isSearching || openKeys.has(node.key);
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => toggleKey(node.key)}
+        style={indentStyle}
+        className="flex w-full items-center justify-between gap-2 px-3 pt-2.5 pb-1 text-left cursor-pointer first:pt-1.5"
+      >
+        <span className={ITEM_TEXT_CLASS}>{node.label}</span>
+        <ChevronDown size={15} className={cn('shrink-0 text-gold/60 transition-transform', isOpen && 'rotate-180')} />
+      </button>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            {node.locs
+              ? node.locs.map((l) => (
+                  <LocationLink key={l.id} l={l} depth={depth + 1} locale={locale} currentSlug={currentSlug} onNavigate={onNavigate} />
+                ))
+              : node.children!.map((c) => (
+                  <LocationTreeNode
+                    key={c.key}
+                    node={c}
+                    depth={depth + 1}
+                    openKeys={openKeys}
+                    toggleKey={toggleKey}
+                    isSearching={isSearching}
+                    currentSlug={currentSlug}
+                    locale={locale}
+                    onNavigate={onNavigate}
+                  />
+                ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function LocationLink({
   l,
+  depth,
   locale,
   currentSlug,
   onNavigate,
 }: {
   l: Location;
+  depth: number;
   locale: Locale;
   currentSlug: string;
   onNavigate: () => void;
@@ -182,8 +252,11 @@ function LocationLink({
     <Link
       href={`/${l.slug}`}
       onClick={onNavigate}
-      className="flex items-center gap-2.5 px-3 py-2.5 text-xs text-gold transition hover:bg-black/30 cursor-pointer border-l-2"
-      style={{ borderLeftColor: l.slug === currentSlug ? a : 'transparent' }}
+      style={{
+        borderLeftColor: l.slug === currentSlug ? a : 'transparent',
+        paddingLeft: `${12 + depth * 12}px`,
+      }}
+      className={cn('flex items-center gap-2.5 py-2.5 pr-3 transition hover:bg-black/30 cursor-pointer border-l-2', ITEM_TEXT_CLASS)}
     >
       <span
         className="inline-block h-2.5 w-2.5 rounded-full shrink-0"

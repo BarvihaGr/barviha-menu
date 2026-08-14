@@ -9,7 +9,13 @@ import type { Location } from '@barviha/db';
 import { TEMPLATE_SLUGS } from '@barviha/db/onboarding';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
-import { getMetroColor, LOCATION_GROUPS } from '@/lib/location-theme';
+import {
+  getMetroColor,
+  LOCATION_GROUPS,
+  buildLocationTree,
+  findOpenLocationPath,
+  type ResolvedLocationNode,
+} from '@/lib/location-theme';
 import { useKievTheme } from '@/store/kievTheme';
 import { cn } from '@/lib/utils';
 
@@ -50,15 +56,14 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
   const [q, setQ] = useState('');
   // Раскрыта по умолчанию только группа текущей локации — остальные свёрнуты,
   // список локаций длинный (30+), сворачивание держит панель компактной.
-  const [openRegions, setOpenRegions] = useState<Set<string>>(() => {
-    const g = LOCATION_GROUPS.find((g) => g.collapsible && g.slugs.includes(locationSlug));
-    return new Set(g ? [g.label] : []);
-  });
-  const toggleRegion = (region: string) => {
-    setOpenRegions((prev) => {
+  const [openKeys, setOpenKeys] = useState<Set<string>>(
+    () => new Set(findOpenLocationPath(LOCATION_GROUPS, locationSlug) ?? []),
+  );
+  const toggleKey = (key: string) => {
+    setOpenKeys((prev) => {
       const next = new Set(prev);
-      if (next.has(region)) next.delete(region);
-      else next.add(region);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
       return next;
     });
   };
@@ -73,26 +78,18 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
   // Панель адаптируется: если выбрана Арка — тёмные токены
   const isDark = variant === 'dark' || (showPalettePicker === true && kievVariant === 'arka');
 
-  const groups = useMemo(() => {
+  const tree = useMemo(() => {
     const query = q.trim().toLowerCase().replace(/ё/g, 'е');
     const bySlug = new Map(locations.map((l) => [l.slug, l]));
     // Тест лок (Арка/Киевская — эталоны дизайна) не показываем покупателю —
     // они доступны только по прямой ссылке, для внутреннего использования.
-    // Порядок групп и локаций внутри — фиксированный, см. LOCATION_GROUPS.
-    return LOCATION_GROUPS.map((g) => ({
-      label: g.label,
-      collapsible: g.collapsible,
-      locs: g.slugs
-        .map((slug) => bySlug.get(slug))
-        .filter((l): l is Location => l != null && !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug))
-        .filter(
-          (l) =>
-            !query ||
-            [l.name, l.name_en, l.name_zh, l.city]
-              .filter(Boolean)
-              .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query)),
-        ),
-    })).filter((g) => g.locs.length > 0);
+    const matches = (l: Location) =>
+      !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug) &&
+      (!query ||
+        [l.name, l.name_en, l.name_zh, l.city]
+          .filter(Boolean)
+          .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query)));
+    return buildLocationTree(LOCATION_GROUPS, bySlug, matches);
   }, [locations, q]);
 
   // Пока идёт поиск — показываем все совпадения сразу, игнорируя свёрнутость
@@ -113,14 +110,15 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
     closeBtn:   'text-muted hover:text-cream hover:bg-white/6',
     divider:    'border-white/8',
     label:      'text-[10px] uppercase tracking-[0.22em] text-muted/55 mb-2.5',
-    groupLabel: 'text-[12px] font-medium uppercase tracking-[0.12em] text-gold/75',
+    // Заголовки групп и обычные пункты локаций — один и тот же цвет/шрифт (text-[13px] text-gold),
+    // чтобы список не выглядел разнородным (раньше группы были золотом+капс, пункты — чёрным).
+    groupLabel: 'text-[13px] text-gold',
     groupChevron: 'text-gold/60',
     langOn:     'border-gold text-gold bg-gold/12',
     langOff:    'border-white/12 text-muted hover:border-gold/45 hover:text-cream/80',
     search:     'bg-white/5 border-white/10 focus-within:border-gold/40 text-foreground placeholder:text-muted/50',
     searchIcon: 'text-muted/50',
-    itemText:   'text-foreground/75 hover:bg-white/5',
-    itemActive: 'text-gold',
+    itemText:   'text-[13px] text-gold hover:bg-white/5',
     trigger:    'border-gold/35 text-gold/80 hover:border-gold hover:text-gold hover:bg-gold/8',
   } : {
     panel:      'bg-white border-l border-[#e8e5e0]',
@@ -128,14 +126,13 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
     closeBtn:   'text-[#aaa] hover:text-[#333] hover:bg-black/5',
     divider:    'border-[#efefed]',
     label:      'text-[10px] uppercase tracking-[0.22em] text-[#b0ada8] mb-2.5',
-    groupLabel: 'text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--cm-accent,#c49262)]',
+    groupLabel: 'text-[13px] text-[var(--cm-accent,#c49262)]',
     groupChevron: 'text-[var(--cm-accent,#c49262)]/70',
     langOn:     'border-[var(--cm-accent,#c49262)] text-[var(--cm-accent,#c49262)] bg-[var(--cm-accent,#c49262)]/10',
     langOff:    'border-[#dedad5] text-[#888] hover:border-[var(--cm-accent,#c49262)]/50 hover:text-[#333]',
     search:     'bg-[#f5f4f1] border-[#e8e5e0] focus-within:border-[var(--cm-accent,#c49262)]/40 text-[#333] placeholder:text-[#b0ada8]',
     searchIcon: 'text-[#b0ada8]',
-    itemText:   'text-[#333] hover:bg-[#f5f4f1]',
-    itemActive: 'text-[var(--cm-accent,#c49262)]',
+    itemText:   'text-[13px] text-[var(--cm-accent,#c49262)] hover:bg-[#f5f4f1]',
     trigger:    'border-[#dedad5] text-[#888] hover:border-[var(--cm-accent,#c49262)]/50 hover:text-[#333]',
   };
 
@@ -252,50 +249,22 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                     {/* Список локаций, сгруппированный по городам — группы с несколькими
                         локациями сворачиваются, группы из одной локации идут сразу списком. */}
                     <div className="overflow-y-auto flex-1 -mx-1">
-                      {groups.map((g) => {
-                        if (!g.collapsible) {
-                          return (
-                            <div key={g.label}>
-                              {g.locs.map((l) => (
-                                <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
-                              ))}
-                            </div>
-                          );
-                        }
-                        const isOpen = isSearching || openRegions.has(g.label);
-                        return (
-                          <div key={g.label}>
-                            <button
-                              type="button"
-                              onClick={() => toggleRegion(g.label)}
-                              className="flex w-full items-center justify-between gap-2 px-3 pt-3 pb-1 text-left cursor-pointer"
-                            >
-                              <span className={D.groupLabel}>{g.label}</span>
-                              <ChevronDown
-                                size={15}
-                                className={cn('shrink-0 transition-transform', D.groupChevron, isOpen && 'rotate-180')}
-                              />
-                            </button>
-                            <AnimatePresence initial={false}>
-                              {isOpen && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: 'auto', opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{ duration: 0.2, ease: 'easeInOut' }}
-                                  className="overflow-hidden"
-                                >
-                                  {g.locs.map((l) => (
-                                    <LocationRow key={l.id} l={l} locale={locale} locationSlug={locationSlug} D={D} close={close} />
-                                  ))}
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        );
-                      })}
+                      {tree.map((node) => (
+                        <LocationTreeRow
+                          key={node.key}
+                          node={node}
+                          depth={0}
+                          openKeys={openKeys}
+                          toggleKey={toggleKey}
+                          isSearching={isSearching}
+                          locale={locale}
+                          locationSlug={locationSlug}
+                          D={D}
+                          close={close}
+                        />
+                      ))}
 
-                      {groups.length === 0 && (
+                      {tree.length === 0 && (
                         <div className="py-8 text-center text-[12px] opacity-30 uppercase tracking-[0.2em]">—</div>
                       )}
                     </div>
@@ -310,14 +279,116 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
   );
 }
 
+function LocationTreeRow({
+  node,
+  depth,
+  openKeys,
+  toggleKey,
+  isSearching,
+  locale,
+  locationSlug,
+  D,
+  close,
+}: {
+  node: ResolvedLocationNode<Location>;
+  depth: number;
+  openKeys: Set<string>;
+  toggleKey: (key: string) => void;
+  isSearching: boolean;
+  locale: Locale;
+  locationSlug: string;
+  D: Record<string, string>;
+  close: () => void;
+}) {
+  const indentStyle = depth > 0 ? { paddingLeft: `${12 + depth * 12}px` } : undefined;
+
+  // Не сворачиваемая ветка (одна вложенная локация/группа) — рендерим детей сразу, без заголовка.
+  if (!node.collapsible) {
+    if (node.locs) {
+      return (
+        <div>
+          {node.locs.map((l) => (
+            <LocationRow key={l.id} l={l} depth={depth} locale={locale} locationSlug={locationSlug} D={D} close={close} />
+          ))}
+        </div>
+      );
+    }
+    return (
+      <div>
+        {node.children!.map((c) => (
+          <LocationTreeRow
+            key={c.key}
+            node={c}
+            depth={depth}
+            openKeys={openKeys}
+            toggleKey={toggleKey}
+            isSearching={isSearching}
+            locale={locale}
+            locationSlug={locationSlug}
+            D={D}
+            close={close}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  const isOpen = isSearching || openKeys.has(node.key);
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => toggleKey(node.key)}
+        style={indentStyle}
+        className="flex w-full items-center justify-between gap-2 px-3 pt-3 pb-1 text-left cursor-pointer"
+      >
+        <span className={D.groupLabel}>{node.label}</span>
+        <ChevronDown size={15} className={cn('shrink-0 transition-transform', D.groupChevron, isOpen && 'rotate-180')} />
+      </button>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            {node.locs
+              ? node.locs.map((l) => (
+                  <LocationRow key={l.id} l={l} depth={depth + 1} locale={locale} locationSlug={locationSlug} D={D} close={close} />
+                ))
+              : node.children!.map((c) => (
+                  <LocationTreeRow
+                    key={c.key}
+                    node={c}
+                    depth={depth + 1}
+                    openKeys={openKeys}
+                    toggleKey={toggleKey}
+                    isSearching={isSearching}
+                    locale={locale}
+                    locationSlug={locationSlug}
+                    D={D}
+                    close={close}
+                  />
+                ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function LocationRow({
   l,
+  depth,
   locale,
   locationSlug,
   D,
   close,
 }: {
   l: Location;
+  depth: number;
   locale: Locale;
   locationSlug: string;
   D: Record<string, string>;
@@ -329,12 +400,8 @@ function LocationRow({
     <Link
       href={`/${l.slug}`}
       onClick={close}
-      className={cn(
-        'flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] transition cursor-pointer border-l-2',
-        D.itemText,
-        active && D.itemActive,
-      )}
-      style={{ borderLeftColor: active ? accent : 'transparent' }}
+      className={cn('flex items-center gap-2.5 rounded-lg py-2.5 pr-3 transition cursor-pointer border-l-2', D.itemText)}
+      style={{ borderLeftColor: active ? accent : 'transparent', paddingLeft: `${12 + depth * 12}px` }}
     >
       <span className="flex-1 truncate leading-tight">
         {locName(l, locale)}

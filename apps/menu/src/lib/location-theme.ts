@@ -106,45 +106,107 @@ export interface LocationGroupDef {
   /** true — заголовок кликабельный (стрелочка, сворачивается);
    * false — группа из одной локации, рендерится сразу списком без заголовка. */
   collapsible: boolean;
-  /** slug'и локаций строго в этом порядке — не по алфавиту, порядок задан вручную. */
-  slugs: string[];
+  /** Листовая группа — slug'и локаций строго в этом порядке (не по алфавиту). */
+  slugs?: string[];
+  /** Вложенная группа — дерево может уходить на любую глубину (страна → город → точки). */
+  children?: LocationGroupDef[];
 }
 
 /**
- * Порядок групп и локаций внутри них в переключателе локации
- * (HamburgerMenu/LocationSwitcher) — фиксированный, задан вручную
- * (не выводится из данных локации и не сортируется по алфавиту).
+ * Дерево групп в переключателе локации (HamburgerMenu/LocationSwitcher) —
+ * страна → (для РФ ещё и «Города РФ») → город → точки. Порядок фиксированный,
+ * задан вручную (не выводится из данных локации и не сортируется по алфавиту).
  */
 export const LOCATION_GROUPS: LocationGroupDef[] = [
   {
-    label: 'Москва',
+    label: 'Россия',
     collapsible: true,
-    slugs: [
-      'krasnaia-ploshchad',
-      'kievskaia',
-      'moskva-siti',
-      'paveletskaia',
-      'mendeleevskaia',
-      'baumanskaia',
-      'mitino',
-      'kolomenskaia',
-      'seligerskaia',
-      'ramenki',
-      'iugo-zapadnaia',
-      'cska',
-      'marino',
-      'tepliy-stan',
-      'otradnoe',
-      'barvixa-lounge-krylatskoe',
+    children: [
+      {
+        label: 'Города РФ',
+        collapsible: true,
+        children: [
+          {
+            label: 'Москва',
+            collapsible: true,
+            slugs: [
+              'krasnaia-ploshchad',
+              'kievskaia',
+              'moskva-siti',
+              'paveletskaia',
+              'mendeleevskaia',
+              'baumanskaia',
+              'mitino',
+              'kolomenskaia',
+              'seligerskaia',
+              'ramenki',
+              'iugo-zapadnaia',
+              'cska',
+              'marino',
+              'tepliy-stan',
+              'otradnoe',
+              'barvixa-lounge-krylatskoe',
+            ],
+          },
+          { label: 'Московская область', collapsible: true, slugs: ['domodedovo', 'rublevka'] },
+          { label: 'Тула', collapsible: true, slugs: ['arka', 'likerka'] },
+          { label: 'Санкт-Петербург', collapsible: true, slugs: ['nevskii'] },
+          { label: 'Пенза', collapsible: false, slugs: ['penza'] },
+          { label: 'Нижний Новгород', collapsible: false, slugs: ['niznii-novgorod'] },
+          { label: 'Махачкала', collapsible: false, slugs: ['maxackala'] },
+          { label: 'Саратов', collapsible: false, slugs: ['barvixa-lounge-saratov'] },
+        ],
+      },
     ],
   },
-  { label: 'Московская область', collapsible: true, slugs: ['domodedovo', 'rublevka'] },
-  { label: 'Тула', collapsible: true, slugs: ['arka', 'likerka'] },
-  { label: 'Санкт-Петербург', collapsible: true, slugs: ['nevskii'] },
-  { label: 'Пенза', collapsible: false, slugs: ['penza'] },
-  { label: 'Ереван', collapsible: false, slugs: ['erevan'] },
-  { label: 'Нижний Новгород', collapsible: false, slugs: ['niznii-novgorod'] },
-  { label: 'Махачкала', collapsible: false, slugs: ['maxackala'] },
-  { label: 'Саратов', collapsible: false, slugs: ['barvixa-lounge-saratov'] },
-  { label: 'Ташкент', collapsible: false, slugs: ['taskent'] },
+  { label: 'Армения', collapsible: true, children: [{ label: 'Ереван', collapsible: false, slugs: ['erevan'] }] },
+  { label: 'Узбекистан', collapsible: true, children: [{ label: 'Ташкент', collapsible: false, slugs: ['taskent'] }] },
 ];
+
+/** Отфильтрованное и разрешённое (slug → Location) дерево групп — то, что реально рендерится. */
+export interface ResolvedLocationNode<L> {
+  key: string;
+  label: string;
+  collapsible: boolean;
+  locs?: L[];
+  children?: ResolvedLocationNode<L>[];
+}
+
+/**
+ * Строит дерево для рендера: разворачивает slug'и в объекты локаций через `bySlug`,
+ * фильтрует листья через `matches` (поиск) и убирает опустевшие ветки.
+ */
+export function buildLocationTree<L>(
+  defs: LocationGroupDef[],
+  bySlug: Map<string, L>,
+  matches: (l: L) => boolean,
+  parentKey = '',
+): ResolvedLocationNode<L>[] {
+  const out: ResolvedLocationNode<L>[] = [];
+  for (const def of defs) {
+    const key = parentKey ? `${parentKey}>${def.label}` : def.label;
+    if (def.slugs) {
+      const locs = def.slugs.map((slug) => bySlug.get(slug)).filter((l): l is L => Boolean(l)).filter(matches);
+      if (locs.length > 0) out.push({ key, label: def.label, collapsible: def.collapsible, locs });
+    } else if (def.children) {
+      const children = buildLocationTree(def.children, bySlug, matches, key);
+      if (children.length > 0) out.push({ key, label: def.label, collapsible: def.collapsible, children });
+    }
+  }
+  return out;
+}
+
+/** Путь ключей (страна → ... → группа), которые надо раскрыть по умолчанию, чтобы была видна текущая локация. */
+export function findOpenLocationPath(defs: LocationGroupDef[], slug: string, parentKey = ''): string[] | null {
+  for (const def of defs) {
+    const key = parentKey ? `${parentKey}>${def.label}` : def.label;
+    if (def.slugs?.includes(slug)) {
+      return def.collapsible ? [key] : [];
+    }
+    if (def.children) {
+      const childPath = findOpenLocationPath(def.children, slug, key);
+      if (childPath !== null) return def.collapsible ? [key, ...childPath] : childPath;
+    }
+  }
+  return null;
+}
