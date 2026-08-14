@@ -20,6 +20,13 @@ const POSITION_MAX_AGE_MS = 3 * 60 * 60 * 1000; // 3 часа
  * каждой новой сессии, ждём сутки. */
 const DENIED_KEY = 'nearby-location-denied-at';
 const DENIED_RETRY_MS = 24 * 60 * 60 * 1000;
+/** Любая другая неудача (таймаут, недоступна позиция) — короткий кулдаун,
+ * а не мгновенный повтор на каждой следующей перезагрузке. Без этого
+ * зависший/провалившийся запрос (см. enableHighAccuracy ниже) гонял бы
+ * системный диалог разрешения на КАЖДЫЙ рефреш подряд, пока не поймает
+ * успех — именно так выглядела жалоба «спрашивает каждый раз». */
+const LAST_ATTEMPT_KEY = 'nearby-location-last-attempt';
+const ATTEMPT_RETRY_MS = 15 * 60 * 1000;
 /** Дальше этого радиуса ближайшая локация не считается «рядом» — не
  * навязываем переключение, если человек просто дома/в другом районе.
  * 1.5 км был слишком строг: geolocation без enableHighAccuracy (по
@@ -102,12 +109,19 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
     const deniedAt = Number(localStorage.getItem(DENIED_KEY) ?? 0);
     if (deniedAt && Date.now() - deniedAt < DENIED_RETRY_MS) return;
 
+    // 2b) Недавняя неудачная попытка (таймаут и т.п.) — короткий кулдаун,
+    // чтобы не повторять запрос на каждый следующий рефреш подряд.
+    const lastAttempt = Number(localStorage.getItem(LAST_ATTEMPT_KEY) ?? 0);
+    if (lastAttempt && Date.now() - lastAttempt < ATTEMPT_RETRY_MS) return;
+
     function requestPosition() {
+      localStorage.setItem(LAST_ATTEMPT_KEY, String(Date.now()));
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const here = { lat: pos.coords.latitude, lon: pos.coords.longitude };
           localStorage.setItem(POSITION_CACHE_KEY, JSON.stringify({ ...here, at: Date.now() }));
           localStorage.removeItem(DENIED_KEY);
+          localStorage.removeItem(LAST_ATTEMPT_KEY);
           pickNearest(here);
         },
         (err) => {
@@ -115,10 +129,14 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
           // на каждой следующей сессии, пока не пройдут сутки.
           if (err.code === 1) localStorage.setItem(DENIED_KEY, String(Date.now()));
         },
-        // enableHighAccuracy — реальный GPS-чип, а не позиционирование по
-        // вышкам/Wi-Fi (то давало погрешность в 1-2 км и фича не срабатывала
-        // вблизи заведения). Таймаут увеличен — GPS-фикс медленнее сетевого.
-        { enableHighAccuracy: true, timeout: 12000, maximumAge: 5 * 60 * 1000 },
+        // enableHighAccuracy:true (реальный GPS-чип) внутри помещения часто
+        // не успевает получить фикс — запрос виснет до таймаута, ничего не
+        // кэшируется, и на следующей перезагрузке всё повторяется с тем же
+        // системным диалогом разрешения заново («спрашивает каждый раз» —
+        // это оно). Позиционирование по Wi-Fi/вышкам отвечает почти мгновенно
+        // и работает из помещения; радиус «рядом» (NEARBY_RADIUS_KM = 3 км)
+        // уже специально подобран с запасом под его меньшую точность.
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 5 * 60 * 1000 },
       );
     }
 
