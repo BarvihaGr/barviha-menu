@@ -130,7 +130,7 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
                         onClick={() => toggleRegion(g.label)}
                         className="flex w-full items-center justify-between gap-2 px-3 pt-2.5 pb-1 text-left cursor-pointer first:pt-1.5"
                       >
-                        <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-gold/75">{g.label}</span>
+                        <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-gold">{g.label}</span>
                         <ChevronDown
                           size={15}
                           className={cn('shrink-0 text-gold/60 transition-transform', isOpen && 'rotate-180')}
@@ -182,10 +182,7 @@ function LocationLink({
     <Link
       href={`/${l.slug}`}
       onClick={onNavigate}
-      className={cn(
-        'flex items-center gap-2.5 px-3 py-2.5 text-xs transition hover:bg-black/30 cursor-pointer border-l-2',
-        l.slug === currentSlug ? 'text-gold' : 'text-foreground',
-      )}
+      className="flex items-center gap-2.5 px-3 py-2.5 text-xs text-gold transition hover:bg-black/30 cursor-pointer border-l-2"
       style={{ borderLeftColor: l.slug === currentSlug ? a : 'transparent' }}
     >
       <span
