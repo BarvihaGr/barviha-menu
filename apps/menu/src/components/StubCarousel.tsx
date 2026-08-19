@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CalendarCheck, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { PromoCard, type PromoCardData } from './PromoCard';
 
 export interface StubCard {
@@ -36,6 +37,8 @@ interface Props {
  * переворота: увеличенная афиша + призыв «Забронировать стол» (Restoplace).
  */
 export function StubCarousel({ items }: Props) {
+  const tCommon = useTranslations('common');
+  const tHome = useTranslations('home');
   const scrollerRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
   const visibleRef = useRef(true);
@@ -184,7 +187,7 @@ export function StubCarousel({ items }: Props) {
                   <Dialog.Close asChild>
                     <button
                       type="button"
-                      aria-label="Закрыть"
+                      aria-label={tCommon('close')}
                       className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/55 text-white/90 transition hover:text-gold cursor-pointer"
                     >
                       <X size={16} />
@@ -223,7 +226,7 @@ export function StubCarousel({ items }: Props) {
                         className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl bg-gold py-3 text-sm font-semibold uppercase tracking-[0.14em] text-black transition hover:brightness-110 cursor-pointer"
                       >
                         <CalendarCheck size={17} strokeWidth={2} />
-                        Забронировать стол
+                        {tHome('bookTable')}
                       </a>
                     )}
                   </div>

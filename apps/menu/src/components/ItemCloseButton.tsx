@@ -1,6 +1,7 @@
 'use client';
 
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 
 /**
@@ -10,10 +11,11 @@ import { useRouter } from '@/i18n/navigation';
  */
 export function ItemCloseButton({ fallbackHref }: { fallbackHref: string }) {
   const router = useRouter();
+  const t = useTranslations('common');
   return (
     <button
       type="button"
-      aria-label="Закрыть"
+      aria-label={t('close')}
       onClick={() => {
         if (typeof window !== 'undefined' && window.history.length > 1) router.back();
         else router.push(fallbackHref);

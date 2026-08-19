@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import type { Category } from '@barviha/db';
 import type { Locale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
@@ -10,26 +11,26 @@ interface Props {
   locale: Locale;
 }
 
-/** Подзаголовки разделов по ТЗ (slug → описание). */
-const SUBTITLE: Record<string, string> = {
-  kitchen: 'Авторская кухня',
-  bar: 'Коктейли и напитки',
-  hookah: 'Премиальный табак',
-};
-
-/** Переопределения названий разделов под ТЗ. */
-const TITLE_OVERRIDE: Record<string, string> = {
-  hookah: 'Кальянная карта',
-};
-
 /**
  * Экран-хаб «МЕНЮ» (lux, по ТЗ «Киевская»): заголовок Canela + крупные строки
  * разделов (название + описание + золотая стрелка), разделённые тонкими
  * золотыми линиями. Тёмный люкс-минимализм.
  */
 export function CoffeeLuxMenu({ locationSlug, categories, locale }: Props) {
+  const tNav = useTranslations('nav');
+  const tHub = useTranslations('menuHub');
   const hrefFor = (slug: string) =>
     slug === 'hookah' ? `/${locationSlug}/hookah` : `/${locationSlug}/${slug}`;
+
+  /** Подзаголовки/переопределения названий разделов по ТЗ (slug → перевод). */
+  const SUBTITLE: Record<string, string> = {
+    kitchen: tHub('kitchenSubtitle'),
+    bar: tHub('barSubtitle'),
+    hookah: tHub('hookahSubtitle'),
+  };
+  const TITLE_OVERRIDE: Record<string, string> = {
+    hookah: tHub('hookahTitle'),
+  };
 
   return (
     <div
@@ -38,7 +39,7 @@ export function CoffeeLuxMenu({ locationSlug, categories, locale }: Props) {
     >
       <div className="mx-auto w-full max-w-[680px] px-6 pb-32 pt-10 sm:pt-14">
         <h1 className="mb-8 font-[family-name:var(--font-sans)] text-[34px] font-light uppercase tracking-[0.14em] text-[var(--cm-text)] sm:mb-10 sm:text-[44px]">
-          Меню
+          {tNav('menu')}
         </h1>
 
         <div className="border-t border-[var(--cm-border)]">

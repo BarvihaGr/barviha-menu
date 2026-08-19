@@ -12,13 +12,16 @@
     "price": "Price",
     "search": "Search the menu",
     "all": "All",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "close": "Close"
   },
   "nav": {
     "cart": "My table",
     "menu": "Menu",
     "info": "Info",
-    "hookahFlow": "Hookah"
+    "hookahFlow": "Hookah",
+    "home": "Home",
+    "contacts": "Contacts"
   },
   "realms": {
     "kitchen": "Kitchen",
@@ -133,7 +136,8 @@
       "socialNote": "Latest updates",
       "socialSubtitle": "Events, promotions and news — follow us.",
       "vkLabel": "VK"
-    }
+    },
+    "bookTable": "Book a table"
   },
   "spotlight": {
     "more": "Learn more",
@@ -144,7 +148,9 @@
       "offer": "Offer",
       "social": "Socials",
       "event": "Event"
-    }
+    },
+    "linkWeb": "Website",
+    "linkPhone": "Call"
   },
   "announce": {
     "today": "Today",
@@ -174,11 +180,15 @@
       "title": "You're near «Barvikha Lounge {name}» — open this location's menu?",
       "openMenu": "Open menu",
       "stayHere": "Stay here"
-    }
+    },
+    "hours": "Opening hours",
+    "wifiFree": "Free Wi-Fi",
+    "contactsTitle": "Contacts"
   },
   "search": {
     "noResults": "Nothing found",
-    "placeholder": "Search dishes, drinks, hookah…"
+    "placeholder": "Search dishes, drinks, hookah…",
+    "clear": "Clear"
   },
   "toast": {
     "addedToCart": "Added to your table"
@@ -188,5 +198,19 @@
     "en": "EN",
     "zh": "中",
     "switch": "Switch language"
+  },
+  "errors": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "This location or menu section doesn't exist. Check the link or go back to the home page.",
+    "wentWrongTitle": "Something went wrong",
+    "wentWrongBody": "The page failed to load. Please try again — this is usually a temporary glitch.",
+    "tryAgain": "Try again",
+    "home": "Go home"
+  },
+  "menuHub": {
+    "kitchenSubtitle": "Signature cuisine",
+    "barSubtitle": "Cocktails and drinks",
+    "hookahSubtitle": "Premium tobacco",
+    "hookahTitle": "Hookah menu"
   }
 }

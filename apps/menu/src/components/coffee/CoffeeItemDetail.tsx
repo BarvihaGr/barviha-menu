@@ -153,10 +153,11 @@ function LabelChip({ label }: { label: ItemLabel }) {
 /** Крестик закрытия — назад в историю, иначе на главную локации. */
 function CoffeeCloseButton({ fallbackHref }: { fallbackHref: string }) {
   const router = useRouter();
+  const t = useTranslations('common');
   return (
     <button
       type="button"
-      aria-label="Закрыть"
+      aria-label={t('close')}
       onClick={() => {
         if (typeof window !== 'undefined' && window.history.length > 1) router.back();
         else router.push(fallbackHref);

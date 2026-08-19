@@ -162,7 +162,7 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
             className="w-full bg-transparent font-[family-name:var(--font-sans)] text-[15px] text-[var(--cm-text)] placeholder:text-[var(--cm-muted-dim)] focus:outline-none"
           />
           {query && (
-            <button type="button" onClick={() => setQuery('')} aria-label="Очистить"
+            <button type="button" onClick={() => setQuery('')} aria-label={tSearch('clear')}
               className="shrink-0 text-[var(--cm-muted-dim)] hover:text-[var(--cm-text)] transition cursor-pointer">
               <X className="h-[18px] w-[18px]" />
             </button>

@@ -31,7 +31,7 @@ export const CoffeeItemCard = memo(function CoffeeItemCard({ item, name, locatio
   const [bump, setBump] = useState(false);
 
   const displayName = capitalizeRu(name);
-  const weightStr = item.weight != null ? `${item.weight} г` : null;
+  const weightStr = item.weight != null ? `${item.weight} ${t('item.grams')}` : null;
 
   const addToCart = (e: React.MouseEvent) => {
     e.preventDefault();

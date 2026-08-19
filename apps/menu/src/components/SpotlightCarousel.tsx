@@ -45,13 +45,13 @@ const LINK_ICON: Record<SpotlightLinkKind, LucideIcon> = {
   phone: Phone,
 };
 
-const LINK_LABEL: Record<SpotlightLinkKind, string> = {
-  instagram: 'Instagram',
-  telegram: 'Telegram',
-  vk: 'VK',
-  whatsapp: 'WhatsApp',
-  web: 'Сайт',
-  phone: 'Позвонить',
+const LINK_LABEL_KEY: Record<SpotlightLinkKind, string | null> = {
+  instagram: null,
+  telegram: null,
+  vk: null,
+  whatsapp: null,
+  web: 'linkWeb',
+  phone: 'linkPhone',
 };
 
 function pick<F extends 'title' | 'subtitle' | 'body' | 'badge' | 'when'>(
@@ -416,7 +416,7 @@ function SpotlightModalBody({
         {links.length > 0 && (
           <div className="mt-1 flex flex-wrap gap-2">
             {links.map((l, i) => (
-              <LinkButton key={i} link={l} accent={accent} />
+              <LinkButton key={i} link={l} accent={accent} t={t} />
             ))}
           </div>
         )}
@@ -425,9 +425,18 @@ function SpotlightModalBody({
   );
 }
 
-function LinkButton({ link, accent }: { link: SpotlightLink; accent: string }) {
+function LinkButton({
+  link,
+  accent,
+  t,
+}: {
+  link: SpotlightLink;
+  accent: string;
+  t: ReturnType<typeof useTranslations>;
+}) {
   const Icon = LINK_ICON[link.kind] ?? Globe;
-  const label = link.label ?? LINK_LABEL[link.kind] ?? link.kind;
+  const labelKey = LINK_LABEL_KEY[link.kind];
+  const label = link.label ?? (labelKey ? t(labelKey) : link.kind);
   const isTel = link.kind === 'phone';
   return (
     <a

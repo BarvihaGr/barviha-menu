@@ -2,6 +2,7 @@
 
 import { Wifi } from 'lucide-react';
 import { Phone, MapPin, Clock, ArrowRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
 import { DirectionsMenu } from '../DirectionsMenu';
 import { LocationMap } from '../LocationMap';
@@ -28,13 +29,14 @@ const LOCATION_WIFI: Record<string, { ssid: string }> = {
 };
 
 export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, longitude, hours, wifi }: Props) {
+  const t = useTranslations('location');
   const wifiData = wifi ?? LOCATION_WIFI[locationSlug];
   const rows = [
     phone
-      ? { icon: Phone, label: 'Телефон', value: phone, href: `tel:${phone.replace(/[^+\d]/g, '')}` }
+      ? { icon: Phone, label: t('phone'), value: phone, href: `tel:${phone.replace(/[^+\d]/g, '')}` }
       : null,
-    address ? { icon: MapPin, label: 'Адрес', value: address, href: undefined } : null,
-    { icon: Clock, label: 'Время работы', value: hours, href: undefined },
+    address ? { icon: MapPin, label: t('address'), value: address, href: undefined } : null,
+    { icon: Clock, label: t('hours'), value: hours, href: undefined },
   ].filter(Boolean) as { icon: typeof Phone; label: string; value: string; href?: string }[];
 
   return (
@@ -44,7 +46,7 @@ export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, long
     >
       <div className="mx-auto w-full max-w-[680px] px-6 pb-32 pt-10 sm:pt-14">
         <h1 className="mb-8 font-[family-name:var(--font-display)] text-[34px] font-light uppercase tracking-[0.14em] text-[var(--cm-text)] sm:mb-10 sm:text-[44px]">
-          Контакты
+          {t('contactsTitle')}
         </h1>
 
         <div className="border-t border-[var(--cm-border)]">
@@ -89,7 +91,7 @@ export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, long
             <Wifi size={20} strokeWidth={1.5} className="text-[color:var(--cm-accent)]" />
             <div>
               <div className="font-[family-name:var(--font-sans)] text-[12px] uppercase tracking-[0.18em] text-[var(--cm-muted)]">
-                Бесплатный Wi-Fi
+                {t('wifiFree')}
               </div>
               <div className="mt-0.5 font-[family-name:var(--font-sans)] text-[15px] text-[var(--cm-text)]">
                 {wifiData.ssid}
@@ -129,7 +131,7 @@ export function CoffeeLuxContacts({ locationSlug, phone, address, latitude, long
                 className="flex w-full items-center justify-between gap-3 px-5 py-4 transition-colors hover:bg-[var(--cm-surface-2)] cursor-pointer"
               >
                 <span className="font-[family-name:var(--font-sans)] text-[14px] text-[var(--cm-text)]">
-                  Как добраться
+                  {t('directions')}
                 </span>
                 <ArrowRight size={18} strokeWidth={1.5} className="text-[color:var(--cm-accent)]" />
               </button>

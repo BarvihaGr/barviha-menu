@@ -1,6 +1,7 @@
 'use client';
 
 import { Home, BookOpen, MapPin, ShoppingBag } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { coffeeAccentStyle, isKievskaiaStyle } from '@/lib/coffee-design';
@@ -20,6 +21,7 @@ interface Props {
  * тонкая золотая граница сверху.
  */
 export function LuxBottomNav({ locationSlug }: Props) {
+  const t = useTranslations('nav');
   const pathname = usePathname();
   const base = `/${locationSlug}`;
   const kievVariant = useKievTheme((s) => s.variant);
@@ -34,10 +36,10 @@ export function LuxBottomNav({ locationSlug }: Props) {
   const cartCount = mounted ? rawCount : 0;
 
   const tabs = [
-    { key: 'home', label: 'Главная', icon: Home, href: base, match: (p: string) => p === base, badge: 0 },
+    { key: 'home', label: t('home'), icon: Home, href: base, match: (p: string) => p === base, badge: 0 },
     {
       key: 'menu',
-      label: 'Меню',
+      label: t('menu'),
       icon: BookOpen,
       href: `${base}/kitchen`,
       match: (p: string) => p.startsWith(`${base}/menu`) || isCategoryPath(p, base),
@@ -45,7 +47,7 @@ export function LuxBottomNav({ locationSlug }: Props) {
     },
     {
       key: 'contacts',
-      label: 'Контакты',
+      label: t('contacts'),
       icon: MapPin,
       href: `${base}/contacts`,
       match: (p: string) => p.startsWith(`${base}/contacts`),
@@ -53,7 +55,7 @@ export function LuxBottomNav({ locationSlug }: Props) {
     },
     {
       key: 'cart',
-      label: 'Корзина',
+      label: t('cart'),
       icon: ShoppingBag,
       href: `${base}/cart`,
       match: (p: string) => p.startsWith(`${base}/cart`),
@@ -70,13 +72,13 @@ export function LuxBottomNav({ locationSlug }: Props) {
         className="mx-auto flex max-w-[680px] items-stretch justify-between px-2"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
-        {tabs.map((t) => {
-          const on = t.match(pathname);
-          const Icon = t.icon;
+        {tabs.map((tab) => {
+          const on = tab.match(pathname);
+          const Icon = tab.icon;
           return (
             <Link
-              key={t.key}
-              href={t.href}
+              key={tab.key}
+              href={tab.href}
               aria-current={on ? 'page' : undefined}
               className={cn(
                 'flex flex-1 flex-col items-center gap-1 py-2.5 transition-colors cursor-pointer',
@@ -85,14 +87,14 @@ export function LuxBottomNav({ locationSlug }: Props) {
             >
               <span className="relative">
                 <Icon size={21} strokeWidth={1.5} />
-                {t.badge > 0 && (
+                {tab.badge > 0 && (
                   <span className="absolute -right-2.5 -top-1.5 inline-flex min-w-[16px] items-center justify-center rounded-full bg-[color:var(--cm-accent)] px-1 text-[10px] font-semibold text-[#111111]">
-                    {t.badge}
+                    {tab.badge}
                   </span>
                 )}
               </span>
               <span className="font-[family-name:var(--font-sans)] text-[11px] tracking-[0.02em]">
-                {t.label}
+                {tab.label}
               </span>
             </Link>
           );

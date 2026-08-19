@@ -1,6 +1,7 @@
 'use client';
 
 import { Home, BookOpen, MapPin, ShoppingBag } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { cn } from '@/lib/utils';
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function BarvikhaBottomNav({ locationSlug }: Props) {
+  const t = useTranslations('nav');
   const pathname = usePathname();
   const base = `/${locationSlug}`;
 
@@ -21,7 +23,7 @@ export function BarvikhaBottomNav({ locationSlug }: Props) {
   const tabs = [
     {
       key: 'home',
-      label: 'Главная',
+      label: t('home'),
       icon: Home,
       href: base,
       match: (p: string) => p === base,
@@ -29,7 +31,7 @@ export function BarvikhaBottomNav({ locationSlug }: Props) {
     },
     {
       key: 'menu',
-      label: 'Меню',
+      label: t('menu'),
       icon: BookOpen,
       href: `${base}/kitchen`,
       match: (p: string) => isMenuPath(p, base),
@@ -37,7 +39,7 @@ export function BarvikhaBottomNav({ locationSlug }: Props) {
     },
     {
       key: 'contacts',
-      label: 'Контакты',
+      label: t('contacts'),
       icon: MapPin,
       href: `${base}/contacts`,
       match: (p: string) => p.startsWith(`${base}/contacts`),
@@ -45,7 +47,7 @@ export function BarvikhaBottomNav({ locationSlug }: Props) {
     },
     {
       key: 'cart',
-      label: 'Корзина',
+      label: t('cart'),
       icon: ShoppingBag,
       href: `${base}/cart`,
       match: (p: string) => p.startsWith(`${base}/cart`),
@@ -59,13 +61,13 @@ export function BarvikhaBottomNav({ locationSlug }: Props) {
         className="mx-auto flex max-w-[680px] items-stretch justify-between px-2"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
-        {tabs.map((t) => {
-          const on = t.match(pathname);
-          const Icon = t.icon;
+        {tabs.map((tab) => {
+          const on = tab.match(pathname);
+          const Icon = tab.icon;
           return (
             <Link
-              key={t.key}
-              href={t.href}
+              key={tab.key}
+              href={tab.href}
               aria-current={on ? 'page' : undefined}
               className={cn(
                 'flex flex-1 flex-col items-center gap-1 py-3 transition-colors cursor-pointer',
@@ -74,9 +76,9 @@ export function BarvikhaBottomNav({ locationSlug }: Props) {
             >
               <span className="relative">
                 <Icon size={20} strokeWidth={on ? 2 : 1.5} />
-                {t.badge > 0 && (
+                {tab.badge > 0 && (
                   <span className="absolute -right-2.5 -top-1.5 inline-flex min-w-[16px] items-center justify-center rounded-full bg-foreground px-1 text-[10px] font-semibold text-background">
-                    {t.badge}
+                    {tab.badge}
                   </span>
                 )}
               </span>
@@ -84,7 +86,7 @@ export function BarvikhaBottomNav({ locationSlug }: Props) {
                 className="text-[10px] tracking-[0.04em]"
                 style={{ fontFamily: 'Inter, sans-serif', fontWeight: on ? 500 : 400 }}
               >
-                {t.label}
+                {tab.label}
               </span>
             </Link>
           );

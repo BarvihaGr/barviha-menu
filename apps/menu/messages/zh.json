@@ -12,13 +12,16 @@
     "price": "價格",
     "search": "搜尋菜單",
     "all": "全部",
-    "loading": "載入中…"
+    "loading": "載入中…",
+    "close": "關閉"
   },
   "nav": {
     "cart": "我的餐桌",
     "menu": "菜單",
     "info": "資訊",
-    "hookahFlow": "水煙"
+    "hookahFlow": "水煙",
+    "home": "首頁",
+    "contacts": "聯絡方式"
   },
   "realms": {
     "kitchen": "廚房",
@@ -132,7 +135,8 @@
       "socialNote": "最新动态",
       "socialSubtitle": "活动、优惠与最新消息——欢迎关注。",
       "vkLabel": "VK"
-    }
+    },
+    "bookTable": "預訂餐桌"
   },
   "spotlight": {
     "more": "了解更多",
@@ -143,7 +147,9 @@
       "offer": "特惠",
       "social": "社群",
       "event": "活動"
-    }
+    },
+    "linkWeb": "網站",
+    "linkPhone": "致電"
   },
   "announce": {
     "today": "今日",
@@ -173,11 +179,15 @@
       "title": "您在「Barvikha Lounge {name}」附近——是否打开该门店的菜单？",
       "openMenu": "打开菜单",
       "stayHere": "留在此处"
-    }
+    },
+    "hours": "營業時間",
+    "wifiFree": "免費Wi-Fi",
+    "contactsTitle": "聯絡方式"
   },
   "search": {
     "noResults": "未找到匹配項",
-    "placeholder": "搜尋菜品、飲品、水煙…"
+    "placeholder": "搜尋菜品、飲品、水煙…",
+    "clear": "清除"
   },
   "toast": {
     "addedToCart": "已加入我的餐桌"
@@ -187,5 +197,19 @@
     "en": "EN",
     "zh": "繁",
     "switch": "切換語言"
+  },
+  "errors": {
+    "notFoundTitle": "页面未找到",
+    "notFoundBody": "该門店或菜單分類不存在。請檢查鏈接或返回首頁。",
+    "wentWrongTitle": "出了点问题",
+    "wentWrongBody": "頁面加載失敗，請重試——通常是暫時性故障。",
+    "tryAgain": "重試",
+    "home": "返回首頁"
+  },
+  "menuHub": {
+    "kitchenSubtitle": "特色料理",
+    "barSubtitle": "雞尾酒與飲品",
+    "hookahSubtitle": "優質煙草",
+    "hookahTitle": "水煙菜單"
   }
 }
