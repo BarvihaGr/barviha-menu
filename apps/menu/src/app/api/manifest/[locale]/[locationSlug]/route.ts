@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 import { getClient } from '@barviha/db';
+import { pickLocationName } from '@/lib/location-theme';
+import type { Locale } from '@/i18n/routing';
 
 /**
  * Манифест per-локация — раньше был один статический /manifest.json на
@@ -17,21 +20,17 @@ export async function GET(
   const { locale, locationSlug } = await params;
   const db = getClient();
   const location = await db.getLocationBySlug(locationSlug);
+  const tHome = await getTranslations({ locale, namespace: 'home' });
 
-  const name =
-    location && locale === 'en' && location.name_en
-      ? location.name_en
-      : location && locale === 'zh' && location.name_zh
-        ? location.name_zh
-        : (location?.name ?? 'Барвиха');
+  const name = location ? pickLocationName(location, locale as Locale) : 'Barvikha';
 
   const scope = `/${locale}/${locationSlug}`;
 
   return NextResponse.json(
     {
-      name: `Барвиха Лаунж — ${name}`,
-      short_name: `Меню ${name}`,
-      description: `Меню — Barvikha Lounge ${name}`,
+      name: `Barvikha Lounge — ${name}`,
+      short_name: `${tHome('menu')} ${name}`,
+      description: `${tHome('menu')} — Barvikha Lounge ${name}`,
       start_url: scope,
       scope,
       display: 'standalone',

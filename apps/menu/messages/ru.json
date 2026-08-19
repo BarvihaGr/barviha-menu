@@ -118,7 +118,22 @@
     "spotlight": "Афиша и акции",
     "afisha": "Афиша",
     "exploreMenu": "Открыть меню",
-    "viewAll": "Смотреть все"
+    "viewAll": "Смотреть все",
+    "stub": {
+      "afishaAlt": "Афиша — ночь в стиле Barvikha",
+      "afishaTitle": "Ночь в стиле Barvikha",
+      "afishaSubtitle": "Атмосфера роскоши, музыки и безупречного отдыха.",
+      "days": "ПТ · СБ",
+      "djAlt": "DJ Sander — live DJ-set",
+      "djEyebrow": "Live · DJ set",
+      "djTitle": "DJ Sander — Live DJ-set",
+      "djSubtitle": "Живой сет по выходным. Бронируйте стол заранее.",
+      "socialAlt": "Мы в социальных сетях",
+      "socialTitle": "Мы в социальных сетях",
+      "socialNote": "Актуальные события",
+      "socialSubtitle": "Афиша, акции и связь с нами — подписывайтесь.",
+      "vkLabel": "ВКонтакте"
+    }
   },
   "spotlight": {
     "more": "Подробнее",
@@ -152,7 +167,14 @@
     "twoGis": "2ГИС",
     "googleMaps": "Google Maps",
     "addressTBD": "Адрес уточняется",
-    "phoneTBD": "Телефон уточняется"
+    "phoneTBD": "Телефон уточняется",
+    "closedMessage": "Меню временно недоступно онлайн. Пожалуйста, обратитесь к нашему персоналу.",
+    "nearby": {
+      "eyebrow": "Вы рядом",
+      "title": "Вы находитесь рядом с «Барвиха Lounge {name}» — открыть меню локации?",
+      "openMenu": "Открыть меню",
+      "stayHere": "Остаться здесь"
+    }
   },
   "search": {
     "noResults": "Ничего не найдено",

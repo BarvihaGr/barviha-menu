@@ -7,15 +7,10 @@ import { MapPin, Phone, X, Navigation } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import type { Location } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
-import { getMetroColor } from '@/lib/location-theme';
+import type { Locale } from '@/i18n/routing';
+import { getMetroColor, pickLocationName, pickLocationCity } from '@/lib/location-theme';
 import { cn } from '@/lib/utils';
 import { DirectionsMenu } from './DirectionsMenu';
-
-function locName(l: Location, locale: string): string {
-  if (locale === 'en' && l.name_en) return l.name_en;
-  if (locale === 'zh' && l.name_zh) return l.name_zh;
-  return l.name;
-}
 
 interface Props {
   locationName: string;
@@ -55,7 +50,7 @@ export function LocationInfoModal({
 }: Props) {
   const [open, setOpen] = useState(false);
   const t = useTranslations('location');
-  const locale = useLocale();
+  const locale = useLocale() as Locale;
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -139,10 +134,12 @@ export function LocationInfoModal({
                       </div>
                       <div className="flex flex-col max-h-[160px] overflow-y-auto -mx-1 rounded-sm">
                         {[...locations]
-                          .sort((a, b) => locName(a, locale).localeCompare(locName(b, locale)))
+                          .sort((a, b) => pickLocationName(a, locale).localeCompare(pickLocationName(b, locale)))
                           .map((l) => {
                             const color = getMetroColor(l.slug);
                             const isCurrent = l.slug === currentSlug;
+                            const name = pickLocationName(l, locale);
+                            const city = pickLocationCity(l.city, locale);
                             return (
                               <Dialog.Close asChild key={l.id}>
                                 <Link
@@ -157,9 +154,9 @@ export function LocationInfoModal({
                                     className="inline-block h-2 w-2 rounded-full shrink-0"
                                     style={{ background: color, boxShadow: isCurrent ? `0 0 6px ${color}` : undefined }}
                                   />
-                                  <span className="flex-1 truncate">{locName(l, locale)}</span>
-                                  {l.city && l.city !== locName(l, locale) && (
-                                    <span className="text-[10px] text-muted shrink-0">{l.city}</span>
+                                  <span className="flex-1 truncate">{name}</span>
+                                  {city && city !== name && (
+                                    <span className="text-[10px] text-muted shrink-0">{city}</span>
                                   )}
                                 </Link>
                               </Dialog.Close>

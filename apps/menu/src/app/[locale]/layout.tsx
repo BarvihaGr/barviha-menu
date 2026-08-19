@@ -7,7 +7,11 @@ import { SplashScreen } from '@/components/SplashScreen';
 import '../globals.css';
 
 export const metadata: Metadata = {
-  title: 'Барвиха Лаунж — Меню',
+  // Бренд-вордмарк — всегда латиницей на любом языке (см. not-found.tsx,
+  // error.tsx — то же соглашение). Локализованный per-локация заголовок
+  // задаёт [locationSlug]/layout.tsx generateMetadata; этот — фолбэк для
+  // маршрутов без своих metadata (i18n-audit: раньше был жёстко на русском).
+  title: 'Barvikha Lounge — Menu',
   description: 'Premium digital menu — Barvikha Lounge',
   manifest: '/manifest.json',
   icons: {
@@ -22,7 +26,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Барвиха',
+    title: 'Barvikha',
   },
 };
 

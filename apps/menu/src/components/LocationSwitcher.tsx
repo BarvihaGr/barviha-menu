@@ -10,6 +10,7 @@ import type { Locale } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import {
   getMetroColor,
+  pickLocationName,
   LOCATION_GROUPS,
   buildLocationTree,
   findOpenLocationPath,
@@ -23,12 +24,6 @@ interface Props {
 
 /** Одна и та же строка текста — и для заголовков групп/стран, и для точек: чтобы всё выглядело одним шрифтом и цветом. */
 const ITEM_TEXT_CLASS = 'text-xs text-gold';
-
-function locName(l: Location, locale: Locale): string {
-  if (locale === 'en' && l.name_en) return l.name_en;
-  if (locale === 'zh' && l.name_zh) return l.name_zh;
-  return l.name;
-}
 
 type ResolvedNode = ResolvedLocationNode<Location>;
 
@@ -58,11 +53,11 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
     const bySlug = new Map(locations.map((l) => [l.slug, l]));
     const matches = (l: Location) =>
       !query ||
-      [l.name, l.name_en, l.name_zh, l.city]
+      [l.name, l.name_en, l.name_zh, l.name_hy, l.city]
         .filter(Boolean)
         .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query));
-    return buildLocationTree(LOCATION_GROUPS, bySlug, matches);
-  }, [locations, q]);
+    return buildLocationTree(LOCATION_GROUPS, bySlug, matches, locale);
+  }, [locations, q, locale]);
 
   // Пока идёт поиск — показываем все совпадения сразу, игнорируя свёрнутость.
   const isSearching = q.trim().length > 0;
@@ -81,7 +76,7 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
           style={{ background: currentAccent }}
         />
         <span className="max-w-[68px] sm:max-w-[180px] truncate">
-          {current ? locName(current, locale) : t('switch')}
+          {current ? pickLocationName(current, locale) : t('switch')}
         </span>
         <ChevronDown size={11} className={cn('transition opacity-80 shrink-0', open && 'rotate-180')} />
       </button>
@@ -262,7 +257,7 @@ function LocationLink({
         className="inline-block h-2.5 w-2.5 rounded-full shrink-0"
         style={{ background: a, boxShadow: `0 0 6px ${a}` }}
       />
-      <span className="truncate flex-1">{locName(l, locale)}</span>
+      <span className="truncate flex-1">{pickLocationName(l, locale)}</span>
     </Link>
   );
 }

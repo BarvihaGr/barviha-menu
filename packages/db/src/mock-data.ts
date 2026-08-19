@@ -95,6 +95,45 @@ const CITY_BY_SLUG: Record<string, string> = {
   taskent: 'Ташкент',
 };
 
+/**
+ * Переводы названий локаций (en/zh/hy) — по slug, отдельно от RAW_LOCATIONS,
+ * чтобы не раздувать сигнатуру LOC() шестым параметром на каждый вызов.
+ * Без этого переключатель локации/шапка/PWA-манифест на en/zh/hy всегда
+ * показывали русское название — единственный язык, для которого место
+ * реально существовало на площадке, был русский (security/i18n-audit).
+ */
+const NAME_TR: Record<string, { en: string; zh: string; hy: string }> = {
+  arka: { en: 'Arka', zh: '阿尔卡', hy: 'Արկա' },
+  'arka-network': { en: 'Arka Test 1', zh: '阿尔卡（测试1）', hy: 'Արկա թեստ 1' },
+  baumanskaia: { en: 'Baumanskaya', zh: '鲍曼站', hy: 'Բաումանսկայա' },
+  domodedovo: { en: 'Domodedovo', zh: '多莫杰多沃', hy: 'Դոմոդեդովո' },
+  erevan: { en: 'Yerevan', zh: '埃里温', hy: 'Երևան' },
+  kievskaia: { en: 'Kievskaya', zh: '基辅站', hy: 'Կիևսկայա' },
+  'kievskaia-network': { en: 'Kievskaya Test 1', zh: '基辅站（测试1）', hy: 'Կիևսկայա թեստ 1' },
+  kolomenskaia: { en: 'Kolomenskaya', zh: '科洛缅斯卡娅', hy: 'Կոլոմենսկայա' },
+  'krasnaia-ploshchad': { en: 'Red Square', zh: '红场', hy: 'Կարմիր հրապարակ' },
+  'barvixa-lounge-krylatskoe': { en: 'Krylatskoye', zh: '克雷拉茨科耶', hy: 'Կրիլատսկոե' },
+  likerka: { en: 'Likerka', zh: '利克尔卡', hy: 'Լիկյորկա' },
+  marino: { en: 'Maryino', zh: '马里因诺', hy: 'Մարիինո' },
+  maxackala: { en: 'Makhachkala', zh: '马哈奇卡拉', hy: 'Մախաչկալա' },
+  mendeleevskaia: { en: 'Mendeleevskaya', zh: '门捷列夫站', hy: 'Մենդելեևսկայա' },
+  mitino: { en: 'Mitino', zh: '米季诺', hy: 'Միտինո' },
+  'moskva-siti': { en: 'Moscow City', zh: '莫斯科城', hy: 'Մոսկվա Սիթի' },
+  nevskii: { en: 'Nevsky', zh: '涅瓦大街', hy: 'Նևսկի' },
+  'niznii-novgorod': { en: 'Nizhny Novgorod', zh: '下诺夫哥罗德', hy: 'Նիժնի Նովգորոդ' },
+  otradnoe: { en: 'Otradnoye', zh: '奥特拉德诺耶', hy: 'Օտրադնոե' },
+  paveletskaia: { en: 'Paveletskaya', zh: '帕韦列茨站', hy: 'Պավելեցկայա' },
+  penza: { en: 'Penza', zh: '奔萨', hy: 'Պենզա' },
+  ramenki: { en: 'Ramenki', zh: '拉缅基', hy: 'Ռամենկի' },
+  rublevka: { en: 'Rublevka', zh: '鲁布廖夫卡', hy: 'Ռուբլյովկա' },
+  'barvixa-lounge-saratov': { en: 'Saratov', zh: '萨拉托夫', hy: 'Սարատով' },
+  seligerskaia: { en: 'Seligerskaya', zh: '谢利格尔站', hy: 'Սելիգերսկայա' },
+  taskent: { en: 'Tashkent', zh: '塔什干', hy: 'Տաշքենդ' },
+  'tepliy-stan': { en: 'Tyoply Stan', zh: '焦普雷斯坦', hy: 'Տյոպլի Ստան' },
+  cska: { en: 'CSKA', zh: '中央陆军', hy: 'ԾՍԿԱ' },
+  'iugo-zapadnaia': { en: 'Yugo-Zapadnaya', zh: '尤戈扎帕德纳亚站', hy: 'Յուգո-Զապադնայա' },
+};
+
 const RAW_LOCATIONS: Location[] = [
   {
     // TODO: заменить на реальные address/phone для Арки.
@@ -155,6 +194,9 @@ const RAW_LOCATIONS: Location[] = [
 export const MOCK_LOCATIONS: Location[] = RAW_LOCATIONS.map((l) => ({
   ...l,
   city: CITY_BY_SLUG[l.slug] ?? 'Москва',
+  name_en: NAME_TR[l.slug]?.en,
+  name_zh: NAME_TR[l.slug]?.zh,
+  name_hy: NAME_TR[l.slug]?.hy,
 }));
 
 // Back-compat: код, который импортит MOCK_LOCATION, продолжит работать

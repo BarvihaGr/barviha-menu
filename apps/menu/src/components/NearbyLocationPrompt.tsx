@@ -5,7 +5,10 @@ import { useSearchParams } from 'next/navigation';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
+import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import type { Locale } from '@/i18n/routing';
+import { pickLocationName } from '@/lib/location-theme';
 
 const DISMISS_KEY = 'nearby-location-dismissed';
 /** Кэш последней позиции — localStorage (переживает закрытие вкладки/сессии,
@@ -43,6 +46,9 @@ const NEARBY_RADIUS_KM = 3;
 interface LocPoint {
   slug: string;
   name: string;
+  name_en?: string;
+  name_zh?: string;
+  name_hy?: string;
   latitude?: number | null;
   longitude?: number | null;
 }
@@ -68,6 +74,8 @@ function haversineKm(a: { lat: number; lon: number }, b: { lat: number; lon: num
  * читалось как осознанный вопрос, а не фоновое уведомление о cookies.
  */
 export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: string; locations: LocPoint[] }) {
+  const t = useTranslations('location.nearby');
+  const locale = useLocale() as Locale;
   const [nearest, setNearest] = useState<LocPoint | null>(null);
   // Временная диагностика вживую (?debugGeo=1) — на телефоне нет консоли
   // разработчика под рукой, а логику «почему не сработало» (кэш/denied/
@@ -244,9 +252,9 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
                   </span>
 
                   <div className="flex flex-col gap-1.5">
-                    <div className="text-[9px] uppercase tracking-[0.25em] text-muted">Вы рядом</div>
+                    <div className="text-[9px] uppercase tracking-[0.25em] text-muted">{t('eyebrow')}</div>
                     <Dialog.Title className="text-base leading-snug text-cream">
-                      Вы находитесь рядом с «Барвиха Lounge {nearest?.name}» — открыть меню локации?
+                      {t('title', { name: nearest ? pickLocationName(nearest, locale) : '' })}
                     </Dialog.Title>
                   </div>
 
@@ -257,7 +265,7 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
                         onClick={() => sessionStorage.setItem(DISMISS_KEY, '1')}
                         className="w-full rounded-sm bg-[#C9A876] py-3 text-xs font-medium uppercase tracking-[0.15em] text-[#2C0A00] transition hover:bg-[#D8BC90]"
                       >
-                        Открыть меню
+                        {t('openMenu')}
                       </Link>
                     </Dialog.Close>
                     <Dialog.Close asChild>
@@ -266,7 +274,7 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
                         onClick={dismiss}
                         className="w-full rounded-sm border border-[color:var(--border)] py-3 text-xs uppercase tracking-[0.15em] text-muted transition hover:text-cream"
                       >
-                        Остаться здесь
+                        {t('stayHere')}
                       </button>
                     </Dialog.Close>
                   </div>

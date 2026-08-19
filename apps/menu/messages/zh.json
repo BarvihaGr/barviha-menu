@@ -117,7 +117,22 @@
     "spotlight": "活動與優惠",
     "afisha": "活動預告",
     "exploreMenu": "瀏覽菜單",
-    "viewAll": "查看全部"
+    "viewAll": "查看全部",
+    "stub": {
+      "afishaAlt": "海报——巴尔维哈之夜",
+      "afishaTitle": "巴尔维哈之夜",
+      "afishaSubtitle": "奢华、音乐与完美休闲的氛围。",
+      "days": "周五·周六",
+      "djAlt": "DJ Sander——现场演出",
+      "djEyebrow": "现场 · DJ演出",
+      "djTitle": "DJ Sander——现场演出",
+      "djSubtitle": "周末现场演出，请提前预订餐桌。",
+      "socialAlt": "关注我们的社交媒体",
+      "socialTitle": "关注我们的社交媒体",
+      "socialNote": "最新动态",
+      "socialSubtitle": "活动、优惠与最新消息——欢迎关注。",
+      "vkLabel": "VK"
+    }
   },
   "spotlight": {
     "more": "了解更多",
@@ -151,7 +166,14 @@
     "twoGis": "2GIS",
     "googleMaps": "Google Maps",
     "addressTBD": "地址即將公佈",
-    "phoneTBD": "電話即將公佈"
+    "phoneTBD": "電話即將公佈",
+    "closedMessage": "菜單暫時無法在線查看，請聯繫我們的工作人員。",
+    "nearby": {
+      "eyebrow": "您在附近",
+      "title": "您在「Barvikha Lounge {name}」附近——是否打开该门店的菜单？",
+      "openMenu": "打开菜单",
+      "stayHere": "留在此处"
+    }
   },
   "search": {
     "noResults": "未找到匹配項",

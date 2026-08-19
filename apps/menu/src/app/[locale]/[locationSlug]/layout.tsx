@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { getClient } from '@barviha/db';
 import { LocationClosedScreen } from '@/components/LocationClosedScreen';
@@ -13,7 +13,8 @@ import { Toaster } from '@/components/Toaster';
 import { FloatingCartButton } from '@/components/FloatingCartButton';
 import { SwipeBack } from '@/components/SwipeBack';
 import { ScrollMemory } from '@/components/ScrollMemory';
-import { getLocationAccent } from '@/lib/location-theme';
+import { getLocationAccent, pickLocationName } from '@/lib/location-theme';
+import type { Locale } from '@/i18n/routing';
 import {
   isCoffeeDesign,
   isKievskaiaStyle,
@@ -38,20 +39,17 @@ export async function generateMetadata({
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) return {};
 
-  const name =
-    locale === 'en' && location.name_en
-      ? location.name_en
-      : locale === 'zh' && location.name_zh
-        ? location.name_zh
-        : location.name;
+  const name = pickLocationName(location, locale as Locale);
+  const tHome = await getTranslations({ locale, namespace: 'home' });
 
   return {
-    title: `Барвиха Лаунж — ${name}`,
+    // Бренд-вордмарк — латиницей на любом языке (см. [locale]/layout.tsx).
+    title: `Barvikha Lounge — ${name}`,
     manifest: `/api/manifest/${locale}/${locationSlug}`,
     appleWebApp: {
       capable: true,
       statusBarStyle: 'black-translucent',
-      title: `Меню ${name}`,
+      title: `${tHome('menu')} ${name}`,
     },
   };
 }
@@ -73,12 +71,7 @@ export default async function LocationLayout({
   ]);
   if (!location) notFound();
 
-  const locationName =
-    locale === 'en' && location.name_en
-      ? location.name_en
-      : locale === 'zh' && location.name_zh
-        ? location.name_zh
-        : location.name;
+  const locationName = pickLocationName(location, locale as Locale);
 
   // Локацию выключили в бэк-офисе (is_active: false) — показываем заглушку
   // вместо каталога/шапки/навигации, не 404 (ссылка живая, просто закрыта).

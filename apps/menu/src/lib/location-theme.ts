@@ -9,6 +9,54 @@
  * у локации всегда один и тот же акцент. Если у локации задан brand_color
  * в данных — он имеет приоритет.
  */
+import type { Locale } from '@/i18n/routing';
+
+/** Минимальная форма, которой достаточно для выбора названия — под неё
+ * структурно подходит и Location, и урезанные локальные типы (например
+ * NearbyLocationPrompt.LocPoint), без явного приведения на стороне вызова. */
+interface NamedLocation {
+  name: string;
+  name_en?: string | null;
+  name_zh?: string | null;
+  name_hy?: string | null;
+}
+
+/**
+ * Единственное место, которое решает, как называется локация на выбранном
+ * языке — раньше этот же ru/en/zh-тернарник был продублирован в 7 местах
+ * (LocationSwitcher, HamburgerMenu, LocationInfoModal, [locationSlug]/page.tsx,
+ * layout.tsx ×2, api/manifest/**), и ни в одном из них не было ветки `hy` —
+ * армянский всегда молча падал на русское название (i18n-audit).
+ */
+export function pickLocationName(l: NamedLocation, locale: Locale): string {
+  if (locale === 'en' && l.name_en) return l.name_en;
+  if (locale === 'zh' && l.name_zh) return l.name_zh;
+  if (locale === 'hy' && l.name_hy) return l.name_hy;
+  return l.name;
+}
+
+/** Переводы города — `Location.city` хранит один русский текст (не per-locale
+ * поле в схеме), поэтому переводим по словарю, как категории бара/подкатегории. */
+const CITY_TR: Record<string, { en: string; zh: string; hy: string }> = {
+  Москва: { en: 'Moscow', zh: '莫斯科', hy: 'Մոսկվա' },
+  Тула: { en: 'Tula', zh: '图拉', hy: 'Տուլա' },
+  Домодедово: { en: 'Domodedovo', zh: '多莫杰多沃', hy: 'Դոմոդեդովո' },
+  Ереван: { en: 'Yerevan', zh: '埃里温', hy: 'Երևան' },
+  Махачкала: { en: 'Makhachkala', zh: '马哈奇卡拉', hy: 'Մախաչկալա' },
+  'Санкт-Петербург': { en: 'Saint Petersburg', zh: '圣彼得堡', hy: 'Սանկտ Պետերբուրգ' },
+  'Нижний Новгород': { en: 'Nizhny Novgorod', zh: '下诺夫哥罗德', hy: 'Նիժնի Նովգորոդ' },
+  Пенза: { en: 'Penza', zh: '奔萨', hy: 'Պենզա' },
+  'Московская область': { en: 'Moscow Region', zh: '莫斯科州', hy: 'Մոսկվայի մարզ' },
+  Саратов: { en: 'Saratov', zh: '萨拉托夫', hy: 'Սարատով' },
+  Ташкент: { en: 'Tashkent', zh: '塔什干', hy: 'Տաշքենդ' },
+};
+
+export function pickLocationCity(city: string | null | undefined, locale: Locale): string | null | undefined {
+  if (!city || locale === 'ru') return city;
+  const tr = CITY_TR[city];
+  if (!tr) return city;
+  return locale === 'en' ? tr.en : locale === 'zh' ? tr.zh : locale === 'hy' ? tr.hy : city;
+}
 
 /** Курируемая палитра акцентов (на тон с брендом, достаточно различимы). */
 const ACCENTS: string[] = [
@@ -103,6 +151,9 @@ export function getMetroColor(slug: string): string {
 
 export interface LocationGroupDef {
   label: string;
+  label_en?: string;
+  label_zh?: string;
+  label_hy?: string;
   /** true — заголовок кликабельный (стрелочка, сворачивается);
    * false — группа из одной локации, рендерится сразу списком без заголовка. */
   collapsible: boolean;
@@ -110,6 +161,16 @@ export interface LocationGroupDef {
   slugs?: string[];
   /** Вложенная группа — дерево может уходить на любую глубину (страна → город → точки). */
   children?: LocationGroupDef[];
+}
+
+/** Локализованный заголовок группы/страны — `key` в ResolvedLocationNode
+ * остаётся на русском (используется только как ID для open/closed-состояния,
+ * не для показа), поэтому переключение языка не сбрасывает раскрытые ветки. */
+function pickGroupLabel(def: LocationGroupDef, locale: Locale): string {
+  if (locale === 'en' && def.label_en) return def.label_en;
+  if (locale === 'zh' && def.label_zh) return def.label_zh;
+  if (locale === 'hy' && def.label_hy) return def.label_hy;
+  return def.label;
 }
 
 /**
@@ -120,10 +181,16 @@ export interface LocationGroupDef {
 export const LOCATION_GROUPS: LocationGroupDef[] = [
   {
     label: 'Россия',
+    label_en: 'Russia',
+    label_zh: '俄罗斯',
+    label_hy: 'Ռուսաստան',
     collapsible: true,
     children: [
       {
         label: 'Москва',
+        label_en: 'Moscow',
+        label_zh: '莫斯科',
+        label_hy: 'Մոսկվա',
         collapsible: true,
         slugs: [
           'krasnaia-ploshchad',
@@ -144,18 +211,106 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
           'barvixa-lounge-krylatskoe',
         ],
       },
-      { label: 'Тула', collapsible: true, slugs: ['arka', 'likerka'] },
-      { label: 'Санкт-Петербург', collapsible: true, slugs: ['nevskii'] },
-      { label: 'Домодедово', collapsible: false, slugs: ['domodedovo'] },
-      { label: 'Рублёвка', collapsible: false, slugs: ['rublevka'] },
-      { label: 'Пенза', collapsible: false, slugs: ['penza'] },
-      { label: 'Нижний Новгород', collapsible: false, slugs: ['niznii-novgorod'] },
-      { label: 'Махачкала', collapsible: false, slugs: ['maxackala'] },
-      { label: 'Саратов', collapsible: false, slugs: ['barvixa-lounge-saratov'] },
+      {
+        label: 'Тула',
+        label_en: 'Tula',
+        label_zh: '图拉',
+        label_hy: 'Տուլա',
+        collapsible: true,
+        slugs: ['arka', 'likerka'],
+      },
+      {
+        label: 'Санкт-Петербург',
+        label_en: 'Saint Petersburg',
+        label_zh: '圣彼得堡',
+        label_hy: 'Սանկտ Պետերբուրգ',
+        collapsible: true,
+        slugs: ['nevskii'],
+      },
+      {
+        label: 'Домодедово',
+        label_en: 'Domodedovo',
+        label_zh: '多莫杰多沃',
+        label_hy: 'Դոմոդեդովո',
+        collapsible: false,
+        slugs: ['domodedovo'],
+      },
+      {
+        label: 'Рублёвка',
+        label_en: 'Rublevka',
+        label_zh: '鲁布廖夫卡',
+        label_hy: 'Ռուբլյովկա',
+        collapsible: false,
+        slugs: ['rublevka'],
+      },
+      {
+        label: 'Пенза',
+        label_en: 'Penza',
+        label_zh: '奔萨',
+        label_hy: 'Պենզա',
+        collapsible: false,
+        slugs: ['penza'],
+      },
+      {
+        label: 'Нижний Новгород',
+        label_en: 'Nizhny Novgorod',
+        label_zh: '下诺夫哥罗德',
+        label_hy: 'Նիժնի Նովգորոդ',
+        collapsible: false,
+        slugs: ['niznii-novgorod'],
+      },
+      {
+        label: 'Махачкала',
+        label_en: 'Makhachkala',
+        label_zh: '马哈奇卡拉',
+        label_hy: 'Մախաչկալա',
+        collapsible: false,
+        slugs: ['maxackala'],
+      },
+      {
+        label: 'Саратов',
+        label_en: 'Saratov',
+        label_zh: '萨拉托夫',
+        label_hy: 'Սարատով',
+        collapsible: false,
+        slugs: ['barvixa-lounge-saratov'],
+      },
     ],
   },
-  { label: 'Армения', collapsible: true, children: [{ label: 'Ереван', collapsible: false, slugs: ['erevan'] }] },
-  { label: 'Узбекистан', collapsible: true, children: [{ label: 'Ташкент', collapsible: false, slugs: ['taskent'] }] },
+  {
+    label: 'Армения',
+    label_en: 'Armenia',
+    label_zh: '亚美尼亚',
+    label_hy: 'Հայաստան',
+    collapsible: true,
+    children: [
+      {
+        label: 'Ереван',
+        label_en: 'Yerevan',
+        label_zh: '埃里温',
+        label_hy: 'Երևան',
+        collapsible: false,
+        slugs: ['erevan'],
+      },
+    ],
+  },
+  {
+    label: 'Узбекистан',
+    label_en: 'Uzbekistan',
+    label_zh: '乌兹别克斯坦',
+    label_hy: 'Ուզբեկստան',
+    collapsible: true,
+    children: [
+      {
+        label: 'Ташкент',
+        label_en: 'Tashkent',
+        label_zh: '塔什干',
+        label_hy: 'Տաշքենդ',
+        collapsible: false,
+        slugs: ['taskent'],
+      },
+    ],
+  },
 ];
 
 /** Отфильтрованное и разрешённое (slug → Location) дерево групп — то, что реально рендерится. */
@@ -169,23 +324,27 @@ export interface ResolvedLocationNode<L> {
 
 /**
  * Строит дерево для рендера: разворачивает slug'и в объекты локаций через `bySlug`,
- * фильтрует листья через `matches` (поиск) и убирает опустевшие ветки.
+ * фильтрует листья через `matches` (поиск), убирает опустевшие ветки и подставляет
+ * заголовок группы на нужном языке (`locale`) — ключ (`key`) всегда на русском,
+ * это только ID для open/closed-состояния, не показывается пользователю.
  */
 export function buildLocationTree<L>(
   defs: LocationGroupDef[],
   bySlug: Map<string, L>,
   matches: (l: L) => boolean,
+  locale: Locale,
   parentKey = '',
 ): ResolvedLocationNode<L>[] {
   const out: ResolvedLocationNode<L>[] = [];
   for (const def of defs) {
     const key = parentKey ? `${parentKey}>${def.label}` : def.label;
+    const label = pickGroupLabel(def, locale);
     if (def.slugs) {
       const locs = def.slugs.map((slug) => bySlug.get(slug)).filter((l): l is L => Boolean(l)).filter(matches);
-      if (locs.length > 0) out.push({ key, label: def.label, collapsible: def.collapsible, locs });
+      if (locs.length > 0) out.push({ key, label, collapsible: def.collapsible, locs });
     } else if (def.children) {
-      const children = buildLocationTree(def.children, bySlug, matches, key);
-      if (children.length > 0) out.push({ key, label: def.label, collapsible: def.collapsible, children });
+      const children = buildLocationTree(def.children, bySlug, matches, locale, key);
+      if (children.length > 0) out.push({ key, label, collapsible: def.collapsible, children });
     }
   }
   return out;

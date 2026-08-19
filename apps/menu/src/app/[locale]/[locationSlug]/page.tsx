@@ -14,7 +14,7 @@ import { AnnouncementBanner } from '@/components/AnnouncementBanner';
 import { CoffeeHome } from '@/components/coffee/CoffeeHome';
 import { CoffeeLuxHome } from '@/components/coffee/CoffeeLuxHome';
 import { isCoffeeDesign, coffeeHomeVariant } from '@/lib/coffee-design';
-import { getLocationAccent } from '@/lib/location-theme';
+import { getLocationAccent, pickLocationName, pickLocationCity } from '@/lib/location-theme';
 import { getBookingUrl } from '@/lib/booking';
 
 /** Порядок слотов слева-направо: Кальяны | Кухня | Бар. */
@@ -55,12 +55,8 @@ export default async function LocationHome({
   );
 
   const accent = getLocationAccent(location.slug, location.brand_color);
-  const locationName =
-    locale === 'en' && location.name_en
-      ? location.name_en
-      : locale === 'zh' && location.name_zh
-        ? location.name_zh
-        : location.name;
+  const locationName = pickLocationName(location, locale as Locale);
+  const locationCity = pickLocationCity(location.city, locale as Locale) ?? location.address;
 
   // Lux-дизайн «дорогой минимализм» (Ереван) — тёмный hero c бронью и меню.
   if (isCoffeeDesign(locationSlug) && coffeeHomeVariant(locationSlug) === 'lux') {
@@ -69,7 +65,7 @@ export default async function LocationHome({
       <CoffeeLuxHome
         locationSlug={location.slug}
         locationName={locationName}
-        locationCity={location.city ?? location.address}
+        locationCity={locationCity}
         menuHref={`/${location.slug}/kitchen`}
         menuLabel={tHome('menu')}
         locale={locale as Locale}
@@ -95,7 +91,7 @@ export default async function LocationHome({
       <CoffeeHome
         locationSlug={location.slug}
         locationName={locationName}
-        locationCity={location.city ?? location.address}
+        locationCity={locationCity}
         categories={homeCategories}
         categoryPhotos={categoryPhotos}
         locale={locale as Locale}
@@ -110,7 +106,7 @@ export default async function LocationHome({
         videoSrc={location.hero_video}
         poster={location.hero_video ? location.hero_video.replace(/hero\.mp4$/, 'poster.jpg') : null}
         locationName={locationName}
-        locationCity={location.city ?? location.address}
+        locationCity={locationCity}
         accent={accent}
       />
 
@@ -121,47 +117,47 @@ export default async function LocationHome({
         <StubCarousel
           items={[
             {
-              alt: 'Афиша — ночь в стиле Barvikha',
+              alt: tHome('stub.afishaAlt'),
               card: {
                 kind: 'afisha',
                 brand: 'BARVIKHA',
-                title: 'Ночь в стиле Barvikha',
-                subtitle: 'Атмосфера роскоши, музыки и безупречного отдыха.',
-                date: 'ПТ · СБ',
+                title: tHome('stub.afishaTitle'),
+                subtitle: tHome('stub.afishaSubtitle'),
+                date: tHome('stub.days'),
                 time: '22:00',
                 place: locationName,
               },
-              title: 'Ночь в стиле Barvikha',
-              subtitle: 'Атмосфера роскоши, музыки и безупречного отдыха.',
+              title: tHome('stub.afishaTitle'),
+              subtitle: tHome('stub.afishaSubtitle'),
               bookingUrl: getBookingUrl(locationSlug),
             },
             {
-              alt: 'DJ Sander — live DJ-set',
+              alt: tHome('stub.djAlt'),
               card: {
                 kind: 'dj',
                 brand: 'BARVIKHA',
-                eyebrow: 'Live · DJ set',
+                eyebrow: tHome('stub.djEyebrow'),
                 name: 'DJ Sander',
-                date: 'ПТ · СБ',
+                date: tHome('stub.days'),
                 time: '22:00',
               },
-              title: 'DJ Sander — Live DJ-set',
-              subtitle: 'Живой сет по выходным. Бронируйте стол заранее.',
+              title: tHome('stub.djTitle'),
+              subtitle: tHome('stub.djSubtitle'),
               bookingUrl: getBookingUrl(locationSlug),
             },
             {
-              alt: 'Мы в социальных сетях',
+              alt: tHome('stub.socialAlt'),
               card: {
                 kind: 'social',
                 brand: 'BARVIKHA',
-                title: 'Мы в социальных сетях',
-                note: 'Актуальные события',
+                title: tHome('stub.socialTitle'),
+                note: tHome('stub.socialNote'),
                 socials: ['VK'],
               },
-              title: 'Мы в социальных сетях',
-              subtitle: 'Афиша, акции и связь с нами — подписывайтесь.',
+              title: tHome('stub.socialTitle'),
+              subtitle: tHome('stub.socialSubtitle'),
               links: [
-                { label: 'ВКонтакте', href: 'https://vk.com/barvikha_group' },
+                { label: tHome('stub.vkLabel'), href: 'https://vk.com/barvikha_group' },
               ],
             },
           ]}

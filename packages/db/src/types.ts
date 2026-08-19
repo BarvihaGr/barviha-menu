@@ -22,6 +22,7 @@ export interface Location {
   name: string;
   name_en?: string;
   name_zh?: string;
+  name_hy?: string;
   city?: string | null;
   address: string | null;
   /** Контактный телефон локации в международном формате (+7…) */

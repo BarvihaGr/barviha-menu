@@ -11,6 +11,7 @@ import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
 import {
   getMetroColor,
+  pickLocationName,
   LOCATION_GROUPS,
   buildLocationTree,
   findOpenLocationPath,
@@ -25,12 +26,6 @@ const LANG_LABEL: Record<Locale, string> = {
   zh: '中',
   hy: 'ՀԱ',
 };
-
-function locName(l: Location, locale: Locale): string {
-  if (locale === 'en' && l.name_en) return l.name_en;
-  if (locale === 'zh' && l.name_zh) return l.name_zh;
-  return l.name;
-}
 
 interface Props {
   locationSlug: string;
@@ -86,11 +81,11 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
     const matches = (l: Location) =>
       !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug) &&
       (!query ||
-        [l.name, l.name_en, l.name_zh, l.city]
+        [l.name, l.name_en, l.name_zh, l.name_hy, l.city]
           .filter(Boolean)
           .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query)));
-    return buildLocationTree(LOCATION_GROUPS, bySlug, matches);
-  }, [locations, q]);
+    return buildLocationTree(LOCATION_GROUPS, bySlug, matches, locale);
+  }, [locations, q, locale]);
 
   // Пока идёт поиск — показываем все совпадения сразу, игнорируя свёрнутость
   // (пользователь ищет конкретное место, ему не нужно сначала разворачивать группу).
@@ -404,7 +399,7 @@ function LocationRow({
       style={{ borderLeftColor: active ? accent : 'transparent', paddingLeft: `${12 + depth * 12}px` }}
     >
       <span className="flex-1 truncate leading-tight">
-        {locName(l, locale)}
+        {pickLocationName(l, locale)}
       </span>
     </Link>
   );

@@ -118,7 +118,22 @@
     "spotlight": "What's on",
     "afisha": "What's on",
     "exploreMenu": "Open menu",
-    "viewAll": "View all"
+    "viewAll": "View all",
+    "stub": {
+      "afishaAlt": "Poster — Barvikha Night",
+      "afishaTitle": "Barvikha Night",
+      "afishaSubtitle": "An atmosphere of luxury, music and flawless leisure.",
+      "days": "FRI · SAT",
+      "djAlt": "DJ Sander — live DJ set",
+      "djEyebrow": "Live · DJ set",
+      "djTitle": "DJ Sander — Live DJ Set",
+      "djSubtitle": "Live set on weekends. Book your table in advance.",
+      "socialAlt": "Follow us on social media",
+      "socialTitle": "Follow us on social media",
+      "socialNote": "Latest updates",
+      "socialSubtitle": "Events, promotions and news — follow us.",
+      "vkLabel": "VK"
+    }
   },
   "spotlight": {
     "more": "Learn more",
@@ -152,7 +167,14 @@
     "twoGis": "2GIS",
     "googleMaps": "Google Maps",
     "addressTBD": "Address coming soon",
-    "phoneTBD": "Phone coming soon"
+    "phoneTBD": "Phone coming soon",
+    "closedMessage": "The menu is temporarily unavailable online. Please ask our staff for assistance.",
+    "nearby": {
+      "eyebrow": "You're nearby",
+      "title": "You're near «Barvikha Lounge {name}» — open this location's menu?",
+      "openMenu": "Open menu",
+      "stayHere": "Stay here"
+    }
   },
   "search": {
     "noResults": "Nothing found",
