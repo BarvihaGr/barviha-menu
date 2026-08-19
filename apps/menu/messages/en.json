@@ -183,7 +183,10 @@
     },
     "hours": "Opening hours",
     "wifiFree": "Free Wi-Fi",
-    "contactsTitle": "Contacts"
+    "contactsTitle": "Contacts",
+    "sectionLabel": "Location",
+    "paletteIvory": "Ivory",
+    "paletteArka": "Arka"
   },
   "search": {
     "noResults": "Nothing found",
@@ -197,7 +200,8 @@
     "ru": "RU",
     "en": "EN",
     "zh": "中",
-    "switch": "Switch language"
+    "switch": "Switch language",
+    "label": "Language"
   },
   "errors": {
     "notFoundTitle": "Page not found",

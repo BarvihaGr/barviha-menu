@@ -61,7 +61,8 @@
     "halal": "Հալալ",
     "healthy": "Առողջ սնունդ",
     "reset": "Զրոյացնել",
-    "close": "Պատրաստ է"
+    "close": "Պատրաստ է",
+    "emptyFilters": "Ընտրված ֆիլտրերին համապատասխան ուտեստներ չկան"
   },
   "sections": {
     "all": "Բոլորը",
@@ -182,7 +183,10 @@
     },
     "hours": "Աշխատանքային ժամեր",
     "wifiFree": "Անվճար Wi-Fi",
-    "contactsTitle": "Կոնտակտներ"
+    "contactsTitle": "Կոնտակտներ",
+    "sectionLabel": "Վայր",
+    "paletteIvory": "Փղոսկր",
+    "paletteArka": "Արկա"
   },
   "search": {
     "noResults": "Ոչինչ չի գտնվել",
@@ -197,7 +201,8 @@
     "en": "EN",
     "zh": "中",
     "hy": "ՀԱ",
-    "switch": "Փոխել լեզուն"
+    "switch": "Փոխել լեզուն",
+    "label": "Լեզու"
   },
   "errors": {
     "notFoundTitle": "Էջը չի գտնվել",

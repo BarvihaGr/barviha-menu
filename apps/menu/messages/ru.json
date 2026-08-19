@@ -183,7 +183,10 @@
     },
     "hours": "Время работы",
     "wifiFree": "Бесплатный Wi-Fi",
-    "contactsTitle": "Контакты"
+    "contactsTitle": "Контакты",
+    "sectionLabel": "Локация",
+    "paletteIvory": "Слоновая кость",
+    "paletteArka": "Арка"
   },
   "search": {
     "noResults": "Ничего не найдено",
@@ -197,7 +200,8 @@
     "ru": "RU",
     "en": "EN",
     "zh": "中",
-    "switch": "Сменить язык"
+    "switch": "Сменить язык",
+    "label": "Язык"
   },
   "errors": {
     "notFoundTitle": "Страница не найдена",

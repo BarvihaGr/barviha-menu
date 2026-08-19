@@ -66,6 +66,8 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
   const pathname = usePathname();
   const router = useRouter();
   const tLoc = useTranslations('location');
+  const tLang = useTranslations('lang');
+  const tNav = useTranslations('nav');
 
   const kievVariant = useKievTheme((s) => s.variant);
   const setKievVariant = useKievTheme((s) => s.setVariant);
@@ -139,7 +141,7 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
   return (
     <Dialog.Root open={open} onOpenChange={(v) => { setOpen(v); if (!v) setQ(''); }}>
       <Dialog.Trigger asChild>
-        <button type="button" aria-label="Меню" className={triggerCls}>
+        <button type="button" aria-label={tNav('menu')} className={triggerCls}>
           <Menu size={18} strokeWidth={1.8} />
         </button>
       </Dialog.Trigger>
@@ -195,7 +197,7 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
 
                   {/* ── Язык ── */}
                   <div className="px-5 pt-5 pb-4 shrink-0">
-                    <p className={D.label}>Язык</p>
+                    <p className={D.label}>{tLang('label')}</p>
                     <div className="flex gap-2 flex-wrap">
                       {routing.locales.map((l) => {
                         const active = l === locale;
@@ -222,7 +224,7 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
 
                   {/* ── Локация ── */}
                   <div className="flex flex-col min-h-0 flex-1 px-5 pt-4 pb-3">
-                    <p className={cn(D.label, 'shrink-0')}>Локация</p>
+                    <p className={cn(D.label, 'shrink-0')}>{tLoc('sectionLabel')}</p>
 
                     {/* Поиск */}
                     <div className={cn('flex items-center gap-2 rounded-xl border px-3 py-2 mb-3 shrink-0', D.search)}>

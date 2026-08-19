@@ -61,7 +61,8 @@
     "halal": "清真",
     "healthy": "健康餐",
     "reset": "重置",
-    "close": "完成"
+    "close": "完成",
+    "emptyFilters": "沒有符合所選篩選條件的菜品"
   },
   "sections": {
     "all": "全部",
@@ -182,7 +183,10 @@
     },
     "hours": "營業時間",
     "wifiFree": "免費Wi-Fi",
-    "contactsTitle": "聯絡方式"
+    "contactsTitle": "聯絡方式",
+    "sectionLabel": "門店",
+    "paletteIvory": "象牙白",
+    "paletteArka": "阿爾卡"
   },
   "search": {
     "noResults": "未找到匹配項",
@@ -196,7 +200,8 @@
     "ru": "RU",
     "en": "EN",
     "zh": "繁",
-    "switch": "切換語言"
+    "switch": "切換語言",
+    "label": "語言"
   },
   "errors": {
     "notFoundTitle": "页面未找到",
