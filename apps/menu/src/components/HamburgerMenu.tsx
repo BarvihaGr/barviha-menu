@@ -11,7 +11,7 @@ import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
 import {
   getMetroColor,
-  pickLocationName,
+  pickSwitcherName,
   LOCATION_GROUPS,
   buildLocationTree,
   findOpenLocationPath,
@@ -401,7 +401,7 @@ function LocationRow({
       style={{ borderLeftColor: active ? accent : 'transparent', paddingLeft: `${12 + depth * 12}px` }}
     >
       <span className="flex-1 truncate leading-tight">
-        {pickLocationName(l, locale)}
+        {pickSwitcherName(l, locale)}
       </span>
     </Link>
   );

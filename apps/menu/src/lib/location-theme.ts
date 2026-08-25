@@ -35,6 +35,24 @@ export function pickLocationName(l: NamedLocation, locale: Locale): string {
   return l.name;
 }
 
+/**
+ * Подпись локации именно в переключателе (бургер-меню / LocationSwitcher),
+ * когда она отличается от названия точки. Нужна там, где на город приходится
+ * одна точка и город показывается без раскрывашки: гость ищет «Санкт-Петербург»,
+ * а не «Невский», при этом на самой странице локации и в PWA имя остаётся
+ * прежним — поэтому подмена только здесь, а не в pickLocationName.
+ */
+const SWITCHER_NAME_BY_SLUG: Record<string, { ru: string; en: string; zh: string; hy: string }> = {
+  nevskii: { ru: 'Санкт-Петербург', en: 'Saint Petersburg', zh: '圣彼得堡', hy: 'Սանկտ Պետերբուրգ' },
+};
+
+/** Имя локации для строки переключателя: с учётом SWITCHER_NAME_BY_SLUG. */
+export function pickSwitcherName(l: NamedLocation & { slug: string }, locale: Locale): string {
+  const override = SWITCHER_NAME_BY_SLUG[l.slug];
+  if (override) return locale === 'ru' ? override.ru : override[locale];
+  return pickLocationName(l, locale);
+}
+
 /** Переводы города — `Location.city` хранит один русский текст (не per-locale
  * поле в схеме), поэтому переводим по словарю, как категории бара/подкатегории. */
 const CITY_TR: Record<string, { en: string; zh: string; hy: string }> = {
@@ -209,6 +227,9 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
           'tepliy-stan',
           'otradnoe',
           'barvixa-lounge-krylatskoe',
+          // Формально Московская область (см. CITY_BY_SLUG), но в переключателе
+          // живёт в списке Москвы — так её ищут гости.
+          'rublevka',
         ],
       },
       {
@@ -220,14 +241,6 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         slugs: ['domodedovo'],
       },
       {
-        label: 'Рублёвка',
-        label_en: 'Rublevka',
-        label_zh: '鲁布廖夫卡',
-        label_hy: 'Ռուբլյովկա',
-        collapsible: false,
-        slugs: ['rublevka'],
-      },
-      {
         label: 'Тула',
         label_en: 'Tula',
         label_zh: '图拉',
@@ -236,11 +249,14 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         slugs: ['arka', 'likerka'],
       },
       {
+        // Одна точка на город — заголовок-раскрывашка не нужен, строка сразу
+        // ведёт на /nevskii и подписана «Санкт-Петербург»
+        // (см. SWITCHER_NAME_BY_SLUG).
         label: 'Санкт-Петербург',
         label_en: 'Saint Petersburg',
         label_zh: '圣彼得堡',
         label_hy: 'Սանկտ Պետերբուրգ',
-        collapsible: true,
+        collapsible: false,
         slugs: ['nevskii'],
       },
       {

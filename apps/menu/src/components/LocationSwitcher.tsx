@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import {
   getMetroColor,
   pickLocationName,
+  pickSwitcherName,
   LOCATION_GROUPS,
   buildLocationTree,
   findOpenLocationPath,
@@ -257,7 +258,7 @@ function LocationLink({
         className="inline-block h-2.5 w-2.5 rounded-full shrink-0"
         style={{ background: a, boxShadow: `0 0 6px ${a}` }}
       />
-      <span className="truncate flex-1">{pickLocationName(l, locale)}</span>
+      <span className="truncate flex-1">{pickSwitcherName(l, locale)}</span>
     </Link>
   );
 }
