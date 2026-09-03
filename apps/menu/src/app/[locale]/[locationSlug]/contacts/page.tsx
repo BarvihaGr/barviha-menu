@@ -3,6 +3,8 @@ import { setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import { CoffeeLuxContacts } from '@/components/coffee/CoffeeLuxContacts';
 import { isCoffeeDesign, coffeeHomeVariant } from '@/lib/coffee-design';
+import { pickLocationAddress, pickLocationHours } from '@/lib/i18n-helpers';
+import type { Locale } from '@/i18n/routing';
 
 export default async function ContactsPage({
   params,
@@ -22,8 +24,9 @@ export default async function ContactsPage({
 
   // Плейсхолдеры, пока в бэк-офисе не заполнены реальные данные локации.
   const phone = location.phone ?? '+7 (999) 796-91-11';
-  const address = location.address ?? 'Москва, площадь Киевского Вокзала, 2';
-  const hours = location.hours ?? 'Пн–Вс 12:00 – 01:00';
+  const address =
+    pickLocationAddress(location.address, locale as Locale) ?? 'Москва, площадь Киевского Вокзала, 2';
+  const hours = pickLocationHours(location.hours ?? 'Пн–Вс 12:00 – 01:00', locale as Locale)!;
 
   return (
     <CoffeeLuxContacts

@@ -23,6 +23,7 @@ import {
   coffeeHomeVariant,
 } from '@/lib/coffee-design';
 import { cn } from '@/lib/utils';
+import { pickLocationAddress } from '@/lib/i18n-helpers';
 
 /**
  * Заголовок/манифест/подпись под иконкой — per-локация, а не общие на весь
@@ -105,7 +106,7 @@ export default async function LocationLayout({
         <FloatingCartButton
           locationSlug={location.slug}
           locationName={locationName}
-          address={location.address}
+          address={pickLocationAddress(location.address, locale as Locale)}
           phone={location.phone ?? null}
           latitude={location.latitude}
           longitude={location.longitude}

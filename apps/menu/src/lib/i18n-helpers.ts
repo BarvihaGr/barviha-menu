@@ -127,7 +127,220 @@ const SUB_LABEL_TR: Record<string, { en: string; zh: string; hy: string }> = {
   beer: { en: 'Beer & Cider', zh: '啤酒與蘋果酒', hy: 'Գարեջուր և սիդր' },
   hookah: { en: 'Hookah Menu', zh: '水煙菜單', hy: 'Կալյանի քարտ' },
   'summer-menu': { en: 'Summer Menu', zh: '夏季菜單', hy: 'Ամառային մենյու' },
+  // Были без перевода — подпись раздела оставалась русской на всех языках.
+  raw: { en: 'Raw', zh: '生食', hy: 'Raw' },
+  'bread-sauces': { en: 'Bread', zh: '麵包', hy: 'Հաց' },
+  shashlik: { en: 'Shashlik', zh: '烤肉串', hy: 'Խորոված' },
+  // Кальяны: подсекция приходит из контента прямо русским словом, а не
+  // slug-ом (packages/db/content/<slug>/hookah.json, поле sub), поэтому и
+  // ключ здесь — само слово.
+  АКЦИИ: { en: 'Specials', zh: '特惠', hy: 'Ակցիաներ' },
+  Акции: { en: 'Specials', zh: '特惠', hy: 'Ակցիաներ' },
+  Акция: { en: 'Special Offer', zh: '特惠', hy: 'Ակցիա' },
 };
+
+/**
+ * Адреса заведений. В контенте (packages/db/content/<slug>/location.json,
+ * редактируется из бэк-офиса) они лежат только по-русски и раньше так и
+ * показывались на всех языках — китайскому или армянскому гостю кириллица
+ * бесполезна. Ключ — сам русский адрес, а не slug: если адрес поменяют в
+ * бэк-офисе, перевод просто не найдётся и покажется русский оригинал, а не
+ * устаревшая улица. Улицы даём латиницей (как в загранпаспорте и картах),
+ * города — на языке страницы.
+ */
+const ADDRESS_TR: Record<string, { en: string; zh: string; hy: string }> = {
+  'г. Москва, ул. Киевская, 2': {
+    en: 'Moscow, Kievskaya St., 2',
+    zh: '莫斯科, Kievskaya St., 2',
+    hy: 'Մոսկվա, Kievskaya St., 2',
+  },
+  'Москва, улица Киевская, 2': {
+    en: 'Moscow, Kievskaya St., 2',
+    zh: '莫斯科, Kievskaya St., 2',
+    hy: 'Մոսկվա, Kievskaya St., 2',
+  },
+  'г. Тула Советская, д. 54Б': {
+    en: 'Tula, Sovetskaya St., 54B',
+    zh: '图拉, Sovetskaya St., 54B',
+    hy: 'Տուլա, Sovetskaya St., 54B',
+  },
+  'Осенний бульвар, д. 7, корп. 1': {
+    en: 'Moscow, Osenniy Blvd., 7, bldg. 1',
+    zh: '莫斯科, Osenniy Blvd., 7, bldg. 1',
+    hy: 'Մոսկվա, Osenniy Blvd., 7, bldg. 1',
+  },
+  'Саратов, улица Большая Горная, 203': {
+    en: 'Saratov, Bolshaya Gornaya St., 203',
+    zh: '萨拉托夫, Bolshaya Gornaya St., 203',
+    hy: 'Սարատով, Bolshaya Gornaya St., 203',
+  },
+  'Нижняя красносельская, 35 стр. 59': {
+    en: 'Moscow, Nizhnyaya Krasnoselskaya St., 35 bldg. 59',
+    zh: '莫斯科, Nizhnyaya Krasnoselskaya St., 35 bldg. 59',
+    hy: 'Մոսկվա, Nizhnyaya Krasnoselskaya St., 35 bldg. 59',
+  },
+  'Москва, улица Полины Осипенко, 14А': {
+    en: 'Moscow, Poliny Osipenko St., 14A',
+    zh: '莫斯科, Poliny Osipenko St., 14A',
+    hy: 'Մոսկվա, Poliny Osipenko St., 14A',
+  },
+  'Комсомольская ул. 1А, стр 1.': {
+    en: 'Domodedovo, Komsomolskaya St., 1A bldg. 1',
+    zh: '多莫杰多沃, Komsomolskaya St., 1A bldg. 1',
+    hy: 'Դոմոդեդովո, Komsomolskaya St., 1A bldg. 1',
+  },
+  'Ереван ул Арама, 76': {
+    en: 'Yerevan, Aram St., 76',
+    zh: '埃里温, Aram St., 76',
+    hy: 'Երևան, Արամի փող., 76',
+  },
+  'Москва, Ленинский проспект, 146': {
+    en: 'Moscow, Leninsky Ave., 146',
+    zh: '莫斯科, Leninsky Ave., 146',
+    hy: 'Մոսկվա, Leninsky Ave., 146',
+  },
+  'Москва, проспект Андропова, 22': {
+    en: 'Moscow, Andropova Ave., 22',
+    zh: '莫斯科, Andropova Ave., 22',
+    hy: 'Մոսկվա, Andropova Ave., 22',
+  },
+  'Ветошный переулок, 13': {
+    en: 'Moscow, Vetoshny Lane, 13',
+    zh: '莫斯科, Vetoshny Lane, 13',
+    hy: 'Մոսկվա, Vetoshny Lane, 13',
+  },
+  'Тула, Проспект Ленина, 85к1': {
+    en: 'Tula, Lenina Ave., 85 bldg. 1',
+    zh: '图拉, Lenina Ave., 85 bldg. 1',
+    hy: 'Տուլա, Lenina Ave., 85 bldg. 1',
+  },
+  'Москва, улица Люблинская, 92к2': {
+    en: 'Moscow, Lyublinskaya St., 92 bldg. 2',
+    zh: '莫斯科, Lyublinskaya St., 92 bldg. 2',
+    hy: 'Մոսկվա, Lyublinskaya St., 92 bldg. 2',
+  },
+  'Махачкала, улица Ирчи Казака, 20': {
+    en: 'Makhachkala, Irchi Kazaka St., 20',
+    zh: '马哈奇卡拉, Irchi Kazaka St., 20',
+    hy: 'Մախաչկալա, Irchi Kazaka St., 20',
+  },
+  'Москва, Тихвинская 2': {
+    en: 'Moscow, Tikhvinskaya St., 2',
+    zh: '莫斯科, Tikhvinskaya St., 2',
+    hy: 'Մոսկվա, Tikhvinskaya St., 2',
+  },
+  'Москва, Пятницкое шоссе, 3': {
+    en: 'Moscow, Pyatnitskoye Hwy., 3',
+    zh: '莫斯科, Pyatnitskoye Hwy., 3',
+    hy: 'Մոսկվա, Pyatnitskoye Hwy., 3',
+  },
+  'Москва, Пресненская набережная, 4 с. 1': {
+    en: 'Moscow, Presnenskaya Emb., 4 bldg. 1',
+    zh: '莫斯科, Presnenskaya Emb., 4 bldg. 1',
+    hy: 'Մոսկվա, Presnenskaya Emb., 4 bldg. 1',
+  },
+  'Санкт-Петербург, Невский проспект, 26': {
+    en: 'Saint Petersburg, Nevsky Ave., 26',
+    zh: '圣彼得堡, Nevsky Ave., 26',
+    hy: 'Սանկտ Պետերբուրգ, Nevsky Ave., 26',
+  },
+  'Нижний Новгород, улица Алексеевская, 10/16': {
+    en: 'Nizhny Novgorod, Alekseevskaya St., 10/16',
+    zh: '下诺夫哥罗德, Alekseevskaya St., 10/16',
+    hy: 'Նիժնի Նովգորոդ, Alekseevskaya St., 10/16',
+  },
+  'Москва, Алтуфьевское шоссе, 24к1': {
+    en: 'Moscow, Altufyevskoye Hwy., 24 bldg. 1',
+    zh: '莫斯科, Altufyevskoye Hwy., 24 bldg. 1',
+    hy: 'Մոսկվա, Altufyevskoye Hwy., 24 bldg. 1',
+  },
+  'Москва, Дербеневская набережная, 7 с. 7': {
+    en: 'Moscow, Derbenevskaya Emb., 7 bldg. 7',
+    zh: '莫斯科, Derbenevskaya Emb., 7 bldg. 7',
+    hy: 'Մոսկվա, Derbenevskaya Emb., 7 bldg. 7',
+  },
+  'Пенза, улица Мира, 60': {
+    en: 'Penza, Mira St., 60',
+    zh: '奔萨, Mira St., 60',
+    hy: 'Պենզա, Mira St., 60',
+  },
+  'Москва, Мичуринский проспект, 9 к.5': {
+    en: 'Moscow, Michurinsky Ave., 9 bldg. 5',
+    zh: '莫斯科, Michurinsky Ave., 9 bldg. 5',
+    hy: 'Մոսկվա, Michurinsky Ave., 9 bldg. 5',
+  },
+  'Рублёво-Успенское шоссе, Борки, 19': {
+    en: 'Rublyovo-Uspenskoye Hwy., Borki, 19',
+    zh: 'Rublyovo-Uspenskoye Hwy., Borki, 19',
+    hy: 'Rublyovo-Uspenskoye Hwy., Borki, 19',
+  },
+  'Москва, Дмитровское шоссе, 85': {
+    en: 'Moscow, Dmitrovskoye Hwy., 85',
+    zh: '莫斯科, Dmitrovskoye Hwy., 85',
+    hy: 'Մոսկվա, Dmitrovskoye Hwy., 85',
+  },
+  'г. Ташкент, Мирзо-Улугбекский район. Ул. Шахрисабз 31г': {
+    en: 'Tashkent, Mirzo-Ulugbek District, Shakhrisabz St., 31G',
+    zh: '塔什干, Mirzo-Ulugbek District, Shakhrisabz St., 31G',
+    hy: 'Տաշքենդ, Mirzo-Ulugbek District, Shakhrisabz St., 31G',
+  },
+  'Москва, Новоясеневский проспект, 1': {
+    en: 'Moscow, Novoyasenevsky Ave., 1',
+    zh: '莫斯科, Novoyasenevsky Ave., 1',
+    hy: 'Մոսկվա, Novoyasenevsky Ave., 1',
+  },
+};
+
+/** Адрес заведения на языке страницы (не нашли перевод — отдаём как есть). */
+export function pickLocationAddress(address: string | null, locale: Locale): string | null {
+  if (!address || locale === 'ru') return address;
+  return ADDRESS_TR[address.trim()]?.[locale] ?? address;
+}
+
+/**
+ * Часы работы. В контенте это свободная строка вида «Вс-Чт 12:00-03:00»,
+ * поэтому переводим не строку целиком, а сокращения дней недели внутри неё —
+ * цифры, тире и переносы остаются как есть.
+ */
+const WEEKDAY_TR: Record<string, { en: string; zh: string; hy: string }> = {
+  Пн: { en: 'Mon', zh: '週一', hy: 'Երկ' },
+  Вт: { en: 'Tue', zh: '週二', hy: 'Երք' },
+  Ср: { en: 'Wed', zh: '週三', hy: 'Չրք' },
+  Чт: { en: 'Thu', zh: '週四', hy: 'Հնգ' },
+  Пт: { en: 'Fri', zh: '週五', hy: 'Ուր' },
+  Сб: { en: 'Sat', zh: '週六', hy: 'Շբթ' },
+  Вс: { en: 'Sun', zh: '週日', hy: 'Կիր' },
+};
+
+/** Часы работы на языке страницы. */
+export function pickLocationHours(hours: string | null, locale: Locale): string | null {
+  if (!hours || locale === 'ru') return hours;
+  return hours.replace(/Пн|Вт|Ср|Чт|Пт|Сб|Вс/g, (day) => WEEKDAY_TR[day]?.[locale] ?? day);
+}
+
+/**
+ * Единицы объёма и веса в подписях позиций Бара («0.3л», «100мл», «50гр»,
+ * «150мл / 750мл», «4*50мл»). Они лежат в контенте одной строкой на русском
+ * и раньше так и показывались на всех языках. Переводим только сами единицы,
+ * числа и разделители остаются как есть.
+ */
+const UNIT_TR: Record<string, { en: string; zh: string; hy: string }> = {
+  мл: { en: 'ml', zh: '毫升', hy: 'մլ' },
+  л: { en: 'L', zh: '升', hy: 'լ' },
+  гр: { en: 'g', zh: '克', hy: 'գ' },
+  г: { en: 'g', zh: '克', hy: 'գ' },
+  кг: { en: 'kg', zh: '公斤', hy: 'կգ' },
+  шт: { en: 'pcs', zh: '件', hy: 'հատ' },
+};
+
+/** Подпись объёма/веса позиции Бара на языке страницы. */
+export function pickVolumeLabel(label: string | null, locale: Locale): string | null {
+  if (!label || locale === 'ru') return label;
+  return label.replace(/(мл|кг|гр|шт|л|г)\.?/g, (match, unit: string) => {
+    const tr = UNIT_TR[unit];
+    return tr ? tr[locale] : match;
+  });
+}
 
 /** Перевод названия подкатегории. `sub` — slug, `fallback` — русский subLabel. */
 export function pickSubLabel(sub: string, fallback: string, locale: Locale): string {

@@ -5,9 +5,9 @@ import { Plus } from 'lucide-react';
 import { memo, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { formatPrice, capitalizeRu } from '@/lib/utils';
+import { formatPrice, displayItemName } from '@/lib/utils';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { photoTransformCss } from '@/lib/photo-transform';
@@ -30,7 +30,8 @@ export const CoffeeItemCard = memo(function CoffeeItemCard({ item, name, locatio
   const t = useTranslations();
   const [bump, setBump] = useState(false);
 
-  const displayName = capitalizeRu(name);
+  const locale = useLocale();
+  const displayName = displayItemName(name, locale);
   const weightStr = item.weight != null ? `${item.weight} ${t('item.grams')}` : null;
 
   const addToCart = (e: React.MouseEvent) => {

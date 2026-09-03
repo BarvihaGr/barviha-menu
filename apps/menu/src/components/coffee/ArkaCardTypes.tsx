@@ -27,9 +27,9 @@ import { Link } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { photoTransformCss, type PhotoTransform } from '@/lib/photo-transform';
-import { capitalizeRu } from '@/lib/utils';
+import { displayItemName } from '@/lib/utils';
 import { trackAdd } from '@/lib/stats';
-import { pickItemName, pickItemDescription } from '@/lib/i18n-helpers';
+import { pickItemName, pickItemDescription, pickVolumeLabel } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/routing';
 
 function formatRub(n: number): string {
@@ -108,15 +108,16 @@ function AddButton({ variant, locationSlug }: { variant: ArkaMenuVariant; locati
 }
 
 /** Строка одной вариации: объём + цена, сама ссылка на карточку товара + «+». */
-function VariantRow({ variant, locationSlug }: { variant: ArkaMenuVariant; locationSlug: string }) {
+function VariantRow({ variant, locationSlug, locale }: { variant: ArkaMenuVariant; locationSlug: string; locale: Locale }) {
+  const label = pickVolumeLabel(variant.label, locale);
   return (
     <div className="flex items-center justify-between gap-2">
       <Link
         href={`/${locationSlug}/item/${variant.id}`}
         className="flex min-w-0 flex-1 items-baseline justify-between gap-2 focus:outline-none"
       >
-        {variant.label && (
-          <span className="text-[11px] text-[var(--cm-muted)]">{variant.label}</span>
+        {label && (
+          <span className="text-[11px] text-[var(--cm-muted)]">{label}</span>
         )}
         <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
           {formatRub(variant.price)} ₽
@@ -129,16 +130,17 @@ function VariantRow({ variant, locationSlug }: { variant: ArkaMenuVariant; locat
 
 /** Строка одной вариации в стиле Timeless: объём слева, цена + компактная
  * «+» справа — используется внутри ArkaTimelessRow (см. ниже). */
-function TimelessVariantLine({ variant, locationSlug }: { variant: ArkaMenuVariant; locationSlug: string }) {
+function TimelessVariantLine({ variant, locationSlug, locale }: { variant: ArkaMenuVariant; locationSlug: string; locale: Locale }) {
+  const label = pickVolumeLabel(variant.label, locale);
   return (
     <div className="flex items-center justify-between gap-3">
       <Link
         href={`/${locationSlug}/item/${variant.id}`}
         className="flex min-w-0 flex-1 items-baseline gap-3 focus:outline-none"
       >
-        {variant.label && (
+        {label && (
           <span className="shrink-0 text-[11px] text-[var(--cm-muted)]">
-            {variant.label}
+            {label}
           </span>
         )}
         <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatRub(variant.price)} ₽</span>
@@ -155,7 +157,7 @@ export function ArkaFullCard({ item, locationSlug, locale }: { item: ArkaMenuIte
   const variants = getItemVariants(item);
   const primary = variants[0]!;
   const photoSrc = item.photo ?? undefined;
-  const name = capitalizeRu(pickItemName(item, locale));
+  const name = displayItemName(pickItemName(item, locale), locale);
   const description = pickItemDescription(item, locale);
   return (
     <article className="flex min-w-0 flex-col">
@@ -178,7 +180,7 @@ export function ArkaFullCard({ item, locationSlug, locale }: { item: ArkaMenuIte
       </Link>
       <div className="mt-auto flex flex-col gap-1.5 pt-2.5">
         {variants.map((v) => (
-          <VariantRow key={v.id} variant={v} locationSlug={locationSlug} />
+          <VariantRow key={v.id} variant={v} locationSlug={locationSlug} locale={locale} />
         ))}
       </div>
     </article>
@@ -191,7 +193,7 @@ export function ArkaFullCard({ item, locationSlug, locale }: { item: ArkaMenuIte
 function ArkaTimelessRow({ item, locationSlug, locale }: { item: ArkaMenuItem; locationSlug: string; locale: Locale }) {
   const variants = getItemVariants(item);
   const primary = variants[0]!;
-  const name = capitalizeRu(pickItemName(item, locale));
+  const name = displayItemName(pickItemName(item, locale), locale);
   const description = pickItemDescription(item, locale);
   return (
     <div className="flex flex-col gap-3 border-b border-[var(--cm-border)] py-4">
@@ -205,7 +207,7 @@ function ArkaTimelessRow({ item, locationSlug, locale }: { item: ArkaMenuItem; l
       </Link>
       <div className="flex flex-col gap-1.5">
         {variants.map((v) => (
-          <TimelessVariantLine key={v.id} variant={v} locationSlug={locationSlug} />
+          <TimelessVariantLine key={v.id} variant={v} locationSlug={locationSlug} locale={locale} />
         ))}
       </div>
     </div>

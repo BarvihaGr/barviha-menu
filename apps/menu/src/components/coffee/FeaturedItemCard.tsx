@@ -5,13 +5,15 @@ import { Plus } from 'lucide-react';
 import { memo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { ResolvedMenuItem } from '@barviha/db';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { formatPrice, capitalizeRu } from '@/lib/utils';
+import { formatPrice, displayItemName } from '@/lib/utils';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { photoTransformCss } from '@/lib/photo-transform';
 import { trackAdd } from '@/lib/stats';
+import { pickItemDescription } from '@/lib/i18n-helpers';
+import type { Locale } from '@/i18n/routing';
 
 interface Props {
   item: ResolvedMenuItem;
@@ -53,7 +55,11 @@ export const FeaturedItemCard = memo(function FeaturedItemCard({ item, name, loc
     setIndex((i) => (i + 1) % photos.length);
   }
 
-  const displayName = capitalizeRu(name);
+  const locale = useLocale() as Locale;
+  const displayName = displayItemName(name, locale);
+  // item.description — всегда русское поле. Переводы кальянов и блюд лежат
+  // в description_en/zh/hy, их достаёт pickItemDescription.
+  const description = pickItemDescription(item, locale);
 
   const addToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -129,9 +135,9 @@ export const FeaturedItemCard = memo(function FeaturedItemCard({ item, name, loc
             <h3 className="text-[15px] sm:text-[16px] font-medium leading-[1.3] text-[var(--cm-text)]">
               {displayName}
             </h3>
-            {item.description && (
+            {description && (
               <p className="mt-1 max-w-xl text-[12.5px] sm:text-[13.5px] leading-snug text-[var(--cm-muted)]">
-                {item.description}
+                {description}
               </p>
             )}
             <span className="mt-2 block text-[15px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">

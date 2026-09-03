@@ -52,6 +52,14 @@ export function parseIngredient(raw: string): ParsedIngredient {
  *  - остальные слова — в нижний регистр;
  *  - заглавной становится первая буква строки и первая буква после . ! ?
  */
+export function displayItemName(name: string, locale: string): string {
+  // Регистр чиним только русским названиям: они лежат капсом («ГРЕЧЕСКИЙ»)
+  // или с заглавной каждое слово («Манго Маракуйя Кокос»). Переводы уже
+  // записаны как надо — «"Axe Porridge"», «Beef Burger», — и приведение их
+  // тем же правилом ломало заглавные внутри строки («"Axe porridge"»).
+  return locale === 'ru' ? capitalizeRu(name) : name;
+}
+
 export function capitalizeRu(s: string): string {
   if (!s) return s;
   const hasCyrillic = /[А-Яа-яЁё]/.test(s);
