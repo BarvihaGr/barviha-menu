@@ -9,7 +9,7 @@ import type { ResolvedMenuItem } from '@barviha/db';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { pickItemName } from '@/lib/i18n-helpers';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, capitalizeRu } from '@/lib/utils';
 import { useCart } from '@/store/cart';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
 
@@ -74,7 +74,7 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
             <ul className="flex flex-col gap-3">
               <AnimatePresence initial={false}>
                 {entries.map(({ entry, item }) => {
-                  const name = pickItemName(item, locale);
+                  const name = capitalizeRu(pickItemName(item, locale));
                   return (
                     <motion.li
                       key={entry.itemId}

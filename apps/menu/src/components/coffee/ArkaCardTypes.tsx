@@ -27,6 +27,7 @@ import { Link } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { useToast } from '@/store/toast';
 import { photoTransformCss, type PhotoTransform } from '@/lib/photo-transform';
+import { capitalizeRu } from '@/lib/utils';
 import { trackAdd } from '@/lib/stats';
 import { pickItemName, pickItemDescription } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/routing';
@@ -154,7 +155,7 @@ export function ArkaFullCard({ item, locationSlug, locale }: { item: ArkaMenuIte
   const variants = getItemVariants(item);
   const primary = variants[0]!;
   const photoSrc = item.photo ?? undefined;
-  const name = pickItemName(item, locale);
+  const name = capitalizeRu(pickItemName(item, locale));
   const description = pickItemDescription(item, locale);
   return (
     <article className="flex min-w-0 flex-col">
@@ -190,7 +191,7 @@ export function ArkaFullCard({ item, locationSlug, locale }: { item: ArkaMenuIte
 function ArkaTimelessRow({ item, locationSlug, locale }: { item: ArkaMenuItem; locationSlug: string; locale: Locale }) {
   const variants = getItemVariants(item);
   const primary = variants[0]!;
-  const name = pickItemName(item, locale);
+  const name = capitalizeRu(pickItemName(item, locale));
   const description = pickItemDescription(item, locale);
   return (
     <div className="flex flex-col gap-3 border-b border-[var(--cm-border)] py-4">

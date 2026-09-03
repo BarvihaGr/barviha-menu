@@ -37,11 +37,40 @@ export function parseIngredient(raw: string): ParsedIngredient {
   return { name: clean, amount: null };
 }
 
-/** Названия в данных капсом — приводим к человеческому виду (первая буква заглавная). */
+/**
+ * Единый регистр названий во всех разделах меню — «Греческий».
+ *
+ * Данные лежат в двух видах. Кухня и Кальяны — капсом целиком
+ * («ГРЕЧЕСКИЙ», «APEROL SPRITZ» в баре Киевской-эталона): такую строку
+ * просто опускаем и поднимаем первую букву — как было всегда. Бар — с
+ * заглавной каждое слово и нередко в два-три предложения («Манго Маракуйя
+ * Кокос», «Францесканер. Россия.», «Чили. П/сух. Карменер Селлар Селекшн.»):
+ * тут аккуратнее, иначе получается «францесканер. россия.». Правила для
+ * такой строки:
+ *  - слово целиком заглавными — это аббревиатура или бренд (XO, VSOP, США,
+ *    ЮАР): оставляем как есть, в нижнем регистре они читаются как опечатка;
+ *  - остальные слова — в нижний регистр;
+ *  - заглавной становится первая буква строки и первая буква после . ! ?
+ */
 export function capitalizeRu(s: string): string {
   if (!s) return s;
-  const lower = s.toLocaleLowerCase('ru');
-  return lower.charAt(0).toLocaleUpperCase('ru') + lower.slice(1);
+  const hasCyrillic = /[А-Яа-яЁё]/.test(s);
+  const isAllUpper = s === s.toLocaleUpperCase('ru');
+  if (!hasCyrillic || isAllUpper) {
+    const lower = s.toLocaleLowerCase('ru');
+    return lower.charAt(0).toLocaleUpperCase('ru') + lower.slice(1);
+  }
+  const lower = s.replace(/[A-Za-zА-Яа-яЁё]{2,}/g, (word) => {
+    // Латинское слово в русском названии — бренд или аббревиатура («Сок
+    // Rich», «Хеннесси XO»): оставляем как написано.
+    if (!/[А-Яа-яЁё]/.test(word)) return word;
+    // Кириллица капсом — тоже аббревиатура («США», «ЮАР»).
+    if (word === word.toLocaleUpperCase('ru')) return word;
+    return word.toLocaleLowerCase('ru');
+  });
+  return lower.replace(/(^|[.!?]\s+)([a-zа-яё])/g, (_, pre: string, ch: string) =>
+    pre + ch.toLocaleUpperCase('ru'),
+  );
 }
 
 export function parseIngredients(composition: string | null): ParsedIngredient[] {
