@@ -6,7 +6,7 @@ import {
   getBarSections,
   getCatalogItems,
   isContentStoreSlug,
-  usesArkaBarTemplate,
+  usesArkaBarLayout,
 } from '@barviha/db';
 import { PageShell } from '../PageShell';
 import { BarEditor } from '../BarEditor';
@@ -22,7 +22,7 @@ export default async function BarPage({ params }: { params: Promise<{ slug: stri
     <PageShell name={loc.name} slug={slug}>
       {!isContentStoreSlug(slug) ? (
         <NotOnboarded name={loc.name} />
-      ) : usesArkaBarTemplate(slug) ? (
+      ) : usesArkaBarLayout(slug) ? (
         <BarEditor
           slug={slug}
           sections={filterBarSections(getBarSections(slug), (it) => !it.is_archived)}

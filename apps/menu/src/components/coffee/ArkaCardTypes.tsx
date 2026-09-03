@@ -41,13 +41,11 @@ function formatRub(n: number): string {
  * пустого поля (фото ещё не подтверждено/не готово). */
 function PhotoPlaceholder({
   ratio,
-  label,
   src,
   position,
   transform,
 }: {
   ratio: 'square' | 'wide';
-  label: string;
   src?: string;
   position?: { x: number; y: number } | null;
   transform?: PhotoTransform;
@@ -73,9 +71,7 @@ function PhotoPlaceholder({
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="px-3 text-center text-[10px] uppercase tracking-[0.25em] text-[var(--cm-muted-dim)]">
-            {label}
-          </span>
+          <PhotoPendingLabel />
         </div>
       )}
       <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_0_1px_var(--cm-border)]" />
@@ -83,8 +79,18 @@ function PhotoPlaceholder({
   );
 }
 
+/** Подпись на месте ещё не залитого фото — на языке страницы. */
+function PhotoPendingLabel() {
+  const t = useTranslations('item');
+  return (
+    <span className="px-3 text-center text-[10px] uppercase tracking-[0.25em] text-[var(--cm-muted-dim)]">
+      {t('photoPending')}
+    </span>
+  );
+}
+
 /** Кнопка «+» — кладёт конкретную вариацию (свой id/цена) в корзину. */
-function AddButton({ variant, locationSlug }: { variant: ArkaMenuVariant; locationSlug: string }) {
+function AddButton({ variant, locationSlug, name }: { variant: ArkaMenuVariant; locationSlug: string; name: string }) {
   const add = useCart((s) => s.add);
   const push = useToast((s) => s.push);
   const t = useTranslations();
@@ -99,7 +105,7 @@ function AddButton({ variant, locationSlug }: { variant: ArkaMenuVariant; locati
         trackAdd(locationSlug, variant.id);
         push(t('toast.addedToCart'), 'success');
       }}
-      aria-label={`${t('item.addToCart')} ${variant.name}`}
+      aria-label={`${t('item.addToCart')} ${name}`}
       className="shrink-0 grid h-8 w-8 place-items-center rounded-full bg-[var(--cm-accent)] text-[var(--cm-text)] shadow-sm transition-all duration-200 active:scale-90 cursor-pointer"
     >
       <Plus className="h-4 w-4" strokeWidth={2.2} />
@@ -108,7 +114,7 @@ function AddButton({ variant, locationSlug }: { variant: ArkaMenuVariant; locati
 }
 
 /** Строка одной вариации: объём + цена, сама ссылка на карточку товара + «+». */
-function VariantRow({ variant, locationSlug, locale }: { variant: ArkaMenuVariant; locationSlug: string; locale: Locale }) {
+function VariantRow({ variant, locationSlug, locale, name }: { variant: ArkaMenuVariant; locationSlug: string; locale: Locale; name: string }) {
   const label = pickVolumeLabel(variant.label, locale);
   return (
     <div className="flex items-center justify-between gap-2">
@@ -123,14 +129,14 @@ function VariantRow({ variant, locationSlug, locale }: { variant: ArkaMenuVarian
           {formatRub(variant.price)} ₽
         </span>
       </Link>
-      <AddButton variant={variant} locationSlug={locationSlug} />
+      <AddButton variant={variant} locationSlug={locationSlug} name={name} />
     </div>
   );
 }
 
 /** Строка одной вариации в стиле Timeless: объём слева, цена + компактная
  * «+» справа — используется внутри ArkaTimelessRow (см. ниже). */
-function TimelessVariantLine({ variant, locationSlug, locale }: { variant: ArkaMenuVariant; locationSlug: string; locale: Locale }) {
+function TimelessVariantLine({ variant, locationSlug, locale, name }: { variant: ArkaMenuVariant; locationSlug: string; locale: Locale; name: string }) {
   const label = pickVolumeLabel(variant.label, locale);
   return (
     <div className="flex items-center justify-between gap-3">
@@ -145,7 +151,7 @@ function TimelessVariantLine({ variant, locationSlug, locale }: { variant: ArkaM
         )}
         <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatRub(variant.price)} ₽</span>
       </Link>
-      <AddButton variant={variant} locationSlug={locationSlug} />
+      <AddButton variant={variant} locationSlug={locationSlug} name={name} />
     </div>
   );
 }
@@ -164,7 +170,6 @@ export function ArkaFullCard({ item, locationSlug, locale }: { item: ArkaMenuIte
       <Link href={`/${locationSlug}/item/${primary.id}`} className="contents focus:outline-none">
         <PhotoPlaceholder
           ratio="square"
-          label="фото позиции"
           src={photoSrc}
           position={item.photo_position}
           transform={item.photo_transform}
@@ -180,7 +185,7 @@ export function ArkaFullCard({ item, locationSlug, locale }: { item: ArkaMenuIte
       </Link>
       <div className="mt-auto flex flex-col gap-1.5 pt-2.5">
         {variants.map((v) => (
-          <VariantRow key={v.id} variant={v} locationSlug={locationSlug} locale={locale} />
+          <VariantRow key={v.id} variant={v} locationSlug={locationSlug} locale={locale} name={name} />
         ))}
       </div>
     </article>
@@ -207,7 +212,7 @@ function ArkaTimelessRow({ item, locationSlug, locale }: { item: ArkaMenuItem; l
       </Link>
       <div className="flex flex-col gap-1.5">
         {variants.map((v) => (
-          <TimelessVariantLine key={v.id} variant={v} locationSlug={locationSlug} locale={locale} />
+          <TimelessVariantLine key={v.id} variant={v} locationSlug={locationSlug} locale={locale} name={name} />
         ))}
       </div>
     </div>

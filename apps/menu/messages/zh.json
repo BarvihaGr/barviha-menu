@@ -13,7 +13,8 @@
     "search": "搜尋菜單",
     "all": "全部",
     "loading": "載入中…",
-    "close": "關閉"
+    "close": "關閉",
+    "navigation": "導覽"
   },
   "nav": {
     "cart": "我的餐桌",
@@ -93,7 +94,8 @@
     "less": "收起",
     "viewPhoto": "查看照片",
     "closePhoto": "关闭",
-    "grams": "克"
+    "grams": "克",
+    "photoPending": "照片即将上线"
   },
   "cart": {
     "title": "我的餐桌",
@@ -216,5 +218,14 @@
     "barSubtitle": "雞尾酒與飲品",
     "hookahSubtitle": "優質煙草",
     "hookahTitle": "水煙菜單"
+  },
+  "staff": {
+    "callAtTable": "{who} — {table} 号桌",
+    "waiter": "已呼叫服务员",
+    "hookahMaster": "已呼叫水烟师"
+  },
+  "palette": {
+    "ivory": "象牙白",
+    "arka": "阿尔卡"
   }
 }

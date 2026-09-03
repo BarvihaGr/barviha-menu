@@ -41,9 +41,11 @@ interface Props {
   showPalettePicker?: boolean;
 }
 
+// label берётся из messages (palette.*) — раньше названия палитры Киевской
+// были захардкожены по-русски и такими и показывались на en/zh/hy.
 const PALETTE_OPTIONS = [
-  { id: 'ivory' as const, label: 'Слоновая кость', swatch: '#F2EAE0', swatchBorder: '#D4C4A8' },
-  { id: 'arka'  as const, label: 'Арка',           swatch: '#6B5242', swatchBorder: '#8C7464' },
+  { id: 'ivory' as const, i18nKey: 'ivory', swatch: '#F2EAE0', swatchBorder: '#D4C4A8' },
+  { id: 'arka'  as const, i18nKey: 'arka', swatch: '#6B5242', swatchBorder: '#8C7464' },
 ];
 
 export function HamburgerMenu({ locationSlug, locations, variant = 'dark', themeStyle, showPalettePicker }: Props) {
@@ -68,6 +70,7 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
   const tLoc = useTranslations('location');
   const tLang = useTranslations('lang');
   const tNav = useTranslations('nav');
+  const tCommon = useTranslations('common');
 
   const kievVariant = useKievTheme((s) => s.variant);
   const setKievVariant = useKievTheme((s) => s.setVariant);
@@ -181,11 +184,11 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
                 }}
               >
                 {/* Крестик — абсолютный, без отдельной полосы */}
-                <Dialog.Title className="sr-only">Навигация</Dialog.Title>
+                <Dialog.Title className="sr-only">{tCommon('navigation')}</Dialog.Title>
                 <Dialog.Close asChild>
                   <button
                     type="button"
-                    aria-label="Закрыть"
+                    aria-label={tCommon('close')}
                     className={cn('absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full transition cursor-pointer z-10', D.closeBtn)}
                   >
                     <X size={17} />

@@ -1,4 +1,4 @@
-import { getClient, usesArkaBarTemplate } from '@barviha/db';
+import { getClient, usesArkaBarLayout } from '@barviha/db';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import type { Locale } from '@/i18n/routing';
@@ -64,7 +64,7 @@ export default async function CategoryPage({
               locationSlug={locationSlug}
               locale={locale as Locale}
             />
-            {usesArkaBarTemplate(locationSlug) && category.slug === ARKA_TEST_CATEGORY ? (
+            {usesArkaBarLayout(locationSlug) && category.slug === ARKA_TEST_CATEGORY ? (
               <ArkaMenuSections
                 sections={loadArkaBarSections(locationSlug)}
                 groupPhotos={loadArkaBarGroupPhotos(locationSlug)}

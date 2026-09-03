@@ -36,7 +36,45 @@ function flattenBarItems(sections: ArkaMenuEntry[]): ArkaMenuItem[] {
 }
 
 export function getBarSections(slug: string): ArkaMenuEntry[] {
-  return readContentJson<BarFile>(`${slug}/bar.json`).sections;
+  const file = readContentJson<BarFile | unknown>(`${slug}/bar.json`);
+  return isBarSectionsFile(file) ? file.sections : [];
+}
+
+/**
+ * Бар этой локации лежит в формате шаблона «Арки» ({ sections, groupPhotos }),
+ * а не плоским списком позиций.
+ *
+ * Формат — единственный надёжный признак: список slug-ов (usesArkaBarTemplate)
+ * с ним расходится. Так и случилось с боевой Киевской: её bar.json перевели
+ * в формат «Арки», а по списку она осталась «обычной», и код читал объект как
+ * массив — главная, корзина и все карточки товара Киевской отдавали 500
+ * («X(...).map is not a function»).
+ */
+export function hasArkaBarSections(slug: string): boolean {
+  try {
+    return isBarSectionsFile(readContentJson<unknown>(`${slug}/bar.json`));
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Бар этой локации живёт по шаблону «Арки» — так решено списком slug-ов
+ * (usesArkaBarTemplate) либо так лежит сам контент (hasArkaBarSections).
+ * Именно эту функцию должны звать меню, бэк-офис и статистика: она не
+ * расходится с фактическим форматом файла.
+ */
+export function usesArkaBarLayout(slug: string): boolean {
+  return usesArkaBarTemplate(slug) || hasArkaBarSections(slug);
+}
+
+function isBarSectionsFile(file: unknown): file is BarFile {
+  return (
+    typeof file === 'object' &&
+    file !== null &&
+    !Array.isArray(file) &&
+    Array.isArray((file as BarFile).sections)
+  );
 }
 
 function normalizeGroupPhoto(v: string | PhotoEntry): PhotoEntry {
@@ -44,7 +82,8 @@ function normalizeGroupPhoto(v: string | PhotoEntry): PhotoEntry {
 }
 
 export function getBarGroupPhotos(slug: string): Record<string, PhotoEntry> {
-  const raw = readContentJson<BarFile>(`${slug}/bar.json`).groupPhotos;
+  const file = readContentJson<BarFile | unknown>(`${slug}/bar.json`);
+  const raw = (isBarSectionsFile(file) ? file.groupPhotos : undefined) ?? {};
   const out: Record<string, PhotoEntry> = {};
   for (const [category, v] of Object.entries(raw)) out[category] = normalizeGroupPhoto(v);
   return out;
@@ -322,8 +361,17 @@ function normalizePhotos(it: CatalogItem & LegacyPhotoFields): PhotoEntry[] {
 }
 
 export function getCatalogItems(slug: string, realm: CatalogRealm): CatalogItem[] {
-  const items = readContentJson<(CatalogItem & LegacyPhotoFields)[]>(`${slug}/${realm}.json`);
-  return items.map((it) => ({ ...it, photos: normalizePhotos(it) }));
+  const items = readContentJson<(CatalogItem & LegacyPhotoFields)[] | unknown>(
+    `${slug}/${realm}.json`,
+  );
+  // Файл может лежать в формате шаблона «Арки» ({ sections, ... }) — тогда это
+  // не плоский каталог, и позиции берутся через getBarSections. Раньше здесь
+  // был безусловный .map, и такой файл ронял всю страницу (см. hasArkaBarSections).
+  if (!Array.isArray(items)) return [];
+  return (items as (CatalogItem & LegacyPhotoFields)[]).map((it) => ({
+    ...it,
+    photos: normalizePhotos(it),
+  }));
 }
 
 export function updateCatalogItem(
@@ -504,7 +552,7 @@ function allFlagItems(slug: string): FlagListItem[] {
       is_archived: it.is_archived ?? false,
     }));
 
-  const bar: FlagListItem[] = usesArkaBarTemplate(slug)
+  const bar: FlagListItem[] = usesArkaBarLayout(slug)
     ? flattenBarItems(getBarSections(slug)).map((it) => ({
         id: it.id,
         realm: 'bar' as const,
@@ -536,7 +584,7 @@ export function setItemFlag(
   id: string,
   patch: { is_available?: boolean; is_archived?: boolean },
 ): void {
-  if (realm === 'bar' && usesArkaBarTemplate(slug)) {
+  if (realm === 'bar' && usesArkaBarLayout(slug)) {
     updateBarItem(slug, id, patch);
   } else {
     updateCatalogItem(slug, realm, id, patch);

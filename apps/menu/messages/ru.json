@@ -13,7 +13,8 @@
     "search": "Поиск по меню",
     "all": "Все",
     "loading": "Загрузка…",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "navigation": "Навигация"
   },
   "nav": {
     "cart": "Корзина",
@@ -93,7 +94,8 @@
     "less": "Свернуть",
     "viewPhoto": "Открыть фото",
     "closePhoto": "Закрыть",
-    "grams": "г"
+    "grams": "г",
+    "photoPending": "Фото скоро"
   },
   "cart": {
     "title": "Корзина",
@@ -216,5 +218,14 @@
     "barSubtitle": "Коктейли и напитки",
     "hookahSubtitle": "Премиальный табак",
     "hookahTitle": "Кальянная карта"
+  },
+  "staff": {
+    "callAtTable": "Вызов {who} — стол №{table}",
+    "waiter": "официанта",
+    "hookahMaster": "кальянщика"
+  },
+  "palette": {
+    "ivory": "Слоновая кость",
+    "arka": "Арка"
   }
 }

@@ -154,6 +154,11 @@ const ADDRESS_TR: Record<string, { en: string; zh: string; hy: string }> = {
     zh: '莫斯科, Kievskaya St., 2',
     hy: 'Մոսկվա, Kievskaya St., 2',
   },
+  'Москва, площадь Киевского Вокзала, 2': {
+    en: 'Moscow, Kievskogo Vokzala Sq., 2',
+    zh: '莫斯科, Kievskogo Vokzala Sq., 2',
+    hy: 'Մոսկվա, Kievskogo Vokzala Sq., 2',
+  },
   'Москва, улица Киевская, 2': {
     en: 'Moscow, Kievskaya St., 2',
     zh: '莫斯科, Kievskaya St., 2',

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import type { Locale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { coffeeAccentStyle } from '@/lib/coffee-design';
@@ -48,10 +49,11 @@ export function CoffeeLuxHome({
   const searchParams = useSearchParams();
   const tableNum = searchParams.get('table');
   const push = useToast((s) => s.push);
+  const tStaff = useTranslations('staff');
 
   const callStaff = (role: 'waiter' | 'hookah') => {
-    const label = role === 'waiter' ? 'официанта' : 'кальянщика';
-    const msg = tableNum ? `Вызов ${label} — стол №${tableNum}` : `Вызов ${label}`;
+    const who = role === 'waiter' ? tStaff('waiter') : tStaff('hookahMaster');
+    const msg = tableNum ? tStaff('callAtTable', { who, table: tableNum }) : who;
     push(msg, 'success');
     // TODO: отправить в Telegram-бот: POST /api/call-staff { role, table: tableNum }
   };

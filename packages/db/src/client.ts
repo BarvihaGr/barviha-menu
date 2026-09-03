@@ -20,7 +20,8 @@ import {
   toResolvedCatalogItem,
 } from './arka-content';
 import type { CatalogRealm } from './arka-content';
-import { isContentStoreSlug, usesArkaBarTemplate } from './onboarding';
+import { isContentStoreSlug } from './onboarding';
+import { usesArkaBarLayout } from './arka-content';
 import type { GenItem, Realm } from './menu-types';
 import type {
   AfishaEvent,
@@ -162,7 +163,7 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
 }
 
 function contentStoreRealmHasAvailableItems(slug: string, rm: Realm): boolean {
-  if (rm === 'bar' && usesArkaBarTemplate(slug)) {
+  if (rm === 'bar' && usesArkaBarLayout(slug)) {
     return getBarSections(slug).some(
       (e) => e.kind === 'category' && e.items.some((i) => i.is_available && !i.is_archived),
     );
@@ -221,7 +222,7 @@ class MockBarvihaClient implements BarvihaClient {
       // У Арки/клонов Бар — своя вёрстка/резолвер (см. toResolvedBarItems в
       // apps/menu), сюда не подмешиваем, чтобы не плодить дубли по разным
       // id-схемам. У Киевской Бар — обычный CatalogItem, подмешиваем как есть.
-      const realms: CatalogRealm[] = usesArkaBarTemplate(loc.slug)
+      const realms: CatalogRealm[] = usesArkaBarLayout(loc.slug)
         ? ['kitchen', 'hookah']
         : ['kitchen', 'hookah', 'bar'];
       return realms
@@ -246,7 +247,7 @@ class MockBarvihaClient implements BarvihaClient {
 
   async getMenuItemById(itemId: string, locationSlug?: string): Promise<ResolvedMenuItem | null> {
     if (locationSlug && isContentStoreSlug(locationSlug)) {
-      const realms: CatalogRealm[] = usesArkaBarTemplate(locationSlug)
+      const realms: CatalogRealm[] = usesArkaBarLayout(locationSlug)
         ? ['kitchen', 'hookah']
         : ['kitchen', 'hookah', 'bar'];
       for (const realm of realms) {

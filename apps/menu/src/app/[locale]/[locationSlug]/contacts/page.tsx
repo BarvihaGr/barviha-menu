@@ -24,8 +24,12 @@ export default async function ContactsPage({
 
   // Плейсхолдеры, пока в бэк-офисе не заполнены реальные данные локации.
   const phone = location.phone ?? '+7 (999) 796-91-11';
-  const address =
-    pickLocationAddress(location.address, locale as Locale) ?? 'Москва, площадь Киевского Вокзала, 2';
+  // Плейсхолдер (локация без заполненного адреса) тоже прогоняем через
+  // переводчик, иначе на en/zh/hy он оставался кириллицей.
+  const address = pickLocationAddress(
+    location.address ?? 'Москва, площадь Киевского Вокзала, 2',
+    locale as Locale,
+  )!;
   const hours = pickLocationHours(location.hours ?? 'Пн–Вс 12:00 – 01:00', locale as Locale)!;
 
   return (

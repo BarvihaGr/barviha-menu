@@ -1,5 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
-import { getClient, usesArkaBarTemplate } from '@barviha/db';
+import { getClient, usesArkaBarLayout } from '@barviha/db';
 import { notFound } from 'next/navigation';
 import { CartView } from './CartView';
 import { CoffeeCart } from '@/components/coffee/CoffeeCart';
@@ -21,7 +21,7 @@ export default async function CartPage({
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) notFound();
   const dbItems = await db.getMenuItemsForLocation(location.id);
-  const items = usesArkaBarTemplate(locationSlug) ? [...dbItems, ...toResolvedArkaBarItems(locationSlug)] : dbItems;
+  const items = usesArkaBarLayout(locationSlug) ? [...dbItems, ...toResolvedArkaBarItems(locationSlug)] : dbItems;
 
   if (isCoffeeDesign(locationSlug)) {
     return <CoffeeCart allItems={items} locationSlug={locationSlug} />;

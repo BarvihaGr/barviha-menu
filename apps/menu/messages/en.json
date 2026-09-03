@@ -13,7 +13,8 @@
     "search": "Search the menu",
     "all": "All",
     "loading": "Loading…",
-    "close": "Close"
+    "close": "Close",
+    "navigation": "Navigation"
   },
   "nav": {
     "cart": "My table",
@@ -93,7 +94,8 @@
     "less": "Show less",
     "viewPhoto": "View photo",
     "closePhoto": "Close",
-    "grams": "g"
+    "grams": "g",
+    "photoPending": "Photo coming soon"
   },
   "cart": {
     "title": "My table",
@@ -216,5 +218,14 @@
     "barSubtitle": "Cocktails and drinks",
     "hookahSubtitle": "Premium tobacco",
     "hookahTitle": "Hookah menu"
+  },
+  "staff": {
+    "callAtTable": "{who} — table {table}",
+    "waiter": "Waiter called",
+    "hookahMaster": "Hookah master called"
+  },
+  "palette": {
+    "ivory": "Ivory",
+    "arka": "Arka"
   }
 }

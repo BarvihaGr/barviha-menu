@@ -4,7 +4,7 @@ import {
   getBarCategories,
   getCatalogCategories,
   isContentStoreSlug,
-  usesArkaBarTemplate,
+  usesArkaBarLayout,
 } from '@barviha/db';
 import type { CatalogRealm } from '@barviha/db';
 import { PageShell } from '../PageShell';
@@ -24,7 +24,7 @@ export default async function AddPage({ params }: { params: Promise<{ slug: stri
     );
   }
 
-  const isBarTemplate = usesArkaBarTemplate(slug);
+  const isBarTemplate = usesArkaBarLayout(slug);
   const realms: CatalogRealm[] = ['kitchen', 'hookah', 'bar'];
   const catalogCategories = Object.fromEntries(
     realms.map((r) => [r, r === 'bar' && isBarTemplate ? [] : getCatalogCategories(slug, r)]),

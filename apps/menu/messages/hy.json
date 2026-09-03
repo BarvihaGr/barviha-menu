@@ -13,7 +13,8 @@
     "search": "Որոնում մենյուում",
     "all": "Բոլորը",
     "loading": "Բեռնվում է…",
-    "close": "Փակել"
+    "close": "Փակել",
+    "navigation": "Նավիգացիա"
   },
   "nav": {
     "cart": "Իմ սեղանը",
@@ -93,7 +94,8 @@
     "less": "Թաքցնել",
     "viewPhoto": "Բացել լուսանկարը",
     "closePhoto": "Փակել",
-    "grams": "գ"
+    "grams": "գ",
+    "photoPending": "Լուսանկարը շուտով"
   },
   "cart": {
     "title": "Իմ սեղանը",
@@ -217,5 +219,14 @@
     "barSubtitle": "Կոկտեյլներ և ըմպելիքներ",
     "hookahSubtitle": "Պրեմիում ծխախոտ",
     "hookahTitle": "Կալյանի քարտ"
+  },
+  "staff": {
+    "callAtTable": "{who} — սեղան №{table}",
+    "waiter": "Մատուցողը կանչված է",
+    "hookahMaster": "Կալյանագործը կանչված է"
+  },
+  "palette": {
+    "ivory": "Փղոսկր",
+    "arka": "Արկա"
   }
 }

@@ -1,4 +1,4 @@
-import { getClient, usesArkaBarTemplate, recordView } from '@barviha/db';
+import { getClient, usesArkaBarLayout, recordView } from '@barviha/db';
 import { STATS_ENABLED } from '@/lib/stats';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -29,7 +29,7 @@ export default async function ItemDetailPage({
   // Позиции Бара (шаблон «Арка», см. arka-bar-loader) не заведены как
   // обычные ResolvedMenuItem в content-store — подставляем их напрямую по
   // id, не трогая обычный путь через getMenuItemById.
-  const arkaBarItem = usesArkaBarTemplate(locationSlug)
+  const arkaBarItem = usesArkaBarLayout(locationSlug)
     ? toResolvedArkaBarItems(locationSlug).find((i) => i.id === itemId)
     : undefined;
 

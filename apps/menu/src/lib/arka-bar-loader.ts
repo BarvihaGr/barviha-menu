@@ -4,7 +4,8 @@
 // 25 рабочих локаций-клонов (см. @barviha/db WORKING_SLUGS) — у каждой своя
 // независимая копия контента под тем же slug.
 import { getBarSections, getBarGroupPhotos, getItemVariants } from '@barviha/db';
-import type { ArkaMenuEntry, ArkaMenuItem, PhotoEntry, ResolvedMenuItem } from '@barviha/db';
+import type { ArkaMenuEntry, ArkaMenuItem, ArkaMenuVariant, PhotoEntry, ResolvedMenuItem } from '@barviha/db';
+import { pickVolumeLabel } from './i18n-helpers';
 
 /**
  * Позиции со снятым «актуально» (стоп-лист) и позиции в архиве не должны
@@ -53,6 +54,19 @@ function flattenItems(sections: ArkaMenuEntry[]): ArkaMenuItem[] {
  * правок схемы @barviha/db. Каждая вариация объёма — отдельная позиция в
  * корзине/на странице товара (см. getItemVariants).
  */
+/** Перевод названия варианта: «перевод · переведённый объём». */
+function withVolume(
+  translated: string | null | undefined,
+  baseName: string,
+  variant: ArkaMenuVariant,
+  locale: 'en' | 'zh' | 'hy',
+): string | undefined {
+  if (!translated) return undefined;
+  // Вариант без суффикса объёма (позиция с одной фасовкой) — имя как есть.
+  if (variant.name === baseName || !variant.label) return translated;
+  return `${translated} · ${pickVolumeLabel(variant.label, locale)}`;
+}
+
 export function toResolvedArkaBarItems(slug: string): ResolvedMenuItem[] {
   const sections = loadArkaBarSections(slug);
   return flattenItems(sections)
@@ -60,9 +74,13 @@ export function toResolvedArkaBarItems(slug: string): ResolvedMenuItem[] {
       getItemVariants(item).map((v) => ({
         id: v.id,
         name: v.name,
-        name_en: item.name_en ?? undefined,
-        name_zh: item.name_zh ?? undefined,
-        name_hy: item.name_hy ?? undefined,
+        // У многовариантных позиций (0.3л / 1л) имя варианта — «Название ·
+        // объём». Раньше переводы отдавали только название, поэтому в корзине
+        // и на карточке две фасовки на en/zh/hy выглядели одинаково, а объём
+        // пропадал. Дописываем к переводу переведённую же единицу.
+        name_en: withVolume(item.name_en, item.name, v, 'en'),
+        name_zh: withVolume(item.name_zh, item.name, v, 'zh'),
+        name_hy: withVolume(item.name_hy, item.name, v, 'hy'),
         description: v.description,
         description_en: item.description_en ?? undefined,
         description_zh: item.description_zh ?? undefined,

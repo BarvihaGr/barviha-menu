@@ -11,8 +11,14 @@ export default function RootNotFound() {
       <body style={{ margin: 0, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif', background: '#F5E6D3', color: '#2C0A00', textAlign: 'center', padding: 24 }}>
         <div>
           <p style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.2em', opacity: 0.5, marginBottom: 12 }}>Barvikha Lounge</p>
+          {/* Локали тут нет (путь без префикса, next-intl не отработал),
+              поэтому подписи двуязычные — иначе иностранный гость упирается
+              в русский текст без единой подсказки. */}
           <h1 style={{ fontSize: 22, fontWeight: 500, margin: '0 0 12px' }}>Страница не найдена</h1>
-          <Link href="/" style={{ color: '#2C0A00', textDecoration: 'underline' }}>На главную</Link>
+          <p style={{ fontSize: 15, margin: '0 0 16px', opacity: 0.7 }}>Page not found</p>
+          <Link href="/" style={{ color: '#2C0A00', textDecoration: 'underline' }}>
+            На главную · Home
+          </Link>
         </div>
       </body>
     </html>

@@ -13,7 +13,7 @@ import { readContentJson, writeContentJson } from './content-store';
 import { getCatalogItems, getBarSections } from './arka-content';
 import { getItemVariants } from './arka-shared';
 import type { ArkaMenuEntry } from './arka-shared';
-import { usesArkaBarTemplate } from './onboarding';
+import { usesArkaBarLayout } from './arka-content';
 
 export interface ItemStats {
   views: number;
@@ -82,7 +82,7 @@ export function getStatsSummary(slug: string): StatsRow[] {
     name: it.name,
     photo: it.photos[0]?.src ?? null,
   }));
-  const bar = usesArkaBarTemplate(slug)
+  const bar = usesArkaBarLayout(slug)
     ? flattenBarVariants(getBarSections(slug)).map((it) => ({ ...it, realm: 'bar' as const }))
     : getCatalogItems(slug, 'bar').map((it) => ({ id: it.id, realm: 'bar' as const, name: it.name, photo: it.photos[0]?.src ?? null }));
 
