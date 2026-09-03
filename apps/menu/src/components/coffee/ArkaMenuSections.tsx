@@ -39,7 +39,7 @@ function CategoryPhoto({ category, photo, locale }: { category: string; photo: P
           }}
         />
       </div>
-      <h2 className="mb-4 font-[family-name:var(--font-display)] text-[32px] font-semibold uppercase leading-none tracking-[0.02em] text-[var(--cm-accent)]">
+      <h2 className="mb-5 font-[family-name:var(--font-display)] text-[22px] font-light uppercase tracking-[0.08em] text-[var(--cm-text)]">
         {label}
       </h2>
     </>
@@ -68,7 +68,7 @@ function CategoryBlock({
       {groupPhoto ? (
         <CategoryPhoto category={category} photo={groupPhoto} locale={locale} />
       ) : (
-        <h2 className="mb-4 border-b border-[var(--cm-border)] pb-2 font-[family-name:var(--font-display)] text-[24px] font-semibold uppercase leading-none tracking-[0.04em] text-[var(--cm-accent)]">
+        <h2 className="mb-5 font-[family-name:var(--font-display)] text-[22px] font-light uppercase tracking-[0.08em] text-[var(--cm-text)]">
           {pickBarCategoryName(category, locale)}
         </h2>
       )}
@@ -105,7 +105,7 @@ export function ArkaMenuSections({
         if (entry.kind === 'header') {
           return (
             <div key={idx} className="pt-6 pb-2 first:pt-0">
-              <h2 className="font-[family-name:var(--font-display)] text-[32px] font-semibold uppercase leading-none tracking-[0.02em] text-[var(--cm-accent)]">
+              <h2 className="font-[family-name:var(--font-display)] text-[26px] font-light uppercase tracking-[0.08em] text-[var(--cm-text)]">
                 {pickBarCategoryName(entry.title, locale)}
               </h2>
             </div>

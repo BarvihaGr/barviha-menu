@@ -99,9 +99,9 @@ function AddButton({ variant, locationSlug }: { variant: ArkaMenuVariant; locati
         push(t('toast.addedToCart'), 'success');
       }}
       aria-label={`${t('item.addToCart')} ${variant.name}`}
-      className="shrink-0 grid h-7 w-7 place-items-center rounded-full bg-[var(--cm-accent)] text-white shadow-sm transition-all duration-200 active:scale-90 cursor-pointer"
+      className="shrink-0 grid h-8 w-8 place-items-center rounded-full bg-[var(--cm-accent)] text-[var(--cm-text)] shadow-sm transition-all duration-200 active:scale-90 cursor-pointer"
     >
-      <Plus className="h-3.5 w-3.5" strokeWidth={2.4} />
+      <Plus className="h-4 w-4" strokeWidth={2.2} />
     </button>
   );
 }
@@ -115,9 +115,9 @@ function VariantRow({ variant, locationSlug }: { variant: ArkaMenuVariant; locat
         className="flex min-w-0 flex-1 items-baseline justify-between gap-2 focus:outline-none"
       >
         {variant.label && (
-          <span className="text-[11px] text-[var(--cm-muted-dim)]">{variant.label}</span>
+          <span className="text-[11px] text-[var(--cm-muted)]">{variant.label}</span>
         )}
-        <span className="text-[13.5px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
+        <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
           {formatRub(variant.price)} ₽
         </span>
       </Link>
@@ -136,11 +136,11 @@ function TimelessVariantLine({ variant, locationSlug }: { variant: ArkaMenuVaria
         className="flex min-w-0 flex-1 items-baseline gap-3 focus:outline-none"
       >
         {variant.label && (
-          <span className="shrink-0 text-[12px] uppercase tracking-[0.08em] text-[var(--cm-muted-dim)]">
+          <span className="shrink-0 text-[11px] text-[var(--cm-muted)]">
             {variant.label}
           </span>
         )}
-        <span className="text-[15px] font-medium text-[var(--cm-text)]">{formatRub(variant.price)} ₽</span>
+        <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatRub(variant.price)} ₽</span>
       </Link>
       <AddButton variant={variant} locationSlug={locationSlug} />
     </div>
@@ -167,7 +167,7 @@ export function ArkaFullCard({ item, locationSlug, locale }: { item: ArkaMenuIte
           transform={item.photo_transform}
         />
         <div className="flex flex-1 flex-col pt-2.5">
-          <h3 className="break-words font-[family-name:var(--font-display)] text-[14px] font-semibold uppercase leading-[1.25] tracking-[0.02em] text-[var(--cm-text)]">
+          <h3 className="break-words text-[13.5px] font-medium leading-[1.3] text-[var(--cm-text)]">
             {name}
           </h3>
           {description && (
@@ -195,7 +195,7 @@ function ArkaTimelessRow({ item, locationSlug, locale }: { item: ArkaMenuItem; l
   return (
     <div className="flex flex-col gap-3 border-b border-[var(--cm-border)] py-4">
       <Link href={`/${locationSlug}/item/${primary.id}`} className="min-w-0 focus:outline-none">
-        <h4 className="break-words font-[family-name:var(--font-display)] text-[19px] font-medium uppercase leading-[1.2] tracking-[0.02em] text-[var(--cm-text)] sm:text-[21px]">
+        <h4 className="break-words text-[15px] font-medium leading-[1.3] text-[var(--cm-text)] sm:text-[16px]">
           {name}
         </h4>
         {description && (

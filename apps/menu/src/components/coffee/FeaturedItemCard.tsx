@@ -126,7 +126,7 @@ export const FeaturedItemCard = memo(function FeaturedItemCard({ item, name, loc
         {/* Инфо под фото */}
         <div className="flex items-end justify-between gap-4 pt-3">
           <div className="min-w-0">
-            <h3 className="font-[family-name:var(--font-display)] text-[18px] sm:text-[22px] font-light uppercase tracking-[0.05em] text-[var(--cm-text)]">
+            <h3 className="text-[15px] sm:text-[16px] font-medium leading-[1.3] text-[var(--cm-text)]">
               {displayName}
             </h3>
             {item.description && (
