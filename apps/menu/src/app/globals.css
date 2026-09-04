@@ -92,6 +92,15 @@ body:has(.coffee-theme)::after {
   display: none;
 }
 
+/* Затрудняем скачивание фото: без этого iOS/Android по долгому тапу на
+   <img> сразу предлагают «Сохранить изображение» ещё до JS-обработчиков. */
+img {
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-background-deep: var(--background-deep);
