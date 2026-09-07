@@ -533,6 +533,8 @@ export interface FlagListItem {
   price: number;
   is_available: boolean;
   is_archived: boolean;
+  /** Подкатегория для группировки в списке (Салаты / Холодные закуски / категория бара) — null, если не задана. */
+  group: string | null;
 }
 
 function barItemPrice(it: ArkaMenuItem): number {
@@ -550,18 +552,26 @@ function allFlagItems(slug: string): FlagListItem[] {
       price: it.price,
       is_available: it.is_available,
       is_archived: it.is_archived ?? false,
+      group: it.sub ? subLabel(realm, it.sub) || it.sub : null,
     }));
 
+  // Бар-шаблон: категория берётся из секции, в которой лежит позиция (у
+  // самой позиции поля категории нет) — поэтому не через flattenBarItems.
   const bar: FlagListItem[] = usesArkaBarLayout(slug)
-    ? flattenBarItems(getBarSections(slug)).map((it) => ({
-        id: it.id,
-        realm: 'bar' as const,
-        name: it.name,
-        photo: it.photo,
-        price: barItemPrice(it),
-        is_available: it.is_available,
-        is_archived: it.is_archived ?? false,
-      }))
+    ? getBarSections(slug).flatMap((e) =>
+        e.kind === 'category'
+          ? e.items.map((it) => ({
+              id: it.id,
+              realm: 'bar' as const,
+              name: it.name,
+              photo: it.photo,
+              price: barItemPrice(it),
+              is_available: it.is_available,
+              is_archived: it.is_archived ?? false,
+              group: e.category || null,
+            }))
+          : [],
+      )
     : fromCatalog('bar');
 
   return [...fromCatalog('kitchen'), ...fromCatalog('hookah'), ...bar];
