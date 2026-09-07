@@ -1,0 +1,651 @@
+{
+  "location": "paveletskaia",
+  "realm": "kitchen",
+  "note": "КБЖУ из «Кбжу новое лето 26 10.08.26.xlsx», описания/составы — лето 2026",
+  "items": {
+    "kitchen-cold-app-syrnaia-tarelka": {
+      "description": {
+        "description": "Четыре характерных сыра: сливочный бри, выдержанный пармезан, монтазио с трюфелем и пикантный джерси блю. К ним — мёд, грецкий орех, клубника, виноград и хрустящие гриссини. Идеальная компания к бокалу вина.",
+        "description_en": "Four distinctive cheeses: creamy Brie, aged Parmesan, truffle Montasio and piquant Jersey Blue. Served with honey, walnuts, strawberries, grapes and crispy grissini. The perfect companion to a glass of wine.",
+        "description_zh": "四款风味各异的奶酪：绵密的布里、陈年帕玛森、松露蒙塔西奥和浓郁的泽西蓝纹奶酪。搭配蜂蜜、核桃、草莓、葡萄和酥脆面包棒。佐酒的完美之选。",
+        "description_hy": "Չորս բնորոշ պանիր՝ սերուցքային բրի, հասունացած պարմեզան, տրյուֆելով մոնտազիո և կծու ջերսի բլու։ Մատուցվում է մեղրով, ընկույզով, ելակով, խաղողով և խրթխրթան գրիսինիով։ Կատարյալ ուղեկից մեկ բաժակ գինու համար։"
+      }
+    },
+    "kitchen-sides-kartofel-fri": {
+      "description": {
+        "description": "Золотистый картофель фри с хрустящей корочкой и мягкой серединой. Приправлен солью и чёрным перцем. Универсальный гарнир к бургерам, стейкам и закускам.",
+        "description_en": "Golden french fries with a crispy crust and a soft center. Seasoned with salt and black pepper. A versatile side for burgers, steaks and snacks.",
+        "description_zh": "金黄薯条，外脆内软。以盐和黑胡椒调味。搭配汉堡、牛排和小食的百搭配菜。",
+        "description_hy": "Ոսկեգույն կարտոֆիլ ֆրի՝ խրթխրթան կեղևով և փափուկ միջուկով։ Համեմված է աղով և սև պղպեղով։ Ունիվերսալ խավարտ բուրգերների, սթեյքերի և նախուտեստների համար։"
+      }
+    },
+    "kitchen-salads-teplyi-salat-s-miasom-bych-yzn9218": {
+      "kbju": {
+        "weight": 225,
+        "prot": 17.3,
+        "fat": 30.8,
+        "carb": 14.9,
+        "kcal": 408.5
+      }
+    },
+    "kitchen-salads-bolshoi-zelenyi-salat-zadu219": {
+      "kbju": {
+        "weight": 338,
+        "prot": 5.7,
+        "fat": 46.5,
+        "carb": 25.7,
+        "kcal": 521.1
+      }
+    },
+    "kitchen-salads-salat-s-tuncom-i-triufel-68da21c": {
+      "kbju": {
+        "weight": 227,
+        "prot": 22,
+        "fat": 28.2,
+        "carb": 13.3,
+        "kcal": 394.4
+      }
+    },
+    "kitchen-raw-tartar-iz-tunca-5vqm21d": {
+      "kbju": {
+        "weight": 115,
+        "prot": 18.7,
+        "fat": 17,
+        "carb": 2.2,
+        "kcal": 247.8
+      }
+    },
+    "kitchen-raw-tar-tar-iz-goviadiny-klas-uw5p21e": {
+      "kbju": {
+        "weight": 160,
+        "prot": 17.8,
+        "fat": 27.2,
+        "carb": 13.4,
+        "kcal": 379
+      }
+    },
+    "kitchen-cold-app-brusketta-s-lososem-tqj321f": {
+      "description": {
+        "description": "Хлеб санчос с вяленой клюквой, слабосолёный лосось собственного посола с апельсином и укропом, нежный крем-чиз и свежий огурец. Икра масаго и соус юдзу добавляют цитрусовую свежесть. Лёгкая и эффектная закуска.",
+        "description_en": "Sanchos bread with dried cranberries, house-cured salmon with orange and dill, delicate cream cheese and fresh cucumber. Masago caviar and yuzu sauce add a citrusy freshness. A light and elegant starter.",
+        "description_zh": "带蔓越莓干的桑乔斯面包，配自家腌制的橙香莳萝三文鱼、细腻奶油奶酪和新鲜黄瓜。飞鱼籽和柚子酱带来柑橘清新。轻盈而精致的开胃小食。",
+        "description_hy": "Չորացրած լոռամրգով սանչոս հաց, նարինջով և սամիթով թեթև աղած սեփական պատրաստման սաղմոն, նուրբ կրեմ-չիզ և թարմ վարունգ։ Մասագո խավիարն ու յուձու սոուսը հաղորդում են ցիտրուսային թարմություն։ Թեթև և տպավորիչ նախուտեստ։"
+      }
+    },
+    "kitchen-cold-app-miasnaia-tarelka-33d521i": {
+      "description": {
+        "description": "Ассорти деликатесов: вяленая брезаола, копчёная утиная грудка и ростбиф из говяжьей вырезки собственного приготовления. Дополнено гигантскими оливками, вялеными томатами и хрустящими гриссини. Отличный выбор к вину и для компании.",
+        "description_en": "An assortment of delicacies: cured bresaola, smoked duck breast and house-made roast beef from tenderloin. Complemented by giant olives, sun-dried tomatoes and crispy grissini. A great choice with wine and for sharing.",
+        "description_zh": "精选肉类拼盘：风干牛肉、烟熏鸭胸和自制牛里脊烤牛肉。配以特大橄榄、油浸番茄干和酥脆面包棒。佐酒与分享的绝佳之选。",
+        "description_hy": "Դելիկատեսների տեսականի՝ ապխտած բրեզաոլա, ապխտած բադի կրծքամիս և սեփական պատրաստման ռոստբիֆ տավարի փափկամսից։ Լրացվում է հսկա ձիթապտուղներով, չորացրած լոլիկով և խրթխրթան գրիսինիով։ Հիանալի ընտրություն գինու հետ և ընկերակցության համար։"
+      }
+    },
+    "kitchen-cold-app-ovoshchnoi-set-s-sousom-bliu-0rcn21k": {
+      "kbju": {
+        "weight": 755,
+        "prot": 12.5,
+        "fat": 38.1,
+        "carb": 32.7,
+        "kcal": 533.2
+      },
+      "description": {
+        "description": "Большой сет свежих овощей: сладкий перец, огурцы, томаты черри, стебель сельдерея, морковь и руккола. Подаётся с насыщенным соусом блю-чиз на основе сыра с голубой плесенью. Лёгкая закуска для компании.",
+        "description_en": "A generous set of fresh vegetables: bell pepper, cucumbers, cherry tomatoes, celery stalks, carrot and arugula. Served with a rich blue cheese dip. A light snack to share.",
+        "description_zh": "丰盛的新鲜蔬菜拼盘：甜椒、黄瓜、圣女果、芹菜茎、胡萝卜和芝麻菜。配以浓郁的蓝纹奶酪酱。适合分享的清爽小食。",
+        "description_hy": "Թարմ բանջարեղենի մեծ հավաքածու՝ քաղցր պղպեղ, վարունգ, չերի լոլիկ, նեխուրի ցողուն, գազար և ռուկոլա։ Մատուցվում է կապույտ բորբոսով պանրի հագեցած բլու-չիզ սոուսով։ Թեթև նախուտեստ ընկերակցության համար։"
+      }
+    },
+    "kitchen-cold-app-olivki-b5r121l": {
+      "description": {
+        "description": "Крупные оливки, маринованные с розмарином, тимьяном и оливковым маслом. Капля винного уксуса и шрирачи добавляет лёгкую остроту. Идеальная закуска к аперитиву.",
+        "description_en": "Large olives marinated with rosemary, thyme and olive oil. A touch of wine vinegar and sriracha adds a gentle kick. The perfect aperitif snack.",
+        "description_zh": "大颗橄榄以迷迭香、百里香和橄榄油腌制。少许酒醋和是拉差辣酱带来微微辛香。开胃酒的完美搭档。",
+        "description_hy": "Խոշոր ձիթապտուղներ՝ մարինացված խնկունիով, ուրցով և ձիթապտղի յուղով։ Մի կաթիլ գինու քացախն ու սրիրաչան ավելացնում են թեթև սրություն։ Կատարյալ նախուտեստ ապերիտիվի համար։"
+      }
+    },
+    "kitchen-cold-app-masliny-kalamata-qty921m": {
+      "description": {
+        "description": "Греческие маслины каламата с косточкой — мясистые, с насыщенным винно-фруктовым вкусом. Подаются без лишних добавок, чтобы раскрыть их характер. Классическая закуска к вину.",
+        "description_en": "Greek Kalamata olives with the pit — meaty, with a rich wine-like fruity flavor. Served plain to let their character shine. A classic snack with wine.",
+        "description_zh": "带核希腊卡拉马塔橄榄，果肉饱满，带有浓郁的酒香果味。原味呈现，尽显本色。佐酒的经典小食。",
+        "description_hy": "Հունական կալամատա ձիթապտուղներ կորիզով՝ մսոտ, հարուստ գինու-մրգային համով։ Մատուցվում են առանց ավելորդ հավելումների, որպեսզի բացահայտվի դրանց բնույթը։ Դասական նախուտեստ գինու հետ։"
+      }
+    },
+    "kitchen-cold-app-zakuska-s-seldiu-1qf921n": {
+      "description": {
+        "description": "Филе сельди на бородинском хлебе с отварным мини-картофелем и яйцом. Красный и зелёный лук, укроп и сливочное масло дополняют вкус. Русская классика в современной подаче.",
+        "description_en": "Herring fillet on Borodinsky bread with boiled baby potatoes and egg. Red and green onion, dill and butter round out the flavor. A Russian classic in a modern presentation.",
+        "description_zh": "鲱鱼柳配黑麦面包、水煮小土豆和鸡蛋。红葱、青葱、莳萝和黄油丰富口感。现代演绎的俄式经典。",
+        "description_hy": "Ծովատառեխի ֆիլե բորոդինյան հացի վրա՝ խաշած մինի կարտոֆիլով և ձվով։ Կարմիր և կանաչ սոխը, սամիթն ու կարագը լրացնում են համը։ Ռուսական դասական ուտեստ՝ ժամանակակից մատուցմամբ։"
+      }
+    },
+    "kitchen-hot-app-popkorn-iz-krevetok-kg9e21o": {
+      "kbju": {
+        "weight": 244,
+        "prot": 26.8,
+        "fat": 31.8,
+        "carb": 40.2,
+        "kcal": 558.7
+      }
+    },
+    "kitchen-hot-app-popkorn-iz-kuricy-2um721p": {
+      "description": {
+        "description": "Кусочки куриной грудки в лёгком темпурном кляре, обжаренные до золотистой корочки. Подаются с соусом терияки и майонезом кимчи, посыпаны кунжутом и кинзой. Хрустящая закуска в азиатском стиле.",
+        "description_en": "Pieces of chicken breast in a light tempura batter, fried to a golden crust. Served with teriyaki sauce and kimchi mayo, sprinkled with sesame and cilantro. A crispy Asian-style snack.",
+        "description_zh": "鸡胸肉块裹轻薄天妇罗面糊炸至金黄。配照烧酱和泡菜蛋黄酱，撒上芝麻与香菜。亚洲风味的酥脆小食。",
+        "description_hy": "Հավի կրծքամսի կտորներ թեթև տեմպուրայի խմորով՝ տապակած մինչև ոսկեգույն կեղև։ Մատուցվում է տերիյակի սոուսով և կիմչի մայոնեզով, ցանված քունջութով և համեմով։ Խրթխրթան նախուտեստ ասիական ոճով։"
+      }
+    },
+    "kitchen-hot-app-zhulen-s-moreproduktami-9mfb21r": {
+      "kbju": {
+        "weight": 102,
+        "prot": 11.6,
+        "fat": 8.2,
+        "carb": 3.1,
+        "kcal": 133.9
+      }
+    },
+    "kitchen-steaks-steik-striploin-5kx221u": {
+      "description": {
+        "description": "Стриплойн PRIMEBEEF Black Angus 200 дней зернового откорма — сочный стейк с выраженным мраморным вкусом. Подаётся с зелёным сливочным маслом, чипсами из мини-картофеля и томатами черри. Цена указана за 100 г.",
+        "description_en": "PRIMEBEEF Black Angus striploin, 200 days grain-fed — a juicy steak with a pronounced marbled flavor. Served with green herb butter, baby potato chips and cherry tomatoes. Price is per 100 g.",
+        "description_zh": "PRIMEBEEF黑安格斯西冷，谷饲200天，肉汁丰盈、大理石纹风味突出。配香草黄油、迷你土豆脆片和圣女果。价格按100克计。",
+        "description_hy": "PRIMEBEEF Black Angus ստրիպլոյն՝ 200 օր հացահատիկային կերակրման, հյութալի սթեյք արտահայտված մարմարե համով։ Մատուցվում է կանաչ կարագով, մինի կարտոֆիլի չիպսերով և չերի լոլիկով։ Գինը նշված է 100 գ-ի համար։"
+      }
+    },
+    "kitchen-steaks-steik-denver-xe3121v": {
+      "description": {
+        "description": "Денвер PRIMEBEEF Black Angus 200 дней зернового откорма — мягкий стейк из шейного отруба с богатым вкусом. Подаётся с зелёным сливочным маслом, чипсами из мини-картофеля и томатами черри. Порция 250 г.",
+        "description_en": "PRIMEBEEF Black Angus Denver steak, 200 days grain-fed — a tender cut from the chuck with a rich flavor. Served with green herb butter, baby potato chips and cherry tomatoes. 250 g portion.",
+        "description_zh": "PRIMEBEEF黑安格斯丹佛牛排，谷饲200天，取自肩颈部位，柔嫩多汁、风味浓郁。配香草黄油、迷你土豆脆片和圣女果。每份250克。",
+        "description_hy": "PRIMEBEEF Black Angus դենվեր սթեյք՝ 200 օր հացահատիկային կերակրման, փափուկ սթեյք պարանոցի հատվածից՝ հարուստ համով։ Մատուցվում է կանաչ կարագով, մինի կարտոֆիլի չիպսերով և չերի լոլիկով։ Բաժինը՝ 250 գ։"
+      }
+    },
+    "kitchen-hot-grechka-s-krevetkami-rrjt21x": {
+      "kbju": {
+        "weight": 225,
+        "prot": 22,
+        "fat": 14.3,
+        "carb": 16.8,
+        "kcal": 286.1
+      },
+      "description": {
+        "description": "Рассыпчатая гречка на сливочном масле с обжаренными креветками. Пармезан добавляет сливочную глубину, а кинза — свежесть. Лёгкое, но сытное горячее блюдо.",
+        "description_en": "Fluffy buckwheat cooked with butter and topped with seared shrimp. Parmesan adds creamy depth while cilantro brings freshness. A light yet satisfying main.",
+        "description_zh": "黄油炒制的松软荞麦配香煎虾仁。帕玛森奶酪增添醇厚，香菜带来清新。清爽而饱足的热菜。",
+        "description_hy": "Փխրուն հնդկաձավար կարագով՝ տապակած ծովախեցգետիններով։ Պարմեզանը հաղորդում է սերուցքային խորություն, իսկ համեմը՝ թարմություն։ Թեթև, բայց հագեցնող տաք ուտեստ։"
+      }
+    },
+    "kitchen-hot-kurinoe-bedro-s-bulgurom-o9dw21y": {
+      "description": {
+        "description": "Сочное куриное бедро, обжаренное до румяной корочки, на подушке из булгура. Сливочный перечный соус на основе деми-глас и лук-порей придают блюду насыщенность. Домашнее горячее с характером.",
+        "description_en": "Juicy chicken thigh seared to a golden crust on a bed of bulgur. A creamy pepper sauce based on demi-glace and leek give the dish depth. A homestyle main with character.",
+        "description_zh": "煎至金黄的多汁鸡腿肉铺于布格麦之上。以浓缩肉汁为基底的奶油胡椒酱与韭葱令风味更加丰厚。有个性的家常热菜。",
+        "description_hy": "Հյութալի հավի ազդր՝ տապակած մինչև կարմրավուն կեղև, բուլղուրի բարձիկի վրա։ Դեմի-գլասի հիմքով սերուցքային պղպեղի սոուսն ու պրասը ուտեստին հաղորդում են հագեցվածություն։ Տնական տաք ուտեստ՝ բնավորությամբ։"
+      }
+    },
+    "kitchen-hot-shnicel-kurinyi-v6hi220": {
+      "kbju": {
+        "weight": 230,
+        "prot": 27.7,
+        "fat": 17.2,
+        "carb": 37.2,
+        "kcal": 408.2
+      },
+      "description": {
+        "description": "Тонкий куриный шницель в хрустящей панировке, обжаренный до золотистой корочки. Подаётся с миксом свежих листьев, зелёным яблоком, сельдереем и соусом деми-глас. Лимон и пармезан подчёркивают вкус.",
+        "description_en": "A thin chicken schnitzel in crispy breading, fried to a golden crust. Served with a mix of fresh greens, green apple, celery and demi-glace sauce. Lemon and Parmesan highlight the flavor.",
+        "description_zh": "薄切鸡排裹酥脆面包糠炸至金黄。配新鲜生菜、青苹果、芹菜和浓缩肉汁酱。柠檬与帕玛森奶酪提升风味。",
+        "description_hy": "Բարակ հավի շնիցել խրթխրթան պանիրովկայով՝ տապակած մինչև ոսկեգույն կեղև։ Մատուցվում է թարմ տերևների խառնուրդով, կանաչ խնձորով, նեխուրով և դեմի-գլաս սոուսով։ Կիտրոնն ու պարմեզանը ընդգծում են համը։"
+      }
+    },
+    "kitchen-hot-shchechki-bychka-s-kartofeln-fa5o223": {
+      "kbju": {
+        "weight": 330,
+        "prot": 30.1,
+        "fat": 24.1,
+        "carb": 53.4,
+        "kcal": 499.3
+      }
+    },
+    "kitchen-hot-goviadina-v-aziatskom-sti-xj5i224": {
+      "description": {
+        "description": "Кусочки говяжьей вырезки, обжаренные в воке с болгарским перцем, шампиньонами и сельдереем. Соевый, барбекю и сладкий чили соусы создают яркий азиатский вкус, арахис и кунжут добавляют хруст. Подаётся с рисом.",
+        "description_en": "Pieces of beef tenderloin wok-fried with bell pepper, mushrooms and celery. Soy, barbecue and sweet chili sauces create a vibrant Asian flavor, while peanuts and sesame add crunch. Served with rice.",
+        "description_zh": "牛里脊块与甜椒、蘑菇和芹菜一同爆炒。酱油、烧烤酱与甜辣酱交织出浓郁亚洲风味，花生和芝麻增添酥脆。配米饭。",
+        "description_hy": "Տավարի փափկամսի կտորներ՝ վոկում տապակած բուլղարական պղպեղով, շամպինյոններով և նեխուրով։ Սոյայի, բարբեքյուի և քաղցր չիլի սոուսները ստեղծում են վառ ասիական համ, իսկ գետնանուշն ու քունջութը ավելացնում են խրթխրթանություն։ Մատուցվում է բրնձով։"
+      }
+    },
+    "kitchen-hot-befstroganov-s-kartofel-xxxi225": {
+      "description": {
+        "description": "Говяжья вырезка в сливочно-сметанном соусе с шампиньонами и маринованными огурцами. Подаётся с нежным картофельным пюре, гречневым чипсом и хрустящим луком-пореем. Классика русской кухни в ресторанном исполнении.",
+        "description_en": "Beef tenderloin in a creamy sour cream sauce with mushrooms and pickled cucumbers. Served with silky mashed potatoes, a buckwheat chip and crispy leek. A Russian classic in restaurant style.",
+        "description_zh": "牛里脊配蘑菇和腌黄瓜，以奶油酸奶油酱烩制。搭配细腻土豆泥、荞麦脆片和酥脆韭葱。餐厅演绎的俄式经典。",
+        "description_hy": "Տավարի փափկամիս սերուցքա-թթվասերային սոուսում՝ շամպինյոններով և մարինացված վարունգով։ Մատուցվում է նուրբ կարտոֆիլի պյուրեով, հնդկաձավարի չիպսով և խրթխրթան պրասով։ Ռուսական խոհանոցի դասական ուտեստ՝ ռեստորանային կատարմամբ։"
+      }
+    },
+    "kitchen-pasta-pappardelle-s-lososem-i--thxe227": {
+      "description": {
+        "description": "Широкая паста паппарделле в сливочном соусе с кусочками лосося и луком-шалот. Красная икра и пармезан добавляют блюду благородный вкус. Нежная паста для особого случая.",
+        "description_en": "Wide pappardelle pasta in a creamy sauce with pieces of salmon and shallot. Red caviar and Parmesan give the dish a refined flavor. A delicate pasta for a special occasion.",
+        "description_zh": "宽面配奶油酱、三文鱼块和青葱。红鱼子酱与帕玛森奶酪赋予菜肴高雅风味。适合特别时刻的细腻意面。",
+        "description_hy": "Լայն պապարդելե մակարոնեղեն սերուցքային սոուսում՝ սաղմոնի կտորներով և շալոտ սոխով։ Կարմիր խավիարն ու պարմեզանը ուտեստին հաղորդում են ազնիվ համ։ Նուրբ մակարոնեղեն հատուկ առիթի համար։"
+      }
+    },
+    "kitchen-burgers-burger-klassika-s-kotlet-wszf22d": {
+      "kbju": {
+        "weight": 380,
+        "prot": 30.5,
+        "fat": 59,
+        "carb": 73.4,
+        "kcal": 942.8
+      }
+    },
+    "kitchen-burgers-burger-s-kamamberom-govia-ueyv22f": {
+      "kbju": {
+        "weight": 484,
+        "prot": 44.1,
+        "fat": 100,
+        "carb": 91.2,
+        "kcal": 1437.7
+      },
+      "description": {
+        "description": "Котлета из мраморной говядины в домашней булке с тающим соусом из камамбера. Кисло-сладкий брусничный соус, свежие томаты, романо и красный лук балансируют вкус. Бургер для тех, кто любит сочетание сыра и ягод.",
+        "description_en": "A marbled beef patty in a house-baked bun with a melting Camembert sauce. Sweet-and-tart lingonberry sauce, fresh tomatoes, romaine and red onion balance the flavor. A burger for those who love cheese with berries.",
+        "description_zh": "大理石纹牛肉饼配自制面包与融化的卡门贝尔奶酪酱。酸甜越橘酱、新鲜番茄、罗马生菜和红洋葱平衡风味。献给喜爱奶酪与浆果搭配的你。",
+        "description_hy": "Մարմարե տավարի կոտլետ տնական բուլկիի մեջ՝ հալվող կամամբերի սոուսով։ Թթվաքաղցր լոռամրգի սոուսը, թարմ լոլիկը, ռոմանոն և կարմիր սոխը հավասարակշռում են համը։ Բուրգեր նրանց համար, ովքեր սիրում են պանրի և հատապտուղների համադրությունը։"
+      }
+    },
+    "kitchen-burgers-burger-s-khrustiashchim-cyple-dyjw22h": {
+      "kbju": {
+        "weight": 348,
+        "prot": 39.5,
+        "fat": 44.1,
+        "carb": 102,
+        "kcal": 1000.6
+      },
+      "description": {
+        "description": "Куриная грудка в хрустящей панировке в мягкой домашней булке. Сыр чеддер, свежие томаты, романо и красный лук дополнены соусом барбекю, сладким чили и майонезом. Лёгкий и сочный бургер.",
+        "description_en": "Chicken breast in crispy breading in a soft house-baked bun. Cheddar cheese, fresh tomatoes, romaine and red onion are complemented by barbecue sauce, sweet chili and mayonnaise. A light and juicy burger.",
+        "description_zh": "酥脆炸鸡胸配柔软的自制面包。切达奶酪、新鲜番茄、罗马生菜和红洋葱，佐以烧烤酱、甜辣酱和蛋黄酱。轻盈多汁的汉堡。",
+        "description_hy": "Հավի կրծքամիս խրթխրթան պանիրովկայով՝ փափուկ տնական բուլկիի մեջ։ Չեդեր պանիրը, թարմ լոլիկը, ռոմանոն և կարմիր սոխը լրացվում են բարբեքյու սոուսով, քաղցր չիլիով և մայոնեզով։ Թեթև և հյութալի բուրգեր։"
+      }
+    },
+    "kitchen-burgers-khalial-burger-klassika-s-i19s22i": {
+      "kbju": {
+        "weight": 400,
+        "prot": null,
+        "fat": null,
+        "carb": null,
+        "kcal": null
+      }
+    },
+    "kitchen-burgers-khalial-burger-syrnyi-s-k-aa0722j": {
+      "kbju": {
+        "weight": 475,
+        "prot": null,
+        "fat": null,
+        "carb": null,
+        "kcal": null
+      }
+    },
+    "kitchen-rolls-roll-kaliforniia-s-losose-miz522m": {
+      "description": {
+        "description": "Классическая калифорния с лососем, авокадо, огурцом и сливочным сыром. Ролл обвалян в икре тобико, которая добавляет лёгкий хруст. Подаётся с васаби, имбирём и соевым соусом.",
+        "description_en": "A classic California roll with salmon, avocado, cucumber and cream cheese. Rolled in tobiko caviar for a light crunch. Served with wasabi, ginger and soy sauce.",
+        "description_zh": "经典加州卷，内含三文鱼、牛油果、黄瓜和奶油奶酪。外裹飞鱼籽，带来轻盈脆感。配芥末、姜片和酱油。",
+        "description_hy": "Դասական կալիֆոռնիա սաղմոնով, ավոկադոյով, վարունգով և սերուցքային պանրով։ Ռոլը թավալված է տոբիկո խավիարով, որը հաղորդում է թեթև խրթխրթանություն։ Մատուցվում է վասաբիով, կոճապղպեղով և սոյայի սոուսով։"
+      }
+    },
+    "kitchen-rolls-roll-kaliforniia-s-krevet-654s22n": {
+      "kbju": {
+        "weight": 220,
+        "prot": 17.1,
+        "fat": 7.9,
+        "carb": 40,
+        "kcal": 299.7
+      },
+      "description": {
+        "description": "Калифорния с сочной креветкой, авокадо, огурцом и сливочным сыром. Икра тобико снаружи добавляет яркий цвет и хруст. Подаётся с васаби, имбирём и соевым соусом.",
+        "description_en": "A California roll with juicy shrimp, avocado, cucumber and cream cheese. Tobiko caviar on the outside adds bright color and crunch. Served with wasabi, ginger and soy sauce.",
+        "description_zh": "加州卷配鲜嫩虾仁、牛油果、黄瓜和奶油奶酪。外层飞鱼籽增添亮丽色泽与脆感。配芥末、姜片和酱油。",
+        "description_hy": "Կալիֆոռնիա հյութալի ծովախեցգետնով, ավոկադոյով, վարունգով և սերուցքային պանրով։ Տոբիկո խավիարը դրսից հաղորդում է վառ գույն և խրթխրթանություն։ Մատուցվում է վասաբիով, կոճապղպեղով և սոյայի սոուսով։"
+      }
+    },
+    "kitchen-rolls-roll-kaliforniia-s-krabom-2jbl22o": {
+      "description": {
+        "description": "Калифорния с натуральным крабом, авокадо, огурцом и сливочным сыром. Икра тобико добавляет хруст и морскую свежесть. Подаётся с васаби, имбирём и соевым соусом.",
+        "description_en": "A California roll with real crab, avocado, cucumber and cream cheese. Tobiko caviar adds crunch and a fresh taste of the sea. Served with wasabi, ginger and soy sauce.",
+        "description_zh": "加州卷配天然蟹肉、牛油果、黄瓜和奶油奶酪。飞鱼籽带来脆感与海洋鲜味。配芥末、姜片和酱油。",
+        "description_hy": "Կալիֆոռնիա բնական խեցգետնով, ավոկադոյով, վարունգով և սերուցքային պանրով։ Տոբիկո խավիարը հաղորդում է խրթխրթանություն և ծովային թարմություն։ Մատուցվում է վասաբիով, կոճապղպեղով և սոյայի սոուսով։"
+      }
+    },
+    "kitchen-rolls-roll-s-avokado-i-lososem-1yua22p": {
+      "description": {
+        "description": "Ролл со свежим лососем, авокадо, огурцом и сливочным сыром. Соус унаги и кунжут добавляют сладковатую карамельную нотку. Подаётся с васаби, имбирём и соевым соусом.",
+        "description_en": "A roll with fresh salmon, avocado, cucumber and cream cheese. Unagi sauce and sesame add a sweet caramel note. Served with wasabi, ginger and soy sauce.",
+        "description_zh": "寿司卷配新鲜三文鱼、牛油果、黄瓜和奶油奶酪。鳗鱼酱与芝麻增添微甜焦糖香。配芥末、姜片和酱油。",
+        "description_hy": "Ռոլ թարմ սաղմոնով, ավոկադոյով, վարունգով և սերուցքային պանրով։ Ունագի սոուսն ու քունջութը ավելացնում են քաղցրավուն կարամելային երանգ։ Մատուցվում է վասաբիով, կոճապղպեղով և սոյայի սոուսով։"
+      }
+    },
+    "kitchen-rolls-roll-opalenyi-losos-s-a-a6mn22q": {
+      "kbju": {
+        "weight": 212,
+        "prot": 14.9,
+        "fat": 15.3,
+        "carb": 42.6,
+        "kcal": 369.4
+      }
+    },
+    "kitchen-rolls-roll-krevetka-tempura-ml5a22r": {
+      "description": {
+        "description": "Тёплый ролл с креветкой в хрустящем темпурном кляре и авокадо. Крем-сыр с пастой том-ям и икрой масаго добавляет пикантность, соус унаги — сладость. Подаётся с васаби, имбирём и соевым соусом.",
+        "description_en": "A warm roll with shrimp in crispy tempura batter and avocado. Cream cheese with tom yum paste and masago caviar adds piquancy, while unagi sauce brings sweetness. Served with wasabi, ginger and soy sauce.",
+        "description_zh": "温热寿司卷，内含酥脆天妇罗虾和牛油果。冬阴功奶油奶酪与多春鱼籽带来辛香，鳗鱼酱增添甜味。配芥末、姜片和酱油。",
+        "description_hy": "Տաք ռոլ ծովախեցգետնով խրթխրթան տեմպուրայի խմորում և ավոկադոյով։ Կրեմ-պանիրը թոմ-յամ մածուկով և մասագո խավիարով ավելացնում է կծվություն, իսկ ունագի սոուսը՝ քաղցրություն։ Մատուցվում է վասաբիով, կոճապղպեղով և սոյայի սոուսով։"
+      }
+    },
+    "kitchen-rolls-teplyi-roll-s-krevetkoi--fa2122s": {
+      "description": {
+        "description": "Ролл с лососем, креветкой и сливочным сыром в хрустящей панировке и темпурном кляре. Соус унаги и кунжут завершают вкус. Подаётся тёплым, с васаби, имбирём и соевым соусом.",
+        "description_en": "A roll with salmon, shrimp and cream cheese in crispy breadcrumbs and tempura batter. Unagi sauce and sesame complete the flavor. Served warm with wasabi, ginger and soy sauce.",
+        "description_zh": "寿司卷内含三文鱼、虾仁和奶油奶酪，外裹酥脆面包糠与天妇罗面糊。鳗鱼酱与芝麻画龙点睛。温热上桌，配芥末、姜片和酱油。",
+        "description_hy": "Ռոլ սաղմոնով, ծովախեցգետնով և սերուցքային պանրով՝ խրթխրթան պանիրովկայով և տեմպուրայի խմորով։ Ունագի սոուսն ու քունջութը ամբողջացնում են համը։ Մատուցվում է տաք՝ վասաբիով, կոճապղպեղով և սոյայի սոուսով։"
+      }
+    },
+    "kitchen-rolls-gunkan-kani-o0u022t": {
+      "description": {
+        "description": "Гункан с мясом снежного краба, майонезом кимчи и икрой тобико на рисе в нори. Нежная сливочная начинка с лёгкой остринкой. Подаётся с васаби, имбирём и соевым соусом.",
+        "description_en": "A gunkan with snow crab meat, kimchi mayo and tobiko caviar on rice wrapped in nori. A creamy filling with a gentle kick. Served with wasabi, ginger and soy sauce.",
+        "description_zh": "军舰寿司，雪蟹肉配泡菜蛋黄酱和飞鱼籽，置于海苔包裹的米饭上。绵滑馅料带微辣。配芥末、姜片和酱油。",
+        "description_hy": "Գունկան ձյան խեցգետնի մսով, կիմչի մայոնեզով և տոբիկո խավիարով՝ բրնձի վրա նորիում։ Նուրբ սերուցքային միջուկ թեթև սրությամբ։ Մատուցվում է վասաբիով, կոճապղպեղով և սոյայի սոուսով։"
+      }
+    },
+    "kitchen-rolls-gunkan-maguro-bpa322u": {
+      "description": {
+        "description": "Гункан со свежим тунцом и майонезом кимчи на рисе в нори. Кунжут добавляет ореховую нотку. Подаётся с васаби, имбирём и соевым соусом.",
+        "description_en": "A gunkan with fresh tuna and kimchi mayo on rice wrapped in nori. Sesame adds a nutty note. Served with wasabi, ginger and soy sauce.",
+        "description_zh": "军舰寿司，新鲜金枪鱼配泡菜蛋黄酱，置于海苔包裹的米饭上。芝麻增添坚果香。配芥末、姜片和酱油。",
+        "description_hy": "Գունկան թարմ թունայով և կիմչի մայոնեզով՝ բրնձի վրա նորիում։ Քունջութը ավելացնում է ընկուզային երանգ։ Մատուցվում է վասաբիով, կոճապղպեղով և սոյայի սոուսով։"
+      }
+    },
+    "kitchen-rolls-gunkan-siake-zl5322v": {
+      "description": {
+        "description": "Гункан со свежим лососем и майонезом кимчи на рисе в нори. Кунжут подчёркивает нежный вкус рыбы. Подаётся с васаби, имбирём и соевым соусом.",
+        "description_en": "A gunkan with fresh salmon and kimchi mayo on rice wrapped in nori. Sesame highlights the delicate flavor of the fish. Served with wasabi, ginger and soy sauce.",
+        "description_zh": "军舰寿司，新鲜三文鱼配泡菜蛋黄酱，置于海苔包裹的米饭上。芝麻凸显鱼肉的细腻风味。配芥末、姜片和酱油。",
+        "description_hy": "Գունկան թարմ սաղմոնով և կիմչի մայոնեզով՝ բրնձի վրա նորիում։ Քունջութը ընդգծում է ձկան նուրբ համը։ Մատուցվում է վասաբիով, կոճապղպեղով և սոյայի սոուսով։"
+      }
+    },
+    "kitchen-poke-poke-s-tuncom-blxa22x": {
+      "description": {
+        "description": "Поке-боул со свежим тунцом, авокадо, соевыми бобами и огурцом на рисе. Майонез свитчили и лимонный кимчи с кинзой и имбирём создают яркий вкус. Нори и кунжут завершают композицию.",
+        "description_en": "A poke bowl with fresh tuna, avocado, soybeans and cucumber on rice. Sweet chili mayo and lemon kimchi with cilantro and ginger create a vibrant flavor. Nori and sesame complete the bowl.",
+        "description_zh": "波奇碗配新鲜金枪鱼、牛油果、毛豆和黄瓜，铺于米饭上。甜辣蛋黄酱与柠檬泡菜、香菜和姜片交织出鲜明风味。海苔和芝麻点缀收尾。",
+        "description_hy": "Փոկե-բոուլ թարմ թունայով, ավոկադոյով, սոյայի հատիկներով և վարունգով՝ բրնձի վրա։ Քաղցր չիլի մայոնեզն ու կիտրոնային կիմչին համեմով և կոճապղպեղով ստեղծում են վառ համ։ Նորին ու քունջութը ամբողջացնում են կոմպոզիցիան։"
+      }
+    },
+    "kitchen-pizza-barvikha-6jqg22y": {
+      "kbju": {
+        "weight": 332,
+        "prot": 41.5,
+        "fat": 77,
+        "carb": 99.8,
+        "kcal": 1209.7
+      },
+      "description": {
+        "description": "Фирменная пицца на римском тесте с сервелатом пепперони, беконом, салями тоскана и тамбовским окороком. Моцарелла, красный лук и томатный соус с базиликом связывают вкус. Для настоящих любителей мяса.",
+        "description_en": "The signature pizza on Roman-style dough with pepperoni, bacon, Tuscan salami and Tambov ham. Mozzarella, red onion and basil tomato sauce bring it together. For true meat lovers.",
+        "description_zh": "招牌罗马薄底披萨，配意式辣香肠、培根、托斯卡纳萨拉米和坦波夫火腿。马苏里拉、红洋葱和罗勒番茄酱融合风味。献给真正的肉食爱好者。",
+        "description_hy": "Ֆիրմային պիցցա հռոմեական խմորի վրա՝ պեպերոնի սերվելատով, բեկոնով, տոսկանա սալյամիով և տամբովյան ապխտած խոզապուխտով։ Մոցարելլան, կարմիր սոխն ու ռեհանով լոլիկի սոուսը կապում են համը։ Իսկական մսասերների համար։"
+      }
+    },
+    "kitchen-pizza-margarita-lyfu22z": {
+      "description": {
+        "description": "Классическая маргарита на римском тесте: томатный соус с базиликом и тающая моцарелла. Ничего лишнего — только проверенное сочетание. Лёгкая пицца на каждый день.",
+        "description_en": "A classic Margherita on Roman-style dough: basil tomato sauce and melting mozzarella. Nothing extra — just the proven combination. A light pizza for any day.",
+        "description_zh": "经典玛格丽特罗马薄底披萨：罗勒番茄酱与融化的马苏里拉。不多不少，只有经典组合。日常轻盈之选。",
+        "description_hy": "Դասական մարգարիտա հռոմեական խմորի վրա՝ ռեհանով լոլիկի սոուս և հալվող մոցարելլա։ Ոչինչ ավելորդ՝ միայն ստուգված համադրություն։ Թեթև պիցցա ամեն օրվա համար։"
+      }
+    },
+    "kitchen-pizza-pepperoni-khalial-w1p7230": {
+      "kbju": {
+        "weight": 320,
+        "prot": 36.1,
+        "fat": 56.9,
+        "carb": 98.1,
+        "kcal": 986.3
+      },
+      "description": {
+        "description": "Пицца на римском тесте с халяльным сервелатом пепперони и моцареллой. Томатный соус с сушёным базиликом добавляет яркости. Классика в халяльном исполнении.",
+        "description_en": "A pizza on Roman-style dough with halal pepperoni cervelat and mozzarella. Tomato sauce with dried basil adds brightness. A classic in a halal version.",
+        "description_zh": "罗马薄底披萨，配清真意式辣香肠和马苏里拉。干罗勒番茄酱增添明亮风味。经典的清真版本。",
+        "description_hy": "Պիցցա հռոմեական խմորի վրա՝ հալալ պեպերոնի սերվելատով և մոցարելլայով։ Չորացրած ռեհանով լոլիկի սոուսը ավելացնում է վառություն։ Դասական ուտեստ հալալ տարբերակով։"
+      }
+    },
+    "kitchen-pizza-cezar-fbtz231": {
+      "kbju": {
+        "weight": 362,
+        "prot": 49.9,
+        "fat": 33.8,
+        "carb": 98.6,
+        "kcal": 862.1
+      },
+      "description": {
+        "description": "Пицца на римском тесте с куриной грудкой, моцареллой и пармезаном. После выпечки — свежий романо, томаты черри и фирменный соус цезарь с анчоусами. Любимый салат в формате пиццы.",
+        "description_en": "A pizza on Roman-style dough with chicken breast, mozzarella and Parmesan. Topped after baking with fresh romaine, cherry tomatoes and the signature Caesar sauce with anchovies. The favorite salad in pizza form.",
+        "description_zh": "罗马薄底披萨，配鸡胸肉、马苏里拉和帕玛森奶酪。出炉后铺上新鲜罗马生菜、圣女果和招牌凤尾鱼凯撒酱。以披萨形式呈现的最爱沙拉。",
+        "description_hy": "Պիցցա հռոմեական խմորի վրա՝ հավի կրծքամսով, մոցարելլայով և պարմեզանով։ Թխելուց հետո՝ թարմ ռոմանո, չերի լոլիկ և ֆիրմային ցեզար սոուս անչոուսներով։ Սիրելի աղցանը պիցցայի ձևաչափով։"
+      }
+    },
+    "kitchen-pizza-chetyre-syra-kb3c232": {
+      "description": {
+        "description": "Пицца на римском тесте со сливочной основой и четырьмя сырами: моцарелла, чеддер, пармезан и дор-блю. Каждый сыр вносит свой характер — от мягкости до пикантности. Для ценителей насыщенного сырного вкуса.",
+        "description_en": "A pizza on Roman-style dough with a cream base and four cheeses: mozzarella, cheddar, Parmesan and Dor Blue. Each cheese brings its own character, from mildness to piquancy. For lovers of rich cheesy flavor.",
+        "description_zh": "罗马薄底披萨，奶油底配四种奶酪：马苏里拉、切达、帕玛森和蓝纹奶酪。每种奶酪各具特色，从温和到浓烈。献给热爱浓郁奶酪风味的你。",
+        "description_hy": "Պիցցա հռոմեական խմորի վրա՝ սերուցքային հիմքով և չորս պանրով՝ մոցարելլա, չեդեր, պարմեզան և դոր-բլու։ Յուրաքանչյուր պանիր բերում է իր բնույթը՝ մեղմությունից մինչև կծվություն։ Հագեցած պանրային համի գնահատողների համար։"
+      }
+    },
+    "kitchen-pizza-khalial-eck2233": {
+      "kbju": {
+        "weight": 450,
+        "prot": 53.4,
+        "fat": 73,
+        "carb": 105.2,
+        "kcal": 1101.9
+      }
+    },
+    "kitchen-soups-sup-kurinyi-5wx0235": {
+      "description": {
+        "description": "Наваристый куриный бульон с фетучини, куриной грудкой и мясом с окорочков. Перепелиное яйцо и свежий укроп дополняют вкус. Домашний суп, который согревает.",
+        "description_en": "A rich chicken broth with fettuccine, chicken breast and meat from the drumsticks. Quail egg and fresh dill round out the flavor. A homestyle soup that warms you up.",
+        "description_zh": "浓郁鸡汤配意式宽面、鸡胸肉和鸡腿肉。鹌鹑蛋与新鲜莳萝丰富口感。暖心的家常汤品。",
+        "description_hy": "Հագեցած հավի արգանակ ֆետուչինիով, հավի կրծքամսով և ազդրի մսով։ Լորի ձուն ու թարմ սամիթը լրացնում են համը։ Տնական ապուր, որը ջերմացնում է։"
+      }
+    },
+    "kitchen-soups-tom-iam-s-moreproduktami-sqkq236": {
+      "description": {
+        "description": "Классический тайский суп на кокосовом молоке с креветками, кальмаром и шампиньонами. Лемонграсс, лист лайма и имбирь дают яркий аромат, перец чили — остроту. Подаётся с рисом.",
+        "description_en": "A classic Thai soup with coconut milk, shrimp, squid and mushrooms. Lemongrass, lime leaf and ginger give it a bright aroma, while chili brings the heat. Served with rice.",
+        "description_zh": "经典泰式椰奶汤，配虾仁、鱿鱼和蘑菇。香茅、青柠叶和姜带来鲜明香气，辣椒增添辛辣。配米饭。",
+        "description_hy": "Դասական թայլանդական ապուր կոկոսի կաթով՝ ծովախեցգետիններով, կաղամարով և շամպինյոններով։ Լեմոնգրասը, լայմի տերևն ու կոճապղպեղը հաղորդում են վառ բույր, իսկ չիլի պղպեղը՝ սրություն։ Մատուցվում է բրնձով։"
+      }
+    },
+    "kitchen-soups-sup-tykvennyi-s-krevetka-m79r237": {
+      "kbju": {
+        "weight": 400,
+        "prot": 18.3,
+        "fat": 17.3,
+        "carb": 18.8,
+        "kcal": 325.9
+      },
+      "description": {
+        "description": "Бархатистый крем-суп из тыквы со сливками и тимьяном. Обжаренные креветки, тыквенные семечки и оливковое масло добавляют текстуру и вкус. Лёгкий и согревающий.",
+        "description_en": "A velvety cream soup of pumpkin with cream and thyme. Seared shrimp, pumpkin seeds and olive oil add texture and flavor. Light and warming.",
+        "description_zh": "丝滑南瓜奶油浓汤，配鲜奶油和百里香。香煎虾仁、南瓜籽和橄榄油增添口感与风味。轻盈暖身。",
+        "description_hy": "Թավշյա կրեմ-ապուր դդումից՝ սերուցքով և ուրցով։ Տապակած ծովախեցգետինները, դդմի սերմերն ու ձիթապտղի յուղը ավելացնում են հյուսվածք և համ։ Թեթև և ջերմացնող։"
+      }
+    },
+    "kitchen-soups-krem-sup-gribnoi-kapuchin-4cwp238": {
+      "description": {
+        "description": "Нежный крем-суп из шампиньонов со сливками и молоком, взбитый до воздушной пенки, как капучино. Хрустящие вешенки фри добавляют контраст текстур. Мягкий и ароматный суп.",
+        "description_en": "A delicate cream of mushroom soup with cream and milk, whipped into an airy foam like a cappuccino. Crispy fried oyster mushrooms add a contrast of textures. Smooth and aromatic.",
+        "description_zh": "细腻蘑菇奶油浓汤，加入鲜奶油和牛奶，打出如卡布奇诺般的绵密泡沫。酥炸平菇带来口感对比。柔滑而香浓。",
+        "description_hy": "Նուրբ կրեմ-ապուր շամպինյոններից՝ սերուցքով և կաթով, հարած մինչև օդային փրփուր՝ ինչպես կապուչինո։ Խրթխրթան տապակած ոստրե սունկը ավելացնում է հյուսվածքների հակադրություն։ Մեղմ և բուրավետ ապուր։"
+      }
+    },
+    "kitchen-sides-ovoshchi-na-grile-lh9m239": {
+      "description": {
+        "description": "Шампиньоны, томаты, болгарский перец, кабачки, баклажан и красный лук, обжаренные на гриле. Прованские травы и чёрный перец подчёркивают вкус овощей. Лёгкий гарнир к стейкам и рыбе.",
+        "description_en": "Mushrooms, tomatoes, bell pepper, zucchini, eggplant and red onion grilled to perfection. Herbes de Provence and black pepper highlight the vegetables' flavor. A light side for steaks and fish.",
+        "description_zh": "蘑菇、番茄、甜椒、西葫芦、茄子和红洋葱炭烤而成。普罗旺斯香草与黑胡椒凸显蔬菜本味。搭配牛排和鱼类的清爽配菜。",
+        "description_hy": "Շամպինյոններ, լոլիկ, բուլղարական պղպեղ, դդմիկ, սմբուկ և կարմիր սոխ՝ գրիլի վրա տապակած։ Պրովանսյան խոտաբույսերն ու սև պղպեղը ընդգծում են բանջարեղենի համը։ Թեթև խավարտ սթեյքերի և ձկան համար։"
+      }
+    },
+    "kitchen-sides-grechka-s-gribami-jyvp23a": {
+      "description": {
+        "description": "Рассыпчатая гречка с обжаренными шампиньонами и луком-шалот. Простой и честный гарнир с домашним вкусом. Хорошо сочетается с мясом и птицей.",
+        "description_en": "Fluffy buckwheat with sautéed mushrooms and shallot. A simple, honest side with a homestyle taste. Pairs well with meat and poultry.",
+        "description_zh": "松软荞麦配炒蘑菇和青葱。简单纯粹的家常风味配菜。与肉类和禽类搭配相宜。",
+        "description_hy": "Փխրուն հնդկաձավար տապակած շամպինյոններով և շալոտ սոխով։ Պարզ և ազնիվ խավարտ տնական համով։ Լավ է համադրվում մսի և թռչնամսի հետ։"
+      }
+    },
+    "kitchen-sides-batat-fri-7hl723d": {
+      "description": {
+        "description": "Ломтики сладкого картофеля, обжаренные до хрустящей корочки. Сладковатый вкус батата с солью — интересная альтернатива классическому фри. Подходит к бургерам и мясу.",
+        "description_en": "Sweet potato wedges fried to a crispy crust. The sweet taste of batata with salt is an interesting alternative to classic fries. Great with burgers and meat.",
+        "description_zh": "红薯条炸至外皮酥脆。红薯的微甜与盐相得益彰，是经典薯条的有趣替代。适合搭配汉堡和肉类。",
+        "description_hy": "Քաղցր կարտոֆիլի կտորներ՝ տապակած մինչև խրթխրթան կեղև։ Բատատի քաղցրավուն համը աղով՝ հետաքրքիր այլընտրանք դասական ֆրիին։ Հարմար է բուրգերների և մսի հետ։"
+      }
+    },
+    "kitchen-sides-ris-s-ovoshchami-980d23e": {
+      "description": {
+        "description": "Рассыпчатый рис, обжаренный с овощами и соевым соусом. Лёгкий гарнир в азиатском стиле. Хорошо дополняет блюда из курицы, рыбы и говядины.",
+        "description_en": "Fluffy rice stir-fried with vegetables and soy sauce. A light Asian-style side. A great match for chicken, fish and beef dishes.",
+        "description_zh": "松软米饭与蔬菜和酱油一同炒制。亚洲风味的清爽配菜。与鸡肉、鱼类和牛肉菜肴相得益彰。",
+        "description_hy": "Փխրուն բրինձ՝ տապակած բանջարեղենով և սոյայի սոուսով։ Թեթև խավարտ ասիական ոճով։ Լավ է լրացնում հավի, ձկան և տավարի ուտեստները։"
+      }
+    },
+    "kitchen-desserts-tiramisu-dvc823f": {
+      "description": {
+        "description": "Классический итальянский десерт: печенье савоярди, пропитанное кофе, и воздушный крем из маскарпоне. Сверху — какао. Нежный, в меру сладкий, с кофейной горчинкой.",
+        "description_en": "The classic Italian dessert: savoiardi biscuits soaked in coffee and an airy mascarpone cream. Dusted with cocoa. Delicate, moderately sweet, with a hint of coffee bitterness.",
+        "description_zh": "经典意式甜点：浸润咖啡的手指饼干与轻盈马斯卡彭奶油。表面撒可可粉。细腻、甜度适中，带一丝咖啡的微苦。",
+        "description_hy": "Դասական իտալական աղանդեր՝ սուրճով ներծծված սավոյարդի թխվածքաբլիթ և օդային մասկարպոնեի կրեմ։ Վերևում՝ կակաո։ Նուրբ, չափավոր քաղցր, սուրճի թեթև դառնությամբ։"
+      }
+    },
+    "kitchen-desserts-chizkeik-v9ts23h": {
+      "description": {
+        "description": "Нежный чизкейк на миндальном корже с кремовой сырной начинкой. Подаётся с солёной карамелью и свежей клубникой. Классика, которая никогда не надоедает.",
+        "description_en": "A delicate cheesecake on an almond base with a creamy cheese filling. Served with salted caramel and fresh strawberries. A classic that never gets old.",
+        "description_zh": "细腻芝士蛋糕，杏仁饼底配绵密奶酪馅。搭配海盐焦糖和新鲜草莓。百吃不厌的经典。",
+        "description_hy": "Նուրբ չիզքեյք նշի հիմքի վրա՝ սերուցքային պանրային միջուկով։ Մատուցվում է աղի կարամելով և թարմ ելակով։ Դասական, որը երբեք չի ձանձրացնում։"
+      }
+    },
+    "kitchen-desserts-fruktovaia-tarelka-594k23j": {
+      "description": {
+        "description": "Большое ассорти свежих фруктов: апельсин, яблоко, груша, киви, виноград и ананас. Лёгкая сахарная пудра и мята для свежести. Отличный вариант для компании.",
+        "description_en": "A generous platter of fresh fruit: orange, apple, pear, kiwi, grapes and pineapple. A light dusting of powdered sugar and mint for freshness. Perfect for sharing.",
+        "description_zh": "丰盛的新鲜水果拼盘：橙子、苹果、梨、猕猴桃、葡萄和菠萝。轻撒糖粉，点缀薄荷提鲜。适合分享。",
+        "description_hy": "Թարմ մրգերի մեծ տեսականի՝ նարինջ, խնձոր, տանձ, կիվի, խաղող և արքայախնձոր։ Թեթև շաքարի փոշի և անանուխ թարմության համար։ Հիանալի տարբերակ ընկերակցության համար։"
+      }
+    },
+    "kitchen-bread-sauces-khleb-s-aromatnym-maslom-pk2o23k": {
+      "description": {
+        "description": "Хлеб на выбор — санчос, итальянский, гречишный или бородинский — с ароматным сливочным маслом с цедрой лимона. Подаётся с чёрной солью. Простое начало трапезы.",
+        "description_en": "Bread of your choice — Sanchos, Italian, buckwheat or Borodinsky — with fragrant butter infused with lemon zest. Served with black salt. A simple start to the meal.",
+        "description_zh": "面包任选：桑乔斯、意式、荞麦或黑麦，配柠檬皮香黄油。佐以黑盐。餐前的简单开场。",
+        "description_hy": "Հաց ընտրությամբ՝ սանչոս, իտալական, հնդկաձավարի կամ բորոդինյան, կիտրոնի կեղևով բուրավետ կարագով։ Մատուցվում է սև աղով։ Ճաշի պարզ սկիզբ։"
+      }
+    },
+    "kitchen-bread-sauces-sousy-8d7f23l": {
+      "description": {
+        "description": "Соус на выбор к любому блюду: кетчуп, майонез свитчили, брусничный, кисло-сладкий, барбекю, блючиз, шрирача, бальзамический или перечный. Подаётся отдельно.",
+        "description_en": "A sauce of your choice for any dish: ketchup, sweet chili mayo, lingonberry, sweet and sour, barbecue, blue cheese, sriracha, balsamic or pepper. Served on the side.",
+        "description_zh": "任选酱料搭配任何菜肴：番茄酱、甜辣蛋黄酱、越橘酱、酸甜酱、烧烤酱、蓝纹奶酪酱、是拉差辣酱、香醋酱或胡椒酱。单独上桌。",
+        "description_hy": "Սոուս ընտրությամբ ցանկացած ուտեստի համար՝ կետչուպ, քաղցր չիլի մայոնեզ, լոռամրգի, թթվաքաղցր, բարբեքյու, բլու-չիզ, սրիրաչա, բալզամիկ կամ պղպեղի։ Մատուցվում է առանձին։"
+      }
+    },
+    "kitchen-healthy-brokkoli-na-paru": {
+      "composition": "Брокколи."
+    },
+    "kitchen-healthy-bryusselskaya-kapusta-na-paru": {
+      "kbju": {
+        "weight": 127,
+        "prot": 6.1,
+        "fat": 0.5,
+        "carb": 10.3,
+        "kcal": 59.7
+      },
+      "composition": "Брюссельская капуста."
+    },
+    "kitchen-healthy-cvetnaya-kapusta-na-paru": {
+      "kbju": {
+        "weight": 127,
+        "prot": 3,
+        "fat": 0.4,
+        "carb": 6.1,
+        "kcal": 38.1
+      },
+      "composition": "Цветная капуста."
+    },
+    "kitchen-healthy-grechka": {
+      "composition": "Гречка."
+    },
+    "kitchen-healthy-dikii-ris": {
+      "kbju": {
+        "weight": 150,
+        "prot": 6,
+        "fat": 0.5,
+        "carb": 31.9,
+        "kcal": 151.5
+      },
+      "composition": "Дикий рис."
+    },
+    "kitchen-healthy-medalony-iz-govyadiny-na-paru": {
+      "composition": "Говяжья вырезка."
+    },
+    "kitchen-healthy-kalmar-na-paru-s-limonom": {
+      "kbju": {
+        "weight": 105,
+        "prot": 18.9,
+        "fat": 4.4,
+        "carb": 0,
+        "kcal": 128.1
+      },
+      "composition": "Кальмар, лимон."
+    },
+    "kitchen-healthy-krevetki-na-paru": {
+      "composition": "Креветки, лимон."
+    },
+    "kitchen-healthy-kurinaya-grudka-na-paru": {
+      "kbju": {
+        "weight": 150,
+        "prot": 35.4,
+        "fat": 2.9,
+        "carb": 0,
+        "kcal": 169.5
+      },
+      "composition": "Куриная грудка."
+    },
+    "kitchen-healthy-steik-tunca-s-limonom": {
+      "composition": "Тунец филе, лимон."
+    },
+    "kitchen-healthy-steik-lososya-s-limonom": {
+      "kbju": {
+        "weight": 120,
+        "prot": 27.6,
+        "fat": 11.3,
+        "carb": 0.2,
+        "kcal": 214.1
+      },
+      "composition": "Лосось филе, лимон."
+    },
+    "kitchen-healthy-korolevskie-finiki": {
+      "composition": "Финики (2 шт.)."
+    },
+    "kitchen-healthy-korolevskie-finiki-s-greckim-orehom": {
+      "composition": "Финики, грецкий орех, золото сусальное пищевое."
+    }
+  }
+}

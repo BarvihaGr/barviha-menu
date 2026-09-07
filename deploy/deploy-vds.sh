@@ -122,6 +122,12 @@ fi
 log "обновление $BEFORE -> $AFTER"
 git reset --hard origin/main --quiet
 
+# Одноразовые правки контента (packages/db/content вне git) — см.
+# deploy/content-migrations/run.sh. Контент читается с диска на каждый
+# запрос, так что применяем сразу после обновления кода, до сборки;
+# любая ошибка тут не должна останавливать деплой.
+bash deploy/content-migrations/run.sh || log "content-migrations завершились с ошибкой — деплой продолжаю"
+
 if pnpm install --frozen-lockfile --silent \
    && build_and_swap apps/hub @barviha/hub \
    && build_and_swap apps/menu @barviha/menu; then
