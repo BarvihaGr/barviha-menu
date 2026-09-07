@@ -1,12 +1,34 @@
 import 'server-only';
 import bcrypt from 'bcryptjs';
-import { supabase } from './supabase-client';
+import { randomUUID } from 'node:crypto';
+import { readContentJson, writeContentJson } from './content-store';
+
+/**
+ * Аккаунты бэк-офиса — файловое хранилище packages/db/content/accounts.json
+ * (вне git, как и весь content-store; пароли только bcrypt-хэшами).
+ *
+ * Раньше это была таблица `accounts` в Supabase (см. supabase-client.ts) —
+ * 2026-09-07 хост проекта перестал резолвиться (NXDOMAIN), логин в /back-off
+ * отдавал 500, и это была ЕДИНСТВЕННАЯ внешняя зависимость всего бэк-офиса:
+ * меню, настройки локаций, фото — всё и так лежит в файлах на VDS. Перенос
+ * аккаунтов в тот же content-store убирает точку отказа; интерфейс модуля
+ * оставлен 1:1, вызывающий код (login/accounts API, AccountsView) не менялся.
+ *
+ * Первичное наполнение — deploy/content-migrations/*-backoffice-accounts
+ * (идемпотентно, едет на прод через обычный деплой-крон, без SSH).
+ *
+ * Read-modify-write по одному маленькому JSON — тот же компромисс, что у
+ * позиций меню (см. content-store.ts): при ~30 аккаунтах и редких правках
+ * гонки практически исключены.
+ */
 
 export type AccountRole = 'big_boss' | 'boss_location' | 'manager';
 
 export interface AccountRow {
   id: string;
   login: string;
+  /** login в нижнем регистре — ключ поиска/уникальности (вход не чувствителен к регистру логина). */
+  login_key: string;
   password_hash: string;
   role: AccountRole;
   location_slug: string | null;
@@ -17,44 +39,47 @@ export interface AccountRow {
   created_at: string;
 }
 
-const SELECT_COLUMNS =
-  'id, login, password_hash, role, location_slug, display_name, created_by, is_active, last_login_at, created_at';
+const ACCOUNTS_FILE = 'accounts.json';
+
+export function loginKeyOf(login: string): string {
+  return login.trim().toLowerCase();
+}
+
+function readAll(): AccountRow[] {
+  try {
+    const rows = readContentJson<AccountRow[]>(ACCOUNTS_FILE);
+    return Array.isArray(rows) ? rows : [];
+  } catch {
+    // Файла ещё нет (свежий стенд до первой миграции) — пустой список, а не 500.
+    return [];
+  }
+}
+
+function writeAll(rows: AccountRow[]): void {
+  writeContentJson(ACCOUNTS_FILE, rows);
+}
+
+const ROLE_ORDER: Record<AccountRole, number> = { big_boss: 0, boss_location: 1, manager: 2 };
 
 export async function findAccountByLoginKey(loginKey: string): Promise<AccountRow | null> {
-  const { data, error } = await supabase()
-    .from('accounts')
-    .select(SELECT_COLUMNS)
-    .eq('login_key', loginKey)
-    .maybeSingle();
-  if (error) throw error;
-  return (data as AccountRow | null) ?? null;
+  return readAll().find((r) => r.login_key === loginKey) ?? null;
 }
 
 export async function getAccountById(id: string): Promise<AccountRow | null> {
-  const { data, error } = await supabase().from('accounts').select(SELECT_COLUMNS).eq('id', id).maybeSingle();
-  if (error) throw error;
-  return (data as AccountRow | null) ?? null;
+  return readAll().find((r) => r.id === id) ?? null;
 }
 
 export async function listAllAccounts(): Promise<AccountRow[]> {
-  const { data, error } = await supabase()
-    .from('accounts')
-    .select(SELECT_COLUMNS)
-    .order('role', { ascending: true })
-    .order('display_name', { ascending: true });
-  if (error) throw error;
-  return (data as AccountRow[]) ?? [];
+  return [...readAll()].sort(
+    (a, b) => ROLE_ORDER[a.role] - ROLE_ORDER[b.role] || a.display_name.localeCompare(b.display_name, 'ru'),
+  );
 }
 
 /** Менеджеры, созданные конкретным управляющим локации — для его собственного экрана «Менеджеры». */
 export async function listAccountsCreatedBy(creatorId: string): Promise<AccountRow[]> {
-  const { data, error } = await supabase()
-    .from('accounts')
-    .select(SELECT_COLUMNS)
-    .eq('created_by', creatorId)
-    .order('display_name', { ascending: true });
-  if (error) throw error;
-  return (data as AccountRow[]) ?? [];
+  return readAll()
+    .filter((r) => r.created_by === creatorId)
+    .sort((a, b) => a.display_name.localeCompare(b.display_name, 'ru'));
 }
 
 export interface CreateAccountInput {
@@ -67,40 +92,48 @@ export interface CreateAccountInput {
 }
 
 export async function createAccount(input: CreateAccountInput): Promise<AccountRow> {
-  const password_hash = await hashPassword(input.password);
-  const { data, error } = await supabase()
-    .from('accounts')
-    .insert({
-      login: input.login,
-      password_hash,
-      role: input.role,
-      location_slug: input.locationSlug,
-      display_name: input.displayName,
-      created_by: input.createdBy,
-    })
-    .select(SELECT_COLUMNS)
-    .single();
-  if (error) throw error;
-  return data as AccountRow;
+  const rows = readAll();
+  const login_key = loginKeyOf(input.login);
+  if (rows.some((r) => r.login_key === login_key)) {
+    // Тот же контракт, что был у unique-индекса в БД: вызывающий код
+    // (api/accounts) проверяет занятость заранее, это — страховка от гонки.
+    throw new Error(`login already taken: ${input.login}`);
+  }
+  const row: AccountRow = {
+    id: randomUUID(),
+    login: input.login.trim(),
+    login_key,
+    password_hash: await hashPassword(input.password),
+    role: input.role,
+    location_slug: input.locationSlug,
+    display_name: input.displayName,
+    created_by: input.createdBy,
+    is_active: true,
+    last_login_at: null,
+    created_at: new Date().toISOString(),
+  };
+  writeAll([...rows, row]);
+  return row;
+}
+
+function patchAccount(id: string, patch: Partial<AccountRow>): void {
+  const rows = readAll();
+  const idx = rows.findIndex((r) => r.id === id);
+  if (idx === -1) return;
+  rows[idx] = { ...rows[idx]!, ...patch };
+  writeAll(rows);
 }
 
 export async function setAccountActive(id: string, isActive: boolean): Promise<void> {
-  const { error } = await supabase().from('accounts').update({ is_active: isActive }).eq('id', id);
-  if (error) throw error;
+  patchAccount(id, { is_active: isActive });
 }
 
 export async function resetAccountPassword(id: string, newPassword: string): Promise<void> {
-  const password_hash = await hashPassword(newPassword);
-  const { error } = await supabase().from('accounts').update({ password_hash }).eq('id', id);
-  if (error) throw error;
+  patchAccount(id, { password_hash: await hashPassword(newPassword) });
 }
 
 export async function touchLastLogin(id: string): Promise<void> {
-  const { error } = await supabase()
-    .from('accounts')
-    .update({ last_login_at: new Date().toISOString() })
-    .eq('id', id);
-  if (error) throw error;
+  patchAccount(id, { last_login_at: new Date().toISOString() });
 }
 
 export function hashPassword(plain: string): Promise<string> {

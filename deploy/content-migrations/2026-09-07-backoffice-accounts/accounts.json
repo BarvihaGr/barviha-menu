@@ -1,0 +1,32 @@
+{
+  "note": "Аккаунты-админы локаций (роль manager: только тумблер стоп-листа своей локации). Пароль = логин по ТЗ, хэшируется при применении миграции; в git секретов нет. Директор (big_boss) заводится из HUB_DIRECTOR_LOGIN / HUB_DIRECTOR_PASSWORD_HASH окружения — см. apply.mjs.",
+  "managers": [
+    { "slug": "arka", "name": "Арка", "login": "AdminBA" },
+    { "slug": "kievskaia", "name": "Киевская", "login": "AdminBK" },
+    { "slug": "baumanskaia", "name": "Бауманская", "login": "AdminBB" },
+    { "slug": "domodedovo", "name": "Домодедово", "login": "AdminBD" },
+    { "slug": "erevan", "name": "Ереван", "login": "AdminBE" },
+    { "slug": "kolomenskaia", "name": "Коломенская", "login": "AdminBKL" },
+    { "slug": "krasnaia-ploshchad", "name": "Красная Площадь", "login": "AdminKP" },
+    { "slug": "barvixa-lounge-krylatskoe", "name": "Крылатское", "login": "AdminBKR" },
+    { "slug": "likerka", "name": "Ликёрка", "login": "AdminBL" },
+    { "slug": "marino", "name": "Марьино", "login": "AdminBM" },
+    { "slug": "maxackala", "name": "Махачкала", "login": "AdminBMH" },
+    { "slug": "mendeleevskaia", "name": "Менделеевская", "login": "AdminBMD" },
+    { "slug": "mitino", "name": "Митино", "login": "AdminBMT" },
+    { "slug": "moskva-siti", "name": "Москва-Сити", "login": "AdminMS" },
+    { "slug": "nevskii", "name": "Невский", "login": "AdminBN" },
+    { "slug": "niznii-novgorod", "name": "Нижний Новгород", "login": "AdminNN" },
+    { "slug": "otradnoe", "name": "Отрадное", "login": "AdminBO" },
+    { "slug": "paveletskaia", "name": "Павелецкая", "login": "AdminBP" },
+    { "slug": "penza", "name": "Пенза", "login": "AdminBPZ" },
+    { "slug": "ramenki", "name": "Раменки", "login": "AdminBR" },
+    { "slug": "rublevka", "name": "Рублёвка", "login": "AdminBRB" },
+    { "slug": "barvixa-lounge-saratov", "name": "Саратов", "login": "AdminBS" },
+    { "slug": "seligerskaia", "name": "Селигерская", "login": "AdminBSL" },
+    { "slug": "taskent", "name": "Ташкент", "login": "AdminBT" },
+    { "slug": "tepliy-stan", "name": "Тёплый Стан", "login": "AdminTS" },
+    { "slug": "cska", "name": "ЦСКА", "login": "AdminBC" },
+    { "slug": "iugo-zapadnaia", "name": "Юго-Западная", "login": "AdminUZ" }
+  ]
+}

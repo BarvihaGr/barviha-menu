@@ -572,6 +572,18 @@ export function getStopListItems(slug: string): FlagListItem[] {
   return allFlagItems(slug).filter((it) => !it.is_available && !it.is_archived);
 }
 
+/**
+ * Все действующие позиции (не в архиве) всех разделов с текущим флагом
+ * «в наличии» — доска стоп-листа для менеджера локации: одним экраном и
+ * поставить в стоп-лист, и вернуть. Раньше вкладка «Стоп-лист» показывала
+ * только уже снятые позиции, а снять позицию можно было лишь через полную
+ * форму редактирования в разделах Кухня/Бар/Кальяны — которая роли manager
+ * закрыта, т.е. менеджер мог только возвращать, но не убирать.
+ */
+export function getAvailabilityItems(slug: string): FlagListItem[] {
+  return allFlagItems(slug).filter((it) => !it.is_archived);
+}
+
 /** Позиции в архиве (сезонное/неактуальное меню) — не показываются на живом меню независимо от «актуально». */
 export function getArchiveItems(slug: string): FlagListItem[] {
   return allFlagItems(slug).filter((it) => it.is_archived);
