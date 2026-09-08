@@ -240,6 +240,29 @@ export function addBarCategory(slug: string, category: string): number {
   return file.sections.length - 1;
 }
 
+/**
+ * Переименование раздела Бара — категория ищется по текущему имени (как и
+ * groupPhotos, см. ниже), поэтому имена категорий внутри локации должны
+ * быть уникальны — это уже было неявным допущением остального кода
+ * (updateBarGroupPhoto и т.п. тоже ключуются по названию категории, не по
+ * индексу в sections).
+ */
+export function renameBarCategory(slug: string, from: string, to: string): void {
+  const file = readContentJson<BarFile>(`${slug}/bar.json`);
+  const entry = file.sections.find((e): e is Extract<ArkaMenuEntry, { kind: 'category' }> =>
+    e.kind === 'category' && e.category === from,
+  );
+  if (!entry) throw new Error(`Категория бара не найдена: ${slug}/${from}`);
+  entry.category = to;
+  // Общее фото категории лежит в отдельной карте, тоже по имени — переносим
+  // ключ вместе с категорией, иначе фото молча отвяжется при переименовании.
+  if (Object.prototype.hasOwnProperty.call(file.groupPhotos, from)) {
+    file.groupPhotos[to] = file.groupPhotos[from]!;
+    delete file.groupPhotos[from];
+  }
+  writeContentJson(`${slug}/bar.json`, file);
+}
+
 export interface NewBarItemInput {
   name: string;
   price: string;

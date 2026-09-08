@@ -62,7 +62,7 @@ export function BarEditor({
         ) : (
           <div key={idx} className="border-b border-[color:var(--border)]">
             <div className="flex items-center gap-2 px-4 sm:px-8 pt-4 pb-1">
-              <span className="text-sm font-medium text-[color:var(--text-soft)]">{entry.category}</span>
+              <CategoryHeader slug={slug} category={entry.category} />
               {(entry.items.length === 0 || entry.items.some((it) => it.type === 2)) && (
                 <GroupPhotoUploader
                   slug={slug}
@@ -131,6 +131,68 @@ export function BarEditor({
       {query.trim() && filtered.length === 0 && (
         <div className="py-10 text-center text-sm text-[color:var(--muted)]">Ничего не найдено</div>
       )}
+    </div>
+  );
+}
+
+/** Название категории — редактируется по клику, как поля позиций. Категории
+ * ищутся на сервере по текущему имени (см. renameBarCategory), поэтому после
+ * успешного переименования обновляем всю страницу — иначе локальный `photos`
+ * (ключуется по имени категории) и остальные поля разошлись бы со свежим
+ * именем до следующего ручного релоада. */
+function CategoryHeader({ slug, category }: { slug: string; category: string }) {
+  const router = useRouter();
+  const [editing, setEditing] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus | null>(null);
+
+  async function rename(next: string) {
+    const trimmed = next.trim();
+    if (!trimmed || trimmed === category) {
+      setEditing(false);
+      return;
+    }
+    let ok = false;
+    try {
+      const res = await fetch(apiPath(`/api/locations/${slug}/bar-category`), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from: category, to: trimmed }),
+      });
+      ok = res.ok;
+    } catch {
+      ok = false;
+    }
+    setSaveStatus({ at: Date.now(), ok });
+    setEditing(false);
+    if (ok) router.refresh();
+  }
+
+  if (editing) {
+    return (
+      <input
+        autoFocus
+        defaultValue={category}
+        onBlur={(e) => rename(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') e.currentTarget.blur();
+          if (e.key === 'Escape') setEditing(false);
+        }}
+        className="input text-sm font-medium"
+      />
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <button
+        type="button"
+        onClick={() => setEditing(true)}
+        title="Переименовать категорию"
+        className="text-sm font-medium text-[color:var(--text-soft)] hover:underline"
+      >
+        {category}
+      </button>
+      <SavedBadge status={saveStatus} />
     </div>
   );
 }

@@ -110,6 +110,12 @@ export const NewBarCategorySchema = z.object({
   category: z.string().trim().min(1).max(120),
 });
 
+/** PATCH /api/locations/[slug]/bar-category — переименование категории бара-шаблона. */
+export const RenameBarCategorySchema = z.object({
+  from: z.string().trim().min(1).max(120),
+  to: z.string().trim().min(1).max(120),
+});
+
 /** POST /api/locations/[slug]/catalog/[realm] — новая позиция. */
 export const NewCatalogItemSchema = z.object({
   name: z.string().trim().min(1).max(200),
