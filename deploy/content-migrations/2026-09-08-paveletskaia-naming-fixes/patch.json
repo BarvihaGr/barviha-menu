@@ -1,0 +1,258 @@
+{
+  "note": "Павелецкая: правки названий кухни/бара/кальянов по замечаниям руководителя (капс, дефисы, кавычки у образных/брендовых названий, сокращения).",
+  "files": [
+    {
+      "location": "paveletskaia",
+      "realm": "kitchen",
+      "shape": "flat",
+      "items": {
+        "kitchen-summer-menu-letnii-roll-assorti": {
+          "name": {
+            "from": "ЛЕТНИЙ РОЛЛ АССОРТИ",
+            "to": "Летний ролл-ассорти"
+          }
+        },
+        "kitchen-cold-app-tar-tar-iz-goviadiny": {
+          "name": {
+            "from": "ТАР ТАР ИЗ ГОВЯДИНЫ",
+            "to": "Тартар из говядины"
+          }
+        },
+        "kitchen-raw-tar-tar-iz-goviadiny-klas-uw5p21e": {
+          "name": {
+            "from": "ТАР ТАР ИЗ ГОВЯДИНЫ",
+            "to": "Тартар из говядины"
+          }
+        },
+        "kitchen-soups-tom-iam-s-moreproduktami-sqkq236": {
+          "name": {
+            "from": "ТОМ ЯМ",
+            "to": "Том-Ям"
+          }
+        },
+        "kitchen-soups-krem-sup-gribnoi-kapuchin-4cwp238": {
+          "name": {
+            "from": "КРЕМ - СУП ГРИБНОЙ КАПУЧИНО С ДОБАВЛЕНИЕМ СЛИВОК",
+            "to": "Крем-суп грибной капучино с добавлением сливок"
+          }
+        },
+        "kitchen-hot-kotletki-iz-indeiki-s-ka-pd53222": {
+          "name": {
+            "from": "КОТЛЕТКИ ИЗ ИНДЕЙКИ С КАРТОФЕЛЬНЫМ ПЮРЕ И СОУСОМ",
+            "to": "Котлетки из индейки с картофельным пюре и соусом на выбор"
+          },
+          "description": {
+            "from": "Нежные котлетки из индейки с картофельным пюре и соусом",
+            "to": "Нежные котлетки из индейки с картофельным пюре и соусом на выбор — брусничным, томатным или грибным."
+          }
+        },
+        "kitchen-hot-kasha-iz-topora-zbc2226": {
+          "name": {
+            "from": "КАША ИЗ ТОПОРА",
+            "to": "«Каша из топора»"
+          }
+        },
+        "kitchen-steaks-steik-minon-latinskaia-a-yplb21s": {
+          "name": {
+            "from": "СТЕЙК МИНЬОН ЛАТИНСКАЯ АМЕРИКА",
+            "to": "Стейк Филе-миньон (Латинская Америка)"
+          }
+        },
+        "kitchen-steaks-steik-ribai-primebeef-bl-46c221t": {
+          "name": {
+            "from": "СТЕЙК РИБАЙ PRIMEBEEF BLACK ANGUS",
+            "to": "Стейк Рибай Prime Beef Black Angus"
+          }
+        },
+        "kitchen-steaks-steik-striploin-5kx221u": {
+          "name": {
+            "from": "СТЕЙК СТРИПЛОЙН",
+            "to": "Стейк Стриплойн"
+          }
+        },
+        "kitchen-steaks-steik-denver-xe3121v": {
+          "name": {
+            "from": "СТЕЙК ДЕНВЕР",
+            "to": "Стейк Денвер"
+          }
+        },
+        "kitchen-burgers-burger-barvikha-s-dvoinoi-ssuq22c": {
+          "name": {
+            "from": "БУРГЕР БАРВИХА С ДВОЙНОЙ КОТЛЕТОЙ, КОНЬЯЧНЫМ СОУСОМ И КРЕМОМ ИЗ БЕЛЫХ ГРИБОВ",
+            "to": "Бургер «Барвиха» с двойной котлетой, коньячным соусом и кремом из белых грибов"
+          }
+        },
+        "kitchen-burgers-burger-klassika-s-kotlet-wszf22d": {
+          "name": {
+            "from": "БУРГЕР \"КЛАССИКА\" С КОТЛЕТОЙ ИЗ МРАМОРНОЙ ГОВЯДИНЫ С МЕДОВО - ГОРЧИЧНЫМ СОУСОМ",
+            "to": "Бургер «Классика» с котлетой из мраморной говядины с медово-горчичным соусом"
+          }
+        },
+        "kitchen-burgers-burger-syrnyi-s-kotletoi-yokb22e": {
+          "name": {
+            "from": "БУРГЕР \"СЫРНЫЙ\" С КОТЛЕТОЙ ИЗ МРАМОРНОЙ ГОВЯДИНЫ С БЕКОНОМ И ЯЙЦОМ",
+            "to": "Бургер «Сырный» с котлетой из мраморной говядины с беконом и яйцом"
+          }
+        },
+        "kitchen-burgers-burger-s-kamamberom-govia-ueyv22f": {
+          "name": {
+            "from": "БУРГЕР С КАМАМБЕРОМ, ГОВЯДИНОЙ И БРУСНИЧНЫМ СОУСОМ",
+            "to": "Бургер с камамбером, говядиной и брусничным соусом"
+          }
+        },
+        "kitchen-burgers-burger-s-rvanoi-goviadino-rw9722g": {
+          "name": {
+            "from": "БУРГЕР С РВАНОЙ ГОВЯДИНОЙ, МАНГО И ХАЛАПЕНЬО",
+            "to": "Бургер с рваной говядиной, манго и халапеньо"
+          }
+        },
+        "kitchen-burgers-burger-s-khrustiashchim-cyple-dyjw22h": {
+          "name": {
+            "from": "БУРГЕР С ХРУСТЯЩИМ ЦЫПЛЁНКОМ",
+            "to": "Бургер с хрустящим цыплёнком"
+          }
+        },
+        "kitchen-burgers-khalial-burger-klassika-s-i19s22i": {
+          "name": {
+            "from": "ХАЛЯЛЬ БУРГЕР \"КЛАССИКА\" С КОТЛЕТОЙ ИЗ МРАМОРНОЙ ГОВЯДИНЫ С МЕДОВО - ГОРЧИЧНЫМ СОУСОМ",
+            "to": "Халяль бургер «Классика» с котлетой из мраморной говядины с медово-горчичным соусом"
+          }
+        },
+        "kitchen-burgers-khalial-burger-syrnyi-s-k-aa0722j": {
+          "name": {
+            "from": "ХАЛЯЛЬ БУРГЕР \"СЫРНЫЙ\" С КОТЛЕТОЙ ИЗ МРАМОРНОЙ ГОВЯДИНЫ И ЯЙЦОМ",
+            "to": "Халяль бургер «Сырный» с котлетой из мраморной говядины и яйцом"
+          }
+        },
+        "kitchen-rolls-roll-barvikha-nu9c22k": {
+          "name": {
+            "from": "РОЛЛ БАРВИХА",
+            "to": "Ролл «Барвиха»"
+          }
+        },
+        "kitchen-rolls-roll-filadelfiia-lybz22l": {
+          "name": {
+            "from": "РОЛЛ ФИЛАДЕЛЬФИЯ",
+            "to": "Ролл Филадельфия"
+          }
+        },
+        "kitchen-rolls-roll-kaliforniia-s-losose-miz522m": {
+          "name": {
+            "from": "РОЛЛ КАЛИФОРНИЯ С ЛОСОСЕМ",
+            "to": "Ролл Калифорния с лососем"
+          }
+        },
+        "kitchen-rolls-roll-kaliforniia-s-krevet-654s22n": {
+          "name": {
+            "from": "РОЛЛ КАЛИФОРНИЯ С КРЕВЕТКОЙ",
+            "to": "Ролл Калифорния с креветкой"
+          }
+        },
+        "kitchen-rolls-roll-kaliforniia-s-krabom-2jbl22o": {
+          "name": {
+            "from": "РОЛЛ КАЛИФОРНИЯ С КРАБОМ",
+            "to": "Ролл Калифорния с крабом"
+          }
+        },
+        "kitchen-rolls-roll-s-avokado-i-lososem-1yua22p": {
+          "name": {
+            "from": "РОЛЛ С АВОКАДО И ЛОСОСЕМ",
+            "to": "Ролл с авокадо и лососем"
+          }
+        },
+        "kitchen-rolls-roll-opalenyi-losos-s-a-a6mn22q": {
+          "name": {
+            "from": "РОЛЛ ОПАЛЁНЫЙ ЛОСОСЬ С АПЕЛЬСИНОМ",
+            "to": "Ролл опалёный лосось с апельсином"
+          }
+        },
+        "kitchen-rolls-roll-krevetka-tempura-ml5a22r": {
+          "name": {
+            "from": "РОЛЛ КРЕВЕТКА ТЕМПУРА",
+            "to": "Ролл креветка темпура"
+          }
+        },
+        "kitchen-rolls-teplyi-roll-s-krevetkoi--fa2122s": {
+          "name": {
+            "from": "ТЁПЛЫЙ РОЛЛ С КРЕВЕТКОЙ И ЛОСОСЕМ",
+            "to": "Тёплый ролл с креветкой и лососем"
+          }
+        },
+        "kitchen-rolls-gunkan-kani-o0u022t": {
+          "name": {
+            "from": "ГУНКАН КАНИ",
+            "to": "Гункан Кани"
+          }
+        },
+        "kitchen-rolls-gunkan-maguro-bpa322u": {
+          "name": {
+            "from": "ГУНКАН МАГУРО",
+            "to": "Гункан Магуро"
+          }
+        },
+        "kitchen-rolls-gunkan-siake-zl5322v": {
+          "name": {
+            "from": "ГУНКАН СЯКЕ",
+            "to": "Гункан Сяке"
+          }
+        },
+        "kitchen-sides-mini-kartofel-4wo123c": {
+          "name": {
+            "from": "МИНИ КАРТОФЕЛЬ",
+            "to": "Мини-картофель"
+          }
+        },
+        "kitchen-healthy-steik-tunca-s-limonom": {
+          "name": {
+            "from": "СТЕЙК ТУНЦА С ЛИМОНОМ",
+            "to": "Стейк из тунца с лимоном"
+          }
+        },
+        "kitchen-healthy-steik-lososya-s-limonom": {
+          "name": {
+            "from": "СТЕЙК ЛОСОСЯ С ЛИМОНОМ",
+            "to": "Стейк из лосося с лимоном"
+          }
+        }
+      }
+    },
+    {
+      "location": "paveletskaia",
+      "realm": "bar",
+      "shape": "sections",
+      "items": {
+        "arka-bar-0014": {
+          "name": {
+            "from": "Сан Бенедетто б.газ/газ",
+            "to": "Сан Бенедетто без газа/с газом"
+          }
+        },
+        "arka-bar-0159": {
+          "name": {
+            "from": "Стелла Артуа (б/а). Россия.",
+            "to": "Стелла Артуа (безалкогольное). Россия."
+          }
+        }
+      }
+    },
+    {
+      "location": "paveletskaia",
+      "realm": "hookah",
+      "shape": "flat",
+      "items": {
+        "hookah-hookah-kalian-barvikha-2kla24p": {
+          "name": {
+            "from": "КАЛЬЯН БАРВИХА",
+            "to": "Кальян «Барвиха»"
+          }
+        },
+        "hookah-hookah-eshche-odin-pozhaluista-03ae24s": {
+          "name": {
+            "from": "ЕЩЁ ОДИН, ПОЖАЛУЙСТА",
+            "to": "«Ещё один, пожалуйста»"
+          }
+        }
+      }
+    }
+  ]
+}
