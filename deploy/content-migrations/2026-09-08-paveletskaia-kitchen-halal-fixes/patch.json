@@ -1,0 +1,76 @@
+{
+  "location": "paveletskaia",
+  "realm": "kitchen",
+  "note": "Павелецкая · кухня: КБЖУ для двух халяль-бургеров (посчитано по весу от почти идентичных не-халяльных близнецов того же меню — состав слово в слово), человеческие описания на 4 языках вместо формальной отписки «приготовлено по стандарту халяль» у трёх позиций, опечатка в имени «ТОМ ЯМ ».",
+  "items": {
+    "kitchen-burgers-khalial-burger-klassika-s-i19s22i": {
+      "kbju": { "prot": 32.1, "fat": 62.1, "carb": 77.3, "kcal": 992.4 }
+    },
+    "kitchen-burgers-khalial-burger-syrnyi-s-k-aa0722j": {
+      "kbju": { "prot": 37.2, "fat": 81.2, "carb": 74.1, "kcal": 1175.3 }
+    },
+    "kitchen-soups-tom-iam-s-moreproduktami-sqkq236": {
+      "name": { "from": "ТОМ ЯМ ", "to": "ТОМ ЯМ" }
+    },
+    "kitchen-cold-app-miasnaia-tarelka-khalial-5n0321j": {
+      "description": {
+        "description": {
+          "from": "Ассорти мясных деликатесов, приготовленных по стандарту халяль",
+          "to": "Ассорти халяльных колбас: султанская, казы из конины, итальянская с сыром и крымский сервелат. Свежая кинза и томаты черри дополняют вкус. Мясная классика в халяльном исполнении."
+        },
+        "description_en": {
+          "from": "An assortment of cured meats prepared to halal standard.",
+          "to": "An assortment of halal sausages: Sultanskaya, horse-meat kazy, Italian with cheese, and Crimean servelat. Fresh cilantro and cherry tomatoes round out the flavor. A meat classic, halal style."
+        },
+        "description_zh": {
+          "from": "按清真标准制作的肉类熟食拼盘。",
+          "to": "清真香肠拼盘：苏丹香肠、马肉卡兹、意式奶酪香肠和克里米亚色拉米。新鲜香菜与圣女果为风味添彩。经典肉拼盘的清真版本。"
+        },
+        "description_hy": {
+          "from": "Հալալ ստանդարտով պատրաստված մսային դելիկատեսների տեսականի։",
+          "to": "Հալալ երշիկների տեսականի՝ սուլթանական, ձիու մսից քազի, իտալական պանրով և ղրիմյան սերվելատ։ Թարմ կիտրոնախոտը և չերի լոլիկը լրացնում են համը։ Մսային դասականը՝ հալալ տարբերակով։"
+        }
+      }
+    },
+    "kitchen-pizza-khalial-eck2233": {
+      "description": {
+        "description": {
+          "from": "Пицца, приготовленная по стандарту халяль",
+          "to": "Пицца на классической основе с моцареллой и ассорти халяльных колбасок — домашними, итальянской с сыром и крымской. Солёные огурцы и соус барбекю с томатным соусом добавляют яркости. Сытная пицца в халяльном исполнении."
+        },
+        "description_en": {
+          "from": "A pizza prepared to halal standard.",
+          "to": "Classic-base pizza with mozzarella and an assortment of halal sausages — house-style, Italian with cheese, and Crimean. Pickled cucumbers and barbecue sauce with tomato sauce add brightness. A hearty pizza, halal style."
+        },
+        "description_zh": {
+          "from": "按清真标准制作的披萨。",
+          "to": "经典饼底披萨，配马苏里拉奶酪与清真香肠拼盘——家常味、意式奶酪味和克里米亚味。酸黄瓜与烧烤酱、番茄酱带来丰富风味。饱腹的清真披萨。"
+        },
+        "description_hy": {
+          "from": "Պիցցա՝ պատրաստված հալալ ստանդարտով։",
+          "to": "Դասական խմորով պիցցա՝ մոցարելլայով և հալալ երշիկների տեսականիով՝ տնական, իտալական պանրով և ղրիմյան։ Թթու վարունգը և բարբեքյու սոուսը՝ լոլիկի սոուսով, հավելում են վառ համ։ Հագեցնող պիցցա՝ հալալ տարբերակով։"
+        }
+      }
+    },
+    "kitchen-soups-borshch-khalial-dm3e234": {
+      "description": {
+        "description": {
+          "from": "Наваристый борщ, приготовленный по стандарту халяль",
+          "to": "Наваристый борщ на говяжьем бульоне халяль с говядиной, свёклой, капустой и картофелем. Лёгкая копчёная нотка и чеснок добавляют глубину. Подаётся со сметаной и бородинским хлебом — классика в халяльном исполнении."
+        },
+        "description_en": {
+          "from": "A hearty borscht prepared to halal standard.",
+          "to": "A hearty borscht on halal beef broth with beef, beetroot, cabbage and potato. A light smoky note and garlic add depth. Served with sour cream and Borodinsky bread — a classic, halal style."
+        },
+        "description_zh": {
+          "from": "按清真标准制作的浓郁罗宋汤。",
+          "to": "浓郁罗宋汤，以清真牛肉高汤为底，加入牛肉、甜菜根、卷心菜与土豆。淡淡的烟熏香气与大蒜增添层次。搭配酸奶油与波罗金斯基黑麦面包——经典风味的清真版本。"
+        },
+        "description_hy": {
+          "from": "Հագեցնող բորշչ՝ պատրաստված հալալ ստանդարտով։",
+          "to": "Հագեցնող բորշչ՝ հալալ տավարի արգանակի հիմքով, տավարի մսով, ճակնդեղով, կաղամբով և կարտոֆիլով։ Թեթև ապխտած երանգը և սխտորը հավելյալ խորություն են հաղորդում։ Մատուցվում է թթվասերով և Բորոդինո հացով՝ դասականը հալալ տարբերակով։"
+        }
+      }
+    }
+  }
+}
