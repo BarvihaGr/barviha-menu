@@ -1,0 +1,2100 @@
+{
+  "location": "paveletskaia",
+  "note": "Павелецкая: переводы живого меню (кухня/бар/кальян) на узбекский (латиница) и арабский — подготовка «+2 языка».",
+  "kitchen": {
+    "kitchen-cold-app-syrnaia-tarelka": {
+      "name_uz": "Pishloq Assortisi",
+      "name_ar": "طبق الجبن",
+      "description_uz": "Toʻrt xil oʻziga xos pishloq: qaymoqli bri, yetiltirilgan parmezan, tryufelli montazio va achchiqroq jersi blyu. Ularga asal, yongʻoq, qulupnay, uzum va qarsildoq grissini qoʻshib beriladi. Bir qadah vinoga ideal hamroh.",
+      "description_ar": "أربعة أنواع من الجبن المميز: بري الكريمي، وبارميزان معتّق، ومونتازيو بالكمأة، وجيرسي بلو اللاذع. تُقدَّم مع العسل والجوز والفراولة والعنب وأعواد الغريسيني المقرمشة. الرفيق المثالي لكأس من النبيذ.",
+      "composition_uz": "Bri pishlogʻi, parmezan pishlogʻi, tryufelli montazio pishlogʻi, koʻk mogʻorli jersi blyu pishlogʻi, asal, yalpiz, yongʻoq, qulupnay, uzum, grissini (non tayoqchalari).",
+      "composition_ar": "جبن بري، جبن بارميزان، جبن مونتازيو بالكمأة، جبن جيرسي بلو بالعفن الأزرق، عسل، نعناع، جوز، فراولة، عنب، غريسيني (أعواد الخبز)."
+    },
+    "kitchen-poke-poke-s-krevetkoi": {
+      "name_uz": "Krevetkali Poke",
+      "name_ar": "بوكيه بالروبيان",
+      "description_uz": "Shirali krevetka va yangi sabzavotli poke-boul",
+      "description_ar": "بوكيه بول بالروبيان الطري والخضراوات الطازجة",
+      "composition_uz": "Guruch (mitsukan sirkasi, mirin, shakar, tuz), krevetka, asal-xantal sousi (asal, donali xantal), yangi bodring, soya dukkaklari, konservalangan makkajoʻxori, chuka, yongʻoqli sous, nori, kunjut.",
+      "composition_ar": "أرز (خل ميزكان، ميرين، سكر، ملح)، روبيان، صلصة العسل والخردل (عسل، خردل بالحبوب)، خيار طازج، فول الصويا، ذرة معلبة، تشوكا، صلصة المكسرات، نوري، سمسم."
+    },
+    "kitchen-poke-poke-s-lososem": {
+      "name_uz": "Lososli Poke",
+      "name_ar": "بوكيه بالسلمون",
+      "description_uz": "Nozik losos va yangi sabzavotli poke-boul",
+      "description_ar": "بوكيه بول بالسلمون الطري والخضراوات الطازجة",
+      "composition_uz": "Guruch (mitsukan sirkasi, mirin, shakar, tuz), losos filesi, soya pastasi asosidagi sous (apelsin, miso pastasi, soya sousi, tryufel yogʻi, kungaboqar yogʻi, shakar), konservalangan makkajoʻxori, yangi bodring, soya dukkaklari, rediska, kunjut, nori, yongʻoqli sous.",
+      "composition_ar": "أرز (خل ميزكان، ميرين، سكر، ملح)، فيليه سلمون، صلصة على أساس معجون الصويا (برتقال، معجون ميسو، صلصة الصويا، زيت الكمأة، زيت دوار الشمس، سكر)، ذرة معلبة، خيار طازج، فول الصويا، فجل، سمسم، نوري، صلصة المكسرات."
+    },
+    "kitchen-sides-kartofel-fri": {
+      "name_uz": "Kartoshka Fri",
+      "name_ar": "بطاطس مقلية",
+      "description_uz": "Qarsildoq qobiqli va yumshoq ichli oltinrang kartoshka fri. Tuz va qora murch bilan ziravorlangan. Burger, steyk va gazaklarga universal garnir.",
+      "description_ar": "بطاطس مقلية ذهبية بقشرة مقرمشة وقلب طري. متبلة بالملح والفلفل الأسود. طبق جانبي مناسب للبرغر والستيك والمقبلات.",
+      "composition_uz": "Muzlatilgan kartoshka fri, tuz, qora murch.",
+      "composition_ar": "بطاطس مقلية مجمدة، ملح، فلفل أسود."
+    },
+    "kitchen-salads-klassicheskii-cezar-s-kr-koju211": {
+      "name_uz": "Krevetkali Klassik Sezar",
+      "name_ar": "سيزر كلاسيكي بالروبيان",
+      "description_uz": "Qarsildoq romano, grilda pishirilgan krevetka, parmezan va klassik sezar sousi",
+      "description_ar": "خس روماني مقرمش، روبيان مشوي، بارميزان وصلصة سيزر الكلاسيكية",
+      "composition_uz": "Romano, gril krevetka, cherri pomidorlari, parmezan pishlogʻi, sezar sousi (donali xantal, parmezan pishlogʻi, tovuq tuxumi, sarimsoq, seld filesi, soya sousi, kungaboqar yogʻi, kapers), suxariklar (baget, sarimsoq pastasi (sarimsoq, kungaboqar yogʻi)).",
+      "composition_ar": "خس روماني، روبيان مشوي، طماطم كرزية، جبن بارميزان، صلصة سيزر (خردل بالحبوب، جبن بارميزان، بيض، ثوم، فيليه رنجة، صلصة الصويا، زيت دوار الشمس، كبر)، خبز محمص (باغيت، معجون الثوم (ثوم، زيت دوار الشمس))."
+    },
+    "kitchen-salads-klassicheskii-cezar-s-ku-5x4a212": {
+      "name_uz": "Tovuqli Klassik Sezar",
+      "name_ar": "سيزر كلاسيكي بالدجاج",
+      "description_uz": "Qarsildoq romano, grilda pishirilgan tovuq filesi, parmezan va sezar sousi",
+      "description_ar": "خس روماني مقرمش، فيليه دجاج مشوي، بارميزان وصلصة سيزر",
+      "composition_uz": "Romano, marinadlangan tovuq koʻkragi (kungaboqar yogʻi, sarimsoq pastasi (kungaboqar yogʻi, sarimsoq), qora murch, Provans oʻtlari, vino sirkasi, tuz), cherri pomidorlari, parmezan pishlogʻi, sezar sousi (donali xantal, parmezan pishlogʻi, tovuq tuxumi, sarimsoq, seld filesi, soya sousi, kungaboqar yogʻi, kapers), suxariklar (baget, sarimsoq pastasi (sarimsoq, kungaboqar yogʻi)).",
+      "composition_ar": "خس روماني، صدر دجاج متبل (زيت دوار الشمس، معجون الثوم (زيت دوار الشمس، ثوم)، فلفل أسود، أعشاب بروفنسية، خل النبيذ، ملح)، طماطم كرزية، جبن بارميزان، صلصة سيزر (خردل بالحبوب، جبن بارميزان، بيض، ثوم، فيليه رنجة، صلصة الصويا، زيت دوار الشمس، كبر)، خبز محمص (باغيت، معجون الثوم (ثوم، زيت دوار الشمس))."
+    },
+    "kitchen-salads-olive-so-slabosolenym-l-l3qm213": {
+      "name_uz": "Kam Tuzlangan Lososli Olivye",
+      "name_ar": "أوليفييه بالسلمون قليل الملح",
+      "description_uz": "Nozik kam tuzlangan losos bilan klassik olivye",
+      "description_ar": "سلطة أوليفييه الكلاسيكية مع السلمون الطري قليل الملح",
+      "composition_uz": "Kam tuzlangan losos (apelsin, yangi ukrop, shakar, tuz), kartoshka, sabzi, tuzlangan bodring, yangi bodring, koʻk noʻxat, tovuq tuxumi, bedana tuxumi, ukrop, petrushka, shnitt-piyoz, mayonez, tuz, qora murch.",
+      "composition_ar": "سلمون قليل الملح (برتقال، شبت طازج، سكر، ملح)، بطاطس، جزر، خيار مخلل، خيار طازج، بازلاء خضراء، بيض دجاج، بيض سمان، شبت، بقدونس، ثوم معمر، مايونيز، ملح، فلفل أسود."
+    },
+    "kitchen-salads-olive-s-kurinoi-grudkoi-xqdr214": {
+      "name_uz": "Tovuq Koʻkragi bilan Olivye",
+      "name_ar": "أوليفييه بصدر الدجاج",
+      "description_uz": "Bolalikdan sevimli olivye — tovuq koʻkragi bilan",
+      "description_ar": "سلطة أوليفييه المحبوبة منذ الطفولة مع صدر الدجاج",
+      "composition_uz": "Tovuq koʻkragi, kartoshka, sabzi, koʻk noʻxat, yangi bodring, tuzlangan bodring, tovuq tuxumi, bedana tuxumi, ukrop, petrushka, shnitt-piyoz, mayonez, tuz, qora murch.",
+      "composition_ar": "صدر دجاج، بطاطس، جزر، بازلاء خضراء، خيار طازج، خيار مخلل، بيض دجاج، بيض سمان، شبت، بقدونس، ثوم معمر، مايونيز، ملح، فلفل أسود."
+    },
+    "kitchen-salads-salat-po-derevenski-s-ko-3idx215": {
+      "name_uz": "Dudlangan Smetanali Qishloqcha Salat",
+      "name_ar": "سلطة على الطريقة الريفية بالقشدة الحامضة المدخنة",
+      "description_uz": "Dudlangan smetana ostidagi yangi sabzavotlar va koʻkatlar",
+      "description_ar": "خضراوات وأعشاب طازجة تحت القشدة الحامضة المدخنة",
+      "composition_uz": "Bodring, pomidor, rediska, qizil piyoz, ukrop, smetana 20%, suyuq tutun sousi, tuz, qora murch.",
+      "composition_ar": "خيار، طماطم، فجل، بصل أحمر، شبت، قشدة حامضة 20%، صلصة الدخان السائل، ملح، فلفل أسود."
+    },
+    "kitchen-salads-salat-grecheskii-3qnd216": {
+      "name_uz": "Grek Salati",
+      "name_ar": "سلطة يونانية",
+      "description_uz": "Feta pishlogʻi, zaytun, yangi sabzavotlar va zaytun yogʻi",
+      "description_ar": "جبن فيتا، زيتون، خضراوات طازجة وزيت زيتون",
+      "composition_uz": "Bodring, pomidor, qizil piyoz, kapers, brinza, bulgor qalampiri, Kalamata zaytunlari, krem-chiz (kremette pishlogʻi, brinza, qaymoq 22%), grekcha zapravka (limon, apelsin, zaytun yogʻi, shakar, och balzamik sous, pomidor, tuz, qora murch), zaytun yogʻi, zaatar, yangi rayhon, tuz, qora murch.",
+      "composition_ar": "خيار، طماطم، بصل أحمر، كبر، جبن فيتا، فلفل رومي، زيتون كالاماتا، جبن كريمي (جبن كريميت، فيتا، قشدة 22%)، تتبيلة يونانية (ليمون، برتقال، زيت زيتون، سكر، صلصة بلسمية فاتحة، طماطم، ملح، فلفل أسود)، زيت زيتون، خلطة الزعتر، ريحان طازج، ملح، فلفل أسود."
+    },
+    "kitchen-salads-baklazhan-tempura-s-uzbek-eab6217": {
+      "name_uz": "Oʻzbek Pomidori, Pista va Sweet Chili Sousli Tempura Baqlajon",
+      "name_ar": "باذنجان تمبورا مع الطماطم الأوزبكية والفستق وصلصة سويت تشيلي",
+      "description_uz": "Qarsildoq tempura baqlajon, shirin pomidor, pista va sweet chili sousi",
+      "description_ar": "باذنجان تمبورا مقرمش، طماطم حلوة، فستق وصلصة سويت تشيلي",
+      "composition_uz": "Baqlajon, tempura klyari (suv, tempura uni, makkajoʻxori kraxmali, bugʻdoy uni), un, pomidor, kashnich, shirin chili sousi, pista, shnitt-piyoz, tuz, murch.",
+      "composition_ar": "باذنجان، خليط التمبورا (ماء، دقيق تمبورا، نشا الذرة، دقيق قمح)، دقيق، طماطم، كزبرة خضراء، صلصة تشيلي حلوة، فستق، ثوم معمر، ملح، فلفل."
+    },
+    "kitchen-salads-teplyi-salat-s-miasom-bych-yzn9218": {
+      "name_uz": "Prime Beef Mol Goʻshti, Mini Kartoshka va Tunets Sousli Issiq Salat",
+      "name_ar": "سلطة دافئة بلحم البقر برايم بيف والبطاطس الصغيرة وصلصة التونة",
+      "description_uz": "Issiq Prime Beef mol goʻshti, yosh kartoshka va tunets sousi",
+      "description_ar": "لحم بقر برايم بيف دافئ، بطاطس صغيرة وصلصة التونة",
+      "composition_uz": "Mol vireskasi, dukkakli loviya, cherri, bodring, qizil rediska, qaynatilgan mini kartoshka, sarimsoqli yogʻ (sarimsoq, yangi petrushka, kungaboqar yogʻi), tunets sousi (konservalangan tunets, mayonez, kapers, sarimsoq, limon sharbati), tuz, murch.",
+      "composition_ar": "فيليه لحم بقر (تندرلوين)، فاصوليا خضراء، طماطم كرزية، خيار، فجل أحمر، بطاطس صغيرة مسلوقة، زيت الثوم (ثوم، بقدونس طازج، زيت دوار الشمس)، صلصة التونة (تونة معلبة، مايونيز، كبر، ثوم، عصير ليمون)، ملح، فلفل."
+    },
+    "kitchen-salads-bolshoi-zelenyi-salat-zadu219": {
+      "name_uz": "Katta Yashil Salat",
+      "name_ar": "سلطة خضراء كبيرة",
+      "description_uz": "Yengil zapravkali yangi bargli koʻkatlar aralashmasi",
+      "description_ar": "خليط طازج من الخضراوات الورقية مع تتبيلة خفيفة",
+      "composition_uz": "Salat aralashmasi (romano, rukkola, ismaloq), yangi bodring, avokado, zaytun yogʻi, tuz.",
+      "composition_ar": "خليط الخس (خس روماني، جرجير، سبانخ)، خيار طازج، أفوكادو، زيت زيتون، ملح."
+    },
+    "kitchen-salads-rukkola-s-krevetkami-klu-b89u21a": {
+      "name_uz": "Krevetka, Qulupnay va Parmezan Pishloqli Rukkola",
+      "name_ar": "جرجير مع الروبيان والفراولة وجبن البارميزان",
+      "description_uz": "Rukkola, shirali krevetka, qulupnay va parmezan",
+      "description_ar": "جرجير، روبيان طري، فراولة وبارميزان",
+      "composition_uz": "Rukkola, krevetka, cherri pomidorlari, avokado, qulupnay, parmezan, balzamik sous (shakar, balzamik sirka, tuz, qora murch, zaytun yogʻi), kungaboqar yogʻi, balzamik krem-sous, tuz, murch.",
+      "composition_ar": "جرجير، روبيان، طماطم كرزية، أفوكادو، فراولة، بارميزان، صلصة بلسمية (سكر، خل بلسمي، ملح، فلفل أسود، زيت زيتون)، زيت دوار الشمس، كريمة بلسمية، ملح، فلفل."
+    },
+    "kitchen-salads-gril-salat-s-moreproduk-bcw121b": {
+      "name_uz": "Dengiz Mahsulotlari va Dashi-Kombu Suvoʻtida Damlangan Qaymoqli Sousli Gril-Salat",
+      "name_ar": "سلطة مشوية بالمأكولات البحرية وصلصة كريمية منقوعة بطحالب داشي كومبو",
+      "description_uz": "Dashi-kombu suvoʻtidagi qaymoqli sous ostida grilda pishirilgan dengiz mahsulotlari",
+      "description_ar": "مأكولات بحرية مشوية تحت صلصة كريمية بطحالب داشي كومبو",
+      "composition_uz": "Kabachok, baqlajon, bulgor qalampiri, shampinyon, krevetka, mini kalmar, cherri, toʻq sariq tobiko ikrasi, kungaboqar yogʻi, yangi ukrop, tuz, osiyocha glazur (shirin chili sousi, asal, shakar, soya sousi), dashi-kombu sousi (dashi-kombu suvoʻti, qaymoq 22%, tunets qirindisi).",
+      "composition_ar": "كوسا، باذنجان، فلفل رومي، فطر، روبيان، حبار صغير، طماطم كرزية، كافيار توبيكو برتقالي، زيت دوار الشمس، شبت طازج، ملح، تزجيج آسيوي (صلصة تشيلي حلوة، عسل، سكر، صلصة الصويا)، صلصة داشي كومبو (طحالب داشي كومبو، قشدة 22%، رقائق التونة)."
+    },
+    "kitchen-salads-salat-s-tuncom-i-triufel-68da21c": {
+      "name_uz": "Tunets va Tryufel Zapravkali Salat",
+      "name_ar": "سلطة التونة بتتبيلة الكمأة",
+      "description_uz": "Nozik tunets va yengil tryufel zapravkasi",
+      "description_ar": "تونة طرية وتتبيلة الكمأة الخفيفة",
+      "composition_uz": "Tunets, salat aralashmasi, cherri pomidorlari, tryufel zapravkasi (zaytun yogʻi, tryufel yogʻi, limon, tuz).",
+      "composition_ar": "تونة، خليط الخس، طماطم كرزية، تتبيلة الكمأة (زيت زيتون، زيت الكمأة، ليمون، ملح)."
+    },
+    "kitchen-raw-tartar-iz-tunca-5vqm21d": {
+      "name_uz": "Tunets Tartari",
+      "name_ar": "تارتار التونة",
+      "description_uz": "Nozik zapravkali yupqa toʻgʻralgan yangi tunets",
+      "description_ar": "تونة طازجة مقطعة شرائح رقيقة مع تتبيلة رقيقة",
+      "composition_uz": "Tunets, shnitt-piyoz, zaytun yogʻi, tuz, qora murch donasi, sitron zapravkasi (yudzu sousi, zaytun yogʻi, apelsin, laym sharbati).",
+      "composition_ar": "تونة، ثوم معمر، زيت زيتون، ملح، حبوب الفلفل الأسود، تتبيلة الحمضيات (صلصة يوزو، زيت زيتون، برتقال، عصير الليمون الأخضر)."
+    },
+    "kitchen-raw-tar-tar-iz-goviadiny-klas-uw5p21e": {
+      "name_uz": "Mol Goʻshti Tartari",
+      "name_ar": "تارتار لحم البقر",
+      "description_uz": "Anʼanaviy retsept boʻyicha tayyorlangan klassik mol goʻshti tartari",
+      "description_ar": "تارتار لحم البقر الكلاسيكي المحضّر وفق الوصفة التقليدية",
+      "composition_uz": "Mol goʻshti, tuxum, tuzlangan bodring, kapers, qizil piyoz, donali xantal, qora non, zaytun yogʻi, vorchester sousi, qovurilgan piyoz, brinza.",
+      "composition_ar": "لحم بقر، بيض، خيار مخلل، كبر، بصل أحمر، خردل بالحبوب، خبز أسود، زيت زيتون، صلصة ورشسترشاير، بصل مقلي، جبن فيتا."
+    },
+    "kitchen-cold-app-brusketta-s-lososem-tqj321f": {
+      "name_uz": "Lososli Brusketta",
+      "name_ar": "بروسكيتا بالسلمون",
+      "description_uz": "Quritilgan klyukvali sanchos noni, apelsin va ukrop bilan oʻzimiz tuzlagan kam tuzli losos, nozik krem-chiz va yangi bodring. Masago ikrasi va yudzu sousi sitrus tarovatini qoʻshadi. Yengil va koʻrkam gazak.",
+      "description_ar": "خبز سانشوس بالتوت البري المجفف، سلمون قليل الملح مملّح في مطعمنا مع البرتقال والشبت، جبن كريمي ناعم وخيار طازج. كافيار ماساغو وصلصة يوزو يضيفان انتعاش الحمضيات. مقبلات خفيفة وأنيقة.",
+      "composition_uz": "Sanchos noni (quritilgan klyukva bilan), kam tuzlangan losos (losos filesi, tuz, shakar, apelsin, yangi ukrop), apelsin, kremette pishlogʻi, bodring, ukrop, qora masago ikrasi, zaytun yogʻi, yudzu sousi, tuz.",
+      "composition_ar": "خبز سانشوس (بالتوت البري المجفف)، سلمون قليل الملح (فيليه سلمون، ملح، سكر، برتقال، شبت طازج)، برتقال، جبن كريميت، خيار، شبت، كافيار ماساغو أسود، زيت زيتون، صلصة يوزو، ملح."
+    },
+    "kitchen-cold-app-brusketta-s-lososem-spai-i8l621g": {
+      "name_uz": "Achchiq Lososli Brusketta",
+      "name_ar": "بروسكيتا بالسلمون الحار",
+      "description_uz": "Losos va achchiqroq taʼmli qarsildoq tost",
+      "description_ar": "توست مقرمش بالسلمون مع لمسة حارة",
+      "composition_uz": "Sanchos noni (quritilgan klyukva bilan), kam tuzlangan losos (losos filesi, apelsin, yangi ukrop, shakar, tuz), bodring, pomidor, avokado, xantal sousi (tryufel yogʻi, limon, soya sousi, kungaboqar yogʻi, asal, donali xantal), kimchi mayonezi (kimchi sousi, mayonez), tuz, qora murch.",
+      "composition_ar": "خبز سانشوس (بالتوت البري المجفف)، سلمون قليل الملح (فيليه سلمون، برتقال، شبت طازج، سكر، ملح)، خيار، طماطم، أفوكادو، صلصة الخردل (زيت الكمأة، ليمون، صلصة الصويا، زيت دوار الشمس، عسل، خردل بالحبوب)، مايونيز الكيمتشي (صلصة كيمتشي، مايونيز)، ملح، فلفل أسود."
+    },
+    "kitchen-cold-app-brusketta-s-rostbifom-jez621h": {
+      "name_uz": "Rostbifli Brusketta",
+      "name_ar": "بروسكيتا بالروست بيف",
+      "description_uz": "Yupqa toʻgʻralgan rostbifli qarsildoq tost",
+      "description_ar": "توست مقرمش مع شرائح روست بيف رقيقة",
+      "composition_uz": "Sanchos noni (quritilgan klyukva bilan), rostbif (mol vireskasi, tuz, qora murch, vino sirkasi, rozmarin, kungaboqar yogʻi), pishirilgan kabachok (tuz, murch, rozmarin, timyan, zaytun yogʻi, sarimsoq pastasi (sarimsoq, kungaboqar yogʻi)), pishirilgan baqlajon (tuz, qora murch, rozmarin, timyan, zaytun yogʻi, sarimsoq pastasi (sarimsoq, kungaboqar yogʻi)), pishirilgan bulgor qalampiri (qizil/sariq, timyan, rozmarin, sarimsoqli yogʻ (sarimsoq, kungaboqar yogʻi), tuz, qora murch), bodring, yongʻoqli sous, kashnich.",
+      "composition_ar": "خبز سانشوس (بالتوت البري المجفف)، روست بيف (فيليه لحم بقر، ملح، فلفل أسود، خل النبيذ، إكليل الجبل، زيت دوار الشمس)، كوسا مشوية (ملح، فلفل، إكليل الجبل، زعتر، زيت زيتون، معجون الثوم (ثوم، زيت دوار الشمس))، باذنجان مشوي (ملح، فلفل أسود، إكليل الجبل، زعتر، زيت زيتون، معجون الثوم (ثوم، زيت دوار الشمس))، فلفل رومي مشوي (أحمر/أصفر، زعتر، إكليل الجبل، زيت الثوم (ثوم، زيت دوار الشمس)، ملح، فلفل أسود)، خيار، صلصة المكسرات، كزبرة خضراء."
+    },
+    "kitchen-cold-app-miasnaia-tarelka-33d521i": {
+      "name_uz": "Goʻsht Assortisi",
+      "name_ar": "طبق اللحوم",
+      "description_uz": "Delikateslar assortisi: qoqlangan brezaola, dudlangan oʻrdak koʻkragi va oʻzimiz tayyorlagan mol vireskasidan rostbif. Ulkan zaytunlar, quritilgan pomidor va qarsildoq grissini bilan toʻldirilgan. Vinoga va davraga ajoyib tanlov.",
+      "description_ar": "تشكيلة من الأطايب: بريزاولا مجففة، صدر بط مدخن وروست بيف من فيليه البقر محضّر في مطعمنا. مع زيتون عملاق وطماطم مجففة وأعواد الغريسيني المقرمشة. خيار رائع مع النبيذ وللمشاركة.",
+      "composition_uz": "Brezaola qoqlangan goʻsht, dudlangan oʻrdak koʻkragi, rostbif (mol vireskasi, kungaboqar yogʻi, vino sirkasi, rozmarin, tuz, qora murch), ulkan zaytunlar, quritilgan pomidor, grissini (non tayoqchalari).",
+      "composition_ar": "بريزاولا (لحم مجفف)، صدر بط مدخن، روست بيف (فيليه لحم بقر، زيت دوار الشمس، خل النبيذ، إكليل الجبل، ملح، فلفل أسود)، زيتون عملاق، طماطم مجففة، غريسيني (أعواد الخبز)."
+    },
+    "kitchen-cold-app-miasnaia-tarelka-khalial-5n0321j": {
+      "name_uz": "Halol Goʻsht Assortisi",
+      "name_ar": "طبق اللحوم الحلال",
+      "description_uz": "Halol kolbasalar assortisi: sultonsha, ot goʻshtidan qazi, pishloqli italyancha va Qrim servelati. Yangi kashnich va cherri pomidorlari taʼmni toʻldiradi. Halol ijrodagi goʻsht klassikasi.",
+      "description_ar": "تشكيلة من النقانق الحلال: نقانق السلطان، قازي من لحم الخيل، نقانق إيطالية بالجبن وسرفيلات القرم. الكزبرة الطازجة والطماطم الكرزية تكمل النكهة. كلاسيكية اللحوم بأسلوب حلال.",
+      "composition_uz": "Sultonsha kolbasasi, ot goʻshtidan qazi, pishloqli italyancha kolbasa, Qrim servelati, kashnich, cherri pomidorlari.",
+      "composition_ar": "نقانق السلطان، قازي من لحم الخيل، نقانق إيطالية بالجبن، سرفيلات القرم، كزبرة خضراء، طماطم كرزية."
+    },
+    "kitchen-cold-app-ovoshchnoi-set-s-sousom-bliu-0rcn21k": {
+      "name_uz": "Blyu-Chiz Sousli Sabzavot Seti",
+      "name_ar": "طبق خضراوات مع صلصة الجبن الأزرق",
+      "description_uz": "Yangi sabzavotlarning katta seti: shirin qalampir, bodring, cherri pomidorlari, selderey poyasi, sabzi va rukkola. Koʻk mogʻorli pishloq asosidagi toʻyimli blyu-chiz sousi bilan beriladi. Davra uchun yengil gazak.",
+      "description_ar": "طبق كبير من الخضراوات الطازجة: فلفل حلو، خيار، طماطم كرزية، سيقان الكرفس، جزر وجرجير. يُقدَّم مع صلصة الجبن الأزرق الغنية على أساس جبن بالعفن الأزرق. مقبلات خفيفة للمشاركة.",
+      "composition_uz": "Bulgor qalampiri (qizil/sariq), bodring, cherri pomidorlari, selderey poyasi, sabzi, rukkola, blyu-chiz sousi (koʻk mogʻorli pishloq, mayonez 67%, qaymoq 22%).",
+      "composition_ar": "فلفل رومي (أحمر/أصفر)، خيار، طماطم كرزية، سيقان الكرفس، جزر، جرجير، صلصة الجبن الأزرق (جبن بالعفن الأزرق، مايونيز 67%، قشدة 22%)."
+    },
+    "kitchen-cold-app-olivki-b5r121l": {
+      "name_uz": "Zaytunlar",
+      "name_ar": "زيتون",
+      "description_uz": "Rozmarin, timyan va zaytun yogʻi bilan marinadlangan yirik zaytunlar. Bir tomchi vino sirkasi va sriracha yengil achchiqlik qoʻshadi. Aperitivga ideal gazak.",
+      "description_ar": "زيتون كبير الحجم متبل بإكليل الجبل والزعتر وزيت الزيتون. لمسة من خل النبيذ والسريراتشا تضيف حرارة خفيفة. المقبلات المثالية مع فاتح الشهية.",
+      "composition_uz": "Zaytun, rozmarin, timyan, zaytun yogʻi, vino sirkasi, sriracha sousi, tuz.",
+      "composition_ar": "زيتون، إكليل الجبل، زعتر، زيت زيتون، خل النبيذ، صلصة سريراتشا، ملح."
+    },
+    "kitchen-cold-app-masliny-kalamata-qty921m": {
+      "name_uz": "Kalamata Zaytunlari",
+      "name_ar": "زيتون كالاماتا",
+      "description_uz": "Danakli grek Kalamata zaytunlari — etli, toʻyingan vino-meva taʼmli. Xarakterini ochish uchun ortiqcha qoʻshimchalarsiz beriladi. Vinoga klassik gazak.",
+      "description_ar": "زيتون كالاماتا اليوناني بالنواة — لحمي بنكهة فاكهية غنية تشبه النبيذ. يُقدَّم من دون إضافات لإبراز طابعه. مقبلات كلاسيكية مع النبيذ.",
+      "composition_uz": "Danakli Kalamata zaytunlari.",
+      "composition_ar": "زيتون كالاماتا بالنواة."
+    },
+    "kitchen-cold-app-zakuska-s-seldiu-1qf921n": {
+      "name_uz": "Seldli Gazak",
+      "name_ar": "مقبلات الرنجة",
+      "description_uz": "Borodino nonidagi seld filesi, qaynatilgan mini kartoshka va tuxum bilan. Qizil va koʻk piyoz, ukrop va sariyogʻ taʼmni toʻldiradi. Zamonaviy taqdimdagi rus klassikasi.",
+      "description_ar": "فيليه رنجة على خبز بورودينسكي مع بطاطس صغيرة مسلوقة وبيض. البصل الأحمر والأخضر والشبت والزبدة تكمل النكهة. كلاسيكية روسية بتقديم عصري.",
+      "composition_uz": "Borodino noni, seld filesi, beybi kartoshka, tovuq tuxumi, mayonez, koʻk piyoz, qizil piyoz, ukrop, sariyogʻ.",
+      "composition_ar": "خبز بورودينسكي، فيليه رنجة، بطاطس صغيرة، بيض دجاج، مايونيز، بصل أخضر، بصل أحمر، شبت، زبدة."
+    },
+    "kitchen-hot-app-popkorn-iz-krevetok-kg9e21o": {
+      "name_uz": "Krevetka Popkorni",
+      "name_ar": "بوب كورن الروبيان",
+      "description_uz": "Popkorn kabi beriladigan fritürda qovurilgan qarsildoq krevetkalar",
+      "description_ar": "روبيان مقرمش مقلي بالزيت الغزير، يُقدَّم مثل البوب كورن",
+      "composition_uz": "Krevetka, tempura klyari (bugʻdoy uni, makkajoʻxori kraxmali, tempura uni, suv), kremi-spaysi sousi (limon sharbati, tobiko ikrasi, shirin chili sousi, mayonez), tobiko ikrasi, bodom bargchalari, shnitt-piyoz.",
+      "composition_ar": "روبيان، خليط التمبورا (دقيق قمح، نشا الذرة، دقيق تمبورا، ماء)، صلصة كريمية حارة (عصير ليمون، كافيار توبيكو، صلصة تشيلي حلوة، مايونيز)، كافيار توبيكو، شرائح اللوز، ثوم معمر."
+    },
+    "kitchen-hot-app-popkorn-iz-kuricy-2um721p": {
+      "name_uz": "Tovuq Popkorni",
+      "name_ar": "بوب كورن الدجاج",
+      "description_uz": "Yengil tempura klyaridagi tovuq koʻkragi boʻlakchalari, oltinrang qobiq hosil boʻlguncha qovurilgan. Teriyaki sousi va kimchi mayonezi bilan beriladi, kunjut va kashnich sepilgan. Osiyo uslubidagi qarsildoq gazak.",
+      "description_ar": "قطع صدر الدجاج في خليط تمبورا خفيف، مقلية حتى تكتسب قشرة ذهبية. تُقدَّم مع صلصة الترياكي ومايونيز الكيمتشي، ومرشوشة بالسمسم والكزبرة. مقبلات مقرمشة على الطريقة الآسيوية.",
+      "composition_uz": "Tovuq koʻkragi, tempura klyari (bugʻdoy uni, makkajoʻxori kraxmali, tempura uni, suv), teriyaki sousi, mayonez, kimchi sousi, kunjut, kashnich.",
+      "composition_ar": "صدر دجاج، خليط التمبورا (دقيق قمح، نشا الذرة، دقيق تمبورا، ماء)، صلصة ترياكي، مايونيز، صلصة كيمتشي، سمسم، كزبرة خضراء."
+    },
+    "kitchen-hot-app-syrnye-palochki-s-brusnich-l7co21q": {
+      "name_uz": "Brusnika Sousli Pishloqli Tayoqchalar",
+      "name_ar": "أصابع الجبن بصلصة اللينغونبيري",
+      "description_uz": "Brusnika sousi bilan ogʻizda eriydigan pishloqli tayoqchalar",
+      "description_ar": "أصابع جبن ذائبة مع صلصة اللينغونبيري",
+      "composition_uz": "Pishloqli tayoqchalar, brusnika sousi (muzlatilgan brusnika, shakar, suv).",
+      "composition_ar": "أصابع الجبن، صلصة اللينغونبيري (لينغونبيري مجمد، سكر، ماء)."
+    },
+    "kitchen-hot-app-zhulen-s-moreproduktami-9mfb21r": {
+      "name_uz": "Dengiz Mahsulotli Julyen",
+      "name_ar": "جوليان بالمأكولات البحرية",
+      "description_uz": "Qaymoq-pishloq qobigʻi ostida pishirilgan dengiz mahsulotlari",
+      "description_ar": "مأكولات بحرية مخبوزة تحت قشرة الجبن الكريمية",
+      "composition_uz": "Dengiz mahsulotlari (krevetka, kalmar, midiya), shampinyon, qaymoq, pishloq, piyoz.",
+      "composition_ar": "مأكولات بحرية (روبيان، حبار، بلح البحر)، فطر، قشدة، جبن، بصل."
+    },
+    "kitchen-steaks-steik-minon-latinskaia-a-yplb21s": {
+      "name_uz": "File-Minyon Steyki (Lotin Amerikasi)",
+      "name_ar": "ستيك فيليه مينيون (أمريكا اللاتينية)",
+      "description_uz": "Yashil koʻkatli sariyogʻ bilan nozik file-minyon steyki",
+      "description_ar": "ستيك فيليه مينيون طري مع زبدة الأعشاب الخضراء",
+      "composition_uz": "Lotin Amerikasi (yashil koʻkatli sariyogʻ bilan. 200 g)",
+      "composition_ar": "أمريكا اللاتينية (مع زبدة الأعشاب الخضراء. 200 غ)"
+    },
+    "kitchen-steaks-steik-ribai-primebeef-bl-46c221t": {
+      "name_uz": "Ribay Steyki Prime Beef Black Angus",
+      "name_ar": "ستيك ريب آي برايم بيف بلاك أنغوس",
+      "description_uz": "Marmar Black Angus ribayi, 200 kun don bilan boqilgan",
+      "description_ar": "ريب آي بلاك أنغوس مرمري، مغذّى على الحبوب لمدة 200 يوم",
+      "composition_uz": "PRIMEBEEF BLACK ANGUS. 200 kun don bilan boqilgan (narxi 100 g uchun)",
+      "composition_ar": "PRIMEBEEF BLACK ANGUS. مغذّى على الحبوب لمدة 200 يوم (السعر لكل 100 غ)"
+    },
+    "kitchen-steaks-steik-striploin-5kx221u": {
+      "name_uz": "Striployn Steyki",
+      "name_ar": "ستيك ستريبلوين",
+      "description_uz": "Striployn PRIMEBEEF Black Angus, 200 kun don bilan boqilgan — yaqqol marmar taʼmli shirali steyk. Yashil koʻkatli sariyogʻ, mini kartoshka chipslari va cherri pomidorlari bilan beriladi. Narxi 100 g uchun koʻrsatilgan.",
+      "description_ar": "ستريبلوين PRIMEBEEF بلاك أنغوس مغذّى على الحبوب لمدة 200 يوم — ستيك طري بنكهة مرمرية واضحة. يُقدَّم مع زبدة الأعشاب الخضراء ورقائق البطاطس الصغيرة والطماطم الكرزية. السعر لكل 100 غ.",
+      "composition_uz": "PRIMEBEEF BLACK ANGUS. 200 kun don bilan boqilgan (narxi 100 g uchun)",
+      "composition_ar": "PRIMEBEEF BLACK ANGUS. مغذّى على الحبوب لمدة 200 يوم (السعر لكل 100 غ)"
+    },
+    "kitchen-steaks-steik-denver-xe3121v": {
+      "name_uz": "Denver Steyki",
+      "name_ar": "ستيك دنفر",
+      "description_uz": "Denver PRIMEBEEF Black Angus, 200 kun don bilan boqilgan — boʻyin qismidan tayyorlangan boy taʼmli yumshoq steyk. Yashil koʻkatli sariyogʻ, mini kartoshka chipslari va cherri pomidorlari bilan beriladi. Porsiya 250 g.",
+      "description_ar": "ستيك دنفر PRIMEBEEF بلاك أنغوس مغذّى على الحبوب لمدة 200 يوم — قطعة طرية من الكتف بنكهة غنية. يُقدَّم مع زبدة الأعشاب الخضراء ورقائق البطاطس الصغيرة والطماطم الكرزية. الحصة 250 غ.",
+      "composition_uz": "PRIMEBEEF BLACK ANGUS. 200 kun don bilan boqilgan (yashil koʻkatli sariyogʻ bilan. 250 g)",
+      "composition_ar": "PRIMEBEEF BLACK ANGUS. مغذّى على الحبوب لمدة 200 يوم (مع زبدة الأعشاب الخضراء. 250 غ)"
+    },
+    "kitchen-hot-steik-iz-lososia-so-shpina-dnoh21w": {
+      "name_uz": "Ismaloq va Shampinyonli Losos Steyki",
+      "name_ar": "ستيك السلمون بالسبانخ والفطر",
+      "description_uz": "Ismaloq va shampinyon bilan grilda pishirilgan losos steyki",
+      "description_ar": "ستيك سلمون مشوي مع السبانخ والفطر",
+      "composition_uz": "Losos filesi, shampinyon, chigʻanoqli midiya, cherri pomidorlari, muzlatilgan ismaloq, shalot piyozi, limon, qora murch, tuz, teriyaki sousi, kungaboqar yogʻi.",
+      "composition_ar": "فيليه سلمون، فطر، بلح البحر بالصدفة، طماطم كرزية، سبانخ مجمدة، بصل شالوت، ليمون، فلفل أسود، ملح، صلصة ترياكي، زيت دوار الشمس."
+    },
+    "kitchen-hot-grechka-s-krevetkami-rrjt21x": {
+      "name_uz": "Krevetkali Grechka",
+      "name_ar": "حنطة سوداء بالروبيان",
+      "description_uz": "Sariyogʻda tayyorlangan sochiluvchan grechka, qovurilgan krevetkalar bilan. Parmezan qaymoqli chuqurlik, kashnich esa tarovat qoʻshadi. Yengil, lekin toʻyimli issiq taom.",
+      "description_ar": "حنطة سوداء مفلفلة مطهوة بالزبدة مع روبيان مقلي. البارميزان يضيف عمقاً كريمياً والكزبرة تمنح الانتعاش. طبق رئيسي خفيف لكنه مشبع.",
+      "composition_uz": "Grechka yormasi, krevetka, parmezan pishlogʻi, sariyogʻ, kungaboqar yogʻi, kashnich, tuz, qora murch.",
+      "composition_ar": "حبوب الحنطة السوداء، روبيان، جبن بارميزان، زبدة، زيت دوار الشمس، كزبرة خضراء، ملح، فلفل أسود."
+    },
+    "kitchen-hot-kurinoe-bedro-s-bulgurom-o9dw21y": {
+      "name_uz": "Bulgurli Tovuq Soni",
+      "name_ar": "فخذ الدجاج بالبرغل",
+      "description_uz": "Qizgʻish qobiq hosil boʻlguncha qovurilgan shirali tovuq soni, bulgur yostigʻida. Demi-glas asosidagi qaymoqli murchli sous va porey piyozi taomga toʻyimlilik beradi. Xarakterli uy taomi.",
+      "description_ar": "فخذ دجاج طري مقلي حتى يكتسب قشرة ذهبية على فراش من البرغل. صلصة الفلفل الكريمية على أساس الديمي غلاس والكراث تمنح الطبق غنى. طبق منزلي بطابع مميز.",
+      "composition_uz": "Tovuq soni, bulgur, murchli sous (qaymoq 22%, sut 3,2%, demi-glas sousi, tuz, qora murch), porey piyozi, sariyogʻ, kungaboqar yogʻi, shnitt-piyoz, tuz, qora murch.",
+      "composition_ar": "فخذ دجاج، برغل، صلصة الفلفل (قشدة 22%، حليب 3.2%، صلصة ديمي غلاس، ملح، فلفل أسود)، كراث، زبدة، زيت دوار الشمس، ثوم معمر، ملح، فلفل أسود."
+    },
+    "kitchen-hot-kurinyi-steik-tanduri-s--ua8821z": {
+      "name_uz": "Bryussel Karami va Cherri Pomidorli Tanduri Tovuq Steyki",
+      "name_ar": "ستيك دجاج تندوري مع كرنب بروكسل والطماطم الكرزية",
+      "description_uz": "Bryussel karami va cherri pomidorlari bilan ziravorli tanduri tovuq steyki",
+      "description_ar": "ستيك دجاج تندوري متبل مع كرنب بروكسل والطماطم الكرزية",
+      "composition_uz": "Tovuq koʻkragi, yogurtli sous (grek yogurti, tanduri ziravori, laym sharbati, shakar, tuz, kashnich, yalpiz), cherri pomidorlari, Bryussel karami, tanduri marinadi (grek yogurti, tuz, dudlangan paprika, qora murch, tanduri ziravori), sarimsoq pastasi (sarimsoq, kungaboqar yogʻi), qora murch, tuz.",
+      "composition_ar": "صدر دجاج، صلصة الزبادي (زبادي يوناني، بهارات تندوري، عصير الليمون الأخضر، سكر، ملح، كزبرة خضراء، نعناع)، طماطم كرزية، كرنب بروكسل، تتبيلة تندوري (زبادي يوناني، ملح، بابريكا مدخنة، فلفل أسود، بهارات تندوري)، معجون الثوم (ثوم، زيت دوار الشمس)، فلفل أسود، ملح."
+    },
+    "kitchen-hot-shnicel-kurinyi-v6hi220": {
+      "name_uz": "Tovuq Shnitseli",
+      "name_ar": "شنيتزل الدجاج",
+      "description_uz": "Qarsildoq panirovkadagi yupqa tovuq shnitseli, oltinrang qobiq hosil boʻlguncha qovurilgan. Yangi barglar aralashmasi, yashil olma, selderey va demi-glas sousi bilan beriladi. Limon va parmezan taʼmni taʼkidlaydi.",
+      "description_ar": "شنيتزل دجاج رقيق بغلاف مقرمش، مقلي حتى يكتسب قشرة ذهبية. يُقدَّم مع خليط من الخضراوات الورقية الطازجة والتفاح الأخضر والكرفس وصلصة ديمي غلاس. الليمون والبارميزان يبرزان النكهة.",
+      "composition_uz": "Tovuq filesi, bugʻdoy uni, tovuq tuxumi, panirovka suxarisi, selderey poyasi, yashil olma, limon, salat aralashmasi (mangold, romano, lollo rosso, rukkola), kungaboqar yogʻi, parmezan pishlogʻi, demi-glas sousi (demi-glas sousi, kungaboqar yogʻi, tovuq bulyoni (joʻja tanasi, piyoz, sabzi, suv, dafna bargi, tuz, qora murch), piyoz, tuz, qora murch), vasabi.",
+      "composition_ar": "فيليه دجاج، دقيق قمح، بيض دجاج، بقسماط، سيقان الكرفس، تفاح أخضر، ليمون، خليط الخس (سلق، خس روماني، لولو روسو، جرجير)، زيت دوار الشمس، جبن بارميزان، صلصة ديمي غلاس (صلصة ديمي غلاس، زيت دوار الشمس، مرق الدجاج (دجاجة كاملة، بصل، جزر، ماء، ورق الغار، ملح، فلفل أسود)، بصل، ملح، فلفل أسود)، واسابي."
+    },
+    "kitchen-hot-cyplenok-na-grile-s-uzbe-iq4o221": {
+      "name_uz": "Oʻzbek Pomidorli Grilda Pishirilgan Joʻja",
+      "name_ar": "دجاج مشوي مع الطماطم الأوزبكية",
+      "description_uz": "Shirin oʻzbek pomidori bilan grilda pishirilgan joʻja",
+      "description_ar": "دجاج مشوي مع الطماطم الأوزبكية الحلوة",
+      "composition_uz": "Kornishon joʻja (broyler joʻja 300-400 g, dudlangan paprika, tuz, qora murch, sarimsoqli yogʻ (sarimsoq, yangi petrushka, kungaboqar yogʻi), kungaboqar yogʻi), teriyaki sousi, oʻzbek pomidori, qizil piyoz, kashnich, tuz, qora murch.",
+      "composition_ar": "دجاج صغير (دجاج برويلر 300-400 غ، بابريكا مدخنة، ملح، فلفل أسود، زيت الثوم (ثوم، بقدونس طازج، زيت دوار الشمس)، زيت دوار الشمس)، صلصة ترياكي، طماطم أوزبكية، بصل أحمر، كزبرة خضراء، ملح، فلفل أسود."
+    },
+    "kitchen-hot-kotletki-iz-indeiki-s-ka-pd53222": {
+      "name_uz": "Kartoshka Pyuresi va Tanlovga Sousli Kurka Kotletchalari",
+      "name_ar": "كفتة الديك الرومي مع البطاطس المهروسة وصلصة حسب الاختيار",
+      "description_uz": "Kartoshka pyuresi va tanlovga sous — brusnika, pomidor yoki qoʻziqorin — bilan nozik kurka kotletchalari.",
+      "description_ar": "كفتة ديك رومي طرية مع البطاطس المهروسة وصلصة حسب الاختيار — لينغونبيري أو طماطم أو فطر.",
+      "composition_uz": "Kotletchalar (kurka goʻshti, tovuq koʻkragi, mol yogʻi, qovurilgan piyoz (piyoz, kungaboqar yogʻi), oq non, sut, tovuq tuxumi, sariyogʻ, kungaboqar yogʻi, sarimsoq, qora murch, tuz), kartoshka pyuresi (kartoshka, sut, sariyogʻ, tuz), brokkoli, rediska, sariyogʻ, kungaboqar yogʻi, koʻkatlar (yangi ukrop, yangi petrushka), qora murch, tuz. Tanlovga sous: brusnikali (brusnika, shakar), pomidorli (zaytun yogʻi, pomidor sousi, tuz, qora murch, rayhon), qoʻziqorinli (oq qoʻziqorin, piyoz, kartoshka, kungaboqar yogʻi, sarimsoqli yogʻ (sarimsoq, kungaboqar yogʻi, petrushka), suv, qora murch, tuz).",
+      "composition_ar": "كفتة (ديك رومي، صدر دجاج، دهن بقري، بصل مقلي (بصل، زيت دوار الشمس)، خبز أبيض، حليب، بيض دجاج، زبدة، زيت دوار الشمس، ثوم، فلفل أسود، ملح)، بطاطس مهروسة (بطاطس، حليب، زبدة، ملح)، بروكلي، فجل، زبدة، زيت دوار الشمس، أعشاب (شبت طازج، بقدونس طازج)، فلفل أسود، ملح. صلصة حسب الاختيار: لينغونبيري (لينغونبيري، سكر)، طماطم (زيت زيتون، صلصة طماطم، ملح، فلفل أسود، ريحان)، فطر (فطر بورشيني، بصل، بطاطس، زيت دوار الشمس، زيت الثوم (ثوم، زيت دوار الشمس، بقدونس)، ماء، فلفل أسود، ملح)."
+    },
+    "kitchen-hot-shchechki-bychka-s-kartofeln-fa5o223": {
+      "name_uz": "Kartoshka Pyuresi va Kogi Sousli Buqacha Lunji",
+      "name_ar": "خدود العجل مع البطاطس المهروسة وصلصة كوغي",
+      "description_uz": "Kartoshka pyuresi va kogi sousi bilan dimlangan buqacha lunji",
+      "description_ar": "خدود عجل مطهوة ببطء مع البطاطس المهروسة وصلصة كوغي",
+      "composition_uz": "Buqacha lunji, kartoshka pyuresi (kartoshka, sut 3,2%, tuz, sariyogʻ), kogi sousi (ketchup, kungaboqar yogʻi, kunjut yogʻi, olcha sharbati, apelsin, soya sousi, vino sirkasi, shakar, kochujang pastasi), qovurilgan porey piyozi (porey piyozi, bugʻdoy uni, tuz).",
+      "composition_ar": "خدود عجل، بطاطس مهروسة (بطاطس، حليب 3.2%، ملح، زبدة)، صلصة كوغي (كاتشب، زيت دوار الشمس، زيت السمسم، عصير الكرز، برتقال، صلصة الصويا، خل النبيذ، سكر، معجون غوتشوجانغ)، كراث مقلي (كراث، دقيق قمح، ملح)."
+    },
+    "kitchen-hot-goviadina-v-aziatskom-sti-xj5i224": {
+      "name_uz": "Guruchli Osiyo Uslubidagi Mol Goʻshti",
+      "name_ar": "لحم بقر على الطريقة الآسيوية مع الأرز",
+      "description_uz": "Bulgor qalampiri, shampinyon va selderey bilan vokda qovurilgan mol vireskasi boʻlakchalari. Soya, barbekyu va shirin chili souslari yorqin osiyocha taʼm yaratadi, yeryongʻoq va kunjut qarsildoqlik qoʻshadi. Guruch bilan beriladi.",
+      "description_ar": "قطع فيليه لحم البقر مقلية في الووك مع الفلفل الرومي والفطر والكرفس. صلصات الصويا والباربكيو والتشيلي الحلو تصنع نكهة آسيوية زاهية، والفول السوداني والسمسم يضيفان القرمشة. يُقدَّم مع الأرز.",
+      "composition_uz": "Mol vireskasi, piyoz, qizil va sariq bulgor qalampiri, shampinyon, selderey poyasi, guruch, shirin chili sousi, soya sousi, barbekyu sousi, kashnich, yeryongʻoq, kunjut, kungaboqar yogʻi.",
+      "composition_ar": "فيليه لحم بقر، بصل، فلفل رومي أحمر وأصفر، فطر، سيقان الكرفس، أرز، صلصة تشيلي حلوة، صلصة الصويا، صلصة الباربكيو، كزبرة خضراء، فول سوداني، سمسم، زيت دوار الشمس."
+    },
+    "kitchen-hot-befstroganov-s-kartofel-xxxi225": {
+      "name_uz": "Kartoshka Pyureli Befstroganov",
+      "name_ar": "بيف ستروغانوف مع البطاطس المهروسة",
+      "description_uz": "Shampinyon va marinadlangan bodringli qaymoq-smetana sousidagi mol vireskasi. Nozik kartoshka pyuresi, grechka chipsi va qarsildoq porey piyozi bilan beriladi. Restoran ijrosidagi rus oshxonasi klassikasi.",
+      "description_ar": "فيليه لحم بقر في صلصة القشدة الحامضة الكريمية مع الفطر والخيار المخلل. يُقدَّم مع بطاطس مهروسة ناعمة ورقائق الحنطة السوداء والكراث المقرمش. كلاسيكية المطبخ الروسي بأسلوب المطاعم.",
+      "composition_uz": "Kartoshka pyuresi (kartoshka, sut 3,2%, tuz, sariyogʻ), mol vireskasi, marinadlangan bodring, shampinyon, smetana 20%, tovuq bulyoni (suv, tovuq soni, tuz, qora murch, dafna bargi), qovurilgan porey piyozi (porey piyozi, bugʻdoy uni, tuz), grechka chipsi (grechka yormasi, suv, tuz), vorchester sousi, sut 3,2%, sariyogʻ, tuz, qora murch, kungaboqar yogʻi, piyoz, qaymoq 22%.",
+      "composition_ar": "بطاطس مهروسة (بطاطس، حليب 3.2%، ملح، زبدة)، فيليه لحم بقر، خيار مخلل، فطر، قشدة حامضة 20%، مرق الدجاج (ماء، أفخاذ دجاج، ملح، فلفل أسود، ورق الغار)، كراث مقلي (كراث، دقيق قمح، ملح)، رقائق الحنطة السوداء (حبوب الحنطة السوداء، ماء، ملح)، صلصة ورشسترشاير، حليب 3.2%، زبدة، ملح، فلفل أسود، زيت دوار الشمس، بصل، قشدة 22%."
+    },
+    "kitchen-hot-kasha-iz-topora-zbc2226": {
+      "name_uz": "«Boltadan Boʻtqa»",
+      "name_ar": "«عصيدة الفأس»",
+      "description_uz": "Goʻsht va qoʻziqorinli toʻyimli grechka boʻtqasi — eski ertak asosida",
+      "description_ar": "عصيدة حنطة سوداء مشبعة باللحم والفطر — مستوحاة من حكاية شعبية قديمة",
+      "composition_uz": "Grechka yormasi, mol goʻshti tushyonkasi, piyoz, kungaboqar yogʻi, sarimsoq, kashnich, tuz, qora murch, sariyogʻ.",
+      "composition_ar": "حبوب الحنطة السوداء، لحم بقر مطهو معلب، بصل، زيت دوار الشمس، ثوم، كزبرة خضراء، ملح، فلفل أسود، زبدة."
+    },
+    "kitchen-pasta-pappardelle-s-lososem-i--thxe227": {
+      "name_uz": "Losos va Qizil Ikrali Pappardelle",
+      "name_ar": "بابارديلي بالسلمون والكافيار الأحمر",
+      "description_uz": "Losos boʻlakchalari va shalot piyozli qaymoqli sousdagi keng pappardelle pastasi. Qizil ikra va parmezan taomga olijanob taʼm qoʻshadi. Alohida holat uchun nozik pasta.",
+      "description_ar": "معكرونة بابارديلي عريضة في صلصة كريمية مع قطع السلمون والبصل الشالوت. الكافيار الأحمر والبارميزان يمنحان الطبق نكهة راقية. معكرونة رقيقة لمناسبة خاصة.",
+      "composition_uz": "Pappardelle pastasi, losos filesi, qaymoq 22%, tovuq bulyoni (tovuq soni, suv, tuz, qora murch, dafna bargi), sariyogʻ, shalot piyozi, qizil ikra, parmezan, tuz, qora murch.",
+      "composition_ar": "معكرونة بابارديلي، فيليه سلمون، قشدة 22%، مرق الدجاج (أفخاذ دجاج، ماء، ملح، فلفل أسود، ورق الغار)، زبدة، بصل شالوت، كافيار أحمر، بارميزان، ملح، فلفل أسود."
+    },
+    "kitchen-pasta-lapsha-s-kuricei-i-krevet-f5k8228": {
+      "name_uz": "Kokosli Vok va Bonito Sousidagi Tovuq va Krevetkali Lagʻmon",
+      "name_ar": "نودلز بالدجاج والروبيان في صلصة ووك جوز الهند والبونيتو",
+      "description_uz": "Bonitoli kokos sousidagi tovuq va krevetkali vok-lagʻmon",
+      "description_ar": "نودلز ووك بالدجاج والروبيان في صلصة جوز الهند مع البونيتو",
+      "composition_uz": "Udon lagʻmoni, krevetka, tovuq koʻkragi, kokosli vok sousi (teriyaki sousi, kokos suti, makkajoʻxori kraxmali, sriracha sousi, kunjut yogʻi, baliq sousi, suv, quruq sarimsoq, maydalangan zanjabil), tunets qirindisi, qovurilgan porey piyozi (porey piyozi, bugʻdoy uni, tuz).",
+      "composition_ar": "نودلز أودون، روبيان، صدر دجاج، صلصة ووك جوز الهند (صلصة ترياكي، حليب جوز الهند، نشا الذرة، صلصة سريراتشا، زيت السمسم، صلصة السمك، ماء، ثوم مجفف، زنجبيل مطحون)، رقائق التونة، كراث مقلي (كراث، دقيق قمح، ملح)."
+    },
+    "kitchen-pasta-fetuchini-s-kurinym-bedro-99ar229": {
+      "name_uz": "Teriyaki Tovuq Sonili Fettuchini",
+      "name_ar": "فيتوتشيني بفخذ الدجاج ترياكي",
+      "description_uz": "Teriyaki sousidagi tovuq soni bilan fettuchini",
+      "description_ar": "فيتوتشيني مع فخذ الدجاج في صلصة الترياكي",
+      "composition_uz": "Fettuchini pastasi, tovuq soni, parmezan, qaymoq, shirin chili sousi, tovuq bulyoni (tovuq soni, yangi petrushka, suv), makkajoʻxori kraxmali, tempura uni, teriyaki sousi, funchoza guruch lagʻmoni, qaymoq 22%, kunjut, kashnich, tuz, qora murch.",
+      "composition_ar": "معكرونة فيتوتشيني، فخذ دجاج، بارميزان، قشدة، صلصة تشيلي حلوة، مرق الدجاج (أفخاذ دجاج، بقدونس طازج، ماء)، نشا الذرة، دقيق تمبورا، صلصة ترياكي، نودلز الأرز فونتشوزا، قشدة 22%، سمسم، كزبرة خضراء، ملح، فلفل أسود."
+    },
+    "kitchen-pasta-lingvini-karbonara-3xyb22a": {
+      "name_uz": "Lingvini Karbonara",
+      "name_ar": "لينغويني كاربونارا",
+      "description_uz": "Klassik retsept boʻyicha lingvini karbonara",
+      "description_ar": "لينغويني كاربونارا وفق الوصفة الكلاسيكية",
+      "composition_uz": "Lingvini pastasi, choʻchqa bekoni, parmezan, tovuq bulyoni (tovuq soni, suv, tuz, qora murch, dafna bargi), qaymoq 22%, shalot piyozi, tovuq tuxumi, kungaboqar yogʻi, tuz, qora murch.",
+      "composition_ar": "معكرونة لينغويني، بيكون لحم خنزير، بارميزان، مرق الدجاج (أفخاذ دجاج، ماء، ملح، فلفل أسود، ورق الغار)، قشدة 22%، بصل شالوت، بيض دجاج، زيت دوار الشمس، ملح، فلفل أسود."
+    },
+    "kitchen-pasta-penne-s-rostbifom-v-triuf-le0i22b": {
+      "name_uz": "Tryufel Sousidagi Rostbifli Penne",
+      "name_ar": "بيني بالروست بيف في صلصة الكمأة",
+      "description_uz": "Xushboʻy tryufel sousidagi rostbifli penne",
+      "description_ar": "بيني مع الروست بيف في صلصة الكمأة العطرة",
+      "composition_uz": "Penne pastasi, rostbif (mol vireskasi, tuz, qora murch, vino sirkasi, rozmarin, kungaboqar yogʻi), parmezan, quritilgan pomidor, qaymoq 22%, tryufel pastasi, tuz, qora murch.",
+      "composition_ar": "معكرونة بيني، روست بيف (فيليه لحم بقر، ملح، فلفل أسود، خل النبيذ، إكليل الجبل، زيت دوار الشمس)، بارميزان، طماطم مجففة، قشدة 22%، معجون الكمأة، ملح، فلفل أسود."
+    },
+    "kitchen-burgers-burger-barvikha-s-dvoinoi-ssuq22c": {
+      "name_uz": "Ikki Kotletli, Konyak Sousli va Oq Qoʻziqorin Kremli «Barvixa» Burgeri",
+      "name_ar": "برغر «بارفيخا» بقطعتي لحم وصلصة الكونياك وكريمة فطر البورشيني",
+      "description_uz": "Ikki kotlet, konyak sousi va oq qoʻziqorin kremi",
+      "description_ar": "قطعتا لحم، صلصة الكونياك وكريمة فطر البورشيني",
+      "composition_uz": "Oʻzimiz tayyorlagan bugʻdoy bulochkasi (bugʻdoy uni, tovuq tuxumi, tuz, shakar, xamirturush, sariyogʻ, sut 3,2%, kunjut), marmar mol goʻshtidan ikki kotlet, motsarella pishlogʻi, pomidor, qizil piyoz, rukkola, oq qoʻziqorin kremi (oq qoʻziqorin, piyoz, kartoshka, kungaboqar yogʻi, tuz, qora murch, suv, kungaboqar yogʻi, sarimsoq, yangi petrushka), burger sousi (baliq bulyoni, oshxona xantali, pomidor ketchupi, mayonez, unagi sousi, konyak aromatizatori).",
+      "composition_ar": "خبز برغر من القمح محضّر في المطعم (دقيق قمح، بيض دجاج، ملح، سكر، خميرة، زبدة، حليب 3.2%، سمسم)، قطعتا لحم بقر مرمري، جبن موتزاريلا، طماطم، بصل أحمر، جرجير، كريمة فطر البورشيني (فطر بورشيني، بصل، بطاطس، زيت دوار الشمس، ملح، فلفل أسود، ماء، زيت دوار الشمس، ثوم، بقدونس طازج)، صلصة البرغر (مرق السمك، خردل، كاتشب طماطم، مايونيز، صلصة أوناغي، نكهة الكونياك)."
+    },
+    "kitchen-burgers-burger-klassika-s-kotlet-wszf22d": {
+      "name_uz": "Marmar Mol Goʻshti Kotleti va Asal-Xantal Sousli «Klassika» Burgeri",
+      "name_ar": "برغر «كلاسيك» بقطعة لحم بقر مرمري وصلصة العسل والخردل",
+      "description_uz": "Asal-xantal sousli marmar mol goʻshti kotleti",
+      "description_ar": "قطعة لحم بقر مرمري مع صلصة العسل والخردل",
+      "composition_uz": "Oʻzimiz tayyorlagan bugʻdoy bulochkasi (bugʻdoy uni, tovuq tuxumi, tuz, shakar, xamirturush, sariyogʻ, sut 3,2%, kunjut), marmar mol goʻshti kotleti, chedder pishlogʻi, tuzlangan bodring, pomidor, qizil piyoz, pishloqli sous, ketchup, donali xantal, asal.",
+      "composition_ar": "خبز برغر من القمح محضّر في المطعم (دقيق قمح، بيض دجاج، ملح، سكر، خميرة، زبدة، حليب 3.2%، سمسم)، قطعة لحم بقر مرمري، جبن شيدر، خيار مخلل، طماطم، بصل أحمر، صلصة الجبن، كاتشب، خردل بالحبوب، عسل."
+    },
+    "kitchen-burgers-burger-syrnyi-s-kotletoi-yokb22e": {
+      "name_uz": "Marmar Mol Goʻshti Kotleti, Bekon va Tuxumli «Pishloqli» Burger",
+      "name_ar": "برغر «تشيز» بقطعة لحم بقر مرمري والبيكون والبيض",
+      "description_uz": "Marmar mol goʻshti kotleti, bekon va tuxum",
+      "description_ar": "قطعة لحم بقر مرمري، بيكون وبيض",
+      "composition_uz": "Oʻzimiz tayyorlagan bugʻdoy bulochkasi (bugʻdoy uni, tovuq tuxumi, tuz, shakar, xamirturush, sariyogʻ, sut 3,2%, kunjut), marmar mol goʻshti kotleti, tovuq tuxumi, choʻchqa bekoni, chedder pishlogʻi, pomidor, qizil piyoz, romano, barbekyu sousi, pishloqli sous.",
+      "composition_ar": "خبز برغر من القمح محضّر في المطعم (دقيق قمح، بيض دجاج، ملح، سكر، خميرة، زبدة، حليب 3.2%، سمسم)، قطعة لحم بقر مرمري، بيض دجاج، بيكون لحم خنزير، جبن شيدر، طماطم، بصل أحمر، خس روماني، صلصة الباربكيو، صلصة الجبن."
+    },
+    "kitchen-burgers-burger-s-kamamberom-govia-ueyv22f": {
+      "name_uz": "Kamamber, Mol Goʻshti va Brusnika Sousli Burger",
+      "name_ar": "برغر بجبن الكاممبير ولحم البقر وصلصة اللينغونبيري",
+      "description_uz": "Eriydigan kamamber sousli uy bulochkasidagi marmar mol goʻshti kotleti. Nordon-shirin brusnika sousi, yangi pomidor, romano va qizil piyoz taʼmni muvozanatlaydi. Pishloq va rezavor mevalar uygʻunligini sevuvchilar uchun burger.",
+      "description_ar": "قطعة لحم بقر مرمري في خبز محضّر في المطعم مع صلصة الكاممبير الذائبة. صلصة اللينغونبيري الحلوة الحامضة والطماطم الطازجة والخس الروماني والبصل الأحمر توازن النكهة. برغر لمحبي مزيج الجبن والتوت.",
+      "composition_uz": "Oʻzimiz tayyorlagan bugʻdoy bulochkasi (bugʻdoy uni, tovuq tuxumi, tuz, shakar, xamirturush, sariyogʻ, sut 3,2%, kunjut), marmar mol goʻshti kotleti, mayonez, pomidor, romano, qizil piyoz, brusnika sousi (shakar, muzlatilgan brusnika), kamamber sousi (kremette pishlogʻi, kamamber pishlogʻi).",
+      "composition_ar": "خبز برغر من القمح محضّر في المطعم (دقيق قمح، بيض دجاج، ملح، سكر، خميرة، زبدة، حليب 3.2%، سمسم)، قطعة لحم بقر مرمري، مايونيز، طماطم، خس روماني، بصل أحمر، صلصة اللينغونبيري (سكر، لينغونبيري مجمد)، صلصة الكاممبير (جبن كريميت، جبن كاممبير)."
+    },
+    "kitchen-burgers-burger-s-rvanoi-goviadino-rw9722g": {
+      "name_uz": "Tolali Mol Goʻshti, Mango va Xalapenyoli Burger",
+      "name_ar": "برغر بلحم البقر المسحّب والمانجو والهالابينو",
+      "description_uz": "Tolali mol goʻshti, mango va achchiq xalapenyo",
+      "description_ar": "لحم بقر مسحّب، مانجو وهالابينو حار",
+      "composition_uz": "Oʻzimiz tayyorlagan bugʻdoy bulochkasi (bugʻdoy uni, tovuq tuxumi, tuz, shakar, xamirturush, sariyogʻ, sut 3,2%, kunjut), mol boʻyni, chedder pishlogʻi. Romano salati, Tailand mangosi, xalapenyo qalampiri, barbekyu sousi, mayonez 67%.",
+      "composition_ar": "خبز برغر من القمح محضّر في المطعم (دقيق قمح، بيض دجاج، ملح، سكر، خميرة، زبدة، حليب 3.2%، سمسم)، رقبة بقر، جبن شيدر. خس روماني، مانجو تايلاندي، فلفل هالابينو، صلصة الباربكيو، مايونيز 67%."
+    },
+    "kitchen-burgers-burger-s-khrustiashchim-cyple-dyjw22h": {
+      "name_uz": "Qarsildoq Joʻjali Burger",
+      "name_ar": "برغر بالدجاج المقرمش",
+      "description_uz": "Yumshoq uy bulochkasidagi qarsildoq panirovkali tovuq koʻkragi. Chedder pishlogʻi, yangi pomidor, romano va qizil piyoz barbekyu sousi, shirin chili va mayonez bilan toʻldirilgan. Yengil va shirali burger.",
+      "description_ar": "صدر دجاج بغلاف مقرمش في خبز طري محضّر في المطعم. جبن الشيدر والطماطم الطازجة والخس الروماني والبصل الأحمر تكملها صلصة الباربكيو والتشيلي الحلو والمايونيز. برغر خفيف وطري.",
+      "composition_uz": "Oʻzimiz tayyorlagan bugʻdoy bulochkasi (bugʻdoy uni, tovuq tuxumi, tuz, shakar, xamirturush, sariyogʻ, sut 3,2%, kunjut), tovuq koʻkragi, tuxum. Tuz, qora murch, panirovka suxarisi, romano, pomidor, chedder pishlogʻi, qizil piyoz, barbekyu sousi, shirin chili sousi, mayonez.",
+      "composition_ar": "خبز برغر من القمح محضّر في المطعم (دقيق قمح، بيض دجاج، ملح، سكر، خميرة، زبدة، حليب 3.2%، سمسم)، صدر دجاج، بيض. ملح، فلفل أسود، بقسماط، خس روماني، طماطم، جبن شيدر، بصل أحمر، صلصة الباربكيو، صلصة تشيلي حلوة، مايونيز."
+    },
+    "kitchen-burgers-khalial-burger-klassika-s-i19s22i": {
+      "name_uz": "Marmar Mol Goʻshti Kotleti va Asal-Xantal Sousli Halol «Klassika» Burgeri",
+      "name_ar": "برغر حلال «كلاسيك» بقطعة لحم بقر مرمري وصلصة العسل والخردل",
+      "description_uz": "Asal-xantal sousli halol marmar mol goʻshti kotleti",
+      "description_ar": "قطعة لحم بقر مرمري حلال مع صلصة العسل والخردل",
+      "composition_uz": "Oʻzimiz tayyorlagan bugʻdoy bulochkasi (bugʻdoy uni, tovuq tuxumi, tuz, shakar, xamirturush, sariyogʻ, sut 3,2%, kunjut), marmar mol goʻshti kotleti, chedder pishlogʻi, tuzlangan bodring, pomidor, qizil piyoz, pishloqli sous, ketchup, donali xantal, asal.",
+      "composition_ar": "خبز برغر من القمح محضّر في المطعم (دقيق قمح، بيض دجاج، ملح، سكر، خميرة، زبدة، حليب 3.2%، سمسم)، قطعة لحم بقر مرمري، جبن شيدر، خيار مخلل، طماطم، بصل أحمر، صلصة الجبن، كاتشب، خردل بالحبوب، عسل."
+    },
+    "kitchen-burgers-khalial-burger-syrnyi-s-k-aa0722j": {
+      "name_uz": "Marmar Mol Goʻshti Kotleti va Tuxumli Halol «Pishloqli» Burger",
+      "name_ar": "برغر حلال «تشيز» بقطعة لحم بقر مرمري والبيض",
+      "description_uz": "Pishloq va tuxumli halol marmar mol goʻshti kotleti",
+      "description_ar": "قطعة لحم بقر مرمري حلال مع الجبن والبيض",
+      "composition_uz": "Oʻzimiz tayyorlagan bugʻdoy bulochkasi (bugʻdoy uni, tovuq tuxumi, tuz, shakar, xamirturush, sariyogʻ, sut 3,2%, kunjut), halol mol goʻshti qiymasi, pomidor, chedder pishlogʻi, qizil piyoz, tovuq tuxumi, romano, pishloqli sous, barbekyu sousi.",
+      "composition_ar": "خبز برغر من القمح محضّر في المطعم (دقيق قمح، بيض دجاج، ملح، سكر، خميرة، زبدة، حليب 3.2%، سمسم)، لحم بقر مفروم حلال، طماطم، جبن شيدر، بصل أحمر، بيض دجاج، خس روماني، صلصة الجبن، صلصة الباربكيو."
+    },
+    "kitchen-rolls-roll-barvikha-nu9c22k": {
+      "name_uz": "«Barvixa» Rolli",
+      "name_ar": "رول «بارفيخا»",
+      "description_uz": "Yangi dengiz mahsulotli firma rolli",
+      "description_ar": "رول مميز بالمأكولات البحرية الطازجة",
+      "composition_uz": "Kamchatka krabi, losos filesi, tunets, guruch (mitsukan sirkasi, mirin, shakar, tuz), mango, mango sousi (mango pyuresi, quyultirilgan sut), avokado, qizil ikra, chili-kimchi sousi, romano, kremi-spaysi sousi (mayonez, shirin chili sousi, tobiko ikrasi, limon sharbati), yeyiladigan oltin varaq, vasabi kukuni, marinadlangan zanjabil, nori, soya sousi, suv, shakar.",
+      "composition_ar": "سلطعون كامتشاتكا، فيليه سلمون، تونة، أرز (خل ميزكان، ميرين، سكر، ملح)، مانجو، صلصة المانجو (هريس المانجو، حليب مكثف محلى)، أفوكادو، كافيار أحمر، صلصة تشيلي-كيمتشي، خس روماني، صلصة كريمية حارة (مايونيز، صلصة تشيلي حلوة، كافيار توبيكو، عصير ليمون)، ورق ذهب صالح للأكل، مسحوق الواسابي، زنجبيل مخلل، نوري، صلصة الصويا، ماء، سكر."
+    },
+    "kitchen-rolls-roll-filadelfiia-lybz22l": {
+      "name_uz": "Filadelfiya Rolli",
+      "name_ar": "رول فيلادلفيا",
+      "description_uz": "Losos va qaymoqli pishloqli klassik filadelfiya",
+      "description_ar": "فيلادلفيا كلاسيكية بالسلمون والجبن الكريمي",
+      "composition_uz": "Losos filesi, guruch (mitsukan sirkasi, mirin, shakar, tuz), bodring, kremette pishlogʻi, nori, vasabi kukuni, soya sousi, shakar, suv, marinadlangan zanjabil, bambuk bargi.",
+      "composition_ar": "فيليه سلمون، أرز (خل ميزكان، ميرين، سكر، ملح)، خيار، جبن كريميت، نوري، مسحوق الواسابي، صلصة الصويا، سكر، ماء، زنجبيل مخلل، ورقة الخيزران."
+    },
+    "kitchen-rolls-roll-kaliforniia-s-losose-miz522m": {
+      "name_uz": "Losos Bilan Kaliforniya Rolli",
+      "name_ar": "رول كاليفورنيا بالسلمون",
+      "description_uz": "Losos, avokado, bodring va qaymoqli pishloq bilan klassik Kaliforniya rolli. Roll tobiko ikrasiga bulangan boʻlib, u yengil qarsillash qoʻshadi. Vasabi, zanjabil va soya sousi bilan tortiladi.",
+      "description_ar": "رول كاليفورنيا كلاسيكي بالسلمون والأفوكادو والخيار والجبن الكريمي. مغطّى بكافيار التوبيكو الذي يضيف قرمشة خفيفة. يُقدَّم مع الواسابي والزنجبيل وصلصة الصويا.",
+      "composition_uz": "Losos filesi, guruch (Mizkan sirkasi, mirin, shakar, tuz), tobiko ikrasi, avokado, Kremette pishlogʻi, bodring, nori, soya sousi, shakar, suv, vasabi kukuni, marinadlangan zanjabil, bambuk bargi.",
+      "composition_ar": "فيليه سلمون، أرز (خل ميزكان، ميرين، سكر، ملح)، كافيار توبيكو، أفوكادو، جبن كريميت، خيار، نوري، صلصة صويا، سكر، ماء، مسحوق واسابي، زنجبيل مخلل، ورقة بامبو."
+    },
+    "kitchen-rolls-roll-kaliforniia-s-krevet-654s22n": {
+      "name_uz": "Krevetka Bilan Kaliforniya Rolli",
+      "name_ar": "رول كاليفورنيا بالروبيان",
+      "description_uz": "Shirali krevetka, avokado, bodring va qaymoqli pishloq bilan Kaliforniya rolli. Tashqarisidagi tobiko ikrasi yorqin rang va qarsillash qoʻshadi. Vasabi, zanjabil va soya sousi bilan tortiladi.",
+      "description_ar": "رول كاليفورنيا بالروبيان الطري والأفوكادو والخيار والجبن الكريمي. كافيار التوبيكو من الخارج يضيف لونًا زاهيًا وقرمشة. يُقدَّم مع الواسابي والزنجبيل وصلصة الصويا.",
+      "composition_uz": "Guruch (Mizkan sirkasi, mirin, shakar, tuz), krevetka, nori, tvorogli pishloq, bodring, avokado, tobiko ikrasi, marinadlangan zanjabil, vasabi kukuni, soya sousi (soya sousi, shakar, suv), bambuk bargi (bezak).",
+      "composition_ar": "أرز (خل ميزكان، ميرين، سكر، ملح)، روبيان، نوري، جبن كريمي، خيار، أفوكادو، كافيار توبيكو، زنجبيل مخلل، مسحوق واسابي، صلصة صويا (صلصة صويا، سكر، ماء)، ورقة بامبو (للتزيين)."
+    },
+    "kitchen-rolls-roll-kaliforniia-s-krabom-2jbl22o": {
+      "name_uz": "Krab Bilan Kaliforniya Rolli",
+      "name_ar": "رول كاليفورنيا بالسلطعون",
+      "description_uz": "Tabiiy krab, avokado, bodring va qaymoqli pishloq bilan Kaliforniya rolli. Tobiko ikrasi qarsillash va dengiz tarovatini qoʻshadi. Vasabi, zanjabil va soya sousi bilan tortiladi.",
+      "description_ar": "رول كاليفورنيا بلحم السلطعون الطبيعي والأفوكادو والخيار والجبن الكريمي. كافيار التوبيكو يضيف قرمشة ونكهة البحر المنعشة. يُقدَّم مع الواسابي والزنجبيل وصلصة الصويا.",
+      "composition_uz": "Tabiiy krab, guruch (Mizkan sirkasi, mirin, shakar, tuz), tobiko ikrasi, avokado, Kremette pishlogʻi, bodring, nori, soya sousi, shakar, suv, vasabi kukuni, marinadlangan zanjabil, bambuk bargi.",
+      "composition_ar": "سلطعون طبيعي، أرز (خل ميزكان، ميرين، سكر، ملح)، كافيار توبيكو، أفوكادو، جبن كريميت، خيار، نوري، صلصة صويا، سكر، ماء، مسحوق واسابي، زنجبيل مخلل، ورقة بامبو."
+    },
+    "kitchen-rolls-roll-s-avokado-i-lososem-1yua22p": {
+      "name_uz": "Avokado va Losos Bilan Roll",
+      "name_ar": "رول بالأفوكادو والسلمون",
+      "description_uz": "Yangi losos, avokado, bodring va qaymoqli pishloq bilan roll. Unagi sousi va kunjut shirin karamel notasini qoʻshadi. Vasabi, zanjabil va soya sousi bilan tortiladi.",
+      "description_ar": "رول بالسلمون الطازج والأفوكادو والخيار والجبن الكريمي. صلصة الأوناغي والسمسم يضيفان لمسة كراميل حلوة. يُقدَّم مع الواسابي والزنجبيل وصلصة الصويا.",
+      "composition_uz": "Losos filesi, guruch (Mizkan sirkasi, mirin, shakar, tuz), unagi sousi, kunjut, avokado, Kremette pishlogʻi, bodring, nori, soya sousi, shakar, suv, vasabi kukuni, marinadlangan zanjabil, bambuk bargi.",
+      "composition_ar": "فيليه سلمون، أرز (خل ميزكان، ميرين، سكر، ملح)، صلصة أوناغي، سمسم، أفوكادو، جبن كريميت، خيار، نوري، صلصة صويا، سكر، ماء، مسحوق واسابي، زنجبيل مخلل، ورقة بامبو."
+    },
+    "kitchen-rolls-roll-opalenyi-losos-s-a-a6mn22q": {
+      "name_uz": "Apelsin Bilan Kuydirilgan Losos Rolli",
+      "name_ar": "رول السلمون المحمّر بالشعلة مع البرتقال",
+      "description_uz": "Apelsinning sitrus notasi bilan kuydirilgan losos.",
+      "description_ar": "سلمون محمّر بالشعلة مع لمسة حمضية من البرتقال.",
+      "composition_uz": "Losos filesi, guruch (Mizkan sirkasi, mirin, shakar, tuz), apelsin, tobiko ikrasi, qamish shakari, Kremette pishlogʻi, nori, soya sousi, shakar, suv, vasabi kukuni, marinadlangan zanjabil, bambuk bargi.",
+      "composition_ar": "فيليه سلمون، أرز (خل ميزكان، ميرين، سكر، ملح)، برتقال، كافيار توبيكو، سكر قصب، جبن كريميت، نوري، صلصة صويا، سكر، ماء، مسحوق واسابي، زنجبيل مخلل، ورقة بامبو."
+    },
+    "kitchen-rolls-roll-krevetka-tempura-ml5a22r": {
+      "name_uz": "Krevetka Tempura Rolli",
+      "name_ar": "رول تمبورا الروبيان",
+      "description_uz": "Qarsildoq tempura klyaridagi krevetka va avokado bilan issiq roll. Tom-yam pastasi va masago ikrali krem-pishloq oʻtkir taʼm, unagi sousi esa shirinlik qoʻshadi. Vasabi, zanjabil va soya sousi bilan tortiladi.",
+      "description_ar": "رول دافئ بالروبيان في خليط تمبورا مقرمش مع الأفوكادو. الجبن الكريمي بمعجون التوم يام وكافيار الماساغو يضيف نكهة حارة، وصلصة الأوناغي تمنحه الحلاوة. يُقدَّم مع الواسابي والزنجبيل وصلصة الصويا.",
+      "composition_uz": "Krevetkalar, guruch (Mizkan sirkasi, mirin, shakar, tuz), unagi sousi, kunjut, avokado, tempura klyari (tempura uni, makkajoʻxori kraxmali, bugʻdoy uni, suv), bugʻdoy uni, masagoli tom-yam pishlogʻi (Kremette pishlogʻi, tom-yam pastasi, tobiko ikrasi), nori, soya sousi, shakar, suv, vasabi kukuni, marinadlangan zanjabil.",
+      "composition_ar": "روبيان، أرز (خل ميزكان، ميرين، سكر، ملح)، صلصة أوناغي، سمسم، أفوكادو، خليط تمبورا (دقيق تمبورا، نشا الذرة، دقيق قمح، ماء)، دقيق قمح، جبن توم يام بالماساغو (جبن كريميت، معجون توم يام، كافيار توبيكو)، نوري، صلصة صويا، سكر، ماء، مسحوق واسابي، زنجبيل مخلل."
+    },
+    "kitchen-rolls-teplyi-roll-s-krevetkoi--fa2122s": {
+      "name_uz": "Krevetka va Losos Bilan Issiq Roll",
+      "name_ar": "رول دافئ بالروبيان والسلمون",
+      "description_uz": "Qarsildoq panirovka va tempura klyaridagi losos, krevetka va qaymoqli pishloq bilan roll. Unagi sousi va kunjut taʼmni yakunlaydi. Issiq holda, vasabi, zanjabil va soya sousi bilan tortiladi.",
+      "description_ar": "رول بالسلمون والروبيان والجبن الكريمي في فتات خبز مقرمش وخليط تمبورا. صلصة الأوناغي والسمسم يكملان النكهة. يُقدَّم دافئًا مع الواسابي والزنجبيل وصلصة الصويا.",
+      "composition_uz": "Losos filesi, krevetkalar, guruch (Mizkan sirkasi, mirin, shakar, tuz), unagi sousi, kunjut, Kremette pishlogʻi, panirovka suxarilari, tempura klyari (tempura uni, makkajoʻxori kraxmali, bugʻdoy uni, suv), nori, soya sousi, shakar, suv, vasabi kukuni, marinadlangan zanjabil, bambuk bargi.",
+      "composition_ar": "فيليه سلمون، روبيان، أرز (خل ميزكان، ميرين، سكر، ملح)، صلصة أوناغي، سمسم، جبن كريميت، فتات خبز، خليط تمبورا (دقيق تمبورا، نشا الذرة، دقيق قمح، ماء)، نوري، صلصة صويا، سكر، ماء، مسحوق واسابي، زنجبيل مخلل، ورقة بامبو."
+    },
+    "kitchen-rolls-gunkan-kani-o0u022t": {
+      "name_uz": "Gunkan Kani",
+      "name_ar": "غونكان كاني",
+      "description_uz": "Nori ichidagi guruch ustida qor krabi goʻshti, kimchi mayonezi va tobiko ikrasi bilan gunkan. Yengil oʻtkirlikka ega nozik qaymoqli ichlik. Vasabi, zanjabil va soya sousi bilan tortiladi.",
+      "description_ar": "غونكان بلحم سلطعون الثلج ومايونيز الكيمتشي وكافيار التوبيكو على أرز ملفوف بالنوري. حشوة كريمية ناعمة مع لمسة حارة خفيفة. يُقدَّم مع الواسابي والزنجبيل وصلصة الصويا.",
+      "composition_uz": "Qor krabi, guruch (Mizkan sirkasi, mirin, shakar, tuz), tobiko ikrasi, nori, kimchi mayonezi (kimchi sousi, mayonez), bambuk bargi, soya sousi (soya sousi, shakar, suv), vasabi kukuni, marinadlangan zanjabil.",
+      "composition_ar": "سلطعون الثلج، أرز (خل ميزكان، ميرين، سكر، ملح)، كافيار توبيكو، نوري، مايونيز كيمتشي (صلصة كيمتشي، مايونيز)، ورقة بامبو، صلصة صويا (صلصة صويا، سكر، ماء)، مسحوق واسابي، زنجبيل مخلل."
+    },
+    "kitchen-rolls-gunkan-maguro-bpa322u": {
+      "name_uz": "Gunkan Maguro",
+      "name_ar": "غونكان ماغورو",
+      "description_uz": "Nori ichidagi guruch ustida yangi tunets va kimchi mayonezi bilan gunkan. Kunjut yongʻoq notasini qoʻshadi. Vasabi, zanjabil va soya sousi bilan tortiladi.",
+      "description_ar": "غونكان بالتونة الطازجة ومايونيز الكيمتشي على أرز ملفوف بالنوري. السمسم يضيف نكهة جوزية. يُقدَّم مع الواسابي والزنجبيل وصلصة الصويا.",
+      "composition_uz": "Tunets, guruch (Mizkan sirkasi, mirin, shakar, tuz), kimchi mayonezi (kimchi sousi, mayonez), nori, kunjut, bambuk bargi, soya sousi, shakar, suv, vasabi kukuni, marinadlangan zanjabil.",
+      "composition_ar": "تونة، أرز (خل ميزكان، ميرين، سكر، ملح)، مايونيز كيمتشي (صلصة كيمتشي، مايونيز)، نوري، سمسم، ورقة بامبو، صلصة صويا، سكر، ماء، مسحوق واسابي، زنجبيل مخلل."
+    },
+    "kitchen-rolls-gunkan-siake-zl5322v": {
+      "name_uz": "Gunkan Syake",
+      "name_ar": "غونكان شاكيه",
+      "description_uz": "Nori ichidagi guruch ustida yangi losos va kimchi mayonezi bilan gunkan. Kunjut baliqning nozik taʼmini taʼkidlaydi. Vasabi, zanjabil va soya sousi bilan tortiladi.",
+      "description_ar": "غونكان بالسلمون الطازج ومايونيز الكيمتشي على أرز ملفوف بالنوري. السمسم يبرز النكهة الرقيقة للسمك. يُقدَّم مع الواسابي والزنجبيل وصلصة الصويا.",
+      "composition_uz": "Losos filesi, guruch (Mizkan sirkasi, mirin, shakar, tuz), kimchi mayonezi (kimchi sousi, mayonez), nori, kunjut, bambuk bargi, soya sousi, shakar, suv, vasabi kukuni, marinadlangan zanjabil.",
+      "composition_ar": "فيليه سلمون، أرز (خل ميزكان، ميرين، سكر، ملح)، مايونيز كيمتشي (صلصة كيمتشي، مايونيز)، نوري، سمسم، ورقة بامبو، صلصة صويا، سكر، ماء، مسحوق واسابي، زنجبيل مخلل."
+    },
+    "kitchen-poke-poke-s-lososem-spaisi-aram22w": {
+      "name_uz": "Spaysi Losos Bilan Poke",
+      "name_ar": "بوكي بالسلمون الحار",
+      "description_uz": "Losos va oʻtkir spaysi zapravkasi bilan poke-boul.",
+      "description_ar": "بوكي بول بالسلمون وتتبيلة حارة لاذعة.",
+      "composition_uz": "Guruch (Mizkan sirkasi, mirin, shakar, tuz), losos filesi, urilgan bodring (bodring, soya sousi, kimchi sousi, kunjut yogʻi), chuka, soya loviyasi, avokado, kimchi mayonezi (mayonez, kimchi sousi), nori, kunjut.",
+      "composition_ar": "أرز (خل ميزكان، ميرين، سكر، ملح)، فيليه سلمون، خيار مهروس (خيار، صلصة صويا، صلصة كيمتشي، زيت سمسم)، أعشاب تشوكا البحرية، فول الصويا، أفوكادو، مايونيز كيمتشي (مايونيز، صلصة كيمتشي)، نوري، سمسم."
+    },
+    "kitchen-poke-poke-s-tuncom-blxa22x": {
+      "name_uz": "Tunets Bilan Poke",
+      "name_ar": "بوكي بالتونة",
+      "description_uz": "Guruch ustida yangi tunets, avokado, soya loviyasi va bodring bilan poke-boul. Svit-chili mayonezi hamda kashnich va zanjabilli limonli kimchi yorqin taʼm yaratadi. Nori va kunjut kompozitsiyani yakunlaydi.",
+      "description_ar": "بوكي بول بالتونة الطازجة والأفوكادو وفول الصويا والخيار على الأرز. مايونيز السويت تشيلي وكيمتشي الليمون بالكزبرة والزنجبيل يمنحان نكهة زاهية. النوري والسمسم يكملان الطبق.",
+      "composition_uz": "Guruch (Mizkan sirkasi, mirin, shakar, tuz), tunets, avokado, soya loviyasi, yangi bodring, svit-chili mayonezi (mayonez, shirin chili sousi), limonli kimchi (limon sharbati, kimchi sousi, kashnich, marinadlangan zanjabil), nori, kunjut.",
+      "composition_ar": "أرز (خل ميزكان، ميرين، سكر، ملح)، تونة، أفوكادو، فول الصويا، خيار طازج، مايونيز سويت تشيلي (مايونيز، صلصة الفلفل الحلو)، كيمتشي بالليمون (عصير ليمون، صلصة كيمتشي، كزبرة، زنجبيل مخلل)، نوري، سمسم."
+    },
+    "kitchen-pizza-barvikha-6jqg22y": {
+      "name_uz": "Barvixa Pitsasi",
+      "name_ar": "بيتزا بارفيخا",
+      "description_uz": "Rim xamirida pepperoni serveladi, bekon, Toskana salyamisi va Tambov jamboni bilan firma pitsasi. Motsarella, qizil piyoz va rayhonli tomat sousi taʼmni bogʻlaydi. Haqiqiy goʻsht ishqibozlari uchun.",
+      "description_ar": "بيتزا المطعم المميزة على عجينة رومانية مع البيبروني والبيكون والسلامي التوسكاني وجامبون تامبوف. الموزاريلا والبصل الأحمر وصلصة الطماطم بالريحان تجمع النكهات معًا. لعشّاق اللحوم الحقيقيين.",
+      "composition_uz": "Pitsa asosi, pepperoni serveladi, choʻchqa bekoni, Toskana salyamisi, Tambov jamboni, motsarella pishlogʻi, qizil piyoz, quritilgan rayhon, tomat sousi (suv, quritilgan rayhon, shakar, zaytun yogʻi, tuz).",
+      "composition_ar": "عجينة بيتزا، سجق بيبروني، بيكون خنزير، سلامي توسكاني، جامبون تامبوف، جبن موزاريلا، بصل أحمر، ريحان مجفف، صلصة طماطم (ماء، ريحان مجفف، سكر، زيت زيتون، ملح)."
+    },
+    "kitchen-pizza-margarita-lyfu22z": {
+      "name_uz": "Margarita",
+      "name_ar": "مارغريتا",
+      "description_uz": "Rim xamirida klassik margarita: rayhonli tomat sousi va eriydigan motsarella. Ortiqcha hech narsa yoʻq — faqat sinalgan uygʻunlik. Har kun uchun yengil pitsa.",
+      "description_ar": "مارغريتا كلاسيكية على عجينة رومانية: صلصة طماطم بالريحان وموزاريلا ذائبة. لا شيء زائد — فقط التوليفة المجرّبة. بيتزا خفيفة لكل يوم.",
+      "composition_uz": "Pitsa asosi, motsarella pishlogʻi, tomat sousi (suv, shakar, zaytun yogʻi, tuz, quritilgan rayhon).",
+      "composition_ar": "عجينة بيتزا، جبن موزاريلا، صلصة طماطم (ماء، سكر، زيت زيتون، ملح، ريحان مجفف)."
+    },
+    "kitchen-pizza-pepperoni-khalial-w1p7230": {
+      "name_uz": "Halol Pepperoni",
+      "name_ar": "بيبروني حلال",
+      "description_uz": "Rim xamirida halol pepperoni serveladi va motsarella bilan pitsa. Quritilgan rayhonli tomat sousi yorqinlik qoʻshadi. Halol ijrodagi klassika.",
+      "description_ar": "بيتزا على عجينة رومانية مع سجق بيبروني حلال وموزاريلا. صلصة الطماطم بالريحان المجفف تضيف نكهة زاهية. الكلاسيكية بنسختها الحلال.",
+      "composition_uz": "Pitsa asosi, pepperoni serveladi, motsarella pishlogʻi, quritilgan rayhon, tomat sousi (suv, quritilgan rayhon, shakar, zaytun yogʻi, tuz).",
+      "composition_ar": "عجينة بيتزا، سجق بيبروني، جبن موزاريلا، ريحان مجفف، صلصة طماطم (ماء، ريحان مجفف، سكر، زيت زيتون، ملح)."
+    },
+    "kitchen-pizza-cezar-fbtz231": {
+      "name_uz": "Sezar",
+      "name_ar": "سيزر",
+      "description_uz": "Rim xamirida tovuq koʻkragi, motsarella va parmezan bilan pitsa. Pishirilgandan soʻng — yangi romano, cherri pomidorlari va anchousli firma sezar sousi. Sevimli salat pitsa koʻrinishida.",
+      "description_ar": "بيتزا على عجينة رومانية مع صدر الدجاج والموزاريلا والبارميزان. بعد الخبز يُضاف الخس الروماني الطازج والطماطم الكرزية وصلصة السيزر المميزة بالأنشوجة. السلطة المفضلة على هيئة بيتزا.",
+      "composition_uz": "Pitsa asosi, tovuq koʻkragi, motsarella pishlogʻi, parmezan pishlogʻi, romano, cherri pomidorlari, sezar sousi (donador xantal, tovuq tuxumi, sarimsoq, parmezan pishlogʻi, anchouslar, soya sousi, kungaboqar yogʻi, kaperslar, tuz).",
+      "composition_ar": "عجينة بيتزا، صدر دجاج، جبن موزاريلا، جبن بارميزان، خس روماني، طماطم كرزية، صلصة سيزر (خردل بالحبوب، بيض، ثوم، جبن بارميزان، أنشوجة، صلصة صويا، زيت دوار الشمس، كبر، ملح)."
+    },
+    "kitchen-pizza-chetyre-syra-kb3c232": {
+      "name_uz": "Toʻrt Xil Pishloq",
+      "name_ar": "أربعة أجبان",
+      "description_uz": "Rim xamirida qaymoqli asos va toʻrt xil pishloq bilan pitsa: motsarella, chedder, parmezan va Dor Blyu. Har bir pishloq oʻz xarakterini kiritadi — yumshoqlikdan oʻtkirlikkacha. Boy pishloq taʼmini qadrlovchilar uchun.",
+      "description_ar": "بيتزا على عجينة رومانية بقاعدة كريمية وأربعة أجبان: موزاريلا وشيدر وبارميزان ودور بلو. كل جبن يضيف طابعه الخاص — من النعومة إلى الحدّة. لعشّاق نكهة الجبن الغنية.",
+      "composition_uz": "Pitsa asosi, qaymoq 22%, chedder pishlogʻi, motsarella pishlogʻi, parmezan pishlogʻi, koʻk mogʻorli Dor Blyu pishlogʻi, quritilgan rayhon.",
+      "composition_ar": "عجينة بيتزا، كريمة 22%، جبن شيدر، جبن موزاريلا، جبن بارميزان، جبن دور بلو بالعفن الأزرق، ريحان مجفف."
+    },
+    "kitchen-pizza-khalial-eck2233": {
+      "name_uz": "Halol",
+      "name_ar": "حلال",
+      "description_uz": "Klassik asosda motsarella va halol kolbasalar assortisi — uy kolbasalari, pishloqli italyan va Qrim kolbasalari bilan pitsa. Tuzlangan bodring hamda tomat sousli barbekyu sousi yorqinlik qoʻshadi. Halol ijrodagi toʻyimli pitsa.",
+      "description_ar": "بيتزا على عجينة كلاسيكية مع الموزاريلا وتشكيلة من السجق الحلال — سجق منزلي، إيطالي بالجبن، وسجق القرم. الخيار المخلل وصلصة الباربكيو مع صلصة الطماطم تضيف نكهة زاهية. بيتزا مشبعة بنسختها الحلال.",
+      "composition_uz": "Pitsa asosi, motsarella pishlogʻi, halol kolbasa (uy kolbasalari, pishloqli italyan, Qrim kolbasasi), tuzlangan bodring, barbekyu sousi, tomat sousi (zaytun yogʻi, suv, shakar, tuz, quritilgan rayhon), quritilgan rayhon.",
+      "composition_ar": "عجينة بيتزا، جبن موزاريلا، سجق حلال (سجق منزلي، إيطالي بالجبن، سجق القرم)، خيار مخلل، صلصة باربكيو، صلصة طماطم (زيت زيتون، ماء، سكر، ملح، ريحان مجفف)، ريحان مجفف."
+    },
+    "kitchen-soups-borshch-khalial-dm3e234": {
+      "name_uz": "Halol Borsh",
+      "name_ar": "بورش حلال",
+      "description_uz": "Halol mol bulyonida mol goʻshti, lavlagi, karam va kartoshka bilan quyuq borsh. Yengil dudlangan nota va sarimsoq chuqurlik qoʻshadi. Smetana va Borodino noni bilan tortiladi — halol ijrodagi klassika.",
+      "description_ar": "بورش غني بمرق اللحم البقري الحلال مع لحم البقر والشمندر والملفوف والبطاطس. لمسة مدخّنة خفيفة والثوم يضيفان عمقًا للنكهة. يُقدَّم مع القشدة الحامضة وخبز بورودينسكي — الكلاسيكية بنسختها الحلال.",
+      "composition_uz": "Qaynatilgan halol mol goʻshti, piyoz, sabzi, oq karam, kartoshka, lavlagi, mol suyaklari, tomat pastasi, Borodino noni, kungaboqar yogʻi, koʻk piyoz, smetana, ukrop, petrushka, sarimsoq, osh sirkasi, tuz, murch, shakar, suyuq tutun, dafna bargi.",
+      "composition_ar": "لحم بقر حلال مسلوق، بصل، جزر، ملفوف أبيض، بطاطس، شمندر، عظام بقر، معجون طماطم، خبز بورودينسكي، زيت دوار الشمس، بصل أخضر، قشدة حامضة، شبت، بقدونس، ثوم، خل، ملح، فلفل، سكر، دخان سائل، ورق الغار."
+    },
+    "kitchen-soups-sup-kurinyi-5wx0235": {
+      "name_uz": "Tovuq Shoʻrvasi",
+      "name_ar": "شوربة دجاج",
+      "description_uz": "Fetuchini, tovuq koʻkragi va tovuq soni goʻshti bilan quyuq tovuq bulyoni. Bedana tuxumi va yangi ukrop taʼmni toʻldiradi. Isitadigan uy shoʻrvasi.",
+      "description_ar": "مرق دجاج غني مع الفيتوتشيني وصدر الدجاج ولحم أفخاذ الدجاج. بيض السمان والشبت الطازج يكملان النكهة. شوربة منزلية تمنحك الدفء.",
+      "composition_uz": "Tovuq bulyoni (tovuq tushkasi, suv, piyoz, sabzi, tuz, qora murch, dafna bargi), fetuchini, qaynatilgan tovuq koʻkragi, qaynatilgan tovuq sonlari, bedana tuxumi, ukrop, tuz.",
+      "composition_ar": "مرق دجاج (دجاج كامل، ماء، بصل، جزر، ملح، فلفل أسود، ورق الغار)، فيتوتشيني، صدر دجاج مسلوق، أفخاذ دجاج مسلوقة، بيض سمان، شبت، ملح."
+    },
+    "kitchen-soups-tom-iam-s-moreproduktami-sqkq236": {
+      "name_uz": "Tom-Yam",
+      "name_ar": "توم يام",
+      "description_uz": "Kokos sutida krevetkalar, kalmar va shampinyonlar bilan klassik tay shoʻrvasi. Limon oʻti, laym bargi va zanjabil yorqin xushboʻylik, chili qalampiri esa oʻtkirlik beradi. Guruch bilan tortiladi.",
+      "description_ar": "شوربة تايلاندية كلاسيكية بحليب جوز الهند مع الروبيان والحبار وفطر الشامبينيون. عشبة الليمون وورق الليمون الأخضر والزنجبيل تمنحها عبقًا زاهيًا، والفلفل الحار يمنحها الحرارة. تُقدَّم مع الأرز.",
+      "composition_uz": "Kokos suti, krevetkalar, kalmar, chili qalampiri.",
+      "composition_ar": "حليب جوز الهند، روبيان، حبار، فلفل حار."
+    },
+    "kitchen-soups-sup-tykvennyi-s-krevetka-m79r237": {
+      "name_uz": "Krevetkali Qovoq Shoʻrvasi",
+      "name_ar": "شوربة اليقطين بالروبيان",
+      "description_uz": "Qaymoq va timyan bilan baxmaldek qovoq krem-shoʻrvasi. Qovurilgan krevetkalar, qovoq urugʻlari va zaytun yogʻi tekstura va taʼm qoʻshadi. Yengil va isitadigan.",
+      "description_ar": "شوربة كريمية مخملية من اليقطين مع الكريمة والزعتر. الروبيان المحمّر وبذور اليقطين وزيت الزيتون تضيف قوامًا ونكهة. خفيفة ودافئة.",
+      "composition_uz": "Qovoq pyure-shoʻrvasi (qovoq, kartoshka, sabzi, piyoz, timyan, shakar, tuz, suv), qaymoq 22%, krevetkalar, zaytun yogʻi, qovoq urugʻlari, kungaboqar yogʻi, qora murch, tuz.",
+      "composition_ar": "شوربة اليقطين المهروس (يقطين، بطاطس، جزر، بصل، زعتر، سكر، ملح، ماء)، كريمة 22%، روبيان، زيت زيتون، بذور اليقطين، زيت دوار الشمس، فلفل أسود، ملح."
+    },
+    "kitchen-soups-krem-sup-gribnoi-kapuchin-4cwp238": {
+      "name_uz": "Qaymoq Qoʻshilgan Qoʻziqorinli Kapuchino Krem-Shoʻrva",
+      "name_ar": "شوربة كريمة الفطر كابتشينو بالكريمة",
+      "description_uz": "Qaymoq va sut bilan, kapuchino kabi havodor koʻpikka koʻpirtirilgan nozik shampinyon krem-shoʻrvasi. Qarsildoq qovurilgan veshenka qoʻziqorinlari teksturalar kontrastini qoʻshadi. Yumshoq va xushboʻy shoʻrva.",
+      "description_ar": "شوربة كريمية رقيقة من فطر الشامبينيون مع الكريمة والحليب، مخفوقة حتى تصبح رغوة هوائية كالكابتشينو. فطر المحار المقلي المقرمش يضيف تباينًا في القوام. شوربة ناعمة وعطرة.",
+      "composition_uz": "Shampinyonlar, kartoshka, piyoz, sariyogʻ, suv, qaymoq 22%, sut 3,2%, qovurilgan veshenka qoʻziqorinlari, tuz, qora murch donasi.",
+      "composition_ar": "فطر شامبينيون، بطاطس، بصل، زبدة، ماء، كريمة 22%، حليب 3.2%، فطر المحار المقلي، ملح، حبوب فلفل أسود."
+    },
+    "kitchen-sides-ovoshchi-na-grile-lh9m239": {
+      "name_uz": "Grilda Pishirilgan Sabzavotlar",
+      "name_ar": "خضار مشوية",
+      "description_uz": "Grilda qovurilgan shampinyonlar, pomidor, bulgor qalampiri, kabachok, baqlajon va qizil piyoz. Provans oʻtlari va qora murch sabzavotlar taʼmini taʼkidlaydi. Steyk va baliqqa yengil garnir.",
+      "description_ar": "فطر شامبينيون وطماطم وفلفل رومي وكوسا وباذنجان وبصل أحمر مشوية على الشواية. أعشاب بروفنسال والفلفل الأسود تبرز نكهة الخضار. طبق جانبي خفيف مع الستيك والسمك.",
+      "composition_uz": "Shampinyonlar, pomidor, bulgor qalampiri, kabachok, baqlajon, qizil piyoz, kungaboqar yogʻi, qora murch, tuz, Provans oʻtlari.",
+      "composition_ar": "فطر شامبينيون، طماطم، فلفل رومي، كوسا، باذنجان، بصل أحمر، زيت دوار الشمس، فلفل أسود، ملح، أعشاب بروفنسال."
+    },
+    "kitchen-sides-grechka-s-gribami-jyvp23a": {
+      "name_uz": "Qoʻziqorinli Grechka",
+      "name_ar": "حنطة سوداء بالفطر",
+      "description_uz": "Qovurilgan shampinyonlar va shalot piyozi bilan sochiluvchan grechka. Uy taʼmiga ega oddiy va samimiy garnir. Goʻsht va parranda goʻshti bilan yaxshi uygʻunlashadi.",
+      "description_ar": "حنطة سوداء مفلفلة مع فطر الشامبينيون المقلي وبصل الشالوت. طبق جانبي بسيط وصادق بنكهة منزلية. يتناسب جيدًا مع اللحوم والدواجن.",
+      "composition_uz": "Grechka yormasi, shalot piyozi, shampinyonlar, kungaboqar yogʻi, tuz.",
+      "composition_ar": "حبوب الحنطة السوداء، بصل شالوت، فطر شامبينيون، زيت دوار الشمس، ملح."
+    },
+    "kitchen-sides-piure-kartofelnoe-so-sli-60x923b": {
+      "name_uz": "Sariyogʻ va Sut Bilan Kartoshka Pyuresi",
+      "name_ar": "بطاطس مهروسة بالزبدة والحليب",
+      "description_uz": "Sariyogʻli nozik kartoshka pyuresi.",
+      "description_ar": "بطاطس مهروسة ناعمة بالزبدة.",
+      "composition_uz": "Kartoshka, sariyogʻ, sut, tuz.",
+      "composition_ar": "بطاطس، زبدة، حليب، ملح."
+    },
+    "kitchen-sides-mini-kartofel-4wo123c": {
+      "name_uz": "Mini-Kartoshka",
+      "name_ar": "بطاطس صغيرة",
+      "description_uz": "Oltin rang qobiqqa qadar pishirilgan yosh kartoshka.",
+      "description_ar": "بطاطس صغيرة مخبوزة حتى تكتسب قشرة ذهبية.",
+      "composition_uz": "Beybi kartoshka, sarimsoq pastasi (kungaboqar yogʻi, sarimsoq), yangi ukrop, yangi petrushka, kungaboqar yogʻi, tuz, qora murch.",
+      "composition_ar": "بطاطس بيبي، معجون ثوم (زيت دوار الشمس، ثوم)، شبت طازج، بقدونس طازج، زيت دوار الشمس، ملح، فلفل أسود."
+    },
+    "kitchen-sides-batat-fri-7hl723d": {
+      "name_uz": "Batat Fri",
+      "name_ar": "بطاطا حلوة مقلية",
+      "description_uz": "Qarsildoq qobiqqa qadar qovurilgan shirin kartoshka boʻlaklari. Batatning tuz bilan shirinroq taʼmi — klassik friga qiziqarli muqobil. Burger va goʻshtga mos keladi.",
+      "description_ar": "شرائح بطاطا حلوة مقلية حتى القرمشة. الطعم الحلو للبطاطا مع الملح بديل مثير عن البطاطس المقلية الكلاسيكية. مناسبة مع البرغر واللحوم.",
+      "composition_uz": "Muzlatilgan batat, tuz.",
+      "composition_ar": "بطاطا حلوة مجمدة، ملح."
+    },
+    "kitchen-sides-ris-s-ovoshchami-980d23e": {
+      "name_uz": "Sabzavotli Guruch",
+      "name_ar": "أرز بالخضار",
+      "description_uz": "Sabzavotlar va soya sousi bilan qovurilgan sochiluvchan guruch. Osiyo uslubidagi yengil garnir. Tovuq, baliq va mol goʻshti taomlarini yaxshi toʻldiradi.",
+      "description_ar": "أرز مفلفل مقلي مع الخضار وصلصة الصويا. طبق جانبي خفيف على الطريقة الآسيوية. يكمل أطباق الدجاج والسمك ولحم البقر.",
+      "composition_uz": "Guruch, sabzi, bulgor qalampiri, koʻk noʻxat, soya sousi, kungaboqar yogʻi.",
+      "composition_ar": "أرز، جزر، فلفل رومي، بازلاء خضراء، صلصة صويا، زيت دوار الشمس."
+    },
+    "kitchen-desserts-tiramisu-dvc823f": {
+      "name_uz": "Tiramisu",
+      "name_ar": "تيراميسو",
+      "description_uz": "Klassik italyan deserti: qahvaga shimdirilgan savoyardi pechenyesi va havodor maskarpone kremi. Ustida — kakao. Nozik, meʼyorida shirin, qahva achchiqligi bilan.",
+      "description_ar": "الحلوى الإيطالية الكلاسيكية: بسكويت سافوياردي منقوع بالقهوة وكريمة ماسكاربوني هوائية. مغطاة بالكاكاو. رقيقة، معتدلة الحلاوة، مع لمسة من مرارة القهوة.",
+      "composition_uz": "Savoyardi pechenyesi, tovuq tuxumi, shakar, maskarpone pishlogʻi, eruvchan qahva, kakao kukuni.",
+      "composition_ar": "بسكويت سافوياردي، بيض، سكر، جبن ماسكاربوني، قهوة سريعة الذوبان، مسحوق كاكاو."
+    },
+    "kitchen-desserts-shokoladnyi-fondan-hsy323g": {
+      "name_uz": "Shokoladli Fondan",
+      "name_ar": "فوندان الشوكولاتة",
+      "description_uz": "Suyuq ichlikli issiq shokoladli fondan.",
+      "description_ar": "فوندان شوكولاتة دافئ بقلب سائل.",
+      "composition_uz": "Bugʻdoy uni, shakar, tovuq tuxumi, sariyogʻ, shokolad, mango sousi (mango pyuresi, quyultirilgan sut), sublimatsiyalangan malina, vanilli muzqaymoq, shokolad, oltin kukun.",
+      "composition_ar": "دقيق قمح، سكر، بيض، زبدة، شوكولاتة، صلصة مانجو (هريس مانجو، حليب مكثف)، توت العليق المجفف بالتجميد، آيس كريم فانيليا، شوكولاتة، مسحوق ذهبي."
+    },
+    "kitchen-desserts-chizkeik-v9ts23h": {
+      "name_uz": "Chizkeyk",
+      "name_ar": "تشيز كيك",
+      "description_uz": "Bodomli korjda kremli pishloq ichlikli nozik chizkeyk. Tuzli karamel va yangi qulupnay bilan tortiladi. Hech qachon zeriktirmaydigan klassika.",
+      "description_ar": "تشيز كيك رقيق على قاعدة من اللوز بحشوة جبن كريمية. يُقدَّم مع الكراميل المملح والفراولة الطازجة. كلاسيكية لا تُملّ أبدًا.",
+      "composition_uz": "Korj (bugʻdoy uni, sariyogʻ, shakar, bodom), Kremette pishlogʻi, shakar, qaymoq 22%, jelatin, tovuq tuxumi, xamir yumshatgich, tuzli karamel (tuz, sariyogʻ, shakar, qaymoq 22%), qulupnay, sabzi kukuni (oziq-ovqat boʻyogʻi, sabzi).",
+      "composition_ar": "قاعدة (دقيق قمح، زبدة، سكر، لوز)، جبن كريميت، سكر، كريمة 22%، جيلاتين، بيض، بيكنج باودر، كراميل مملح (ملح، زبدة، سكر، كريمة 22%)، فراولة، غبار الجزر (ملوّن غذائي، جزر)."
+    },
+    "kitchen-desserts-medovik-n03s23i": {
+      "name_uz": "Medovik (Asalli Tort)",
+      "name_ar": "ميدوفيك (كيك العسل)",
+      "description_uz": "Smetanali kremli klassik medovik.",
+      "description_ar": "كيك عسل كلاسيكي بكريمة القشدة الحامضة.",
+      "composition_uz": "Medovik korji (asal, soda, limon, bugʻdoy uni, tovuq tuxumi, sariyogʻ, shakar), krem (qaymoq 33%, sut, shakar, tovuq tuxumi, makkajoʻxori kraxmali), qulupnay, golubika, pista, yalpiz.",
+      "composition_ar": "طبقات كيك العسل (عسل، صودا الخبز، ليمون، دقيق قمح، بيض، زبدة، سكر)، كريمة (كريمة 33%، حليب، سكر، بيض، نشا الذرة)، فراولة، توت أزرق، فستق، نعناع."
+    },
+    "kitchen-desserts-fruktovaia-tarelka-594k23j": {
+      "name_uz": "Meva Tarelkasi",
+      "name_ar": "طبق فواكه",
+      "description_uz": "Yangi mevalarning katta assortisi: apelsin, olma, nok, kivi, uzum va ananas. Tarovat uchun yengil shakar upasi va yalpiz. Davra uchun ajoyib tanlov.",
+      "description_ar": "تشكيلة كبيرة من الفواكه الطازجة: برتقال وتفاح وكمثرى وكيوي وعنب وأناناس. رشة خفيفة من السكر البودرة والنعناع للانتعاش. خيار مثالي للمشاركة.",
+      "composition_uz": "Apelsin, olma, nok, kivi, uzum, ananas, shakar upasi, yalpiz.",
+      "composition_ar": "برتقال، تفاح، كمثرى، كيوي، عنب، أناناس، سكر بودرة، نعناع."
+    },
+    "kitchen-bread-sauces-khleb-s-aromatnym-maslom-pk2o23k": {
+      "name_uz": "Xushboʻy Sariyogʻli Non",
+      "name_ar": "خبز بالزبدة العطرية",
+      "description_uz": "Tanlov boʻyicha non — sanchos, italyan, grechkali yoki Borodino noni — limon poʻstli xushboʻy sariyogʻ bilan. Qora tuz bilan tortiladi. Taomning oddiy boshlanishi.",
+      "description_ar": "خبز حسب الاختيار — سانتشوس أو إيطالي أو الحنطة السوداء أو بورودينسكي — مع زبدة عطرية بقشر الليمون. يُقدَّم مع الملح الأسود. بداية بسيطة للوجبة.",
+      "composition_uz": "Sanches / italyan / grechkali / Borodino",
+      "composition_ar": "سانتشيز / إيطالي / حنطة سوداء / بورودينسكي"
+    },
+    "kitchen-bread-sauces-sousy-8d7f23l": {
+      "name_uz": "Souslar",
+      "name_ar": "صلصات",
+      "description_uz": "Istalgan taomga tanlov boʻyicha sous: ketchup, svit-chili mayonezi, brusnikali, nordon-shirin, barbekyu, blyu chiz, sriracha, balzamik yoki qalampirli. Alohida tortiladi.",
+      "description_ar": "صلصة حسب الاختيار مع أي طبق: كاتشب، مايونيز سويت تشيلي، توت بري، حلو وحامض، باربكيو، جبن أزرق، سريراتشا، بلسمك أو فلفل. تُقدَّم على حدة.",
+      "composition_uz": "Ketchup / svit-chili mayonezi / brusnikali / nordon-shirin / barbekyu / blyu chiz / sriracha / balzamik / qalampirli",
+      "composition_ar": "كاتشب / مايونيز سويت تشيلي / توت بري / حلو وحامض / باربكيو / جبن أزرق / سريراتشا / بلسمك / فلفل"
+    },
+    "kitchen-healthy-brokkoli-na-paru": {
+      "name_uz": "Bugʻda Pishirilgan Brokkoli",
+      "name_ar": "بروكلي على البخار",
+      "description_uz": "Yumshoq teksturagacha bugʻda pishirilgan yangi brokkoli. Tabiiy taʼm va yuqori oziqaviy qiymatga ega yengil garnir.",
+      "description_ar": "بروكلي طازج مطهو على البخار حتى يصبح طريًا. طبق جانبي خفيف بنكهة طبيعية وقيمة غذائية عالية.",
+      "composition_uz": "Brokkoli.",
+      "composition_ar": "بروكلي."
+    },
+    "kitchen-healthy-bryusselskaya-kapusta-na-paru": {
+      "name_uz": "Bugʻda Pishirilgan Bryussel Karami",
+      "name_ar": "كرنب بروكسل على البخار",
+      "description_uz": "Bugʻda pishirilgan Bryussel karami. Yengil yongʻoq achchiqligiga ega nozik tekstura, tabiiy shiraliligini saqlaydi.",
+      "description_ar": "كرنب بروكسل مطهو على البخار. قوام طري مع مرارة جوزية خفيفة، يحتفظ بعصارته الطبيعية.",
+      "composition_uz": "Bryussel karami.",
+      "composition_ar": "كرنب بروكسل."
+    },
+    "kitchen-healthy-cvetnaya-kapusta-na-paru": {
+      "name_uz": "Bugʻda Pishirilgan Gulkaram",
+      "name_ar": "قرنبيط على البخار",
+      "description_uz": "Bugʻda pishirilgan gulkaram — yumshoq taʼm va nozik teksturaga ega yengil, parhez taom.",
+      "description_ar": "قرنبيط على البخار — طبق خفيف وصحي بنكهة لطيفة وقوام رقيق.",
+      "composition_uz": "Gulkaram.",
+      "composition_ar": "قرنبيط."
+    },
+    "kitchen-healthy-grechka": {
+      "name_uz": "Grechka",
+      "name_ar": "حنطة سوداء",
+      "description_uz": "Boy tuproq taʼmi va yoqimli xushboʻylikka ega sochiluvchan grechka. Ezgu klassikaga aylangan toʻyimli va foydali garnir. Yengil va sogʻlom tushlik uchun oddiy asos.",
+      "description_ar": "حنطة سوداء مفلفلة بنكهة ترابية غنية وعبق لطيف. طبق جانبي مشبع وصحي أصبح كلاسيكية محبوبة. قاعدة بسيطة لوجبة خفيفة وصحية.",
+      "composition_uz": "Grechka.",
+      "composition_ar": "حنطة سوداء."
+    },
+    "kitchen-healthy-dikii-ris": {
+      "name_uz": "Yovvoyi Guruch",
+      "name_ar": "أرز بري",
+      "description_uz": "Yoqimli elastik tekstura va nozik yongʻoq taʼmiga ega yovvoyi guruch. Baliq va dengiz mahsulotlarini ajoyib toʻldiradigan toʻyimli, foydali garnir. Bir tarelkada yengillik va toʻyimlilik.",
+      "description_ar": "أرز بري بقوام متماسك لطيف ونكهة جوزية رقيقة. طبق جانبي مشبع وصحي يكمل السمك والمأكولات البحرية بشكل مثالي. خفة وتغذية في طبق واحد.",
+      "composition_uz": "Yovvoyi guruch.",
+      "composition_ar": "أرز بري."
+    },
+    "kitchen-healthy-medalony-iz-govyadiny-na-paru": {
+      "name_uz": "Bugʻda Pishirilgan Mol Goʻshti Medalyonlari",
+      "name_ar": "ميداليات لحم البقر على البخار",
+      "description_uz": "Bugʻda pishirilgan mol filesi — sof goʻsht taʼmi va minimal yogʻlilikka ega nozik medalyonlar.",
+      "description_ar": "فيليه لحم بقر على البخار — ميداليات طرية بنكهة لحم نقية وأقل قدر من الدهون.",
+      "composition_uz": "Mol filesi.",
+      "composition_ar": "فيليه لحم بقر."
+    },
+    "kitchen-healthy-kalmar-na-paru-s-limonom": {
+      "name_uz": "Limon Bilan Bugʻda Pishirilgan Kalmar",
+      "name_ar": "حبار على البخار بالليمون",
+      "description_uz": "Yangi limonning yorqin notasi bilan bugʻda pishirilgan nozik kalmar. Ortiqchasiz yengil, sof dengiz taʼmi — faqat foyda va zavq. Yengil va ongli tushlik uchun ideal.",
+      "description_ar": "حبار طري مطهو على البخار مع لمسة زاهية من الليمون الطازج. نكهة بحر خفيفة ونقية بلا زوائد — فائدة ومتعة فقط. مثالي لغداء خفيف وواعٍ.",
+      "composition_uz": "Kalmar, limon.",
+      "composition_ar": "حبار، ليمون."
+    },
+    "kitchen-healthy-krevetki-na-paru": {
+      "name_uz": "Bugʻda Pishirilgan Krevetkalar",
+      "name_ar": "روبيان على البخار",
+      "description_uz": "Tabiiy shirinligi va shiraliligini saqlagan, bugʻda pishirilgan krevetkalar. Yengil sitrus tarovati uchun limon bilan tortiladi.",
+      "description_ar": "روبيان مطهو على البخار يحتفظ بحلاوته وعصارته الطبيعية. يُقدَّم مع الليمون لانتعاش حمضي خفيف.",
+      "composition_uz": "Krevetkalar, limon.",
+      "composition_ar": "روبيان، ليمون."
+    },
+    "kitchen-healthy-kurinaya-grudka-na-paru": {
+      "name_uz": "Bugʻda Pishirilgan Tovuq Koʻkragi",
+      "name_ar": "صدر دجاج على البخار",
+      "description_uz": "Bugʻda pishirilgan tovuq koʻkragi filesi. Neytral taʼmga ega nozik, parhez goʻsht.",
+      "description_ar": "فيليه صدر دجاج مطهو على البخار. لحم طري وصحي بنكهة محايدة.",
+      "composition_uz": "Tovuq koʻkragi.",
+      "composition_ar": "صدر دجاج."
+    },
+    "kitchen-healthy-steik-tunca-s-limonom": {
+      "name_uz": "Limon Bilan Tunets Steyki",
+      "name_ar": "ستيك التونة بالليمون",
+      "description_uz": "Goʻshtdor tekstura va sof dengiz taʼmiga ega zich tunets steyki. Limon uni yengil sitrus tarovati bilan boyitadi. Oʻziga eʼtibor beradiganlar uchun yengil, ammo chinakam toʻyimli taom.",
+      "description_ar": "ستيك تونة متماسك بقوام لحمي ونكهة بحر نقية. الليمون يمنحه انتعاشًا حمضيًا خفيفًا. طبق خفيف لكنه مشبع حقًا لمن يهتمون بصحتهم.",
+      "composition_uz": "Tunets filesi, limon.",
+      "composition_ar": "فيليه تونة، ليمون."
+    },
+    "kitchen-healthy-steik-lososya-s-limonom": {
+      "name_uz": "Limon Bilan Losos Steyki",
+      "name_ar": "ستيك السلمون بالليمون",
+      "description_uz": "Sariyogʻdek tekstura va boy baliq taʼmiga ega shirali losos steyki. Yangi limon yengil sitrus nordonligini qoʻshadi. Sogʻlom va mazali ovqatlanish uchun olijanob taom.",
+      "description_ar": "ستيك سلمون طري بقوام زبدي ونكهة سمك غنية. الليمون الطازج يضيف حموضة خفيفة منعشة. طبق راقٍ لتغذية صحية ولذيذة.",
+      "composition_uz": "Losos filesi, limon.",
+      "composition_ar": "فيليه سلمون، ليمون."
+    },
+    "kitchen-healthy-korolevskie-finiki": {
+      "name_uz": "Qirollik Xurmosi",
+      "name_ar": "تمر ملكي",
+      "description_uz": "Boy tabiiy shirinlik va yumshoq karamel teksturaga ega yirik, goʻshtdor xurmo. Zich, shirali eti va yengil asal notali boy taʼmi bilan ajralib turadi. Mustaqil desert yoki shirinliklarga tabiiy muqobil sifatida tortiladi.",
+      "description_ar": "تمر كبير لحمي بحلاوة طبيعية غنية وقوام كراميلي ناعم. يتميز بلبّ كثيف عصيري ونكهة غنية مع لمسات عسلية خفيفة. يُقدَّم كحلوى مستقلة أو بديل طبيعي للحلويات.",
+      "composition_uz": "Xurmo (2 dona).",
+      "composition_ar": "تمر (2 قطعة)."
+    },
+    "kitchen-healthy-korolevskie-finiki-s-greckim-orehom": {
+      "name_uz": "Yongʻoqli Qirollik Xurmosi",
+      "name_ar": "تمر ملكي بالجوز",
+      "description_uz": "Yongʻoq ichlikli shirin qirollik xurmosi. Boy shirinlik va yengil qarsildoq teksturaga ega tabiiy desert.",
+      "description_ar": "تمر ملكي حلو محشو بالجوز. حلوى طبيعية بحلاوة غنية وقرمشة خفيفة في القوام.",
+      "composition_uz": "Xurmo, yongʻoq, oziq-ovqat oltin varagʻi.",
+      "composition_ar": "تمر، جوز، ورق ذهب صالح للأكل."
+    },
+    "kitchen-summer-menu-salat-iz-arbuza-s-brynzoi": {
+      "name_uz": "Brinzali Tarvuz Salati",
+      "name_ar": "سلطة البطيخ بجبن الفيتا",
+      "description_uz": "Shoʻr brinza va yangi yalpiz bilan juftlashgan, laym va zaytun yogʻi bilan boyitilgan shirali tarvuz. Shirin va shoʻr kontrastidagi tetiklashtiruvchi yozgi salat.",
+      "description_ar": "بطيخ عصيري مع جبن الفيتا المالح والنعناع الطازج، مع لمسة من الليمون الأخضر وزيت الزيتون. سلطة صيفية منعشة تجمع بين الحلو والمالح.",
+      "composition_uz": "Tarvuz, brinza, yalpiz, laym, zaytun yogʻi, tuz.",
+      "composition_ar": "بطيخ، جبن فيتا، نعناع، ليمون أخضر، زيت زيتون، ملح."
+    },
+    "kitchen-summer-menu-salat-s-kalmarom": {
+      "name_uz": "Kalmarli Salat",
+      "name_ar": "سلطة الحبار",
+      "description_uz": "Zanjabil, sarimsoq va kashnichli yongʻoq zapravkasida yangi bodring bilan nozik kalmar. Kunjut notali yengil osiyocha urgʻu.",
+      "description_ar": "حبار طري مع الخيار الطازج في تتبيلة المكسرات بالزنجبيل والثوم والكزبرة. لمسة آسيوية خفيفة مع نكهة السمسم.",
+      "composition_uz": "Kalmar, bodring, zapravka (yongʻoq sousi, soya sousi (soya sousi, shakar, suv), limon, zanjabil ildizi, sarimsoq, yangi kashnich), yangi kashnich, kunjut.",
+      "composition_ar": "حبار، خيار، تتبيلة (صلصة مكسرات، صلصة صويا (صلصة صويا، سكر، ماء)، ليمون، جذر الزنجبيل، ثوم، كزبرة طازجة)، كزبرة طازجة، سمسم."
+    },
+    "kitchen-summer-menu-salat-tabule-s-krevetkami-i-kalmarom": {
+      "name_uz": "Krevetka va Kalmarli Tabule Salati",
+      "name_ar": "سلطة تبولة بالروبيان والحبار",
+      "description_uz": "Krevetka va kalmar, yangi pomidor va bodring bilan bulgur, laym va apelsinli sitrus zapravkasi bilan. Yalpiz va petrushka tarovat, yuzu sousi esa yengil nordonlik qoʻshadi.",
+      "description_ar": "برغل مع الروبيان والحبار والطماطم والخيار الطازج، متبّل بتتبيلة حمضية من الليمون الأخضر والبرتقال. النعناع والبقدونس يضيفان الانتعاش، وصلصة اليوزو تمنح حموضة خفيفة.",
+      "composition_uz": "Bulgur, kalmar, krevetkalar, bodring, yangi pomidor, sitron zapravkasi (laym, apelsin, yuzu sousi, zaytun yogʻi), yangi petrushka, yalpiz, kungaboqar yogʻi, tuz.",
+      "composition_ar": "برغل، حبار، روبيان، خيار، طماطم طازجة، تتبيلة حمضية (ليمون أخضر، برتقال، صلصة يوزو، زيت زيتون)، بقدونس طازج، نعناع، زيت دوار الشمس، ملح."
+    },
+    "kitchen-summer-menu-tartar-iz-lososya": {
+      "name_uz": "Losos Tartari",
+      "name_ar": "تارتار السلمون",
+      "description_uz": "Yalpizli pesto hamda zanjabil va mirin sousidagi kunjut zapravkasi bilan yangi losos. Qarsildoq rediska va shnitt-piyoz kompozitsiyani yakunlaydi.",
+      "description_ar": "سلمون طازج مع بيستو النعناع وتتبيلة السمسم بالزنجبيل وصلصة الميرين. الفجل المقرمش والثوم المعمر يكملان الطبق.",
+      "composition_uz": "Losos, yangi bodring, yalpizli pesto (yalpiz, limon, zaytun yogʻi, shakar, tuz), kunjut zapravkasi (kunjut, zanjabil ildizi, kungaboqar yogʻi, mirin sousi, suv, soya sousi, kunjut yogʻi, shakar), qizil rediska, shnitt-piyoz, tuz.",
+      "composition_ar": "سلمون، خيار طازج، بيستو النعناع (نعناع، ليمون، زيت زيتون، سكر، ملح)، تتبيلة السمسم (سمسم، جذر الزنجبيل، زيت دوار الشمس، صلصة ميرين، ماء، صلصة صويا، زيت سمسم، سكر)، فجل أحمر، ثوم معمر، ملح."
+    },
+    "kitchen-summer-menu-otkrytaya-shaurma-s-kuricei": {
+      "name_uz": "Tovuqli Ochiq Shaurma",
+      "name_ar": "شاورما دجاج مفتوحة",
+      "description_uz": "Lavashda tanduri ziravorli tovuq koʻkragi va soni, qarsildoq kartoshka fri, Pekin karami va parmezan bilan. Smetanali va tomatli souslar shiralilik qoʻshadi.",
+      "description_ar": "صدر وفخذ دجاج ببهارات التندوري على خبز اللافاش، مع بطاطس مقلية مقرمشة وملفوف صيني وبارميزان. صلصة القشدة الحامضة وصلصة الطماطم تضيفان العصارة.",
+      "composition_uz": "Tovuq koʻkragi, tovuq soni, lavash, Pekin karami, yangi pomidor, yangi bodring, kartoshka fri, qizil piyoz, parmezan pishlogʻi, smetanali sous (smetana 20%, mayonez 67%, chili qalampiri, yangi kashnich, tuz, qora murch), tomat sousi (tomat sousi (tomat sousi, suv, quritilgan rayhon, shakar, zaytun yogʻi, tuz), sarimsoq, qizil piyoz, shakar, yangi kashnich, tuz), yangi kashnich, kungaboqar yogʻi, tuz, qora murch, tanduri ziravori.",
+      "composition_ar": "صدر دجاج، فخذ دجاج، خبز لافاش، ملفوف صيني، طماطم طازجة، خيار طازج، بطاطس مقلية، بصل أحمر، جبن بارميزان، صلصة القشدة الحامضة (قشدة حامضة 20%، مايونيز 67%، فلفل حار، كزبرة طازجة، ملح، فلفل أسود)، صلصة طماطم (صلصة طماطم (صلصة طماطم، ماء، ريحان مجفف، سكر، زيت زيتون، ملح)، ثوم، بصل أحمر، سكر، كزبرة طازجة، ملح)، كزبرة طازجة، زيت دوار الشمس، ملح، فلفل أسود، بهارات تندوري."
+    },
+    "kitchen-summer-menu-grenki-iz-borodinskogo-hleba": {
+      "name_uz": "Borodino Nonidan Grenkalar",
+      "name_ar": "خبز بورودينسكي المحمّص",
+      "description_uz": "Sarimsoqli Borodino nonidan qarsildoq grenkalar, yunon yogurtidagi yogurt sousi va yangi kashnich bilan tortiladi.",
+      "description_ar": "قطع خبز بورودينسكي محمّصة مقرمشة بالثوم، تُقدَّم مع صلصة الزبادي اليوناني والكزبرة الطازجة.",
+      "composition_uz": "Borodino noni, sarimsoq, yangi kashnich, yogurt sousi (yunon yogurti, mayonez 67%, yangi kashnich, koʻk piyoz, tuz, qora murch), tuz.",
+      "composition_ar": "خبز بورودينسكي، ثوم، كزبرة طازجة، صلصة زبادي (زبادي يوناني، مايونيز 67%، كزبرة طازجة، بصل أخضر، ملح، فلفل أسود)، ملح."
+    },
+    "kitchen-summer-menu-nokki-s-kalmarom": {
+      "name_uz": "Kalmarli Nyokki",
+      "name_ar": "نيوكي بالحبار",
+      "description_uz": "Teriyaki va yongʻoq notali qaymoqli sousda kalmar, kunjut va yangi kashnich bilan kartoshkali nyokki.",
+      "description_ar": "نيوكي البطاطس مع الحبار في صلصة كريمية بالترياكي ونكهات المكسرات، مع السمسم والكزبرة الطازجة.",
+      "composition_uz": "Kartoshkali nyokki, kalmar, qaymoq 22%, teriyaki sousi, yongʻoq sousi, kungaboqar yogʻi, yangi kashnich, kunjut, tuz.",
+      "composition_ar": "نيوكي بطاطس، حبار، كريمة 22%، صلصة ترياكي، صلصة مكسرات، زيت دوار الشمس، كزبرة طازجة، سمسم، ملح."
+    },
+    "kitchen-summer-menu-kartofel-pechenyi-s-rvanoi-govyadinoi": {
+      "name_uz": "Tolali Mol Goʻshti Bilan Pishirilgan Kartoshka",
+      "name_ar": "بطاطس مخبوزة مع لحم البقر المفتّت",
+      "description_uz": "Rozmarinli pishirilgan kartoshka va dudlangan tolali mol goʻshti, guruch sirkasi, kunjut yogʻi va asaldan tayyorlangan yapon sousi ostida.",
+      "description_ar": "بطاطس مخبوزة بإكليل الجبل مع لحم بقر مفتّت مدخّن، مغطاة بصلصة يابانية من خل الأرز وزيت السمسم والعسل.",
+      "composition_uz": "Pishirilgan kartoshka (kartoshka, rozmarin, kungaboqar yogʻi, tuz), dudlangan tolali mol goʻshti, yapon sousi (limon, Mizkan guruch sirkasi, kunjut yogʻi, sarimsoq, pishirilgan porey piyozi (kungaboqar yogʻi, tuz, qora murch), asal), sariyogʻ, rozmarin, tuz.",
+      "composition_ar": "بطاطس مخبوزة (بطاطس، إكليل الجبل، زيت دوار الشمس، ملح)، لحم بقر مفتّت مدخّن، صلصة يابانية (ليمون، خل أرز ميزكان، زيت سمسم، ثوم، كراث مخبوز (زيت دوار الشمس، ملح، فلفل أسود)، عسل)، زبدة، إكليل الجبل، ملح."
+    },
+    "kitchen-summer-menu-letnii-roll-assorti": {
+      "name_uz": "Yozgi Roll-Assorti",
+      "name_ar": "تشكيلة رول صيفية",
+      "description_uz": "Krevetka, losos, tunets va dengiz taroqchasi, avokado hamda chuka salati bilan roll-assorti. Zanjabil, vasabi va soya sousi bilan tortiladi.",
+      "description_ar": "تشكيلة رول بالروبيان والسلمون والتونة والإسكالوب والأفوكادو وسلطة التشوكا. تُقدَّم مع الزنجبيل والواسابي وصلصة الصويا.",
+      "composition_uz": "Guruch (Mizkan sirkasi, mirin, shakar, tuz), nori, romano salati, yangi bodring, avokado, krevetkalar, losos, tunets, dengiz taroqchasi, chuka salati, qizil ikra, marinadlangan zanjabil, vasabi kukuni, soya sousi (soya sousi, shakar, suv), bambuk bargi (bezak).",
+      "composition_ar": "أرز (خل ميزكان، ميرين، سكر، ملح)، نوري، خس روماني، خيار طازج، أفوكادو، روبيان، سلمون، تونة، إسكالوب، سلطة تشوكا، كافيار أحمر، زنجبيل مخلل، مسحوق واسابي، صلصة صويا (صلصة صويا، سكر، ماء)، ورقة بامبو (للتزيين)."
+    },
+    "kitchen-summer-menu-syrniki-s-kremom-iz-varenoi-sgushchenki": {
+      "name_uz": "Qaynatilgan Quyultirilgan Sut Kremli Sirniklar",
+      "name_ar": "سيرنيكي بكريمة الحليب المكثف المطبوخ",
+      "description_uz": "Qaynatilgan quyultirilgan sut va Kremette pishlogʻi kremi, yangi qulupnay va golubika, chia urugʻlari bilan nozik tvorogli sirniklar.",
+      "description_ar": "فطائر جبن قريش رقيقة (سيرنيكي) مع كريمة من الحليب المكثف المطبوخ وجبن كريميت، مع الفراولة الطازجة والتوت الأزرق وبذور الشيا.",
+      "composition_uz": "Sirniklar (tvorog 9%, bugʻdoy uni, shakar, vanil shakar, tovuq tuxumi, kungaboqar yogʻi), krem (Kremette pishlogʻi, qaynatilgan quyultirilgan sut), yangi qulupnay, golubika, sariyogʻ, chia urugʻlari, sublimatsiyalangan malina.",
+      "composition_ar": "سيرنيكي (جبن قريش 9%، دقيق قمح، سكر، سكر فانيليا، بيض، زيت دوار الشمس)، كريمة (جبن كريميت، حليب مكثف مطبوخ)، فراولة طازجة، توت أزرق، زبدة، بذور الشيا، توت العليق المجفف بالتجميد."
+    },
+    "kitchen-summer-menu-dynya": {
+      "name_uz": "Qovun",
+      "name_ar": "شمام",
+      "description_uz": "Pishgan shirali qovun — oddiy va tetiklashtiruvchi yozgi desert.",
+      "description_ar": "شمام ناضج عصيري — حلوى صيفية بسيطة ومنعشة.",
+      "composition_uz": "Qovun.",
+      "composition_ar": "شمام."
+    },
+    "kitchen-summer-menu-arbuz": {
+      "name_uz": "Tarvuz",
+      "name_ar": "بطيخ",
+      "description_uz": "Pita, shoʻr brinza va limon bilan shirali tarvuz — shirin va shoʻrning tetiklashtiruvchi yozgi uygʻunligi.",
+      "description_ar": "بطيخ عصيري مع خبز البيتا وجبن الفيتا المالح والليمون — توليفة صيفية منعشة من الحلو والمالح.",
+      "composition_uz": "Tarvuz, pita, brinza, limon.",
+      "composition_ar": "بطيخ، خبز بيتا، جبن فيتا، ليمون."
+    },
+    "kitchen-summer-menu-okroshka-s-govyadinoi": {
+      "name_uz": "Mol Goʻshtli Okroshka",
+      "name_ar": "أوكروشكا بلحم البقر",
+      "description_uz": "Qaynatilgan mol goʻshti, kartoshka, rediska va yangi koʻkatlar bilan, smetana, xantal va xren qoʻshilgan klassik okroshka. Tanlov boʻyicha — kvas yoki kefir.",
+      "description_ar": "أوكروشكا كلاسيكية بلحم البقر المسلوق والبطاطس والفجل والأعشاب الطازجة، مع القشدة الحامضة والخردل والفجل الحار. تُقدَّم بالكفاس أو الكفير حسب الاختيار.",
+      "composition_uz": "Kartoshka, mol goʻshti, yangi bodring, tovuq tuxumi, qizil rediska, smetana 20%, shnitt-piyoz, yangi petrushka, yangi ukrop, xantal, qaymoqli xren, tuz, qora murch. (Tanlov boʻyicha kvas yoki kefir)",
+      "composition_ar": "بطاطس، لحم بقر، خيار طازج، بيض، فجل أحمر، قشدة حامضة 20%، ثوم معمر، بقدونس طازج، شبت طازج، خردل، فجل حار بالكريمة، ملح، فلفل أسود. (كفاس أو كفير حسب الاختيار)"
+    }
+  },
+  "bar": {
+    "bar-osen-kofe-po-vostochnomu-a1f7c2": {
+      "name_uz": "Sharqona qahva",
+      "name_ar": "قهوة شرقية",
+      "description_uz": null,
+      "description_ar": null
+    },
+    "bar-osen-kakao-prianyi-b2e8d3": {
+      "name_uz": "Ziravorli kakao",
+      "name_ar": "كاكاو بالتوابل",
+      "description_uz": null,
+      "description_ar": null
+    },
+    "bar-osen-smorodinovyi-glintvein-ba-c3d9e4": {
+      "name_uz": "Qoragʻat glintveyni (alkogolsiz)",
+      "name_ar": "غلوفاين الكشمش الأسود (بدون كحول)",
+      "description_uz": null,
+      "description_ar": null
+    },
+    "bar-osen-prianyi-iablochnyi-grog-ba-d4c1f5": {
+      "name_uz": "Ziravorli olma grogi (alkogolsiz)",
+      "name_ar": "غروغ التفاح بالتوابل (بدون كحول)",
+      "description_uz": null,
+      "description_ar": null
+    },
+    "bar-osen-smorodinovyi-glintvein-e5b2a6": {
+      "name_uz": "Qoragʻat glintveyni",
+      "name_ar": "غلوفاين الكشمش الأسود",
+      "description_uz": null,
+      "description_ar": null
+    },
+    "bar-osen-prianyi-iablochnyi-grog-f6a3b7": {
+      "name_uz": "Ziravorli olma grogi",
+      "name_ar": "غروغ التفاح بالتوابل",
+      "description_uz": null,
+      "description_ar": null
+    },
+    "arka-bar-0000": {
+      "name_uz": "Mango, marakuya, kokos",
+      "name_ar": "مانجو، باشن فروت، جوز الهند",
+      "description_uz": "Mango, marakuya, kokos, vanil, soda",
+      "description_ar": "مانجو، باشن فروت، جوز الهند، فانيليا، صودا"
+    },
+    "arka-bar-0001": {
+      "name_uz": "Apelsin, yuzu, bodom",
+      "name_ar": "برتقال، يوزو، لوز",
+      "description_uz": "Apelsin, yuzu, limon, bodom, soda",
+      "description_ar": "برتقال، يوزو، ليمون، لوز، صودا"
+    },
+    "arka-bar-0002": {
+      "name_uz": "Anor va qulupnay",
+      "name_ar": "رمان وفراولة",
+      "description_uz": "Anor, qulupnay, karkade, soda",
+      "description_ar": "رمان، فراولة، كركديه، صودا"
+    },
+    "arka-bar-0003": {
+      "name_uz": "Kivi, krijovnik, feyxoa",
+      "name_ar": "كيوي، عنب الثعلب، فيجوا",
+      "description_uz": "Kivi, olma, krijovnik, feyxoa, estragon, soda",
+      "description_ar": "كيوي، تفاح، عنب الثعلب، فيجوا، طرخون، صودا"
+    },
+    "arka-bar-0004": {
+      "name_uz": "Ananas va shovul",
+      "name_ar": "أناناس وحُمّاض",
+      "description_uz": "Ananas, shovul, soda",
+      "description_ar": "أناناس، حُمّاض، صودا"
+    },
+    "arka-bar-0005": {
+      "name_uz": "Qulupnay, kokos, ananas",
+      "name_ar": "فراولة، جوز الهند، أناناس",
+      "description_uz": "Qulupnay, ananas, kokos, tonka dukkagi",
+      "description_ar": "فراولة، أناناس، جوز الهند، حبوب التونكا"
+    },
+    "arka-bar-0006": {
+      "name_uz": "Tailand mangosi",
+      "name_ar": "مانجو تايلاندي",
+      "description_uz": "Mango, ananas, banan",
+      "description_ar": "مانجو، أناناس، موز"
+    },
+    "arka-bar-0007": {
+      "name_uz": "Qulupnay va malina",
+      "name_ar": "فراولة وتوت العليق",
+      "description_uz": "Qulupnay, malina, ananas",
+      "description_ar": "فراولة، توت العليق، أناناس"
+    },
+    "arka-bar-0008": {
+      "name_uz": "Vanil",
+      "name_ar": "فانيليا",
+      "description_uz": "Klassik vanilli sutli kokteyl",
+      "description_ar": "ميلك شيك الفانيليا الكلاسيكي"
+    },
+    "arka-bar-0009": {
+      "name_uz": "Qulupnay",
+      "name_ar": "فراولة",
+      "description_uz": "Yangi qulupnayli sutli kokteyl",
+      "description_ar": "ميلك شيك بالفراولة الطازجة"
+    },
+    "arka-bar-0010": {
+      "name_uz": "Shokolad",
+      "name_ar": "شوكولاتة",
+      "description_uz": "Toʻyingan shokoladli sutli kokteyl",
+      "description_ar": "ميلك شيك الشوكولاتة الغني"
+    },
+    "arka-bar-0014": {
+      "name_uz": "San Benedetto gazsiz/gazli",
+      "name_ar": "سان بينيديتو عادية/غازية",
+      "description_uz": "Gazli / gazsiz, shisha idishda.",
+      "description_ar": "غازية / عادية، عبوة زجاجية."
+    },
+    "arka-bar-0015": {
+      "name_uz": "Legenda Baykala",
+      "name_ar": "ليجند أوف بايكال",
+      "description_uz": "Gazli / gazsiz, shisha idishda.",
+      "description_ar": "غازية / عادية، عبوة زجاجية."
+    },
+    "arka-bar-0016": {
+      "name_uz": "Coca-Cola",
+      "name_ar": "كوكا كولا",
+      "description_uz": "Klassik Coca-Cola",
+      "description_ar": "كوكا كولا الكلاسيكية"
+    },
+    "arka-bar-0017": {
+      "name_uz": "Coca-Cola Zero",
+      "name_ar": "كوكا كولا زيرو",
+      "description_uz": "Shakarsiz Coca-Cola",
+      "description_ar": "كوكا كولا بدون سكر"
+    },
+    "arka-bar-0018": {
+      "name_uz": "Tonik",
+      "name_ar": "تونيك",
+      "description_uz": "Klassik tonik",
+      "description_ar": "تونيك كلاسيكي"
+    },
+    "arka-bar-0019": {
+      "name_uz": "Red Bull",
+      "name_ar": "ريد بول",
+      "description_uz": "Red Bull energetik ichimligi",
+      "description_ar": "مشروب الطاقة ريد بول"
+    },
+    "arka-bar-0020": {
+      "name_uz": "Red Bull shakarsiz",
+      "name_ar": "ريد بول بدون سكر",
+      "description_uz": "Shakarsiz Red Bull energetik ichimligi",
+      "description_ar": "مشروب الطاقة ريد بول بدون سكر"
+    },
+    "arka-bar-0011": {
+      "name_uz": "Sharbat",
+      "name_ar": "عصير",
+      "description_uz": "Apelsin, olma, olcha, pomidor",
+      "description_ar": "برتقال، تفاح، كرز، طماطم"
+    },
+    "arka-bar-0012": {
+      "name_uz": "Yangi siqilgan sharbat",
+      "name_ar": "عصير طازج",
+      "description_uz": "Apelsin / Greypfrut / Olma",
+      "description_ar": "برتقال / جريب فروت / تفاح"
+    },
+    "arka-bar-0013": {
+      "name_uz": "Yangi siqilgan sharbat",
+      "name_ar": "عصير طازج",
+      "description_uz": "Ananas",
+      "description_ar": "أناناس"
+    },
+    "arka-bar-0021": {
+      "name_uz": "Anor va qulupnay",
+      "name_ar": "رمان وفراولة",
+      "description_uz": "Anor, greypfrut, qulupnay, karkade",
+      "description_ar": "رمان، جريب فروت، فراولة، كركديه"
+    },
+    "bar-avtorskie-chai-marakuiia-oblepikha-donnik-0z8024v": {
+      "name_uz": "Marakuya, chakanda, qashqarbeda",
+      "name_ar": "باشن فروت، نبق البحر، حندقوق",
+      "description_uz": "Chakanda, marakuya, apelsin, qashqarbeda, rozmarin",
+      "description_ar": "نبق البحر، باشن فروت، برتقال، حندقوق، إكليل الجبل"
+    },
+    "arka-bar-0023": {
+      "name_uz": "Marokash oltini",
+      "name_ar": "الذهب المغربي",
+      "description_uz": "Mandarin, Tay Pin choyi, muskovado, yalpiz, sitrus, dolchin, chinnigul, oq kardamon",
+      "description_ar": "يوسفي، شاي تاي بينغ، سكر مسكوفادو، نعناع، حمضيات، قرفة، قرنفل، هيل أبيض"
+    },
+    "arka-bar-0024": {
+      "name_uz": "Greypfrut va malina",
+      "name_ar": "جريب فروت وتوت العليق",
+      "description_uz": "Greypfrut, malina, karkade, limon",
+      "description_ar": "جريب فروت، توت العليق، كركديه، ليمون"
+    },
+    "arka-bar-0025": {
+      "name_uz": "Yalpizli, togʻjambil va kardamon bilan",
+      "name_ar": "نعناع بالزعتر والهيل",
+      "description_uz": "Yalpiz, yangi togʻjambil, oq kardamon, badyan",
+      "description_ar": "نعناع، زعتر طازج، هيل أبيض، يانسون نجمي"
+    },
+    "arka-bar-0029": {
+      "name_uz": "Moli Chjen Lo",
+      "name_ar": "مولي جن لو",
+      "description_uz": "Premium yasminli koʻk choy",
+      "description_ar": "شاي أخضر بالياسمين فاخر"
+    },
+    "arka-bar-0030": {
+      "name_uz": "Gaba",
+      "name_ar": "غابا",
+      "description_uz": "Yumshoq ta'mli premium Gaba choyi",
+      "description_ar": "شاي غابا فاخر بنكهة ناعمة"
+    },
+    "arka-bar-0031": {
+      "name_uz": "Da Xun Pao",
+      "name_ar": "دا هونغ باو",
+      "description_uz": "Premium Da Xun Pao uluni",
+      "description_ar": "أولونغ دا هونغ باو فاخر"
+    },
+    "arka-bar-0032": {
+      "name_uz": "Te Guan In Mao Cha",
+      "name_ar": "تي غوان ين ماو تشا",
+      "description_uz": "Premium Te Guan In uluni",
+      "description_ar": "أولونغ تي غوان ين فاخر"
+    },
+    "arka-bar-0033": {
+      "name_uz": "Lun Szin",
+      "name_ar": "لونغ جينغ",
+      "description_uz": "Premium Lun Szin koʻk choyi",
+      "description_ar": "شاي أخضر لونغ جينغ فاخر"
+    },
+    "arka-bar-0034": {
+      "name_uz": "Yetilgan puer",
+      "name_ar": "بوير معتّق",
+      "description_uz": "Chuqur ta'mli yetilgan puer",
+      "description_ar": "بوير معتّق بنكهة عميقة"
+    },
+    "arka-bar-0035": {
+      "name_uz": "Tayga oʻtlari, Tibet moychechagi bilan",
+      "name_ar": "أعشاب التايغا مع البابونج التبتي",
+      "description_uz": "Tibet moychechagi qoʻshilgan oʻtli tizan",
+      "description_ar": "تيزان عشبي مع البابونج التبتي"
+    },
+    "arka-bar-0036": {
+      "name_uz": "Kareliya dudlangan, rezavorlar bilan",
+      "name_ar": "كاريليا المدخّن بالتوت",
+      "description_uz": "Kareliya rezavorlari qoʻshilgan dudlangan tizan",
+      "description_ar": "تيزان مدخّن مع توت كاريليا"
+    },
+    "arka-bar-0037": {
+      "name_uz": "Malina yalpiz bilan",
+      "name_ar": "توت العليق بالنعناع",
+      "description_uz": "Malina va yalpizli rezavor tizan",
+      "description_ar": "تيزان التوت مع توت العليق والنعناع"
+    },
+    "arka-bar-0038": {
+      "name_uz": "Grechixa guli",
+      "name_ar": "زهر الحنطة السوداء",
+      "description_uz": "Grechixa gulidan tayyorlangan tizan",
+      "description_ar": "تيزان من زهور الحنطة السوداء"
+    },
+    "arka-bar-0026": {
+      "name_uz": "Assam",
+      "name_ar": "آسام",
+      "description_uz": "Kuchli klassik Assam choyi",
+      "description_ar": "شاي آسام كلاسيكي قوي"
+    },
+    "arka-bar-0027": {
+      "name_uz": "Earl Grey",
+      "name_ar": "إيرل غراي",
+      "description_uz": "Bergamotli klassik Earl Grey choyi",
+      "description_ar": "شاي إيرل غراي الكلاسيكي بالبرغموت"
+    },
+    "arka-bar-0028": {
+      "name_uz": "Sutli ulun",
+      "name_ar": "أولونغ الحليب",
+      "description_uz": "Nozik sutli ulun",
+      "description_ar": "أولونغ الحليب الناعم"
+    },
+    "arka-bar-0039": {
+      "name_uz": "Yangi togʻjambil",
+      "name_ar": "زعتر طازج",
+      "description_uz": "Yangi togʻjambil shoxchasi — choyga oʻtli nota",
+      "description_ar": "غصن زعتر طازج — لمسة عشبية للشاي"
+    },
+    "arka-bar-0040": {
+      "name_uz": "Yangi yalpiz barglari",
+      "name_ar": "أوراق نعناع طازجة",
+      "description_uz": "Yangi yalpiz — har qanday choyga tetiklantiruvchi aksent",
+      "description_ar": "نعناع طازج — لمسة منعشة لأي شاي"
+    },
+    "arka-bar-0041": {
+      "name_uz": "Atirgul gullari",
+      "name_ar": "بتلات الورد",
+      "description_uz": "Quritilgan atirgul gullari — choyga nozik gul notasi",
+      "description_ar": "بتلات ورد مجففة — لمسة زهرية ناعمة للشاي"
+    },
+    "arka-bar-0042": {
+      "name_uz": "Dabl espresso",
+      "name_ar": "إسبريسو مزدوج",
+      "description_uz": "Toʻyingan dabl espresso",
+      "description_ar": "إسبريسو مزدوج غني"
+    },
+    "arka-bar-0043": {
+      "name_uz": "Amerikano",
+      "name_ar": "أمريكانو",
+      "description_uz": "Klassik amerikano",
+      "description_ar": "أمريكانو كلاسيكي"
+    },
+    "arka-bar-0044": {
+      "name_uz": "Flat White",
+      "name_ar": "فلات وايت",
+      "description_uz": "Baxmal koʻpikli yumshoq flat white",
+      "description_ar": "فلات وايت ناعم برغوة مخملية"
+    },
+    "arka-bar-0045": {
+      "name_uz": "Kapuchino",
+      "name_ar": "كابتشينو",
+      "description_uz": "Havodek yengil koʻpikli klassik kapuchino",
+      "description_ar": "كابتشينو كلاسيكي برغوة خفيفة"
+    },
+    "arka-bar-0046": {
+      "name_uz": "Latte",
+      "name_ar": "لاتيه",
+      "description_uz": "Sut koʻpikli nozik latte",
+      "description_ar": "لاتيه ناعم برغوة الحليب"
+    },
+    "arka-bar-0047": {
+      "name_uz": "Ays latte",
+      "name_ar": "لاتيه مثلّج",
+      "description_uz": "Tetiklantiruvchi ays latte",
+      "description_ar": "لاتيه مثلّج منعش"
+    },
+    "arka-bar-0048": {
+      "name_uz": "Raf qahva",
+      "name_ar": "قهوة راف",
+      "description_uz": "Qaymoq va vanilli raf",
+      "description_ar": "راف بالكريمة والفانيليا"
+    },
+    "arka-bar-0049": {
+      "name_uz": "Espresso tonik",
+      "name_ar": "إسبريسو تونيك",
+      "description_uz": "Espresso tonik bilan — tetiklantiruvchi muvozanat",
+      "description_ar": "إسبريسو مع تونيك — توازن منعش"
+    },
+    "arka-bar-0050": {
+      "name_uz": "Bumble qahva",
+      "name_ar": "قهوة بامبل",
+      "description_uz": "Apelsinli qahva — yorqin bumble",
+      "description_ar": "قهوة بالبرتقال — بامبل منعش"
+    },
+    "arka-bar-0051": {
+      "name_uz": "Karamelli kakao",
+      "name_ar": "كاكاو بالكراميل",
+      "description_uz": "Karamelli iliq kakao",
+      "description_ar": "كاكاو دافئ بالكراميل"
+    },
+    "arka-bar-0052": {
+      "name_uz": "Sirop",
+      "name_ar": "سيروب",
+      "description_uz": "Vanil, karamel, tuzli karamel, bodom, kokos, dolchin, qulupnay, malina",
+      "description_ar": "فانيليا، كراميل، كراميل مملّح، لوز، جوز الهند، قرفة، فراولة، توت العليق"
+    },
+    "bar-dobavki-kokosovoe-moloko-p3k9x1": {
+      "name_uz": "Kokos suti",
+      "name_ar": "حليب جوز الهند",
+      "description_uz": null,
+      "description_ar": null
+    },
+    "bar-dobavki-mindalnoe-moloko-q7m2v4": {
+      "name_uz": "Bodom suti",
+      "name_ar": "حليب اللوز",
+      "description_uz": null,
+      "description_ar": null
+    },
+    "arka-bar-0059": {
+      "name_uz": "Violet",
+      "name_ar": "فيوليت",
+      "description_uz": "Jin, shumurt, koʻk mevali, boʻtakoʻz, marjondaraxt, gazli vino",
+      "description_ar": "جن، كرز الطيور، توت أزرق، زهرة الذرة، زهر البلسان، نبيذ فوّار"
+    },
+    "arka-bar-0060": {
+      "name_uz": "Pinko",
+      "name_ar": "بينكو",
+      "description_uz": "Sarti Rosa, qulupnay, gazli vino",
+      "description_ar": "سارتي روزا، فراولة، نبيذ فوّار"
+    },
+    "arka-bar-0061": {
+      "name_uz": "Hugo",
+      "name_ar": "هوغو",
+      "description_uz": "Shaftoli, marjondaraxt, gazli vino",
+      "description_ar": "خوخ، زهر البلسان، نبيذ فوّار"
+    },
+    "arka-bar-0062": {
+      "name_uz": "Qulupnay Tonka",
+      "name_ar": "فراولة تونكا",
+      "description_uz": "Aperol, qulupnay, tonka dukkagi, gazli vino",
+      "description_ar": "أبيرول، فراولة، حبوب التونكا، نبيذ فوّار"
+    },
+    "arka-bar-0063": {
+      "name_uz": "Grape Tonic",
+      "name_ar": "غريب تونيك",
+      "description_uz": "Pushti greypfrutli jin, greypfrut, tonik",
+      "description_ar": "جن الجريب فروت الوردي، جريب فروت، تونيك"
+    },
+    "arka-bar-0064": {
+      "name_uz": "Basil Tonic",
+      "name_ar": "بازل تونيك",
+      "description_uz": "Jin, rayhon, tonik",
+      "description_ar": "جن، ريحان، تونيك"
+    },
+    "arka-bar-0065": {
+      "name_uz": "Orange Tonic",
+      "name_ar": "أورانج تونيك",
+      "description_uz": "Yuzu va oq qulupnayli jin, apelsin, yuzu, tonik",
+      "description_ar": "جن اليوزو والفراولة البيضاء، برتقال، يوزو، تونيك"
+    },
+    "arka-bar-0066": {
+      "name_uz": "Mango Colada",
+      "name_ar": "مانجو كولادا",
+      "description_uz": "Mango, marakuya, kokos, ziravorli va oq rom",
+      "description_ar": "مانجو، باشن فروت، جوز الهند، روم بالتوابل وروم أبيض"
+    },
+    "arka-bar-0067": {
+      "name_uz": "Basil Smash",
+      "name_ar": "بازل سماش",
+      "description_uz": "Jin, rayhon",
+      "description_ar": "جن، ريحان"
+    },
+    "arka-bar-0068": {
+      "name_uz": "Aperol Strawberry Sour",
+      "name_ar": "أبيرول فراولة ساور",
+      "description_uz": "Aperol, qulupnay, tonka dukkagi",
+      "description_ar": "أبيرول، فراولة، حبوب التونكا"
+    },
+    "arka-bar-0069": {
+      "name_uz": "Yer qulupnayli Negroni",
+      "name_ar": "نيغروني الفراولة البرية",
+      "description_uz": "Yer qulupnay, shiso, jin, qizil vermut, Campari",
+      "description_ar": "فراولة برية، شيسو، جن، فيرموث أحمر، كامباري"
+    },
+    "arka-bar-0070": {
+      "name_uz": "Olxoʻri Koʻk mevali",
+      "name_ar": "برقوق وتوت أزرق",
+      "description_uz": "Olxoʻrili soju, koʻk meva kordiali, shumurt",
+      "description_ar": "سوجو البرقوق، كورديال التوت الأزرق، كرز الطيور"
+    },
+    "arka-bar-0076": {
+      "name_uz": "Aperol Spritz",
+      "name_ar": "أبيرول سبريتز",
+      "description_uz": "Aperol, gazli vino, soda, apelsin",
+      "description_ar": "أبيرول، نبيذ فوّار، صودا، برتقال"
+    },
+    "arka-bar-0077": {
+      "name_uz": "Pornstar Martini",
+      "name_ar": "بورنستار مارتيني",
+      "description_uz": "Aroq, gazli vino, marakuya, vanil",
+      "description_ar": "فودكا، نبيذ فوّار، باشن فروت، فانيليا"
+    },
+    "arka-bar-0078": {
+      "name_uz": "Clover Club",
+      "name_ar": "كلوفر كلوب",
+      "description_uz": "Jin, malina, limon",
+      "description_ar": "جن، توت العليق، ليمون"
+    },
+    "arka-bar-0079": {
+      "name_uz": "Mojito",
+      "name_ar": "موهيتو",
+      "description_uz": "Rom, shakar, laym, yalpiz",
+      "description_ar": "روم، سكر، ليمون أخضر، نعناع"
+    },
+    "arka-bar-0080": {
+      "name_uz": "Negroni",
+      "name_ar": "نيغروني",
+      "description_uz": "Campari, jin, qizil vermut",
+      "description_ar": "كامباري، جن، فيرموث أحمر"
+    },
+    "arka-bar-0081": {
+      "name_uz": "Long Island",
+      "name_ar": "لونغ آيلاند",
+      "description_uz": "Aroq, oq rom, tekila, jin, apelsin likyori, limon, shakar",
+      "description_ar": "فودكا، روم أبيض، تيكيلا، جن، ليكيور البرتقال، ليمون، سكر"
+    },
+    "arka-bar-0082": {
+      "name_uz": "Bloody Mary",
+      "name_ar": "بلودي ماري",
+      "description_uz": "Aroq, pomidor, tabasko, yuzu, vustershir sousi, tuz, ziravorlar",
+      "description_ar": "فودكا، طماطم، تاباسكو، يوزو، صلصة ورشستر، ملح، بهارات"
+    },
+    "arka-bar-0071": {
+      "name_uz": "Mango Marakuya",
+      "name_ar": "مانجو باشن فروت",
+      "description_uz": "Mango va marakuyali nastoyka",
+      "description_ar": "منقوع بالمانجو والباشن فروت"
+    },
+    "arka-bar-0072": {
+      "name_uz": "Rezavorli Negroni",
+      "name_ar": "نيغروني التوت",
+      "description_uz": "Negroni uslubidagi rezavorli nastoyka",
+      "description_ar": "منقوع التوت على طريقة نيغروني"
+    },
+    "arka-bar-0073": {
+      "name_uz": "Apelsin Yuzu",
+      "name_ar": "برتقال يوزو",
+      "description_uz": "Apelsin va yuzuli nastoyka",
+      "description_ar": "منقوع بالبرتقال واليوزو"
+    },
+    "arka-bar-0074": {
+      "name_uz": "Olxoʻri va Chernika",
+      "name_ar": "برقوق وتوت أزرق",
+      "description_uz": "Olxoʻri va chernika bilan tayyorlangan nastoyka",
+      "description_ar": "منقوع بالبرقوق والتوت الأزرق"
+    },
+    "arka-bar-0083": {
+      "name_uz": "Crémant de Limoux Grande Cuvée 1531, Rosé. Fransiya. Brut.",
+      "name_ar": "كريمان دو ليمو غراند كوفيه 1531، روزيه. فرنسا. بروت.",
+      "description_uz": "Fransuz koʻpikli brut vinosi",
+      "description_ar": "نبيذ فوّار فرنسي بروت"
+    },
+    "arka-bar-0084": {
+      "name_uz": "Prosecco Passaparola, Pradio. Italiya. Brut.",
+      "name_ar": "بروسيكو باسابارولا، براديو. إيطاليا. بروت.",
+      "description_uz": "Italyan Prosecco brut",
+      "description_ar": "بروسيكو إيطالي بروت"
+    },
+    "arka-bar-0085": {
+      "name_uz": "Lambrusco Bianco, Aleotti. Italiya. Yarim shirin.",
+      "name_ar": "لامبروسكو بيانكو، أليوتي. إيطاليا. نصف حلو.",
+      "description_uz": "Yarim shirin italyan Lambrusco",
+      "description_ar": "لامبروسكو إيطالي نصف حلو"
+    },
+    "arka-bar-0086": {
+      "name_uz": "Besserat de Bellefon. Fransiya. Brut.",
+      "name_ar": "بيسيرا دو بيلفون. فرنسا. بروت.",
+      "description_uz": "Fransuz Crémant brut",
+      "description_ar": "كريمان فرنسي بروت"
+    },
+    "arka-bar-0087": {
+      "name_uz": "Moët & Chandon. Fransiya. Brut.",
+      "name_ar": "مويت إي شاندون. فرنسا. بروت.",
+      "description_uz": "Fransuz brut shampani",
+      "description_ar": "شامبانيا فرنسية بروت"
+    },
+    "arka-bar-0088": {
+      "name_uz": "Follemande Rosé, Berton & Fils. Fransiya. Brut.",
+      "name_ar": "فولمان روزيه، بيرتون إي فيس. فرنسا. بروت.",
+      "description_uz": "Fransuz koʻpikli roze brut",
+      "description_ar": "نبيذ فوّار فرنسي روزيه بروت"
+    },
+    "arka-bar-0089": {
+      "name_uz": "Cava Castell Llord. Ispaniya. Brut.",
+      "name_ar": "كافا كاستيل يورد. إسبانيا. بروت.",
+      "description_uz": "Ispan Cava brut",
+      "description_ar": "كافا إسبانية بروت"
+    },
+    "arka-bar-0090": {
+      "name_uz": "Bruni Asti. Italiya. Shirin.",
+      "name_ar": "بروني أستي. إيطاليا. حلو.",
+      "description_uz": "Shirin koʻpikli Asti",
+      "description_ar": "أستي فوّار حلو"
+    },
+    "arka-bar-0091": {
+      "name_uz": "Chardonnay Loco Cimbali. Rossiya. Quruq.",
+      "name_ar": "شاردونيه لوكو تشيمبالي. روسيا. جاف.",
+      "description_uz": "Quruq rus Chardonnay vinosi",
+      "description_ar": "شاردونيه روسي جاف"
+    },
+    "arka-bar-0092": {
+      "name_uz": "Pinot Grigio Priara, Pradio. Italiya. Quruq.",
+      "name_ar": "بينو غريجيو بريارا، براديو. إيطاليا. جاف.",
+      "description_uz": "Quruq italyan Pinot Grigio",
+      "description_ar": "بينو غريجيو إيطالي جاف"
+    },
+    "arka-bar-0093": {
+      "name_uz": "Chenin Blanc, Simonsig. Janubiy Afrika. Yarim quruq.",
+      "name_ar": "شينان بلان، سيمونسيغ. جنوب أفريقيا. نصف جاف.",
+      "description_uz": "Janubiy Afrikadan yarim quruq Chenin Blanc",
+      "description_ar": "شينان بلان نصف جاف من جنوب أفريقيا"
+    },
+    "arka-bar-0094": {
+      "name_uz": "Sauvignon Blanc, Paddle Creek. Yangi Zelandiya. Yarim quruq.",
+      "name_ar": "سوفينيون بلان، بادل كريك. نيوزيلندا. نصف جاف.",
+      "description_uz": "Yangi Zelandiyadan yarim quruq Sauvignon Blanc",
+      "description_ar": "سوفينيون بلان نصف جاف من نيوزيلندا"
+    },
+    "arka-bar-0095": {
+      "name_uz": "Marsanne Sauvignon Blanc, Jardin de la Tour. Fransiya. Quruq.",
+      "name_ar": "مارسان سوفينيون بلان، جاردان دو لا تور. فرنسا. جاف.",
+      "description_uz": "Quruq fransuz Sauvignon Blanc",
+      "description_ar": "سوفينيون بلان فرنسي جاف"
+    },
+    "arka-bar-0096": {
+      "name_uz": "Chardonnay Le Grand Noir. Fransiya. Quruq.",
+      "name_ar": "شاردونيه لو غران نوار. فرنسا. جاف.",
+      "description_uz": "Quruq fransuz Chardonnay",
+      "description_ar": "شاردونيه فرنسي جاف"
+    },
+    "arka-bar-0097": {
+      "name_uz": "Chablis Sainte Claire, Jean-Marc Brocard. Fransiya. Quruq.",
+      "name_ar": "شابلي سانت كلير، جان-مارك بروكار. فرنسا. جاف.",
+      "description_uz": "Chablisdan quruq Chardonnay",
+      "description_ar": "شاردونيه جاف من شابلي"
+    },
+    "arka-bar-0098": {
+      "name_uz": "Pfefferer, Colterenzio. Italiya. Yarim quruq.",
+      "name_ar": "بفيفيرر، كولتيرينتسيو. إيطاليا. نصف جاف.",
+      "description_uz": "Yarim quruq italyan oq vinosi",
+      "description_ar": "نبيذ أبيض إيطالي نصف جاف"
+    },
+    "arka-bar-0099": {
+      "name_uz": "Verdejo, Marqués de Riscal. Ispaniya. Quruq.",
+      "name_ar": "فيرديخو، ماركيز دي ريسكال. إسبانيا. جاف.",
+      "description_uz": "Quruq ispan Verdejo",
+      "description_ar": "فيرديخو إسباني جاف"
+    },
+    "arka-bar-0100": {
+      "name_uz": "Riesling Nik Weis. Germaniya. Yarim quruq.",
+      "name_ar": "ريسلينغ نيك فايس. ألمانيا. نصف جاف.",
+      "description_uz": "Yarim quruq nemis Riesling",
+      "description_ar": "ريسلينغ ألماني نصف جاف"
+    },
+    "arka-bar-0101": {
+      "name_uz": "Grüner Veltliner Klassik, Nastl. Avstriya. Quruq.",
+      "name_ar": "غرونر فيلتلينر كلاسيك، ناستل. النمسا. جاف.",
+      "description_uz": "Avstriyadan quruq Grüner Veltliner",
+      "description_ar": "غرونر فيلتلينر نمساوي جاف"
+    },
+    "arka-bar-0102": {
+      "name_uz": "Chardonnay Vineyards, Trapiche. Argentina. Quruq.",
+      "name_ar": "شاردونيه فينياردز، ترابيتشي. الأرجنتين. جاف.",
+      "description_uz": "Argentinadan quruq Chardonnay",
+      "description_ar": "شاردونيه أرجنتيني جاف"
+    },
+    "arka-bar-0103": {
+      "name_uz": "Riesling, Galitskiy & Galitskiy. Rossiya. Quruq.",
+      "name_ar": "ريسلينغ، غاليتسكي وغاليتسكي. روسيا. جاف.",
+      "description_uz": "Quruq rus Riesling vinosi",
+      "description_ar": "ريسلينغ روسي جاف"
+    },
+    "arka-bar-0104": {
+      "name_uz": "Chardonnay-Viognier «Staraya Doroga na Dzhankhot», Usadba Mezyb. Rossiya. Quruq.",
+      "name_ar": "شاردونيه-فيونييه «الطريق القديم إلى جانخوت»، أوسادبا ميزيب. روسيا. جاف.",
+      "description_uz": "Quruq rus oq vinosi",
+      "description_ar": "نبيذ أبيض روسي جاف"
+    },
+    "arka-bar-0105": {
+      "name_uz": "Flamingo, Nikolaev & Sons. Rossiya. Quruq.",
+      "name_ar": "فلامينغو، نيكولاييف وأبناؤه. روسيا. جاف.",
+      "description_uz": "Quruq rus roze vinosi",
+      "description_ar": "نبيذ روزيه روسي جاف"
+    },
+    "arka-bar-0106": {
+      "name_uz": "Pinot Noir Le Grand Noir. Fransiya. Yarim quruq.",
+      "name_ar": "بينو نوار لو غران نوار. فرنسا. نصف جاف.",
+      "description_uz": "Yarim quruq fransuz Pinot Noir",
+      "description_ar": "بينو نوار فرنسي نصف جاف"
+    },
+    "arka-bar-0107": {
+      "name_uz": "Malbec Luigi Bosca. Argentina. Quruq.",
+      "name_ar": "مالبيك لويجي بوسكا. الأرجنتين. جاف.",
+      "description_uz": "Argentinadan quruq Malbec",
+      "description_ar": "مالبيك أرجنتيني جاف"
+    },
+    "arka-bar-0108": {
+      "name_uz": "Primitivo Primasole, Cielo. Italiya. Yarim quruq.",
+      "name_ar": "بريميتيفو بريماسولي، تشيلو. إيطاليا. نصف جاف.",
+      "description_uz": "Yarim quruq italyan Primitivo",
+      "description_ar": "بريميتيفو إيطالي نصف جاف"
+    },
+    "arka-bar-0109": {
+      "name_uz": "Petrichor Qizil, Shumrinka. Rossiya. Quruq.",
+      "name_ar": "بتريكور الأحمر، شومرينكا. روسيا. جاف.",
+      "description_uz": "Quruq rus qizil vinosi",
+      "description_ar": "نبيذ أحمر روسي جاف"
+    },
+    "arka-bar-0110": {
+      "name_uz": "Grenache Syrah Jardin de la Tour. Fransiya. Yarim quruq.",
+      "name_ar": "غريناش سيرا جاردان دو لا تور. فرنسا. نصف جاف.",
+      "description_uz": "Yarim quruq fransuz Grenache-Syrah",
+      "description_ar": "غريناش-سيرا فرنسي نصف جاف"
+    },
+    "arka-bar-0111": {
+      "name_uz": "Nipozzano Chianti Rufina Riserva, Frescobaldi. Italiya. Quruq.",
+      "name_ar": "نيبوتسانو كيانتي روفينا ريزيرفا، فريسكوبالدي. إيطاليا. جاف.",
+      "description_uz": "Quruq Chianti Rufina",
+      "description_ar": "كيانتي روفينا جاف"
+    },
+    "arka-bar-0112": {
+      "name_uz": "Tempranillo «El Pícaro», Matsu. Ispaniya. Quruq.",
+      "name_ar": "تمبرانيو «إل بيكارو»، ماتسو. إسبانيا. جاف.",
+      "description_uz": "Quruq ispan Tempranillo",
+      "description_ar": "تمبرانيو إسباني جاف"
+    },
+    "arka-bar-0113": {
+      "name_uz": "Pinot Noir Reserva, Santa Carolina. Chili. Quruq.",
+      "name_ar": "بينو نوار ريزيرفا، سانتا كارولينا. تشيلي. جاف.",
+      "description_uz": "Chilidan quruq Pinot Noir",
+      "description_ar": "بينو نوار تشيلي جاف"
+    },
+    "arka-bar-0114": {
+      "name_uz": "Carménère Cellar Selection, Santa Carolina. Chili. Yarim quruq.",
+      "name_ar": "كارمينير سيلار سيليكشن، سانتا كارولينا. تشيلي. نصف جاف.",
+      "description_uz": "Chilidan yarim quruq Carménère",
+      "description_ar": "كارمينير تشيلي نصف جاف"
+    },
+    "arka-bar-0115": {
+      "name_uz": "Shiraz Tenacity, Two Hands. Avstraliya. Quruq.",
+      "name_ar": "شيراز تيناسيتي، تو هاندز. أستراليا. جاف.",
+      "description_uz": "Avstraliyadan quruq Shiraz",
+      "description_ar": "شيراز أسترالي جاف"
+    },
+    "arka-bar-0116": {
+      "name_uz": "Zinfandel Crab & Mo, Bronco Wine. AQSH. Yarim quruq.",
+      "name_ar": "زينفاندل كراب آند مو، برونكو واين. الولايات المتحدة. نصف جاف.",
+      "description_uz": "AQSHdan yarim quruq Zinfandel",
+      "description_ar": "زينفاندل أمريكي نصف جاف"
+    },
+    "arka-bar-0117": {
+      "name_uz": "Cabernet Franc Reserve «Yuzhnaya Vertikal», Château de Talu. Rossiya. Quruq.",
+      "name_ar": "كابيرنيه فران ريزيرف «يوجنايا فيرتيكال»، شاتو دو تالو. روسيا. جاف.",
+      "description_uz": "Quruq rus Cabernet Franc vinosi",
+      "description_ar": "كابيرنيه فران روسي جاف"
+    },
+    "arka-bar-0118": {
+      "name_uz": "Krasnaya Kniga. Glava 2. Skalistiy Bereg. Rossiya. Quruq.",
+      "name_ar": "الكتاب الأحمر. الفصل 2. سكاليستي بيريغ. روسيا. جاف.",
+      "description_uz": "Quruq rus qizil vinosi",
+      "description_ar": "نبيذ أحمر روسي جاف"
+    },
+    "arka-bar-0119": {
+      "name_uz": "Martini Bianco. Italiya.",
+      "name_ar": "مارتيني بيانكو. إيطاليا.",
+      "description_uz": "Shirin oq Martini vermuti",
+      "description_ar": "فيرموث مارتيني أبيض حلو"
+    },
+    "arka-bar-0120": {
+      "name_uz": "Martini Rosso. Italiya.",
+      "name_ar": "مارتيني روسو. إيطاليا.",
+      "description_uz": "Klassik qizil Martini vermuti",
+      "description_ar": "فيرموث مارتيني أحمر كلاسيكي"
+    },
+    "arka-bar-0121": {
+      "name_uz": "Martini Fiero. Italiya.",
+      "name_ar": "مارتيني فييرو. إيطاليا.",
+      "description_uz": "Apelsinli Martini vermuti",
+      "description_ar": "فيرموث مارتيني بالبرتقال"
+    },
+    "arka-bar-0122": {
+      "name_uz": "Aperol. Italiya.",
+      "name_ar": "أبيرول. إيطاليا.",
+      "description_uz": "Italyan Aperol bitteri",
+      "description_ar": "بيتر أبيرول إيطالي"
+    },
+    "arka-bar-0123": {
+      "name_uz": "Sarti Rosa. Italiya.",
+      "name_ar": "سارتي روزا. إيطاليا.",
+      "description_uz": "Rezavor mevali italyan likyori",
+      "description_ar": "ليكيور إيطالي بالتوت"
+    },
+    "arka-bar-0124": {
+      "name_uz": "Baileys. Irlandiya.",
+      "name_ar": "بيليز. أيرلندا.",
+      "description_uz": "Irland qaymoqli likyori",
+      "description_ar": "ليكيور أيرلندي بالكريمة"
+    },
+    "arka-bar-0125": {
+      "name_uz": "Jägermeister. Germaniya.",
+      "name_ar": "ييغرمايستر. ألمانيا.",
+      "description_uz": "Dorivor oʻtlar asosidagi nemis bitteri",
+      "description_ar": "بيتر ألماني بالأعشاب"
+    },
+    "arka-bar-0126": {
+      "name_uz": "El Tequileño Blanco. Meksika.",
+      "name_ar": "إل تيكيلينيو بلانكو. المكسيك.",
+      "description_uz": "Meksika blanco tekilasi",
+      "description_ar": "تيكيلا مكسيكية بلانكو"
+    },
+    "arka-bar-0127": {
+      "name_uz": "El Tequileño Reposado. Meksika.",
+      "name_ar": "إل تيكيلينيو ريبوسادو. المكسيك.",
+      "description_uz": "Bochkada yetiltirilgan reposado tekilasi",
+      "description_ar": "تيكيلا ريبوسادو معتّقة"
+    },
+    "arka-bar-0128": {
+      "name_uz": "Jose Cuervo 1800 Blanco. Meksika.",
+      "name_ar": "خوسيه كويرفو 1800 بلانكو. المكسيك.",
+      "description_uz": "Klassik Meksika tekilasi",
+      "description_ar": "تيكيلا مكسيكية كلاسيكية"
+    },
+    "bar-tekila-la-kofradiia-katrina-repo-yo5r259": {
+      "name_uz": "La Cofradía Catrina Reposado. Meksika.",
+      "name_ar": "لا كوفراديا كاترينا ريبوسادو. المكسيك.",
+      "description_uz": "Bochkada yetiltirilgan reposado tekilasi",
+      "description_ar": "تيكيلا ريبوسادو معتّقة"
+    },
+    "arka-bar-0130": {
+      "name_uz": "Bombay Sapphire. Buyuk Britaniya.",
+      "name_ar": "بومباي سافاير. المملكة المتحدة.",
+      "description_uz": "Ziravorli notalarga ega ingliz jini",
+      "description_ar": "جن إنجليزي بنفحات من التوابل"
+    },
+    "arka-bar-0132": {
+      "name_uz": "Whitley Neill Pink Grapefruit. Buyuk Britaniya.",
+      "name_ar": "ويتلي نيل بينك غريب فروت. المملكة المتحدة.",
+      "description_uz": "Pushti greypfrutli jin",
+      "description_ar": "جن بالغريب فروت الوردي"
+    },
+    "arka-bar-0133": {
+      "name_uz": "Whitley Neill Yuzu White Strawberry. Buyuk Britaniya.",
+      "name_ar": "ويتلي نيل يوزو وايت ستروبيري. المملكة المتحدة.",
+      "description_uz": "Yuzu va oq qulupnayli jin",
+      "description_ar": "جن باليوزو والفراولة البيضاء"
+    },
+    "arka-bar-0131": {
+      "name_uz": "Roku. Yaponiya.",
+      "name_ar": "روكو. اليابان.",
+      "description_uz": null,
+      "description_ar": null
+    },
+    "arka-bar-0134": {
+      "name_uz": "Takamaka Blanc. Seyshel orollari.",
+      "name_ar": "تاكاماكا بلان. جزر سيشل.",
+      "description_uz": "Seyshel orollaridan yengil oq rom",
+      "description_ar": "روم سيشلي أبيض خفيف"
+    },
+    "arka-bar-0135": {
+      "name_uz": "Takamaka Dark Spiced. Seyshel orollari.",
+      "name_ar": "تاكاماكا دارك سبايسد. جزر سيشل.",
+      "description_uz": "Ziravorli toʻq rom",
+      "description_ar": "روم داكن متبّل"
+    },
+    "arka-bar-0136": {
+      "name_uz": "Takamaka Extra Noir. Seyshel orollari.",
+      "name_ar": "تاكاماكا إكسترا نوار. جزر سيشل.",
+      "description_uz": "Boy taʼmli toʻq rom",
+      "description_ar": "روم داكن غني النكهة"
+    },
+    "arka-bar-0137": {
+      "name_uz": "Diplomático Botucal. Venesuela.",
+      "name_ar": "ديبلوماتيكو بوتوكال. فنزويلا.",
+      "description_uz": "Yetiltirilgan Venesuela romi",
+      "description_ar": "روم فنزويلي معتّق"
+    },
+    "arka-bar-0138": {
+      "name_uz": "Zacapa 23 yil. Gvatemala.",
+      "name_ar": "زاكابا 23 سنة. غواتيمالا.",
+      "description_uz": "23 yil yetiltirilgan Gvatemala romi",
+      "description_ar": "روم غواتيمالي معتّق 23 سنة"
+    },
+    "arka-bar-0139": {
+      "name_uz": "Hennessy VS. Fransiya.",
+      "name_ar": "هينيسي VS. فرنسا.",
+      "description_uz": "Yosh fransuz konyagi",
+      "description_ar": "كونياك فرنسي شاب"
+    },
+    "arka-bar-0140": {
+      "name_uz": "Hennessy VSOP. Fransiya.",
+      "name_ar": "هينيسي VSOP. فرنسا.",
+      "description_uz": "Yetiltirilgan fransuz konyagi",
+      "description_ar": "كونياك فرنسي معتّق"
+    },
+    "arka-bar-0141": {
+      "name_uz": "Hennessy XO. Fransiya.",
+      "name_ar": "هينيسي XO. فرنسا.",
+      "description_uz": "Nafis yetiltirilgan konyak",
+      "description_ar": "كونياك معتّق فاخر"
+    },
+    "arka-bar-0142": {
+      "name_uz": "H by Hine VSOP. Fransiya.",
+      "name_ar": "إتش باي هاين VSOP. فرنسا.",
+      "description_uz": "Yetiltirilgan fransuz konyagi",
+      "description_ar": "كونياك فرنسي معتّق"
+    },
+    "arka-bar-0143": {
+      "name_uz": "Glenfiddich, 12 yil. Shotlandiya.",
+      "name_ar": "غلينفيديش، 12 سنة. اسكتلندا.",
+      "description_uz": "12 yillik shotland singl molt viskisi",
+      "description_ar": "ويسكي اسكتلندي سينغل مولت 12 سنة"
+    },
+    "arka-bar-0144": {
+      "name_uz": "Macallan Double Cask, 12 yil. Shotlandiya.",
+      "name_ar": "ماكالان دابل كاسك، 12 سنة. اسكتلندا.",
+      "description_uz": "Ikki bochkada yetiltirilgan singl molt viski",
+      "description_ar": "ويسكي سينغل مولت معتّق في برميلين"
+    },
+    "arka-bar-0145": {
+      "name_uz": "Macallan Double Cask, 18 yil. Shotlandiya.",
+      "name_ar": "ماكالان دابل كاسك، 18 سنة. اسكتلندا.",
+      "description_uz": "18 yil yetiltirilgan singl molt viski",
+      "description_ar": "ويسكي سينغل مولت معتّق 18 سنة"
+    },
+    "arka-bar-0146": {
+      "name_uz": "Aber Falls Single Malt Madeira Cask. Buyuk Britaniya.",
+      "name_ar": "آبر فولز سينغل مولت ماديرا كاسك. المملكة المتحدة.",
+      "description_uz": "Madeyra bochkasida yetiltirilgan singl molt viski",
+      "description_ar": "ويسكي سينغل مولت معتّق في برميل ماديرا"
+    },
+    "arka-bar-0147": {
+      "name_uz": "Chivas Regal, 12 yil. Shotlandiya.",
+      "name_ar": "شيفاس ريغال، 12 سنة. اسكتلندا.",
+      "description_uz": "12 yillik shotland kupaj viskisi",
+      "description_ar": "ويسكي اسكتلندي مخلوط 12 سنة"
+    },
+    "arka-bar-0148": {
+      "name_uz": "Ballantine's. Shotlandiya.",
+      "name_ar": "بالانتاينز. اسكتلندا.",
+      "description_uz": "Klassik kupaj viski",
+      "description_ar": "ويسكي مخلوط كلاسيكي"
+    },
+    "arka-bar-0149": {
+      "name_uz": "Jameson. Irlandiya.",
+      "name_ar": "جيمسون. أيرلندا.",
+      "description_uz": "Yumshoq irland viskisi",
+      "description_ar": "ويسكي أيرلندي ناعم"
+    },
+    "arka-bar-0150": {
+      "name_uz": "Jim Beam. AQSH.",
+      "name_ar": "جيم بيم. الولايات المتحدة.",
+      "description_uz": "Klassik amerika burboni",
+      "description_ar": "بوربون أمريكي كلاسيكي"
+    },
+    "arka-bar-0151": {
+      "name_uz": "Jack Daniel's. AQSH.",
+      "name_ar": "جاك دانيلز. الولايات المتحدة.",
+      "description_uz": "Amerika Tennessi viskisi",
+      "description_ar": "ويسكي تينيسي أمريكي"
+    },
+    "arka-bar-0152": {
+      "name_uz": "Onegin. Rossiya.",
+      "name_ar": "أونيغين. روسيا.",
+      "description_uz": "Rus arogʻi",
+      "description_ar": "فودكا روسية"
+    },
+    "arka-bar-0153": {
+      "name_uz": "Beluga. Rossiya.",
+      "name_ar": "بيلوغا. روسيا.",
+      "description_uz": "Premium rus arogʻi",
+      "description_ar": "فودكا روسية فاخرة"
+    },
+    "arka-bar-0154": {
+      "name_uz": "Mamont. Rossiya.",
+      "name_ar": "مامونت. روسيا.",
+      "description_uz": "Rus arogʻi",
+      "description_ar": "فودكا روسية"
+    },
+    "arka-bar-0155": {
+      "name_uz": "Franziskaner. Rossiya.",
+      "name_ar": "فرانتسيسكانر. روسيا.",
+      "description_uz": "Filtrlanmagan och rangli bugʻdoy pivosi",
+      "description_ar": "بيرة قمح فاتحة غير مفلترة"
+    },
+    "arka-bar-0156": {
+      "name_uz": "Spaten. Rossiya.",
+      "name_ar": "شباتن. روسيا.",
+      "description_uz": "Filtrlangan och rangli pivo",
+      "description_ar": "بيرة فاتحة مفلترة"
+    },
+    "arka-bar-0157": {
+      "name_uz": "Abbey Brune. Rossiya.",
+      "name_ar": "آبي برون. روسيا.",
+      "description_uz": "Filtrlangan toʻq pivo",
+      "description_ar": "بيرة داكنة مفلترة"
+    },
+    "arka-bar-0158": {
+      "name_uz": "Corona Extra. Meksika.",
+      "name_ar": "كورونا إكسترا. المكسيك.",
+      "description_uz": "Yengil Meksika pivosi",
+      "description_ar": "بيرة مكسيكية خفيفة"
+    },
+    "arka-bar-0159": {
+      "name_uz": "Stella Artois (alkogolsiz). Rossiya.",
+      "name_ar": "ستيلا أرتوا (خالية من الكحول). روسيا.",
+      "description_uz": "Alkogolsiz Stella Artois pivosi",
+      "description_ar": "بيرة ستيلا أرتوا خالية من الكحول"
+    },
+    "arka-bar-0054": {
+      "name_uz": "Yongʻoqlar miksi, parmezanli noʻxat va vasabili guruch krekerlari",
+      "name_ar": "مزيج مكسرات، حمّص بالبارميزان ومقرمشات أرز بالواسابي",
+      "description_uz": "Ziravorli bodom, ziravorli keshyu, tozalangan pista, parmezanli noʻxat, vasabili guruch krekerlari",
+      "description_ar": "لوز متبّل، كاجو متبّل، فستق مقشّر، حمّص بالبارميزان، مقرمشات أرز بالواسابي"
+    },
+    "arka-bar-0055": {
+      "name_uz": "Ziravorli yongʻoqlar miksi",
+      "name_ar": "مزيج مكسرات متبّل",
+      "description_uz": "Keshyu, yeryongʻoq, bodom",
+      "description_ar": "كاجو، فول سوداني، لوز"
+    },
+    "arka-bar-0053": {
+      "name_uz": "Tuzlangan yeryongʻoq",
+      "name_ar": "فول سوداني مملّح",
+      "description_uz": "Qarsildoq tuzlangan yeryongʻoq — ichimliklarga klassik gazak",
+      "description_ar": "فول سوداني مملّح مقرمش — الكلاسيكي مع المشروبات"
+    },
+    "arka-bar-0057": {
+      "name_uz": "Qoqlangan goʻsht",
+      "name_ar": "لحم مجفّف",
+      "description_uz": "Tovuq, kurka, mol goʻshti",
+      "description_ar": "دجاج، ديك رومي، لحم بقر"
+    },
+    "arka-bar-0056": {
+      "name_uz": "Chipslar",
+      "name_ar": "شيبس",
+      "description_uz": "Assortimentda",
+      "description_ar": "أصناف متنوعة"
+    },
+    "arka-bar-0058": {
+      "name_uz": "Muzqaymoq sharchalari",
+      "name_ar": "كرات آيس كريم",
+      "description_uz": "Vanil, shokolad, qulupnay.",
+      "description_ar": "فانيليا، شوكولاتة، فراولة."
+    }
+  },
+  "hookah": {
+    "hookah-акции-k811et": {
+      "name_uz": "Triumf",
+      "name_ar": "تريومف",
+      "description_uz": "Jahon futbolining bosh kubogi — gʻalaba, taʼm va xarakter ramzi, mualliflik taqdimotida toʻgʻridan-toʻgʻri sizning stolingizda",
+      "description_ar": "الكأس الأهم في كرة القدم العالمية، رمز النصر والذوق والشخصية، في تقديم مميز مباشرة على طاولتكم",
+      "composition_uz": null,
+      "composition_ar": null
+    },
+    "hookah-hookah-kalian-barvikha-2kla24p": {
+      "name_uz": "«Barvixa» kalyani",
+      "name_ar": "شيشة «بارفيخا»",
+      "description_uz": "Barvixa firma kalyani, kolbasi tarvuz yoki qovoqdan",
+      "description_ar": "شيشة بارفيخا المميزة بقاعدة من البطيخ أو اليقطين",
+      "composition_uz": "Kosa: greypfrut / ananas / anor. Tamaki: xohishga koʻra istalgani. Kolba: tarvuz / qovoq.",
+      "composition_ar": "الرأس: غريب فروت / أناناس / رمان. التبغ: أي نكهة حسب الرغبة. القاعدة: بطيخ / يقطين."
+    },
+    "hookah-hookah-tropikana-mama-koeu24q": {
+      "name_uz": "Tropikana Mama",
+      "name_ar": "تروبيكانا ماما",
+      "description_uz": "Ananasdagi kalyan — marakuyya, malina, kivi va yalpiz bilan",
+      "description_ar": "شيشة على الأناناس مع فاكهة العاطفة وتوت العليق والكيوي والنعناع",
+      "composition_uz": "Kosa: ananas. Kolbada: marakuyya pyuresi, malina, kivi, yangi yalpiz.",
+      "composition_ar": "الرأس: أناناس. في القاعدة: هريس فاكهة العاطفة، توت العليق، كيوي، نعناع طازج."
+    },
+    "hookah-hookah-chernoe-solnce-cbih24r": {
+      "name_uz": "Qora Quyosh",
+      "name_ar": "الشمس السوداء",
+      "description_uz": "Anordagi kalyan — maymunjon, ananas va apelsin bilan",
+      "description_ar": "شيشة على الرمان مع التوت الأسود والأناناس والبرتقال",
+      "composition_uz": "Kosa: anor. Kolbada: maymunjon, ananas sharbati, laym pyuresi, apelsin chipslari, yangi yalpiz.",
+      "composition_ar": "الرأس: رمان. في القاعدة: توت أسود، عصير أناناس، هريس ليمون أخضر، شرائح برتقال مجففة، نعناع طازج."
+    },
+    "hookah-hookah-eshche-odin-pozhaluista-03ae24s": {
+      "name_uz": "«Yana bitta, iltimos»",
+      "name_ar": "«واحدة أخرى، من فضلك»",
+      "description_uz": "Ananasdagi kalyan — muzqaymoq, kokos va pista bilan",
+      "description_ar": "شيشة على الأناناس مع الآيس كريم وجوز الهند والفستق",
+      "composition_uz": "Kosa: ananas. Kolbada: vanilli muzqaymoq, yangi kokos, malina, pista.",
+      "composition_ar": "الرأس: أناناس. في القاعدة: آيس كريم فانيليا، جوز هند طازج، توت العليق، فستق."
+    },
+    "hookah-hookah-rozovaia-pantera-boo724t": {
+      "name_uz": "Pushti Pantera",
+      "name_ar": "النمر الوردي",
+      "description_uz": "Anordagi kalyan — malina va qulupnayli muzqaymoq bilan",
+      "description_ar": "شيشة على الرمان مع توت العليق وآيس كريم الفراولة",
+      "composition_uz": "Kosa: anor. Kolbada: malina, qulupnayli muzqaymoq, Raffaello",
+      "composition_ar": "الرأس: رمان. في القاعدة: توت العليق، آيس كريم فراولة، رافايلو"
+    },
+    "hookah-hookah-dolche-vita-m75n24u": {
+      "name_uz": "Dolce Vita",
+      "name_ar": "دولتشي فيتا",
+      "description_uz": "Ananasdagi kalyan — shokoladli muzqaymoq va pechenye bilan",
+      "description_ar": "شيشة على الأناناس مع آيس كريم الشوكولاتة والبسكويت",
+      "composition_uz": "Kosa: ananas. Kolbada: shokoladli muzqaymoq, Oreo pechenyesi, dolchin, yangi yalpiz.",
+      "composition_ar": "الرأس: أناناس. في القاعدة: آيس كريم شوكولاتة، بسكويت أوريو، قرفة، نعناع طازج."
+    },
+    "hookah-hookah-parfium-na-frukte-7g6q24m": {
+      "name_uz": "Mevada Parfyum",
+      "name_ar": "برفيوم على الفاكهة",
+      "description_uz": "Mevadagi kalyan xushboʻy parfyum bilan",
+      "description_ar": "شيشة على الفاكهة مع تبغ برفيوم عطري",
+      "composition_uz": "Kosa: greypfrut / ananas / anor. Tamaki: xohishga koʻra istalgani, parfyum qoʻshilgan holda",
+      "composition_ar": "الرأس: غريب فروت / أناناس / رمان. التبغ: أي نكهة حسب الرغبة، مع إضافة البرفيوم"
+    },
+    "hookah-hookah-parfium-na-chashe-j1zn24l": {
+      "name_uz": "Kosada Parfyum",
+      "name_ar": "برفيوم على الرأس",
+      "description_uz": "Klassik kosadagi kalyan xushboʻy parfyum bilan",
+      "description_ar": "شيشة على رأس كلاسيكي مع تبغ برفيوم عطري",
+      "composition_uz": "Kosa: klassik. Tamaki: xohishga koʻra istalgani, parfyum qoʻshilgan holda",
+      "composition_ar": "الرأس: كلاسيكي. التبغ: أي نكهة حسب الرغبة، مع إضافة البرفيوم"
+    },
+    "hookah-hookah-elektronnaia-chasha-d1ea24o": {
+      "name_uz": "Elektron Kosa",
+      "name_ar": "رأس إلكتروني",
+      "description_uz": "Elektron kosadagi kalyan parfyum bilan",
+      "description_ar": "شيشة على رأس إلكتروني مع البرفيوم",
+      "composition_uz": "Istalgan tamaki, parfyum qoʻshilgan holda",
+      "composition_ar": "أي تبغ، مع إضافة البرفيوم"
+    },
+    "hookah-hookah-kalian-na-frukte": {
+      "name_uz": "Mevadagi Kalyan",
+      "name_ar": "شيشة على الفاكهة",
+      "description_uz": "Mevadagi kalyan — greypfrut, ananas yoki anor",
+      "description_ar": "شيشة على الفاكهة — غريب فروت أو أناناس أو رمان",
+      "composition_uz": "Kosa: greypfrut / ananas / anor. Tamaki: xohishga koʻra istalgani, parfyumdan tashqari",
+      "composition_ar": "الرأس: غريب فروت / أناناس / رمان. التبغ: أي نكهة حسب الرغبة، ما عدا البرفيوم"
+    },
+    "hookah-hookah-elektronnaia-chasha-0unr24n": {
+      "name_uz": "Elektron Kosa",
+      "name_ar": "رأس إلكتروني",
+      "description_uz": "Elektron kosadagi kalyan",
+      "description_ar": "شيشة على رأس إلكتروني",
+      "composition_uz": "Istalgan tamaki, parfyumdan tashqari",
+      "composition_ar": "أي تبغ، ما عدا البرفيوم"
+    },
+    "hookah-hookah-kalian-na-chashe-2x5t24k": {
+      "name_uz": "Kosadagi Kalyan",
+      "name_ar": "شيشة على الرأس",
+      "description_uz": "Har qanday didga mos klassik kalyan",
+      "description_ar": "شيشة كلاسيكية تناسب كل الأذواق",
+      "composition_uz": "Kosa: klassik. Tamaki: xohishga koʻra istalgani, parfyumdan tashqari",
+      "composition_ar": "الرأس: كلاسيكي. التبغ: أي نكهة حسب الرغبة، ما عدا البرفيوم"
+    }
+  }
+}

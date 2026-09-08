@@ -59,7 +59,7 @@ function withVolume(
   translated: string | null | undefined,
   baseName: string,
   variant: ArkaMenuVariant,
-  locale: 'en' | 'zh' | 'hy',
+  locale: 'en' | 'zh' | 'hy' | 'uz' | 'ar',
 ): string | undefined {
   if (!translated) return undefined;
   // Вариант без суффикса объёма (позиция с одной фасовкой) — имя как есть.
@@ -81,10 +81,14 @@ export function toResolvedArkaBarItems(slug: string): ResolvedMenuItem[] {
         name_en: withVolume(item.name_en, item.name, v, 'en'),
         name_zh: withVolume(item.name_zh, item.name, v, 'zh'),
         name_hy: withVolume(item.name_hy, item.name, v, 'hy'),
+        name_uz: withVolume(item.name_uz, item.name, v, 'uz'),
+        name_ar: withVolume(item.name_ar, item.name, v, 'ar'),
         description: v.description,
         description_en: item.description_en ?? undefined,
         description_zh: item.description_zh ?? undefined,
         description_hy: item.description_hy ?? undefined,
+        description_uz: item.description_uz ?? undefined,
+        description_ar: item.description_ar ?? undefined,
         photos: item.photo ? [{ src: item.photo, position: item.photo_position ?? null, transform: item.photo_transform ?? null }] : [],
         photo: item.photo,
         composition: null,

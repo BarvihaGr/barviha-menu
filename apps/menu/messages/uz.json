@@ -1,0 +1,231 @@
+{
+  "brand": {
+    "name": "Barvixa",
+    "tagline": "Premium Hookah & Lounge"
+  },
+  "common": {
+    "back": "Orqaga",
+    "currency": "₽",
+    "add": "Qoʻshish",
+    "added": "Qoʻshildi",
+    "weight": "Ogʻirligi/hajmi",
+    "price": "Narxi",
+    "search": "Menyudan qidirish",
+    "all": "Barchasi",
+    "loading": "Yuklanmoqda…",
+    "close": "Yopish",
+    "navigation": "Navigatsiya"
+  },
+  "nav": {
+    "cart": "Savat",
+    "menu": "Menyu",
+    "info": "Maʼlumot",
+    "hookahFlow": "Kalyanlar",
+    "home": "Bosh sahifa",
+    "contacts": "Kontaktlar"
+  },
+  "realms": {
+    "kitchen": "Oshxona",
+    "bar": "Bar",
+    "hookah": "Kalyanlar"
+  },
+  "categories": {
+    "hookah": "Kalyanlar",
+    "bar": "Bar",
+    "kitchen": "Oshxona",
+    "rolls": "Rollar",
+    "desserts": "Desertlar"
+  },
+  "labels": {
+    "hit": "Xit",
+    "new": "Yangi",
+    "chef_pick": "Oshpaz tanlovi",
+    "premium": "Premium",
+    "spicy": "Achchiq",
+    "vegan": "Vegan"
+  },
+  "filters": {
+    "title": "Filtrlar",
+    "noAlcohol": "Alkogolsiz",
+    "withAlcohol": "Alkogolli",
+    "withIce": "Muz bilan",
+    "sparkling": "Gazli",
+    "spicy": "Achchiq",
+    "vegan": "Vegan",
+    "withMeat": "Goʻshtli",
+    "noMeat": "Goʻshtsiz",
+    "withFish": "Baliqli",
+    "noFish": "Baliqsiz",
+    "salad": "Salatlar",
+    "salty": "Shoʻr",
+    "sweet": "Shirin",
+    "halal": "Halol",
+    "healthy": "Sogʻlom",
+    "reset": "Tozalash",
+    "close": "Tayyor",
+    "emptyFilters": "Tanlangan filtrlarga mos taom topilmadi"
+  },
+  "sections": {
+    "all": "Barchasi",
+    "salads": "Salatlar",
+    "coldApps": "Sovuq gazaklar",
+    "hotApps": "Issiq gazaklar",
+    "platters": "Platolar",
+    "soups": "Shoʻrvalar",
+    "mains": "Asosiy taomlar",
+    "authorCocktails": "Mualliflik kokteyllari",
+    "classics": "Klassika",
+    "noAlcoholDrinks": "Alkogolsiz ichimliklar",
+    "tea": "Choy",
+    "classicRolls": "Klassik rollar",
+    "sets": "Setlar",
+    "desserts": "Desertlar"
+  },
+  "item": {
+    "addToCart": "Savatga",
+    "composition": "Tarkibi",
+    "nutrition": "Bir porsiya ozuqaviy qiymati",
+    "kcal": "Kkal",
+    "protein": "Oqsillar",
+    "fat": "Yogʻlar",
+    "carbs": "Uglevodlar",
+    "related": "Shu boʻlimdan",
+    "more": "Davomini oʻqish",
+    "less": "Yigʻish",
+    "viewPhoto": "Suratni ochish",
+    "closePhoto": "Yopish",
+    "grams": "g",
+    "photoPending": "Surat tez orada"
+  },
+  "cart": {
+    "title": "Savat",
+    "empty": "Stol hozircha boʻsh. Menyudan biror narsa tanlang.",
+    "browse": "Menyuga",
+    "subtotal": "Jami",
+    "submitDescription": "Ofitsiant kelganda unga shu ekranni koʻrsating",
+    "qty": "Miqdori",
+    "remove": "Oʻchirish",
+    "addNote": "Izoh…",
+    "clearAll": "Tozalash",
+    "showWaiter": "Ofitsiantga koʻrsatish"
+  },
+  "hookah": {
+    "title": "Kalyanlar",
+    "subtitle": "Kayfiyatni tanlang — kalyanchi siz uchun mukammal miks tayyorlaydi",
+    "moodTitle": "Bugun qanday kayfiyat?",
+    "hitsTitle": "Bizning xitlar",
+    "premiumTitle": "Premium kalyan"
+  },
+  "home": {
+    "featured": "Xitlar va oshpaz tanlovi",
+    "menu": "Menyu",
+    "promos": "Aksiyalar",
+    "spotlight": "Afisha va aksiyalar",
+    "afisha": "Afisha",
+    "exploreMenu": "Menyuni ochish",
+    "viewAll": "Barchasini koʻrish",
+    "stub": {
+      "afishaAlt": "Afisha — Barvikha uslubidagi tun",
+      "afishaTitle": "Barvikha uslubidagi tun",
+      "afishaSubtitle": "Hashamat, musiqa va benuqson dam olish muhiti.",
+      "days": "JUM · SHAN",
+      "djAlt": "DJ Sander — jonli DJ-set",
+      "djEyebrow": "Live · DJ set",
+      "djTitle": "DJ Sander — Live DJ-set",
+      "djSubtitle": "Dam olish kunlari jonli set. Stolni oldindan band qiling.",
+      "socialAlt": "Biz ijtimoiy tarmoqlarda",
+      "socialTitle": "Biz ijtimoiy tarmoqlarda",
+      "socialNote": "Soʻnggi yangiliklar",
+      "socialSubtitle": "Afisha, aksiyalar va biz bilan aloqa — obuna boʻling.",
+      "vkLabel": "VKontakte"
+    },
+    "bookTable": "Stol band qilish"
+  },
+  "spotlight": {
+    "more": "Batafsil",
+    "close": "Yopish",
+    "kind": {
+      "dj": "DJ-set",
+      "promo": "Aksiya",
+      "offer": "Taklif",
+      "social": "Ijtimoiy tarmoqlar",
+      "event": "Tadbir"
+    },
+    "linkWeb": "Sayt",
+    "linkPhone": "Qoʻngʻiroq qilish"
+  },
+  "announce": {
+    "today": "Bugun",
+    "soon": "Tez orada",
+    "dj": "DJ-set",
+    "match": "Oʻyin translyatsiyasi",
+    "event": "Tadbir"
+  },
+  "location": {
+    "switch": "Lokatsiyani tanlash",
+    "current": "Joriy lokatsiya",
+    "search": "Lokatsiyani qidirish…",
+    "info": "Zavedeniye haqida maʼlumot",
+    "close": "Yopish",
+    "address": "Manzil",
+    "phone": "Telefon",
+    "directions": "Yoʻnalish qurish",
+    "chooseMapApp": "Yoʻnalishni ochish",
+    "yandexMaps": "Yandex Xaritalar",
+    "twoGis": "2GIS",
+    "googleMaps": "Google Maps",
+    "addressTBD": "Manzil aniqlashtirilmoqda",
+    "phoneTBD": "Telefon aniqlashtirilmoqda",
+    "closedMessage": "Menyu vaqtincha onlayn mavjud emas. Iltimos, xodimlarimizga murojaat qiling.",
+    "nearby": {
+      "eyebrow": "Siz yaqindasiz",
+      "title": "Siz «Barvixa Lounge {name}» yaqinidasiz — shu lokatsiya menyusini ochamizmi?",
+      "openMenu": "Menyuni ochish",
+      "stayHere": "Shu yerda qolish"
+    },
+    "hours": "Ish vaqti",
+    "wifiFree": "Bepul Wi-Fi",
+    "contactsTitle": "Kontaktlar",
+    "sectionLabel": "Lokatsiya",
+    "paletteIvory": "Fil suyagi",
+    "paletteArka": "Arka"
+  },
+  "search": {
+    "noResults": "Hech narsa topilmadi",
+    "placeholder": "Qidirish: taomlar, ichimliklar, kalyanlar…",
+    "clear": "Tozalash"
+  },
+  "toast": {
+    "addedToCart": "Savatga qoʻshildi"
+  },
+  "lang": {
+    "ru": "RU",
+    "en": "EN",
+    "zh": "中",
+    "switch": "Tilni oʻzgartirish",
+    "label": "Til"
+  },
+  "errors": {
+    "notFoundTitle": "Sahifa topilmadi",
+    "notFoundBody": "Bunday lokatsiya yoki menyu boʻlimi mavjud emas. Havolani tekshiring yoki bosh sahifaga qayting.",
+    "wentWrongTitle": "Nimadir xato ketdi",
+    "wentWrongBody": "Sahifani yuklab boʻlmadi. Yana urinib koʻring — odatda bu vaqtinchalik nosozlik.",
+    "tryAgain": "Qayta urinish",
+    "home": "Bosh sahifaga"
+  },
+  "menuHub": {
+    "kitchenSubtitle": "Mualliflik oshxonasi",
+    "barSubtitle": "Kokteyllar va ichimliklar",
+    "hookahSubtitle": "Premium tamaki",
+    "hookahTitle": "Kalyan kartasi"
+  },
+  "staff": {
+    "callAtTable": "{who} chaqirildi — {table}-stol",
+    "waiter": "Ofitsiant",
+    "hookahMaster": "Kalyanchi"
+  },
+  "palette": {
+    "ivory": "Fil suyagi",
+    "arka": "Arka"
+  }
+}

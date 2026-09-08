@@ -19,6 +19,8 @@ interface NamedLocation {
   name_en?: string | null;
   name_zh?: string | null;
   name_hy?: string | null;
+  name_uz?: string | null;
+  name_ar?: string | null;
 }
 
 /**
@@ -32,6 +34,8 @@ export function pickLocationName(l: NamedLocation, locale: Locale): string {
   if (locale === 'en' && l.name_en) return l.name_en;
   if (locale === 'zh' && l.name_zh) return l.name_zh;
   if (locale === 'hy' && l.name_hy) return l.name_hy;
+  if (locale === 'uz' && l.name_uz) return l.name_uz;
+  if (locale === 'ar' && l.name_ar) return l.name_ar;
   return l.name;
 }
 
@@ -42,8 +46,15 @@ export function pickLocationName(l: NamedLocation, locale: Locale): string {
  * а не «Невский», при этом на самой странице локации и в PWA имя остаётся
  * прежним — поэтому подмена только здесь, а не в pickLocationName.
  */
-const SWITCHER_NAME_BY_SLUG: Record<string, { ru: string; en: string; zh: string; hy: string }> = {
-  nevskii: { ru: 'Санкт-Петербург', en: 'Saint Petersburg', zh: '圣彼得堡', hy: 'Սանկտ Պետերբուրգ' },
+const SWITCHER_NAME_BY_SLUG: Record<string, { ru: string; en: string; zh: string; hy: string; uz: string; ar: string }> = {
+  nevskii: {
+    ru: 'Санкт-Петербург',
+    en: 'Saint Petersburg',
+    zh: '圣彼得堡',
+    hy: 'Սանկտ Պետերբուրգ',
+    uz: 'Sankt-Peterburg',
+    ar: 'سانت بطرسبرغ',
+  },
 };
 
 /** Имя локации для строки переключателя: с учётом SWITCHER_NAME_BY_SLUG. */
@@ -55,25 +66,43 @@ export function pickSwitcherName(l: NamedLocation & { slug: string }, locale: Lo
 
 /** Переводы города — `Location.city` хранит один русский текст (не per-locale
  * поле в схеме), поэтому переводим по словарю, как категории бара/подкатегории. */
-const CITY_TR: Record<string, { en: string; zh: string; hy: string }> = {
-  Москва: { en: 'Moscow', zh: '莫斯科', hy: 'Մոսկվա' },
-  Тула: { en: 'Tula', zh: '图拉', hy: 'Տուլա' },
-  Домодедово: { en: 'Domodedovo', zh: '多莫杰多沃', hy: 'Դոմոդեդովո' },
-  Ереван: { en: 'Yerevan', zh: '埃里温', hy: 'Երևան' },
-  Махачкала: { en: 'Makhachkala', zh: '马哈奇卡拉', hy: 'Մախաչկալա' },
-  'Санкт-Петербург': { en: 'Saint Petersburg', zh: '圣彼得堡', hy: 'Սանկտ Պետերբուրգ' },
-  'Нижний Новгород': { en: 'Nizhny Novgorod', zh: '下诺夫哥罗德', hy: 'Նիժնի Նովգորոդ' },
-  Пенза: { en: 'Penza', zh: '奔萨', hy: 'Պենզա' },
-  'Московская область': { en: 'Moscow Region', zh: '莫斯科州', hy: 'Մոսկվայի մարզ' },
-  Саратов: { en: 'Saratov', zh: '萨拉托夫', hy: 'Սարատով' },
-  Ташкент: { en: 'Tashkent', zh: '塔什干', hy: 'Տաշքենդ' },
+const CITY_TR: Record<string, { en: string; zh: string; hy: string; uz: string; ar: string }> = {
+  Москва: { en: 'Moscow', zh: '莫斯科', hy: 'Մոսկվա', uz: 'Moskva', ar: 'موسكو' },
+  Тула: { en: 'Tula', zh: '图拉', hy: 'Տուլա', uz: 'Tula', ar: 'تولا' },
+  Домодедово: { en: 'Domodedovo', zh: '多莫杰多沃', hy: 'Դոմոդեդովո', uz: 'Domodedovo', ar: 'دوموديدوفو' },
+  Ереван: { en: 'Yerevan', zh: '埃里温', hy: 'Երևան', uz: 'Yerevan', ar: 'يريفان' },
+  Махачкала: { en: 'Makhachkala', zh: '马哈奇卡拉', hy: 'Մախաչկալա', uz: 'Mahachqala', ar: 'محج قلعة' },
+  'Санкт-Петербург': {
+    en: 'Saint Petersburg',
+    zh: '圣彼得堡',
+    hy: 'Սանկտ Պետերբուրգ',
+    uz: 'Sankt-Peterburg',
+    ar: 'سانت بطرسبرغ',
+  },
+  'Нижний Новгород': {
+    en: 'Nizhny Novgorod',
+    zh: '下诺夫哥罗德',
+    hy: 'Նիժնի Նովգորոդ',
+    uz: 'Nijniy Novgorod',
+    ar: 'نيجني نوفغورود',
+  },
+  Пенза: { en: 'Penza', zh: '奔萨', hy: 'Պենզա', uz: 'Penza', ar: 'بينزا' },
+  'Московская область': {
+    en: 'Moscow Region',
+    zh: '莫斯科州',
+    hy: 'Մոսկվայի մարզ',
+    uz: 'Moskva viloyati',
+    ar: 'منطقة موسكو',
+  },
+  Саратов: { en: 'Saratov', zh: '萨拉托夫', hy: 'Սարատով', uz: 'Saratov', ar: 'ساراتوف' },
+  Ташкент: { en: 'Tashkent', zh: '塔什干', hy: 'Տաշքենդ', uz: 'Toshkent', ar: 'طشقند' },
 };
 
 export function pickLocationCity(city: string | null | undefined, locale: Locale): string | null | undefined {
   if (!city || locale === 'ru') return city;
   const tr = CITY_TR[city];
   if (!tr) return city;
-  return locale === 'en' ? tr.en : locale === 'zh' ? tr.zh : locale === 'hy' ? tr.hy : city;
+  return tr[locale] ?? city;
 }
 
 /** Курируемая палитра акцентов (на тон с брендом, достаточно различимы). */
@@ -172,6 +201,8 @@ export interface LocationGroupDef {
   label_en?: string;
   label_zh?: string;
   label_hy?: string;
+  label_uz?: string;
+  label_ar?: string;
   /** true — заголовок кликабельный (стрелочка, сворачивается);
    * false — группа из одной локации, рендерится сразу списком без заголовка. */
   collapsible: boolean;
@@ -188,6 +219,8 @@ function pickGroupLabel(def: LocationGroupDef, locale: Locale): string {
   if (locale === 'en' && def.label_en) return def.label_en;
   if (locale === 'zh' && def.label_zh) return def.label_zh;
   if (locale === 'hy' && def.label_hy) return def.label_hy;
+  if (locale === 'uz' && def.label_uz) return def.label_uz;
+  if (locale === 'ar' && def.label_ar) return def.label_ar;
   return def.label;
 }
 
@@ -202,6 +235,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
     label_en: 'Russia',
     label_zh: '俄罗斯',
     label_hy: 'Ռուսաստան',
+    label_uz: 'Rossiya',
+    label_ar: 'روسيا',
     collapsible: true,
     children: [
       {
@@ -209,6 +244,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Moscow',
         label_zh: '莫斯科',
         label_hy: 'Մոսկվա',
+        label_uz: 'Moskva',
+        label_ar: 'موسكو',
         collapsible: true,
         slugs: [
           'krasnaia-ploshchad',
@@ -237,6 +274,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Domodedovo',
         label_zh: '多莫杰多沃',
         label_hy: 'Դոմոդեդովո',
+        label_uz: 'Domodedovo',
+        label_ar: 'دوموديدوفو',
         collapsible: false,
         slugs: ['domodedovo'],
       },
@@ -245,6 +284,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Tula',
         label_zh: '图拉',
         label_hy: 'Տուլա',
+        label_uz: 'Tula',
+        label_ar: 'تولا',
         collapsible: true,
         slugs: ['arka', 'likerka'],
       },
@@ -256,6 +297,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Saint Petersburg',
         label_zh: '圣彼得堡',
         label_hy: 'Սանկտ Պետերբուրգ',
+        label_uz: 'Sankt-Peterburg',
+        label_ar: 'سانت بطرسبرغ',
         collapsible: false,
         slugs: ['nevskii'],
       },
@@ -264,6 +307,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Penza',
         label_zh: '奔萨',
         label_hy: 'Պենզա',
+        label_uz: 'Penza',
+        label_ar: 'بينزا',
         collapsible: false,
         slugs: ['penza'],
       },
@@ -272,6 +317,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Saratov',
         label_zh: '萨拉托夫',
         label_hy: 'Սարատով',
+        label_uz: 'Saratov',
+        label_ar: 'ساراتوف',
         collapsible: false,
         slugs: ['barvixa-lounge-saratov'],
       },
@@ -280,6 +327,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Nizhny Novgorod',
         label_zh: '下诺夫哥罗德',
         label_hy: 'Նիժնի Նովգորոդ',
+        label_uz: 'Nijniy Novgorod',
+        label_ar: 'نيجني نوفغورود',
         collapsible: false,
         slugs: ['niznii-novgorod'],
       },
@@ -288,6 +337,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Makhachkala',
         label_zh: '马哈奇卡拉',
         label_hy: 'Մախաչկալա',
+        label_uz: 'Mahachqala',
+        label_ar: 'محج قلعة',
         collapsible: false,
         slugs: ['maxackala'],
       },
@@ -298,6 +349,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
     label_en: 'Armenia',
     label_zh: '亚美尼亚',
     label_hy: 'Հայաստան',
+    label_uz: 'Armaniston',
+    label_ar: 'أرمينيا',
     collapsible: true,
     children: [
       {
@@ -305,6 +358,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Yerevan',
         label_zh: '埃里温',
         label_hy: 'Երևան',
+        label_uz: 'Yerevan',
+        label_ar: 'يريفان',
         collapsible: false,
         slugs: ['erevan'],
       },
@@ -315,6 +370,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
     label_en: 'Uzbekistan',
     label_zh: '乌兹别克斯坦',
     label_hy: 'Ուզբեկստան',
+    label_uz: 'Oʻzbekiston',
+    label_ar: 'أوزبكستان',
     collapsible: true,
     children: [
       {
@@ -322,6 +379,8 @@ export const LOCATION_GROUPS: LocationGroupDef[] = [
         label_en: 'Tashkent',
         label_zh: '塔什干',
         label_hy: 'Տաշքենդ',
+        label_uz: 'Toshkent',
+        label_ar: 'طشقند',
         collapsible: false,
         slugs: ['taskent'],
       },

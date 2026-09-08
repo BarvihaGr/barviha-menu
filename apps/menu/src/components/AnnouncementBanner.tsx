@@ -13,6 +13,8 @@ function pick(a: Announcement, field: 'title' | 'subtitle', locale: Locale): str
   if (locale === 'en') return a[`${field}_en`] ?? a[field];
   if (locale === 'zh') return a[`${field}_zh`] ?? a[field];
   if (locale === 'hy') return a[`${field}_hy`] ?? a[field];
+  if (locale === 'uz') return a[`${field}_uz`] ?? a[field];
+  if (locale === 'ar') return a[`${field}_ar`] ?? a[field];
   return a[field];
 }
 

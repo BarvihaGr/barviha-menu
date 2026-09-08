@@ -23,6 +23,8 @@ export interface Location {
   name_en?: string;
   name_zh?: string;
   name_hy?: string;
+  name_uz?: string;
+  name_ar?: string;
   city?: string | null;
   address: string | null;
   /** Контактный телефон локации в международном формате (+7…) */
@@ -52,10 +54,14 @@ export interface Announcement {
   title_en?: string;
   title_zh?: string;
   title_hy?: string;
+  title_uz?: string;
+  title_ar?: string;
   subtitle?: string;
   subtitle_en?: string;
   subtitle_zh?: string;
   subtitle_hy?: string;
+  subtitle_uz?: string;
+  subtitle_ar?: string;
   image?: string | null;
   /** ISO date-time когда событие; используется для показа «сегодня/скоро». */
   when?: string | null;
@@ -115,26 +121,36 @@ export interface Spotlight {
   title_en?: string;
   title_zh?: string;
   title_hy?: string;
+  title_uz?: string;
+  title_ar?: string;
   /** Подзаголовок — одна строка на карточке. */
   subtitle?: string;
   subtitle_en?: string;
   subtitle_zh?: string;
   subtitle_hy?: string;
+  subtitle_uz?: string;
+  subtitle_ar?: string;
   /** Развёрнутый текст — показывается только в модалке. */
   body?: string;
   body_en?: string;
   body_zh?: string;
   body_hy?: string;
+  body_uz?: string;
+  body_ar?: string;
   /** Угловой маркер на карточке: «−20%», «ПТ · СБ», «NEW». */
   badge?: string;
   badge_en?: string;
   badge_zh?: string;
   badge_hy?: string;
+  badge_uz?: string;
+  badge_ar?: string;
   /** Человеко-читаемое «когда»: «Пт–Сб, 22:00». */
   when?: string | null;
   when_en?: string | null;
   when_zh?: string | null;
   when_hy?: string | null;
+  when_uz?: string | null;
+  when_ar?: string | null;
   /** Фоновое фото слайда. Если null — рисуется градиент по акценту. */
   image?: string | null;
   /** Переопределение акцентного цвета слайда (иначе — акцент локации). */
@@ -157,6 +173,8 @@ export interface Category {
   name_en?: string;
   name_zh?: string;
   name_hy?: string;
+  name_uz?: string;
+  name_ar?: string;
   /** Верхний «мир» меню: кухня / бар / кальяны / десерты. Для группировки разделов. */
   realm?: 'kitchen' | 'bar' | 'hookah' | 'desserts';
   parent_id: UUID | null;
@@ -242,10 +260,14 @@ export interface ResolvedMenuItem {
   name_en?: string;
   name_zh?: string;
   name_hy?: string;
+  name_uz?: string;
+  name_ar?: string;
   description: string | null;
   description_en?: string | null;
   description_zh?: string | null;
   description_hy?: string | null;
+  description_uz?: string | null;
+  description_ar?: string | null;
   /** Все фото позиции, первое — обложка/витрина. */
   photos: PhotoEntry[];
   /** Обложка (photos[0]) — производное поле, для мест, которым нужно только одно фото. */
@@ -258,6 +280,8 @@ export interface ResolvedMenuItem {
   composition_en?: string | null;
   composition_zh?: string | null;
   composition_hy?: string | null;
+  composition_uz?: string | null;
+  composition_ar?: string | null;
   category_id: UUID | null;
   price: number;
   weight: string | null;
@@ -284,10 +308,14 @@ export interface HookahMood {
   name_en?: string;
   name_zh?: string;
   name_hy?: string;
+  name_uz?: string;
+  name_ar?: string;
   description: string;
   description_en?: string;
   description_zh?: string;
   description_hy?: string;
+  description_uz?: string;
+  description_ar?: string;
   gradient_from: string;
   gradient_to: string;
   icon: string;

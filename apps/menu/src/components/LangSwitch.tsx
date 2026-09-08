@@ -14,6 +14,8 @@ const NATIVE_NAME: Record<Locale, string> = {
   en: 'English',
   zh: '中文',
   hy: 'Հայերեն',
+  uz: 'Oʻzbekcha',
+  ar: 'العربية',
 };
 
 /**

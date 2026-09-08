@@ -101,10 +101,14 @@ export function toResolvedBarItems(slug: string): ResolvedMenuItem[] {
         name_en: item.name_en ?? undefined,
         name_zh: item.name_zh ?? undefined,
         name_hy: item.name_hy ?? undefined,
+        name_uz: item.name_uz ?? undefined,
+        name_ar: item.name_ar ?? undefined,
         description: v.description,
         description_en: item.description_en ?? undefined,
         description_zh: item.description_zh ?? undefined,
         description_hy: item.description_hy ?? undefined,
+        description_uz: item.description_uz ?? undefined,
+        description_ar: item.description_ar ?? undefined,
         photos: item.photo
           ? [{ src: item.photo, position: item.photo_position ?? null, transform: item.photo_transform ?? null }]
           : [],
@@ -339,14 +343,20 @@ export interface CatalogItem {
   name_en?: string | null;
   name_zh?: string | null;
   name_hy?: string | null;
+  name_uz?: string | null;
+  name_ar?: string | null;
   description: string | null;
   description_en?: string | null;
   description_zh?: string | null;
   description_hy?: string | null;
+  description_uz?: string | null;
+  description_ar?: string | null;
   composition: string | null;
   composition_en?: string | null;
   composition_zh?: string | null;
   composition_hy?: string | null;
+  composition_uz?: string | null;
+  composition_ar?: string | null;
   kbju: GenKbju | null;
   price: number;
   /** Все фото позиции, первое — обложка/витрина (см. PhotoEntry). */
@@ -480,10 +490,14 @@ export function toResolvedCatalogItem(it: CatalogItem): ResolvedMenuItem {
     name_en: it.name_en ?? undefined,
     name_zh: it.name_zh ?? undefined,
     name_hy: it.name_hy ?? undefined,
+    name_uz: it.name_uz ?? undefined,
+    name_ar: it.name_ar ?? undefined,
     description: it.description,
     description_en: it.description_en ?? undefined,
     description_zh: it.description_zh ?? undefined,
     description_hy: it.description_hy ?? undefined,
+    description_uz: it.description_uz ?? undefined,
+    description_ar: it.description_ar ?? undefined,
     photos: it.photos,
     photo: it.photos[0]?.src ?? null,
     photo_position: it.photos[0]?.position ?? null,
@@ -492,6 +506,8 @@ export function toResolvedCatalogItem(it: CatalogItem): ResolvedMenuItem {
     composition_en: it.composition_en ?? undefined,
     composition_zh: it.composition_zh ?? undefined,
     composition_hy: it.composition_hy ?? undefined,
+    composition_uz: it.composition_uz ?? undefined,
+    composition_ar: it.composition_ar ?? undefined,
     category_id: it.realm,
     price: it.price,
     weight: kb && kb.weight != null ? `${kb.weight}` : null,

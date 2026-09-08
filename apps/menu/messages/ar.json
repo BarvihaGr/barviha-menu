@@ -1,0 +1,231 @@
+{
+  "brand": {
+    "name": "بارفيخا",
+    "tagline": "Premium Hookah & Lounge"
+  },
+  "common": {
+    "back": "رجوع",
+    "currency": "₽",
+    "add": "إضافة",
+    "added": "تمت الإضافة",
+    "weight": "الوزن/الحجم",
+    "price": "السعر",
+    "search": "البحث في القائمة",
+    "all": "الكل",
+    "loading": "جارٍ التحميل…",
+    "close": "إغلاق",
+    "navigation": "التنقل"
+  },
+  "nav": {
+    "cart": "طاولتي",
+    "menu": "القائمة",
+    "info": "معلومات",
+    "hookahFlow": "الشيشة",
+    "home": "الرئيسية",
+    "contacts": "اتصل بنا"
+  },
+  "realms": {
+    "kitchen": "المطبخ",
+    "bar": "البار",
+    "hookah": "الشيشة"
+  },
+  "categories": {
+    "hookah": "الشيشة",
+    "bar": "البار",
+    "kitchen": "المطبخ",
+    "rolls": "رولات",
+    "desserts": "الحلويات"
+  },
+  "labels": {
+    "hit": "الأكثر طلباً",
+    "new": "جديد",
+    "chef_pick": "اختيار الشيف",
+    "premium": "بريميوم",
+    "spicy": "حار",
+    "vegan": "نباتي"
+  },
+  "filters": {
+    "title": "التصفية",
+    "noAlcohol": "بدون كحول",
+    "withAlcohol": "يحتوي على كحول",
+    "withIce": "مع ثلج",
+    "sparkling": "فوّار",
+    "spicy": "حار",
+    "vegan": "نباتي",
+    "withMeat": "مع لحم",
+    "noMeat": "بدون لحم",
+    "withFish": "مع سمك",
+    "noFish": "بدون سمك",
+    "salad": "سلطات",
+    "salty": "مالح",
+    "sweet": "حلو",
+    "halal": "حلال",
+    "healthy": "صحي",
+    "reset": "إعادة ضبط",
+    "close": "تم",
+    "emptyFilters": "لا توجد أطباق تطابق التصفية المحددة"
+  },
+  "sections": {
+    "all": "الكل",
+    "salads": "السلطات",
+    "coldApps": "المقبلات الباردة",
+    "hotApps": "المقبلات الساخنة",
+    "platters": "الأطباق المشتركة",
+    "soups": "الشوربات",
+    "mains": "الأطباق الرئيسية",
+    "authorCocktails": "كوكتيلات خاصة",
+    "classics": "الكلاسيكية",
+    "noAlcoholDrinks": "مشروبات غير كحولية",
+    "tea": "الشاي",
+    "classicRolls": "رولات كلاسيكية",
+    "sets": "أطقم",
+    "desserts": "الحلويات"
+  },
+  "item": {
+    "addToCart": "إضافة إلى طاولتي",
+    "composition": "المكونات",
+    "nutrition": "القيمة الغذائية للحصة",
+    "kcal": "سعرة",
+    "protein": "بروتين",
+    "fat": "دهون",
+    "carbs": "كربوهيدرات",
+    "related": "من نفس الفئة",
+    "more": "قراءة المزيد",
+    "less": "عرض أقل",
+    "viewPhoto": "عرض الصورة",
+    "closePhoto": "إغلاق",
+    "grams": "غ",
+    "photoPending": "الصورة قريباً"
+  },
+  "cart": {
+    "title": "طاولتي",
+    "empty": "طاولتك فارغة حالياً. اختر شيئاً من القائمة.",
+    "browse": "إلى القائمة",
+    "subtotal": "الإجمالي",
+    "submitDescription": "اعرض هذه الشاشة على النادل عندما يأتي",
+    "qty": "الكمية",
+    "remove": "حذف",
+    "addNote": "ملاحظة…",
+    "clearAll": "مسح الكل",
+    "showWaiter": "عرض على النادل"
+  },
+  "hookah": {
+    "title": "الشيشة",
+    "subtitle": "اختر مزاجك، وسيُعدّ لك معلّم الشيشة المزيج المثالي",
+    "moodTitle": "ما مزاجك اليوم؟",
+    "hitsTitle": "الأكثر طلباً لدينا",
+    "premiumTitle": "شيشة بريميوم"
+  },
+  "home": {
+    "featured": "الأكثر طلباً واختيار الشيف",
+    "menu": "القائمة",
+    "promos": "العروض",
+    "spotlight": "الفعاليات والعروض",
+    "afisha": "الفعاليات",
+    "exploreMenu": "فتح القائمة",
+    "viewAll": "عرض الكل",
+    "stub": {
+      "afishaAlt": "ملصق — ليلة على طريقة بارفيخا",
+      "afishaTitle": "ليلة على طريقة بارفيخا",
+      "afishaSubtitle": "أجواء من الفخامة والموسيقى والاستجمام المثالي.",
+      "days": "الجمعة · السبت",
+      "djAlt": "DJ Sander — عرض دي جي مباشر",
+      "djEyebrow": "Live · DJ set",
+      "djTitle": "DJ Sander — عرض دي جي مباشر",
+      "djSubtitle": "عرض مباشر في عطلة نهاية الأسبوع. احجز طاولتك مسبقاً.",
+      "socialAlt": "تابعونا على وسائل التواصل الاجتماعي",
+      "socialTitle": "تابعونا على وسائل التواصل الاجتماعي",
+      "socialNote": "آخر المستجدات",
+      "socialSubtitle": "الفعاليات والعروض والتواصل معنا — تابعونا.",
+      "vkLabel": "فكونتاكتي"
+    },
+    "bookTable": "حجز طاولة"
+  },
+  "spotlight": {
+    "more": "المزيد",
+    "close": "إغلاق",
+    "kind": {
+      "dj": "عرض دي جي",
+      "promo": "عرض ترويجي",
+      "offer": "عرض خاص",
+      "social": "التواصل الاجتماعي",
+      "event": "فعالية"
+    },
+    "linkWeb": "الموقع",
+    "linkPhone": "اتصال"
+  },
+  "announce": {
+    "today": "اليوم",
+    "soon": "قريباً",
+    "dj": "عرض دي جي",
+    "match": "بث المباراة",
+    "event": "فعالية"
+  },
+  "location": {
+    "switch": "اختيار الفرع",
+    "current": "الفرع الحالي",
+    "search": "البحث عن فرع…",
+    "info": "معلومات عن المكان",
+    "close": "إغلاق",
+    "address": "العنوان",
+    "phone": "الهاتف",
+    "directions": "الاتجاهات",
+    "chooseMapApp": "فتح الاتجاهات في",
+    "yandexMaps": "خرائط ياندكس",
+    "twoGis": "2GIS",
+    "googleMaps": "Google Maps",
+    "addressTBD": "العنوان قيد التحديد",
+    "phoneTBD": "الهاتف قيد التحديد",
+    "closedMessage": "القائمة غير متاحة عبر الإنترنت مؤقتاً. يرجى التواصل مع موظفينا.",
+    "nearby": {
+      "eyebrow": "أنت بالقرب منا",
+      "title": "أنت بالقرب من «بارفيخا لاونج {name}» — هل تريد فتح قائمة هذا الفرع؟",
+      "openMenu": "فتح القائمة",
+      "stayHere": "البقاء هنا"
+    },
+    "hours": "ساعات العمل",
+    "wifiFree": "واي فاي مجاني",
+    "contactsTitle": "اتصل بنا",
+    "sectionLabel": "الفرع",
+    "paletteIvory": "عاجي",
+    "paletteArka": "أركا"
+  },
+  "search": {
+    "noResults": "لم يتم العثور على شيء",
+    "placeholder": "البحث: أطباق، مشروبات، شيشة…",
+    "clear": "مسح"
+  },
+  "toast": {
+    "addedToCart": "تمت الإضافة إلى طاولتك"
+  },
+  "lang": {
+    "ru": "RU",
+    "en": "EN",
+    "zh": "中",
+    "switch": "تغيير اللغة",
+    "label": "اللغة"
+  },
+  "errors": {
+    "notFoundTitle": "الصفحة غير موجودة",
+    "notFoundBody": "هذا الفرع أو قسم القائمة غير موجود. تحقق من الرابط أو عد إلى الصفحة الرئيسية.",
+    "wentWrongTitle": "حدث خطأ ما",
+    "wentWrongBody": "تعذّر تحميل الصفحة. حاول مرة أخرى — عادةً ما يكون هذا خللاً مؤقتاً.",
+    "tryAgain": "إعادة المحاولة",
+    "home": "إلى الرئيسية"
+  },
+  "menuHub": {
+    "kitchenSubtitle": "مطبخ خاص",
+    "barSubtitle": "كوكتيلات ومشروبات",
+    "hookahSubtitle": "تبغ بريميوم",
+    "hookahTitle": "قائمة الشيشة"
+  },
+  "staff": {
+    "callAtTable": "{who} — طاولة رقم {table}",
+    "waiter": "تم استدعاء النادل",
+    "hookahMaster": "تم استدعاء معلّم الشيشة"
+  },
+  "palette": {
+    "ivory": "عاجي",
+    "arka": "أركا"
+  }
+}

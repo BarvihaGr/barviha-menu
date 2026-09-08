@@ -49,6 +49,8 @@ interface LocPoint {
   name_en?: string;
   name_zh?: string;
   name_hy?: string;
+  name_uz?: string;
+  name_ar?: string;
   latitude?: number | null;
   longitude?: number | null;
 }
