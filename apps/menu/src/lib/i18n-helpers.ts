@@ -369,6 +369,7 @@ const BAR_CATEGORY_TR: Record<string, { en: string; zh: string; hy: string }> = 
   Соки: { en: 'Juices', zh: '果汁', hy: 'Հյութեր' },
   Сок: { en: 'Juice', zh: '果汁', hy: 'Հյութ' },
   'Вода с газом / без': { en: 'Still / Sparkling Water', zh: '靜水／氣泡水', hy: 'Հանգիստ / գազավորված ջուր' },
+  'Вода и напитки': { en: 'Water & Soft Drinks', zh: '水與飲料', hy: 'Ջուր և ըմպելիքներ' },
   Чаи: { en: 'Teas', zh: '茶', hy: 'Թեյեր' },
   'Авторские чаи': { en: 'Signature Teas', zh: '招牌茶', hy: 'Հեղինակային թեյեր' },
   'Премиальные чаи': { en: 'Premium Teas', zh: '優質茶', hy: 'Պրեմիում թեյեր' },
@@ -380,6 +381,7 @@ const BAR_CATEGORY_TR: Record<string, { en: string; zh: string; hy: string }> = 
   Коктейли: { en: 'Cocktails', zh: '雞尾酒', hy: 'Կոկտեյլներ' },
   'Авторские коктейли': { en: 'Signature Cocktails', zh: '招牌雞尾酒', hy: 'Հեղինակային կոկտեյլներ' },
   'Классические коктейли': { en: 'Classic Cocktails', zh: '經典雞尾酒', hy: 'Դասական կոկտեյլներ' },
+  'Популярные коктейли': { en: 'Popular Cocktails', zh: '人氣雞尾酒', hy: 'Հանրաճանաչ կոկտեյլներ' },
   Шоты: { en: 'Shots', zh: '烈酒杯', hy: 'Շոթեր' },
   'Игристые и шампанские вина': {
     en: 'Sparkling & Champagne Wines',
@@ -399,6 +401,11 @@ const BAR_CATEGORY_TR: Record<string, { en: string; zh: string; hy: string }> = 
   Водка: { en: 'Vodka', zh: '伏特加', hy: 'Օղի' },
   Пиво: { en: 'Beer', zh: '啤酒', hy: 'Գարեջուր' },
   Настойки: { en: 'House Infusions', zh: '自製利口酒', hy: 'Թրմուկներ' },
+  'Аперитивы / Биттеры / Ликёры': {
+    en: 'Aperitifs / Bitters / Liqueurs',
+    zh: '開胃酒／苦精／利口酒',
+    hy: 'Ապերիտիվներ / Բիթերներ / Լիկյորներ',
+  },
   'Аперетивы / Биттеры / Ликёры': {
     en: 'Aperitifs / Bitters / Liqueurs',
     zh: '開胃酒／苦精／利口酒',
@@ -407,6 +414,9 @@ const BAR_CATEGORY_TR: Record<string, { en: string; zh: string; hy: string }> = 
   Закуски: { en: 'Snacks', zh: '小食', hy: 'Խորտիկներ' },
   Сладости: { en: 'Sweets', zh: '甜食', hy: 'Քաղցրավենիք' },
   'Винная карта': { en: 'Wine List', zh: '酒單', hy: 'Գինու քարտ' },
+  'Осеннее предложение': { en: 'Autumn Offer', zh: '秋季特選', hy: 'Աշնանային առաջարկ' },
+  'Горячие напитки': { en: 'Hot Drinks', zh: '熱飲', hy: 'Տաք ըմպելիքներ' },
+  'Горячие алкогольные напитки': { en: 'Hot Alcoholic Drinks', zh: '熱酒精飲品', hy: 'Տաք ալկոհոլային ըմպելիքներ' },
 };
 
 /** Перевод заголовка секции Бара «Арки» — `text` берётся прямо из контента (без slug-а). */

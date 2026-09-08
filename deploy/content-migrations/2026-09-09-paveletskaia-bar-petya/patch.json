@@ -1,0 +1,806 @@
+{
+  "location": "paveletskaia",
+  "prepend": [
+    {
+      "kind": "header",
+      "sheet": "БА",
+      "title": "Осеннее предложение"
+    },
+    {
+      "kind": "category",
+      "sheet": "БА",
+      "category": "Горячие напитки",
+      "items": [
+        {
+          "id": "bar-osen-kofe-po-vostochnomu-a1f7c2",
+          "name": "Кофе По-Восточному",
+          "type": 2,
+          "priceParts": [
+            "400"
+          ],
+          "volume": "80мл",
+          "description": null,
+          "photo": null,
+          "is_available": true,
+          "is_archived": false,
+          "name_en": "Oriental Coffee",
+          "name_zh": "东方咖啡",
+          "name_hy": "Արևելյան սուրճ",
+          "description_en": null,
+          "description_zh": null,
+          "description_hy": null
+        },
+        {
+          "id": "bar-osen-kakao-prianyi-b2e8d3",
+          "name": "Какао Пряный",
+          "type": 2,
+          "priceParts": [
+            "500"
+          ],
+          "volume": "300мл",
+          "description": null,
+          "photo": null,
+          "is_available": true,
+          "is_archived": false,
+          "name_en": "Spiced Cocoa",
+          "name_zh": "香料可可",
+          "name_hy": "Համեմունքային կակաո",
+          "description_en": null,
+          "description_zh": null,
+          "description_hy": null
+        },
+        {
+          "id": "bar-osen-smorodinovyi-glintvein-ba-c3d9e4",
+          "name": "Смородиновый глинтвейн б/а",
+          "type": 2,
+          "priceParts": [
+            "900"
+          ],
+          "volume": "300мл",
+          "description": null,
+          "photo": null,
+          "is_available": true,
+          "is_archived": false,
+          "name_en": "Blackcurrant Mulled Wine (non-alcoholic)",
+          "name_zh": "黑加仑热红酒（无酒精）",
+          "name_hy": "Հաղարջի գլինտվեյն (առանց ալկոհոլի)",
+          "description_en": null,
+          "description_zh": null,
+          "description_hy": null
+        },
+        {
+          "id": "bar-osen-prianyi-iablochnyi-grog-ba-d4c1f5",
+          "name": "Пряный Яблочный грог б/а",
+          "type": 2,
+          "priceParts": [
+            "900"
+          ],
+          "volume": "300мл",
+          "description": null,
+          "photo": null,
+          "is_available": true,
+          "is_archived": false,
+          "name_en": "Spiced Apple Grog (non-alcoholic)",
+          "name_zh": "香料苹果格罗格（无酒精）",
+          "name_hy": "Համեմունքային խնձորի գրոգ (առանց ալկոհոլի)",
+          "description_en": null,
+          "description_zh": null,
+          "description_hy": null
+        }
+      ]
+    },
+    {
+      "kind": "category",
+      "sheet": "Алкоголь",
+      "category": "Горячие алкогольные напитки",
+      "items": [
+        {
+          "id": "bar-osen-smorodinovyi-glintvein-e5b2a6",
+          "name": "Смородиновый глинтвейн",
+          "type": 2,
+          "priceParts": [
+            "900"
+          ],
+          "volume": "300мл",
+          "description": null,
+          "photo": null,
+          "is_available": true,
+          "is_archived": false,
+          "name_en": "Blackcurrant Mulled Wine",
+          "name_zh": "黑加仑热红酒",
+          "name_hy": "Հաղարջի գլինտվեյն",
+          "description_en": null,
+          "description_zh": null,
+          "description_hy": null
+        },
+        {
+          "id": "bar-osen-prianyi-iablochnyi-grog-f6a3b7",
+          "name": "Пряный Яблочный грог",
+          "type": 2,
+          "priceParts": [
+            "900"
+          ],
+          "volume": "300мл",
+          "description": null,
+          "photo": null,
+          "is_available": true,
+          "is_archived": false,
+          "name_en": "Spiced Apple Grog",
+          "name_zh": "香料苹果格罗格",
+          "name_hy": "Համեմունքային խնձորի գրոգ",
+          "description_en": null,
+          "description_zh": null,
+          "description_hy": null
+        }
+      ]
+    }
+  ],
+  "renameCategories": [
+    {
+      "from": "Милкшейки",
+      "to": "Молочный коктейль"
+    },
+    {
+      "from": "Соки",
+      "to": "Сок"
+    },
+    {
+      "from": "Вода с газом / без",
+      "to": "Вода и напитки"
+    },
+    {
+      "from": "Классические коктейли",
+      "to": "Популярные коктейли"
+    },
+    {
+      "from": "Крепкий алкоголь",
+      "to": "Аперитивы / Биттеры / Ликёры"
+    }
+  ],
+  "insertHeaders": [
+    {
+      "before": "Аперитивы / Биттеры / Ликёры",
+      "title": "Крепкий алкоголь",
+      "sheet": "Алкоголь"
+    }
+  ],
+  "rekeyGroupPhotos": [
+    {
+      "from": "Крепкий алкоголь",
+      "to": "Аперитивы / Биттеры / Ликёры"
+    }
+  ],
+  "items": {
+    "arka-bar-0000": {
+      "name": "Манго, маракуйя, кокос",
+      "name_en": "Mango, Passion Fruit, Coconut",
+      "name_zh": "芒果、百香果、椰子",
+      "name_hy": "Մանգո, մարակույա, կոկոս",
+      "description": "Манго, маракуйя, кокос, ваниль, содовая",
+      "description_en": "Mango, passion fruit, coconut, vanilla, soda",
+      "description_zh": "芒果、百香果、椰子、香草、苏打水",
+      "description_hy": "Մանգո, մարակույա, կոկոս, վանիլ, սոդա",
+      "volume": "300мл/1л"
+    },
+    "arka-bar-0001": {
+      "name": "Апельсин, юдзу, миндаль",
+      "name_en": "Orange, Yuzu, Almond",
+      "name_zh": "橙子、柚子、杏仁",
+      "name_hy": "Նարինջ, յուձու, նուշ",
+      "description": "Апельсин, юдзу, лимон, миндаль, содовая",
+      "description_en": "Orange, yuzu, lemon, almond, soda",
+      "description_zh": "橙子、柚子、柠檬、杏仁、苏打水",
+      "description_hy": "Նարինջ, յուձու, կիտրոն, նուշ, սոդա",
+      "volume": "300мл/1л"
+    },
+    "arka-bar-0002": {
+      "name": "Гранат и клубника",
+      "name_en": "Pomegranate & Strawberry",
+      "name_zh": "石榴与草莓",
+      "name_hy": "Նուռ և ելակ",
+      "description": "Гранат, клубника, суданская роза, содовая",
+      "description_en": "Pomegranate, strawberry, hibiscus, soda",
+      "description_zh": "石榴、草莓、洛神花、苏打水",
+      "description_hy": "Նուռ, ելակ, սուդանական վարդ, սոդա",
+      "volume": "300мл/1л"
+    },
+    "arka-bar-0003": {
+      "name": "Киви, крыжовник, фейхоа",
+      "name_en": "Kiwi, Gooseberry, Feijoa",
+      "name_zh": "猕猴桃、醋栗、费约果",
+      "name_hy": "Կիվի, հաղարջ, ֆեյխոա",
+      "description": "Киви, яблоко, крыжовник, фейхоа, эстрагон, содовая",
+      "description_en": "Kiwi, apple, gooseberry, feijoa, tarragon, soda",
+      "description_zh": "猕猴桃、苹果、醋栗、费约果、龙蒿、苏打水",
+      "description_hy": "Կիվի, խնձոր, հաղարջ, ֆեյխոա, թարխուն, սոդա",
+      "volume": "300мл/1л"
+    },
+    "arka-bar-0004": {
+      "name": "Ананас и щавель",
+      "name_en": "Pineapple & Sorrel",
+      "name_zh": "菠萝与酸模",
+      "name_hy": "Արքայախնձոր և թրթնջուկ",
+      "description": "Ананас, щавель, содовая",
+      "description_en": "Pineapple, sorrel, soda",
+      "description_zh": "菠萝、酸模、苏打水",
+      "description_hy": "Արքայախնձոր, թրթնջուկ, սոդա",
+      "volume": "300мл/1л"
+    },
+    "arka-bar-0005": {
+      "name": "Клубника, кокос, ананас",
+      "name_en": "Strawberry, Coconut, Pineapple",
+      "name_zh": "草莓、椰子、菠萝",
+      "name_hy": "Ելակ, կոկոս, արքայախնձոր",
+      "description": "Клубника, ананас, кокос, бобы тонка",
+      "description_en": "Strawberry, pineapple, coconut, tonka bean",
+      "description_zh": "草莓、菠萝、椰子、零陵香豆",
+      "description_hy": "Ելակ, արքայախնձոր, կոկոս, տոնկա",
+      "volume": "300мл/1л"
+    },
+    "arka-bar-0006": {
+      "description": "Манго, ананас, банан",
+      "description_en": "Mango, pineapple, banana",
+      "description_zh": "芒果、菠萝、香蕉",
+      "description_hy": "Մանգո, արքայախնձոր, բանան",
+      "volume": "300мл/1л"
+    },
+    "arka-bar-0007": {
+      "description": "Клубника, малина, ананас",
+      "description_en": "Strawberry, raspberry, pineapple",
+      "description_zh": "草莓、树莓、菠萝",
+      "description_hy": "Ելակ, ազնվամորի, արքայախնձոր",
+      "volume": "300мл/1л"
+    },
+    "arka-bar-0014": {
+      "description": "С газом / без, стекло.",
+      "description_en": "Sparkling / still, glass bottle.",
+      "description_zh": "含气／无气，玻璃瓶。",
+      "description_hy": "Գազավորված / առանց գազի, ապակե շիշ."
+    },
+    "arka-bar-0015": {
+      "description": "С газом / без, стекло.",
+      "description_en": "Sparkling / still, glass bottle.",
+      "description_zh": "含气／无气，玻璃瓶。",
+      "description_hy": "Գազավորված / առանց գազի, ապակե շիշ."
+    },
+    "arka-bar-0011": {
+      "name": "Сок",
+      "name_en": "Juice",
+      "name_zh": "果汁",
+      "name_hy": "Հյութ",
+      "description": "Апельсин, яблоко, вишня, томат",
+      "description_en": "Orange, apple, cherry, tomato",
+      "description_zh": "橙、苹果、樱桃、番茄",
+      "description_hy": "Նարինջ, խնձոր, բալ, լոլիկ"
+    },
+    "arka-bar-0012": {
+      "priceParts": [
+        "750"
+      ],
+      "description": "Апельсин / Грейпфрут / Яблоко",
+      "description_en": "Orange / Grapefruit / Apple",
+      "description_zh": "橙 / 西柚 / 苹果",
+      "description_hy": "Նարինջ / Գրեյպֆրուտ / Խնձոր"
+    },
+    "arka-bar-0013": {
+      "priceParts": [
+        "1200"
+      ],
+      "description": "Ананас",
+      "description_en": "Pineapple",
+      "description_zh": "菠萝",
+      "description_hy": "Արքայախնձոր"
+    },
+    "arka-bar-0021": {
+      "name": "Гранат и клубника",
+      "name_en": "Pomegranate & Strawberry",
+      "name_zh": "石榴与草莓",
+      "name_hy": "Նուռ և ելակ",
+      "description": "Гранат, грейпфрут, клубника, суданская роза",
+      "description_en": "Pomegranate, grapefruit, strawberry, hibiscus",
+      "description_zh": "石榴、西柚、草莓、洛神花",
+      "description_hy": "Նուռ, գրեյպֆրուտ, ելակ, սուդանական վարդ",
+      "volume": "800мл"
+    },
+    "bar-avtorskie-chai-marakuiia-oblepikha-donnik-0z8024v": {
+      "name": "Маракуйя, облепиха, донник",
+      "name_en": "Passion Fruit, Sea Buckthorn, Sweet Clover",
+      "name_zh": "百香果、沙棘、草木樨",
+      "name_hy": "Մարակույա, չիչխան, իշառվույտ",
+      "description": "Облепиха, маракуйя, апельсин, донник, розмарин",
+      "description_en": "Sea buckthorn, passion fruit, orange, sweet clover, rosemary",
+      "description_zh": "沙棘、百香果、橙子、草木樨、迷迭香",
+      "description_hy": "Չիչխան, մարակույա, նարինջ, իշառվույտ, խնկածաղիկ",
+      "volume": "800мл"
+    },
+    "arka-bar-0023": {
+      "description": "Мандарин, тай пин, мусковадо, мята, цитрус, корица, гвоздика, белый кардамон",
+      "description_en": "Tangerine, Tai Ping tea, muscovado, mint, citrus, cinnamon, clove, white cardamom",
+      "description_zh": "橘子、太平猴魁、黑糖、薄荷、柑橘、肉桂、丁香、白豆蔻",
+      "description_hy": "Մանդարին, թայ պին թեյ, մուսկովադո, անանուխ, ցիտրուս, դարչին, մեխակ, սպիտակ հիլ",
+      "volume": "800мл"
+    },
+    "arka-bar-0024": {
+      "name": "Грейпфрут и малина",
+      "name_en": "Grapefruit & Raspberry",
+      "name_zh": "西柚与树莓",
+      "name_hy": "Գրեյպֆրուտ և ազնվամորի",
+      "description": "Грейпфрут, малина, суданская роза, лимон",
+      "description_en": "Grapefruit, raspberry, hibiscus, lemon",
+      "description_zh": "西柚、树莓、洛神花、柠檬",
+      "description_hy": "Գրեյպֆրուտ, ազնվամորի, սուդանական վարդ, կիտրոն",
+      "volume": "800мл"
+    },
+    "arka-bar-0025": {
+      "description": "Мята, тимьян свежий, белый кардамон, бадьян",
+      "description_en": "Mint, fresh thyme, white cardamom, star anise",
+      "description_zh": "薄荷、新鲜百里香、白豆蔻、八角",
+      "description_hy": "Անանուխ, թարմ ուրց, սպիտակ հիլ, աստղային անիսոն",
+      "volume": "800мл"
+    },
+    "arka-bar-0029": {
+      "name": "Моли Чжень Ло",
+      "volume": "800мл"
+    },
+    "arka-bar-0030": {
+      "name": "Габа",
+      "volume": "800мл"
+    },
+    "arka-bar-0031": {
+      "name": "Да Хун Пао",
+      "volume": "800мл"
+    },
+    "arka-bar-0032": {
+      "name": "Те Гуан Инь Мао Ча",
+      "volume": "800мл"
+    },
+    "arka-bar-0033": {
+      "name": "Лун Цзин",
+      "volume": "800мл"
+    },
+    "arka-bar-0034": {
+      "name": "Пуэр Выдержанный",
+      "volume": "800мл"
+    },
+    "arka-bar-0035": {
+      "volume": "800мл"
+    },
+    "arka-bar-0036": {
+      "volume": "800мл"
+    },
+    "arka-bar-0037": {
+      "volume": "800мл"
+    },
+    "arka-bar-0038": {
+      "volume": "800мл"
+    },
+    "arka-bar-0026": {
+      "name": "Ассам",
+      "volume": "800мл"
+    },
+    "arka-bar-0027": {
+      "name": "Эрл Грей",
+      "volume": "800мл"
+    },
+    "arka-bar-0028": {
+      "name": "Молочный Улун",
+      "volume": "800мл"
+    },
+    "arka-bar-0042": {
+      "priceParts": [
+        "350"
+      ]
+    },
+    "arka-bar-0043": {
+      "priceParts": [
+        "350"
+      ]
+    },
+    "arka-bar-0044": {
+      "priceParts": [
+        "500"
+      ]
+    },
+    "arka-bar-0045": {
+      "priceParts": [
+        "500"
+      ]
+    },
+    "arka-bar-0046": {
+      "priceParts": [
+        "500"
+      ]
+    },
+    "arka-bar-0047": {
+      "priceParts": [
+        "500"
+      ]
+    },
+    "arka-bar-0048": {
+      "priceParts": [
+        "550"
+      ]
+    },
+    "arka-bar-0049": {
+      "priceParts": [
+        "500"
+      ]
+    },
+    "arka-bar-0050": {
+      "priceParts": [
+        "600"
+      ]
+    },
+    "arka-bar-0051": {
+      "priceParts": [
+        "550"
+      ]
+    },
+    "arka-bar-0052": {
+      "name": "Сироп",
+      "name_en": "Syrup",
+      "name_zh": "糖浆",
+      "name_hy": "Օշարակ",
+      "priceParts": [
+        "150"
+      ],
+      "description": "Ваниль, карамель, солёная карамель, миндаль, кокос, корица, клубника, малина",
+      "description_en": "Vanilla, caramel, salted caramel, almond, coconut, cinnamon, strawberry, raspberry",
+      "description_zh": "香草、焦糖、海盐焦糖、杏仁、椰子、肉桂、草莓、树莓",
+      "description_hy": "Վանիլ, կարամել, աղի կարամել, նուշ, կոկոս, դարչին, ելակ, ազնվամորի"
+    },
+    "arka-bar-0059": {
+      "description": "Джин, черёмуха, голубика, васильки, бузина, игристое вино",
+      "description_en": "Gin, bird cherry, blueberry, cornflower, elderflower, sparkling wine",
+      "description_zh": "金酒、稠李、蓝莓、矢车菊、接骨木花、起泡酒",
+      "description_hy": "Ջին, թխկենի, հապալաս, տերեփուկ, ծերուկ, փրփրուն գինի"
+    },
+    "arka-bar-0060": {
+      "description": "Сарти Роза, клубника, игристое вино",
+      "description_en": "Sarti Rosa, strawberry, sparkling wine",
+      "description_zh": "萨蒂玫瑰利口酒、草莓、起泡酒",
+      "description_hy": "Սարտի Ռոզա, ելակ, փրփրուն գինի"
+    },
+    "arka-bar-0061": {
+      "description": "Персик, бузина, игристое вино",
+      "description_en": "Peach, elderflower, sparkling wine",
+      "description_zh": "桃子、接骨木花、起泡酒",
+      "description_hy": "Դեղձ, ծերուկ, փրփրուն գինի"
+    },
+    "arka-bar-0062": {
+      "description": "Апероль, клубника, бобы тонка, игристое вино",
+      "description_en": "Aperol, strawberry, tonka bean, sparkling wine",
+      "description_zh": "阿佩罗、草莓、零陵香豆、起泡酒",
+      "description_hy": "Ապերոլ, ելակ, տոնկա, փրփրուն գինի"
+    },
+    "arka-bar-0063": {
+      "description": "Джин розовый грейпфрут, грейпфрут, тоник",
+      "description_en": "Pink grapefruit gin, grapefruit, tonic",
+      "description_zh": "粉红西柚金酒、西柚、汤力水",
+      "description_hy": "Վարդագույն գրեյպֆրուտի ջին, գրեյպֆրուտ, տոնիկ"
+    },
+    "arka-bar-0064": {
+      "description": "Джин, базилик, тоник",
+      "description_en": "Gin, basil, tonic",
+      "description_zh": "金酒、罗勒、汤力水",
+      "description_hy": "Ջին, ռեհան, տոնիկ"
+    },
+    "arka-bar-0065": {
+      "description": "Джин юдзу белая клубника, апельсин, юдзу, тоник",
+      "description_en": "Yuzu & white strawberry gin, orange, yuzu, tonic",
+      "description_zh": "柚子白草莓金酒、橙子、柚子、汤力水",
+      "description_hy": "Յուձու և սպիտակ ելակի ջին, նարինջ, յուձու, տոնիկ"
+    },
+    "arka-bar-0066": {
+      "description": "Манго, маракуйя, кокос, пряный и светлый ром",
+      "description_en": "Mango, passion fruit, coconut, spiced and white rum",
+      "description_zh": "芒果、百香果、椰子、香料朗姆与白朗姆",
+      "description_hy": "Մանգո, մարակույա, կոկոս, համեմունքային և սպիտակ ռոմ"
+    },
+    "arka-bar-0067": {
+      "description": "Джин, базилик",
+      "description_en": "Gin, basil",
+      "description_zh": "金酒、罗勒",
+      "description_hy": "Ջին, ռեհան"
+    },
+    "arka-bar-0068": {
+      "description": "Апероль, клубника, бобы тонка",
+      "description_en": "Aperol, strawberry, tonka bean",
+      "description_zh": "阿佩罗、草莓、零陵香豆",
+      "description_hy": "Ապերոլ, ելակ, տոնկա"
+    },
+    "arka-bar-0069": {
+      "description": "Земляника, шисо, джин, красный вермут, кампари",
+      "description_en": "Wild strawberry, shiso, gin, sweet vermouth, Campari",
+      "description_zh": "野草莓、紫苏、金酒、红味美思、金巴利",
+      "description_hy": "Մորի, շիսո, ջին, կարմիր վերմուտ, կամպարի"
+    },
+    "arka-bar-0070": {
+      "description": "Соджу слива, кордиал голубика, черёмуха",
+      "description_en": "Plum soju, blueberry cordial, bird cherry",
+      "description_zh": "梅子烧酒、蓝莓甜露、稠李",
+      "description_hy": "Սալորի սոջու, հապալասի կորդիալ, թխկենի"
+    },
+    "arka-bar-0076": {
+      "description": "Апероль, игристое вино, содовая, апельсин",
+      "description_en": "Aperol, sparkling wine, soda, orange",
+      "description_zh": "阿佩罗、起泡酒、苏打水、橙子",
+      "description_hy": "Ապերոլ, փրփրուն գինի, սոդա, նարինջ"
+    },
+    "arka-bar-0077": {
+      "description": "Водка, игристое вино, маракуйя, ваниль",
+      "description_en": "Vodka, sparkling wine, passion fruit, vanilla",
+      "description_zh": "伏特加、起泡酒、百香果、香草",
+      "description_hy": "Օղի, փրփրուն գինի, մարակույա, վանիլ"
+    },
+    "arka-bar-0078": {
+      "description": "Джин, малина, лимон",
+      "description_en": "Gin, raspberry, lemon",
+      "description_zh": "金酒、树莓、柠檬",
+      "description_hy": "Ջին, ազնվամորի, կիտրոն"
+    },
+    "arka-bar-0079": {
+      "description": "Ром, сахар, лайм, мята",
+      "description_en": "Rum, sugar, lime, mint",
+      "description_zh": "朗姆酒、糖、青柠、薄荷",
+      "description_hy": "Ռոմ, շաքար, լայմ, անանուխ"
+    },
+    "arka-bar-0080": {
+      "description": "Кампари, джин, красный вермут",
+      "description_en": "Campari, gin, sweet vermouth",
+      "description_zh": "金巴利、金酒、红味美思",
+      "description_hy": "Կամպարի, ջին, կարմիր վերմուտ"
+    },
+    "arka-bar-0081": {
+      "description": "Водка, ром светлый, текила, джин, апельсиновый ликер, лимон, сахар",
+      "description_en": "Vodka, white rum, tequila, gin, orange liqueur, lemon, sugar",
+      "description_zh": "伏特加、白朗姆、龙舌兰、金酒、橙味利口酒、柠檬、糖",
+      "description_hy": "Օղի, սպիտակ ռոմ, տեկիլա, ջին, նարնջի լիկյոր, կիտրոն, շաքար"
+    },
+    "arka-bar-0082": {
+      "description": "Водка, томат, табаско, юдзу, вустерский соус, соль, специи",
+      "description_en": "Vodka, tomato, Tabasco, yuzu, Worcestershire sauce, salt, spices",
+      "description_zh": "伏特加、番茄、塔巴斯科辣酱、柚子、伍斯特酱、盐、香料",
+      "description_hy": "Օղի, լոլիկ, տաբասկո, յուձու, վուստերի սոուս, աղ, համեմունքներ"
+    },
+    "arka-bar-0085": {
+      "name": "Ламбруско Бьянко, Алеотти. Италия. П/сл.",
+      "name_en": "Lambrusco Bianco, Aleotti. Italy. Semi-Sweet.",
+      "name_zh": "阿莱奥蒂酒庄兰布鲁斯科白起泡酒。意大利。半甜型。",
+      "name_hy": "Լամբրուսկո Բյանկո, Ալեոտի. Իտալիա. Կիսաքաղցր."
+    },
+    "arka-bar-0095": {
+      "name": "Марсан Совиньон блан Жарден де ля Тор. Франция. Сух.",
+      "name_en": "Marsanne Sauvignon Blanc, Jardin de la Tour. France. Dry.",
+      "name_zh": "拉图花园马珊长相思。法国。干型。",
+      "name_hy": "Մարսան Սովինյոն Բլան, Ժարդեն դը լյա Տուր. Ֆրանսիա. Չոր."
+    },
+    "arka-bar-0104": {
+      "name": "Шардоне-Вионье \"Старая Дорога на Джанхот\", Усадьба Мезыбь. Россия. Сух."
+    },
+    "arka-bar-0116": {
+      "name": "Зинфандель Краб&Мо, Бронко Вайн. США. П/сух."
+    },
+    "arka-bar-0117": {
+      "name": "Каберне Фран Резерв Южная Вертикаль, Шато де Талю. Россия. Сух."
+    },
+    "arka-bar-0091": {
+      "description": "Сухое российское шардоне",
+      "description_en": "Dry Russian Chardonnay",
+      "description_zh": "俄罗斯干型霞多丽",
+      "description_hy": "Չոր ռուսական շարդոնե"
+    },
+    "arka-bar-0119": {
+      "volume": "75мл"
+    },
+    "arka-bar-0120": {
+      "volume": "75мл"
+    },
+    "arka-bar-0121": {
+      "volume": "75мл"
+    },
+    "arka-bar-0131": {
+      "name": "Року. Япония.",
+      "name_en": "Roku. Japan.",
+      "name_zh": "六金酒。日本。",
+      "name_hy": "Ռոկու. Ճապոնիա.",
+      "description": null,
+      "description_en": null,
+      "description_zh": null,
+      "description_hy": null
+    },
+    "arka-bar-0143": {
+      "name": "Гленфиддик, 12 лет. Шотландия."
+    },
+    "arka-bar-0144": {
+      "name": "Макаллан Дабл Каск, 12 лет. Шотландия."
+    },
+    "arka-bar-0145": {
+      "name": "Макаллан Дабл Каск, 18 лет. Шотландия."
+    },
+    "arka-bar-0147": {
+      "name": "Чивас Регал, 12 лет. Шотландия."
+    },
+    "arka-bar-0155": {
+      "name": "Францисканер. Россия.",
+      "name_en": "Franziskaner. Russia.",
+      "name_zh": "教士啤酒。俄罗斯。",
+      "name_hy": "Ֆրանցիսկաներ. Ռուսաստան.",
+      "priceParts": [
+        "600"
+      ]
+    },
+    "arka-bar-0156": {
+      "priceParts": [
+        "600"
+      ]
+    },
+    "arka-bar-0157": {
+      "priceParts": [
+        "600"
+      ]
+    },
+    "arka-bar-0158": {
+      "priceParts": [
+        "600"
+      ],
+      "volume": "335мл"
+    },
+    "arka-bar-0159": {
+      "priceParts": [
+        "550"
+      ]
+    },
+    "arka-bar-0054": {
+      "description": "Миндаль в специях, кешью в специях, фисташки очищенные, нут с пармезаном, рисовые крекеры с васаби",
+      "description_en": "Spiced almonds, spiced cashews, shelled pistachios, chickpeas with parmesan, wasabi rice crackers",
+      "description_zh": "香料杏仁、香料腰果、去壳开心果、帕玛森鹰嘴豆、芥末米饼",
+      "description_hy": "Համեմված նուշ, համեմված հնդկընկույզ, մաքրած պիստակ, սիսեռ պարմեզանով, բրնձի կրեկեր վասաբիով",
+      "volume": "100гр"
+    },
+    "arka-bar-0055": {
+      "description": "Кешью, арахис, миндаль",
+      "description_en": "Cashews, peanuts, almonds",
+      "description_zh": "腰果、花生、杏仁",
+      "description_hy": "Հնդկընկույզ, գետնանուշ, նուշ",
+      "volume": "75гр"
+    },
+    "arka-bar-0053": {
+      "name": "Арахис соленый",
+      "name_en": "Salted Peanuts",
+      "name_zh": "盐焗花生",
+      "name_hy": "Աղի գետնանուշ",
+      "volume": "150гр"
+    },
+    "arka-bar-0057": {
+      "description": "Курица, индейка, говядина",
+      "description_en": "Chicken, turkey, beef",
+      "description_zh": "鸡肉、火鸡、牛肉",
+      "description_hy": "Հավ, հնդկահավ, տավար",
+      "volume": "50гр"
+    },
+    "arka-bar-0056": {
+      "description": "В ассортименте",
+      "description_en": "Assorted",
+      "description_zh": "多种口味",
+      "description_hy": "Տեսականով",
+      "volume": "70гр"
+    },
+    "arka-bar-0058": {
+      "description": "Ваниль, шоколад, клубника.",
+      "description_en": "Vanilla, chocolate, strawberry.",
+      "description_zh": "香草、巧克力、草莓。",
+      "description_hy": "Վանիլ, շոկոլադ, ելակ.",
+      "volume": null
+    }
+  },
+  "newItems": [
+    {
+      "category": "Добавки",
+      "afterId": "arka-bar-0052",
+      "item": {
+        "id": "bar-dobavki-kokosovoe-moloko-p3k9x1",
+        "name": "Кокосовое молоко",
+        "type": 2,
+        "priceParts": [
+          "150"
+        ],
+        "volume": null,
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false,
+        "name_en": "Coconut Milk",
+        "name_zh": "椰奶",
+        "name_hy": "Կոկոսի կաթ",
+        "description_en": null,
+        "description_zh": null,
+        "description_hy": null
+      }
+    },
+    {
+      "category": "Добавки",
+      "afterId": "bar-dobavki-kokosovoe-moloko-p3k9x1",
+      "item": {
+        "id": "bar-dobavki-mindalnoe-moloko-q7m2v4",
+        "name": "Миндальное молоко",
+        "type": 2,
+        "priceParts": [
+          "150"
+        ],
+        "volume": null,
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false,
+        "name_en": "Almond Milk",
+        "name_zh": "杏仁奶",
+        "name_hy": "Նուշի կաթ",
+        "description_en": null,
+        "description_zh": null,
+        "description_hy": null
+      }
+    }
+  ],
+  "order": {
+    "Лимонады": [
+      "arka-bar-0000",
+      "arka-bar-0001",
+      "arka-bar-0002",
+      "arka-bar-0003",
+      "arka-bar-0004"
+    ],
+    "Смузи": [
+      "arka-bar-0005",
+      "arka-bar-0006",
+      "arka-bar-0007"
+    ],
+    "Авторские чаи": [
+      "arka-bar-0021",
+      "bar-avtorskie-chai-marakuiia-oblepikha-donnik-0z8024v",
+      "arka-bar-0023",
+      "arka-bar-0024",
+      "arka-bar-0025"
+    ],
+    "Кофе": [
+      "arka-bar-0042",
+      "arka-bar-0043",
+      "arka-bar-0044",
+      "arka-bar-0045",
+      "arka-bar-0046",
+      "arka-bar-0047",
+      "arka-bar-0048",
+      "arka-bar-0049",
+      "arka-bar-0050",
+      "arka-bar-0051"
+    ],
+    "Авторские коктейли": [
+      "arka-bar-0059",
+      "arka-bar-0060",
+      "arka-bar-0061",
+      "arka-bar-0062",
+      "arka-bar-0063",
+      "arka-bar-0064",
+      "arka-bar-0065",
+      "arka-bar-0066",
+      "arka-bar-0067",
+      "arka-bar-0068",
+      "arka-bar-0069",
+      "arka-bar-0070"
+    ],
+    "Джин": [
+      "arka-bar-0130",
+      "arka-bar-0132",
+      "arka-bar-0133",
+      "arka-bar-0131"
+    ],
+    "Закуски": [
+      "arka-bar-0054",
+      "arka-bar-0055",
+      "arka-bar-0053",
+      "arka-bar-0057",
+      "arka-bar-0056",
+      "arka-bar-0058"
+    ]
+  }
+}
