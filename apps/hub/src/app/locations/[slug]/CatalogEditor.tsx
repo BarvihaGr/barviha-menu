@@ -8,7 +8,7 @@ import { apiPath } from '@/lib/base-path';
 import { menuAssetUrl } from '@/lib/menu-origin';
 import { PhotoGalleryEditor } from './PhotoGalleryEditor';
 import { cssTransform, DEFAULT_POSITION, DEFAULT_TRANSFORM } from './PhotoUploader';
-import { SavedBadge } from './SavedBadge';
+import { SavedBadge, type SaveStatus } from './SavedBadge';
 import { TranslationFields } from './TranslationFields';
 
 /** Метки-бейджи (показываются на карточке блюда). */
@@ -112,18 +112,33 @@ const CatalogItemRow = memo(function CatalogItemRow({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(item);
-  const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus | null>(null);
   const [moving, setMoving] = useState(false);
 
+  // См. тот же фикс в BarEditor: раньше неудачный PATCH проходил незамеченным
+  // (бейдж молчал, поле оставалось с введённым текстом) — заполняешь позицию
+  // за позицией в бэк-офисе и не видишь, что часть правок не долетела до
+  // диска. Теперь ошибка откатывает черновик и подсвечивается явно.
   async function save(patch: Partial<CatalogItem>) {
+    const prev = draft;
     const next = { ...draft, ...patch };
     setDraft(next);
-    const res = await fetch(apiPath(`/api/locations/${slug}/catalog/${realm}/${item.id}`), {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(patch),
-    });
-    if (res.ok) setSavedAt(Date.now());
+    let ok = false;
+    try {
+      const res = await fetch(apiPath(`/api/locations/${slug}/catalog/${realm}/${item.id}`), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+      });
+      ok = res.ok;
+    } catch {
+      ok = false;
+    }
+    setSaveStatus({ at: Date.now(), ok });
+    if (!ok) {
+      setDraft(prev);
+      return;
+    }
     if (patch.is_archived) router.refresh();
   }
 
@@ -195,7 +210,7 @@ const CatalogItemRow = memo(function CatalogItemRow({
           )}
         </div>
         <div className="shrink-0 text-sm text-[color:var(--text-soft)]">{draft.price} ₽</div>
-        <SavedBadge savedAt={savedAt} />
+        <SavedBadge status={saveStatus} />
       </div>
 
       {open && (

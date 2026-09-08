@@ -6,7 +6,7 @@ import type { ArkaMenuEntry, ArkaMenuItem, PhotoEntry } from '@barviha/db';
 import { apiPath } from '@/lib/base-path';
 import { PhotoUploader } from './PhotoUploader';
 import { GroupPhotoUploader } from './GroupPhotoUploader';
-import { SavedBadge } from './SavedBadge';
+import { SavedBadge, type SaveStatus } from './SavedBadge';
 import { TranslationFields } from './TranslationFields';
 
 export function BarEditor({
@@ -153,18 +153,35 @@ const BarItemRow = memo(function BarItemRow({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(item);
-  const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus | null>(null);
   const [moving, setMoving] = useState(false);
 
+  // Раньше при неудачном PATCH (сеть, 400/404/500) поле всё равно оставалось
+  // показывать введённое значение, а бейдж просто молчал — редактор видел
+  // «принято» и ехал печатать дальше, хотя на диск правка не попала. Теперь
+  // при ошибке черновик откатывается к последнему реально сохранённому
+  // значению, и это видно (см. SavedBadge) — не только по факту, что что-то
+  // отвалилось где-то в глубине бэк-офиса.
   async function save(patch: Partial<ArkaMenuItem>) {
+    const prev = draft;
     const next = { ...draft, ...patch };
     setDraft(next);
-    const res = await fetch(apiPath(`/api/locations/${slug}/bar/${item.id}`), {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(patch),
-    });
-    if (res.ok) setSavedAt(Date.now());
+    let ok = false;
+    try {
+      const res = await fetch(apiPath(`/api/locations/${slug}/bar/${item.id}`), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+      });
+      ok = res.ok;
+    } catch {
+      ok = false;
+    }
+    setSaveStatus({ at: Date.now(), ok });
+    if (!ok) {
+      setDraft(prev);
+      return;
+    }
     if (patch.is_archived) router.refresh();
   }
 
@@ -230,7 +247,7 @@ const BarItemRow = memo(function BarItemRow({
           <div className="text-xs text-[color:var(--muted)]">{draft.volume ?? '—'}</div>
         </div>
         <div className="shrink-0 text-sm text-[color:var(--text-soft)]">{draft.priceParts.join(' / ')} ₽</div>
-        <SavedBadge savedAt={savedAt} />
+        <SavedBadge status={saveStatus} />
       </div>
 
       {open && (

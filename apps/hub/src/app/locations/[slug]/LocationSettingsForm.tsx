@@ -3,21 +3,29 @@
 import { useState } from 'react';
 import type { LocationSettings } from '@barviha/db';
 import { apiPath } from '@/lib/base-path';
-import { SavedBadge } from './SavedBadge';
+import { SavedBadge, type SaveStatus } from './SavedBadge';
 
 export function LocationSettingsForm({ slug, settings }: { slug: string; settings: LocationSettings }) {
   const [draft, setDraft] = useState(settings);
-  const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus | null>(null);
 
   async function save(patch: Partial<LocationSettings>) {
+    const prev = draft;
     const next = { ...draft, ...patch };
     setDraft(next);
-    const res = await fetch(apiPath(`/api/locations/${slug}/location`), {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(patch),
-    });
-    if (res.ok) setSavedAt(Date.now());
+    let ok = false;
+    try {
+      const res = await fetch(apiPath(`/api/locations/${slug}/location`), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+      });
+      ok = res.ok;
+    } catch {
+      ok = false;
+    }
+    setSaveStatus({ at: Date.now(), ok });
+    if (!ok) setDraft(prev);
   }
 
   return (
@@ -28,7 +36,7 @@ export function LocationSettingsForm({ slug, settings }: { slug: string; setting
           <div className="text-xs text-[color:var(--muted)]">Выключить — меню онлайн покажет заглушку вместо каталога</div>
         </div>
         <div className="flex items-center gap-3">
-          <SavedBadge savedAt={savedAt} />
+          <SavedBadge status={saveStatus} />
           <label className="relative inline-flex cursor-pointer items-center">
             <input
               type="checkbox"
