@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { pickItemName, pickSubLabel } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/routing';
@@ -39,6 +40,7 @@ function buildFromSub(items: ResolvedMenuItem[], locale: Locale): SectionDef[] {
 }
 
 export function ArkaMenuList({ items, locale }: Props) {
+  const t = useTranslations('item');
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const chipBarRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
@@ -130,7 +132,13 @@ export function ArkaMenuList({ items, locale }: Props) {
               )}
               <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
                 {s.items.map((item) => (
-                  <ArkaItemCard key={item.id} item={item} name={pickItemName(item, locale)} description={null} />
+                  <ArkaItemCard
+                    key={item.id}
+                    item={item}
+                    name={pickItemName(item, locale)}
+                    description={null}
+                    weightLabel={item.weight != null ? `${item.weight} ${t('grams')}` : null}
+                  />
                 ))}
               </div>
             </div>

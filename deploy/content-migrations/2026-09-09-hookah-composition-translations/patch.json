@@ -1,0 +1,101 @@
+{
+  "note": "Кальян: 12 позиций (описание чаши/табака/колбы) без единого перевода ни в одной локации — единственный реальный пробел в переводах, найденный полным аудитом меню. Переведено на en/zh/hy.",
+  "items": {
+    "hookah-hookah-kalian-barvikha-2kla24p": {
+      "composition": {
+        "from": "Чаша: грейпфрут / ананас / гранат.  Табак : любой по желанию. Колба: арбуз / тыква.",
+        "en": "Bowl: grapefruit / pineapple / pomegranate. Tobacco: any of your choice. Vase: watermelon / pumpkin.",
+        "zh": "烟碗：西柚／菠萝／石榴。烟丝：任选口味。烟壶：西瓜／南瓜。",
+        "hy": "Չաշա՝ գրեյպֆրուտ / արքայախնձոր / նուռ։ Ծխախոտ՝ ըստ ցանկության։ Կոլբա՝ ձմերուկ / դդում։"
+      }
+    },
+    "hookah-hookah-tropikana-mama-koeu24q": {
+      "composition": {
+        "from": "Чаша: ананас. В колбе: пюре маракуйи, ягоды малины, киви, свежая мята.",
+        "en": "Bowl: pineapple. In the vase: passion fruit purée, raspberries, kiwi, fresh mint.",
+        "zh": "烟碗：菠萝。烟壶：百香果泥、覆盆子、猕猴桃、新鲜薄荷。",
+        "hy": "Չաշա՝ արքայախնձոր։ Կոլբայում՝ մարակույայի պյուրե, մորու հատապտուղներ, կիվի, թարմ անանուխ։"
+      }
+    },
+    "hookah-hookah-chernoe-solnce-cbih24r": {
+      "composition": {
+        "from": "Чаша: гранат. В колбе: ягоды ежевики, ананасовый сок, пюре лайма, чипсы апельсина, свежая мята.",
+        "en": "Bowl: pomegranate. In the vase: blackberries, pineapple juice, lime purée, dried orange chips, fresh mint.",
+        "zh": "烟碗：石榴。烟壶：黑莓、菠萝汁、青柠泥、橙片、新鲜薄荷。",
+        "hy": "Չաշա՝ նուռ։ Կոլբայում՝ մոշի հատապտուղներ, արքայախնձորի հյութ, կրենչի պյուրե, նարնջի չիպս, թարմ անանուխ։"
+      }
+    },
+    "hookah-hookah-eshche-odin-pozhaluista-03ae24s": {
+      "composition": {
+        "from": "Чаша: ананас. В колбе: ванильное мороженое, свежий кокос, ягоды малины, фисташки.",
+        "en": "Bowl: pineapple. In the vase: vanilla ice cream, fresh coconut, raspberries, pistachios.",
+        "zh": "烟碗：菠萝。烟壶：香草冰淇淋、新鲜椰肉、覆盆子、开心果。",
+        "hy": "Չաշա՝ արքայախնձոր։ Կոլբայում՝ վանիլային պաղպաղակ, թարմ կոկոս, մորու հատապտուղներ, պիստակ։"
+      }
+    },
+    "hookah-hookah-rozovaia-pantera-boo724t": {
+      "composition": {
+        "from": "Чаша: гранат. В колбе: ягоды малины, клубничное мороженое, рафаелло",
+        "en": "Bowl: pomegranate. In the vase: raspberries, strawberry ice cream, Raffaello.",
+        "zh": "烟碗：石榴。烟壶：覆盆子、草莓冰淇淋、拉斐尔椰蓉球。",
+        "hy": "Չաշա՝ նուռ։ Կոլբայում՝ մորու հատապտուղներ, ելակի պաղպաղակ, «Ռաֆայելլո»։"
+      }
+    },
+    "hookah-hookah-dolche-vita-m75n24u": {
+      "composition": {
+        "from": "Чаша: ананас. В колбе: шоколадное мороженое, печенье oreo, корица, свежая мята.",
+        "en": "Bowl: pineapple. In the vase: chocolate ice cream, Oreo cookies, cinnamon, fresh mint.",
+        "zh": "烟碗：菠萝。烟壶：巧克力冰淇淋、奥利奥饼干、肉桂、新鲜薄荷。",
+        "hy": "Չաշա՝ արքայախնձոր։ Կոլբայում՝ շոկոլադե պաղպաղակ, «Օրեո» կուկիներ, դարչին, թարմ անանուխ։"
+      }
+    },
+    "hookah-hookah-parfium-na-frukte-7g6q24m": {
+      "composition": {
+        "from": "Чаша: грейпфрут / ананас / гранат.  Табак : любой по желанию, с добавлением парфюма",
+        "en": "Bowl: grapefruit / pineapple / pomegranate. Tobacco: any of your choice, with added perfume drops.",
+        "zh": "烟碗：西柚／菠萝／石榴。烟丝：任选口味，加香水调味。",
+        "hy": "Չաշա՝ գրեյպֆրուտ / արքայախնձոր / նուռ։ Ծխախոտ՝ ըստ ցանկության, օծանելիքի հավելումով։"
+      }
+    },
+    "hookah-hookah-parfium-na-chashe-j1zn24l": {
+      "composition": {
+        "from": "Чаша: классическая. Табак: любой по желанию, с добавлением парфюма",
+        "en": "Bowl: classic clay. Tobacco: any of your choice, with added perfume drops.",
+        "zh": "烟碗：经典陶碗。烟丝：任选口味，加香水调味。",
+        "hy": "Չաշա՝ դասական։ Ծխախոտ՝ ըստ ցանկության, օծանելիքի հավելումով։"
+      }
+    },
+    "hookah-hookah-elektronnaia-chasha-d1ea24o": {
+      "composition": {
+        "from": "Любой табак, с добавлением парфюма",
+        "en": "Any tobacco, with added perfume drops.",
+        "zh": "任选烟丝，加香水调味。",
+        "hy": "Ցանկացած ծխախոտ, օծանելիքի հավելումով։"
+      }
+    },
+    "hookah-hookah-kalian-na-frukte": {
+      "composition": {
+        "from": "Чаша: грейпфрут / ананас / гранат.  Табак : любой по желанию, кроме  парфюма",
+        "en": "Bowl: grapefruit / pineapple / pomegranate. Tobacco: any of your choice, perfume tobacco excluded.",
+        "zh": "烟碗：西柚／菠萝／石榴。烟丝：任选口味（不含香水烟丝）。",
+        "hy": "Չաշա՝ գրեյպֆրուտ / արքայախնձոր / նուռ։ Ծխախոտ՝ ըստ ցանկության, բացի օծանելիքով ծխախոտից։"
+      }
+    },
+    "hookah-hookah-elektronnaia-chasha-0unr24n": {
+      "composition": {
+        "from": "Любой табак, кроме парфюма",
+        "en": "Any tobacco, perfume tobacco excluded.",
+        "zh": "任选烟丝（不含香水烟丝）。",
+        "hy": "Ցանկացած ծխախոտ, բացի օծանելիքով ծխախոտից։"
+      }
+    },
+    "hookah-hookah-kalian-na-chashe-2x5t24k": {
+      "composition": {
+        "from": "Чаша: классическая. Табак: любой по желанию, кроме парфюма",
+        "en": "Bowl: classic clay. Tobacco: any of your choice, perfume tobacco excluded.",
+        "zh": "烟碗：经典陶碗。烟丝：任选口味（不含香水烟丝）。",
+        "hy": "Չաշա՝ դասական։ Ծխախոտ՝ ըստ ցանկության, բացի օծանելիքով ծխախոտից։"
+      }
+    }
+  }
+}

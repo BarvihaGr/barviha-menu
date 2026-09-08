@@ -7,6 +7,7 @@ interface Props {
   item: ResolvedMenuItem;
   name: string;
   description: string | null;
+  weightLabel: string | null;
 }
 
 /**
@@ -14,9 +15,8 @@ interface Props {
  * кнопки «в корзину» (у Timeless меню — витрина для чтения за столом, не
  * магазин). Своя реализация, не CoffeeItemCard.
  */
-export function ArkaItemCard({ item, name, description }: Props) {
+export function ArkaItemCard({ item, name, description, weightLabel }: Props) {
   const displayName = capitalizeRu(name);
-  const weightStr = item.weight != null ? `${item.weight} г` : null;
 
   return (
     <article className="group flex flex-col">
@@ -55,7 +55,7 @@ export function ArkaItemCard({ item, name, description }: Props) {
         )}
 
         <div className="mt-auto flex items-center justify-between gap-2 pt-2.5">
-          <span className="text-[10.5px] text-[var(--arka-muted-dim)]">{weightStr ?? ''}</span>
+          <span className="text-[10.5px] text-[var(--arka-muted-dim)]">{weightLabel ?? ''}</span>
           <span className="text-[13.5px] font-medium text-[var(--arka-accent)]">
             {formatPrice(item.price)}
           </span>
