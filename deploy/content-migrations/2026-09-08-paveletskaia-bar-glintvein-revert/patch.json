@@ -1,0 +1,26 @@
+{
+  "note": "Павелецкая · бар: сверка с мастер-файлом «Для Пети.xlsx» — «Клубника Малина» и «Стелла Артуа (б/а)» там пишутся именно так (без «и», без расшифровки), возвращаем как в эталоне. Плюс оба «Смородиновых глинтвейна» (осеннее меню) были без описания вообще — дописали на 4 языках.",
+  "files": [
+    {
+      "location": "paveletskaia",
+      "realm": "bar",
+      "shape": "sections",
+      "items": {
+        "arka-bar-0007": { "name": { "from": "Клубника и малина", "to": "Клубника Малина" } },
+        "arka-bar-0159": { "name": { "from": "Стелла Артуа (безалкогольное). Россия.", "to": "Стелла Артуа (б/а). Россия." } },
+        "bar-osen-smorodinovyi-glintvein-e5b2a6": {
+          "description": { "from": "", "to": "Тёплое красное вино со смородиной и специями." },
+          "description_en": { "from": "", "to": "Warm red wine with currant and spices." },
+          "description_zh": { "from": "", "to": "温热红酒，融合黑加仑与香料。" },
+          "description_hy": { "from": "", "to": "Տաք կարմիր գինի հաղարջով և համեմունքներով։" }
+        },
+        "bar-osen-smorodinovyi-glintvein-ba-c3d9e4": {
+          "description": { "from": "", "to": "Тёплый смородиновый морс со специями — безалкогольная версия глинтвейна." },
+          "description_en": { "from": "", "to": "Warm blackcurrant drink with spices — a non-alcoholic take on mulled wine." },
+          "description_zh": { "from": "", "to": "温热黑加仑饮品，加入香料——无酒精版热红酒。" },
+          "description_hy": { "from": "", "to": "Տաք հաղարջի ըմպելիք համեմունքներով՝ գլինտվեյնի ալկոհոլազերծ տարբերակը։" }
+        }
+      }
+    }
+  ]
+}
