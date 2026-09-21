@@ -1,0 +1,1221 @@
+{
+  "note": "Махачкала: пилот сверки с «Меню Для макета NEW.xlsx» (лист «Махачкала») — 88 позиций, которых не было на сайте вообще.",
+  "location": "maxackala",
+  "flat": {
+    "kitchen": [
+      {
+        "id": "kitchen-breakfast-zavtrak-gorskii-s-domashnei-kolbasoi-hyf9sx",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Завтрак \"Горский\" с домашней колбасой",
+        "description": "600г",
+        "composition": null,
+        "kbju": null,
+        "price": 700.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-zavtrak-s-semgoi-i-iaitsom-pashot-mecosf",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Завтрак с сёмгой и яйцом пашот",
+        "description": "300г",
+        "composition": null,
+        "kbju": null,
+        "price": 690.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-zavtrak-turetskii-ogyr3x",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Завтрак \"Турецкий",
+        "description": "350г",
+        "composition": null,
+        "kbju": null,
+        "price": 690.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-shakshuka-kxwnre",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Шакшука",
+        "description": "250г",
+        "composition": null,
+        "kbju": null,
+        "price": 650.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-skrembl-s-korolevskimi-krevetkami-k8pk3y",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Скрембл с королевскими креветками",
+        "description": "365г",
+        "composition": null,
+        "kbju": null,
+        "price": 950.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-kasha-grechnevaia-s-iagodami-i-granoloi-r9oudo",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Каша гречневая с ягодами и гранолой",
+        "description": "250г",
+        "composition": null,
+        "kbju": null,
+        "price": 450.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-kasha-risovaia-s-iagodami-i-granoloi-cuzren",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Каша рисовая с ягодами и гранолой",
+        "description": "300г",
+        "composition": null,
+        "kbju": null,
+        "price": 450.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-kasha-ovsianaia-s-karamelnym-mussom-i-ma-un5z3j",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Каша овсяная с карамельным муссом и маракуйей",
+        "description": "300г",
+        "composition": null,
+        "kbju": null,
+        "price": 450.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-syrniki-s-rikottoi-i-vishnevym-sousom-qip98q",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Сырники с рикоттой и вишнёвым соусом",
+        "description": "250г",
+        "composition": null,
+        "kbju": null,
+        "price": 650.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-granola-s-iagodami-1zxoi6",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Гранола с ягодами",
+        "description": "210г",
+        "composition": null,
+        "kbju": null,
+        "price": 490.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-breakfast-fokachcha-s-burattoi-5fdhjk",
+        "realm": "kitchen",
+        "sub": "breakfast",
+        "name": "Фокачча с бураттой",
+        "description": "400г",
+        "composition": null,
+        "kbju": null,
+        "price": 950.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-cold-app-khumus-iz-avokado-t6mjxk",
+        "realm": "kitchen",
+        "sub": "cold-app",
+        "name": "Хумус из авокадо",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 400.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-cold-app-vitello-tonnato-87au5b",
+        "realm": "kitchen",
+        "sub": "cold-app",
+        "name": "Вителло тоннато",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 650.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-cold-app-krevetki-v-chesnochnom-souse-s-zharenym--hxtpdp",
+        "realm": "kitchen",
+        "sub": "cold-app",
+        "name": "Креветки в чесночном соусе с жареным тартином",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 620.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-salads-grecheskii-salat-ff5e8i",
+        "realm": "kitchen",
+        "sub": "salads",
+        "name": "Греческий салат",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 490.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-salads-tsezar-s-kuritsei-i49kq7",
+        "realm": "kitchen",
+        "sub": "salads",
+        "name": "Цезарь с курицей",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 590.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-salads-tsezar-s-krevetkami-1n8mtz",
+        "realm": "kitchen",
+        "sub": "salads",
+        "name": "Цезарь с креветками",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 650.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-salads-salat-s-krevetkami-guakamole-i-granatovo-x272hp",
+        "realm": "kitchen",
+        "sub": "salads",
+        "name": "Салат с креветками, гуакамоле и гранатовой заправкой",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 690.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-salads-ostryi-salat-s-rostbifom-oevb9o",
+        "realm": "kitchen",
+        "sub": "salads",
+        "name": "Острый салат с ростбифом",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 790.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-salads-salat-s-khrustiashchim-baklazhanom-i-mis-oaedoe",
+        "realm": "kitchen",
+        "sub": "salads",
+        "name": "Салат с хрустящим баклажаном и мисо",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 670.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-salads-salat-s-krevetkami-ogurtsami-i-avokado-v-cve6pr",
+        "realm": "kitchen",
+        "sub": "salads",
+        "name": "Салат с креветками, огурцами и авокадо в соусе руй",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 690.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-soups-kurinyi-sup-s-domashnei-lapshoi-5n8i4p",
+        "realm": "kitchen",
+        "sub": "soups",
+        "name": "Куриный суп с домашней лапшой",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 400.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-soups-borshch-s-vishnei-i-borodinskim-khlebom-40mgg1",
+        "realm": "kitchen",
+        "sub": "soups",
+        "name": "Борщ с вишней и бородинским хлебом",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 640.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-soups-sup-s-tomlenoi-teliatinoi-i-nutom-w103dg",
+        "realm": "kitchen",
+        "sub": "soups",
+        "name": "Суп с томлёной телятиной и нутом",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 670.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-sides-ris-basmati-dzvgpm",
+        "realm": "kitchen",
+        "sub": "sides",
+        "name": "Рис басмати",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 260.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-sides-ovoshchi-gril-m82i1l",
+        "realm": "kitchen",
+        "sub": "sides",
+        "name": "Овощи гриль",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 490.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-burgers-burger-i-batat-fri-r3pe29",
+        "realm": "kitchen",
+        "sub": "burgers",
+        "name": "Бургер и батат фри",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 840.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-burgers-chizburger-s-plavlenym-syrom-gd8afp",
+        "realm": "kitchen",
+        "sub": "burgers",
+        "name": "Чизбургер с плавленым сыром",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 920.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-steaks-steik-file-minon-k054nz",
+        "realm": "kitchen",
+        "sub": "steaks",
+        "name": "Стейк филе миньон",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 2100.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-steaks-steik-tomagavk-dkyayq",
+        "realm": "kitchen",
+        "sub": "steaks",
+        "name": "Стейк томагавк",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 1800.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-steaks-kurinyi-steik-s-mini-kartofelem-3s195j",
+        "realm": "kitchen",
+        "sub": "steaks",
+        "name": "Куриный стейк с мини картофелем",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 790.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-hot-tomlenoe-goviazhe-rebro-s-mini-kartofele-msnd8d",
+        "realm": "kitchen",
+        "sub": "hot",
+        "name": "Томлёное говяжье ребро с мини картофелем",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 950.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-hot-kotlety-iz-krolika-s-piure-udd467",
+        "realm": "kitchen",
+        "sub": "hot",
+        "name": "Котлеты из кролика с пюре",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 810.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-hot-kurinaia-grudka-kinoa-s-tomatami-i-avoka-kd6fle",
+        "realm": "kitchen",
+        "sub": "hot",
+        "name": "Куриная грудка, киноа с томатами и авокадо",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 780.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-hot-forel-na-grile-piure-iz-batata-s-sousom--epzhpc",
+        "realm": "kitchen",
+        "sub": "hot",
+        "name": "Форель на гриле, пюре из батата с соусом берблан",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 1300.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-hot-pasta-freska-arabiata-so-strachatelloi-f07uqn",
+        "realm": "kitchen",
+        "sub": "hot",
+        "name": "Паста фреска Арабьята со страчателлой",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 770.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-hot-tomlenka-s-piure-i-khrustiashchim-zharen-upqzit",
+        "realm": "kitchen",
+        "sub": "hot",
+        "name": "Томлёнка с пюре и хрустящим жареным луком",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 590.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-hot-pasta-rigatoni-boloneze-3uea3g",
+        "realm": "kitchen",
+        "sub": "hot",
+        "name": "Паста ригатони болоньезе",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 610.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-hot-orzo-s-kuritsei-i-vialenymi-tomatami-e8n6qi",
+        "realm": "kitchen",
+        "sub": "hot",
+        "name": "Орзо с курицей и вялеными томатами",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 600.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-pizza-pitstsa-margarita-wepxsk",
+        "realm": "kitchen",
+        "sub": "pizza",
+        "name": "Пицца Маргарита",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 590.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-pizza-pitstsa-chetyre-syra-28t7a9",
+        "realm": "kitchen",
+        "sub": "pizza",
+        "name": "Пицца четыре сыра",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 790.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-pizza-pitstsa-pepperoni-tgiqhg",
+        "realm": "kitchen",
+        "sub": "pizza",
+        "name": "Пицца пепперони",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 750.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-pizza-pitstsa-s-kuritsei-i-pesto-9jrsnv",
+        "realm": "kitchen",
+        "sub": "pizza",
+        "name": "Пицца с курицей и песто",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 750.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-pizza-pitstsa-s-rostbifom-nq65qd",
+        "realm": "kitchen",
+        "sub": "pizza",
+        "name": "Пицца с ростбифом",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 890.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-pizza-pitstsa-s-krevetkami-i-strachatelloi-f1rcav",
+        "realm": "kitchen",
+        "sub": "pizza",
+        "name": "Пицца с креветками и страчателлой",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 890.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-rolls-filadelfiia-iqk291",
+        "realm": "kitchen",
+        "sub": "rolls",
+        "name": "Филадельфия",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 740.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-rolls-kaliforniia-s-krevetkoi-9ahej8",
+        "realm": "kitchen",
+        "sub": "rolls",
+        "name": "Калифорния с креветкой",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 990.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-rolls-kaliforniia-s-lososem-cx9j1i",
+        "realm": "kitchen",
+        "sub": "rolls",
+        "name": "Калифорния с лососем",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 960.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-rolls-roll-oisi-ctxcwn",
+        "realm": "kitchen",
+        "sub": "rolls",
+        "name": "Ролл Ойси",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 900.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-rolls-roll-tsezar-s-kuritsei-pgw90j",
+        "realm": "kitchen",
+        "sub": "rolls",
+        "name": "Ролл Цезарь с курицей",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 590.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-rolls-roll-tsezar-s-krevetkoi-pkl0bl",
+        "realm": "kitchen",
+        "sub": "rolls",
+        "name": "Ролл Цезарь с креветкой",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 700.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-rolls-roll-s-krevetkoi-sashimi-iz-lososia-i-kr-v0prkg",
+        "realm": "kitchen",
+        "sub": "rolls",
+        "name": "Ролл с креветкой, сашими из лосося и криспи с морковью",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 1060.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-rolls-roll-s-tartarom-iz-lososia-i-sousom-slad-yc4om3",
+        "realm": "kitchen",
+        "sub": "rolls",
+        "name": "Ролл с тартаром из лосося и соусом сладкий васаби",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 1100.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-desserts-borodinskii-fondan-s-morozhenym-iz-grets-6z8vbh",
+        "realm": "kitchen",
+        "sub": "desserts",
+        "name": "Бородинский фондан с мороженым из грецкого ореха",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 750.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-desserts-makovyi-rulet-s-sousom-angles-qlqcg1",
+        "realm": "kitchen",
+        "sub": "desserts",
+        "name": "Маковый рулет с соусом англес",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 690.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-desserts-vasagi-moti-wu16hy",
+        "realm": "kitchen",
+        "sub": "desserts",
+        "name": "Васаги моти",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 690.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-desserts-vishnevyi-pirog-s-merengoi-mqc1a7",
+        "realm": "kitchen",
+        "sub": "desserts",
+        "name": "Вишнёвый пирог с меренгой",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 590.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-desserts-iablochnyi-pirog-s-karameliu-8mx1ev",
+        "realm": "kitchen",
+        "sub": "desserts",
+        "name": "Яблочный пирог с карамелью",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 490.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-desserts-oreo-uht6t0",
+        "realm": "kitchen",
+        "sub": "desserts",
+        "name": "Орео",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 500.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "kitchen-desserts-fistashka-uzs9im",
+        "realm": "kitchen",
+        "sub": "desserts",
+        "name": "Фисташка",
+        "description": null,
+        "composition": null,
+        "kbju": null,
+        "price": 900.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      }
+    ],
+    "hookah": [
+      {
+        "id": "hookah-hookah-na-klassicheskoi-chashe-hbrpoi",
+        "realm": "hookah",
+        "sub": "hookah",
+        "name": "На классической чаше",
+        "description": "Чаша: классическая. Табак: любой по желанию, кроме парфюма",
+        "composition": null,
+        "kbju": null,
+        "price": 2100.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "hookah-hookah-na-elektronnoi-chashe-g8f1cb",
+        "realm": "hookah",
+        "sub": "hookah",
+        "name": "На электронной чаше",
+        "description": "Любой табак по желанию",
+        "composition": null,
+        "kbju": null,
+        "price": 2400.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "hookah-hookah-na-fruktovoi-chashe-fno6b9",
+        "realm": "hookah",
+        "sub": "hookah",
+        "name": "На фруктовой чаше",
+        "description": "Чаша: грейпфрут / ананас / гранат.  Табак : любой по желанию, кроме  парфюма",
+        "composition": null,
+        "kbju": null,
+        "price": 2800.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "hookah-hookah-parfiumernaia-kollektsiia-m80o2r",
+        "realm": "hookah",
+        "sub": "hookah",
+        "name": "Парфюмерная коллекция",
+        "description": "Изысканное сочетание ароматов с многогранным раскрытием.",
+        "composition": null,
+        "kbju": null,
+        "price": 3100.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "hookah-hookah-malibu-ak1vrj",
+        "realm": "hookah",
+        "sub": "hookah",
+        "name": "Малибу",
+        "description": "Тёплая эстетика побережья, где песок становится частью авторской композиции.",
+        "composition": null,
+        "kbju": null,
+        "price": 4800.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "hookah-hookah-bagrovoe-tsvetenie-nvgfyg",
+        "realm": "hookah",
+        "sub": "hookah",
+        "name": "Багровое цветение",
+        "description": "Выразительное цветение в глубоких багровых тоннах .Где природа становится частью впечатления.",
+        "composition": null,
+        "kbju": null,
+        "price": 4800.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      },
+      {
+        "id": "hookah-hookah-sinergiia-vkusov-wwqc38",
+        "realm": "hookah",
+        "sub": "hookah",
+        "name": "Синергия вкусов",
+        "description": "Искусство гармонии ароматов, где каждый вкус становится частью гастрономического впечатления.",
+        "composition": null,
+        "kbju": null,
+        "price": 5500.0,
+        "is_available": true,
+        "is_archived": false,
+        "photos": []
+      }
+    ]
+  },
+  "bar": [
+    {
+      "section": "Горячие напитки",
+      "item": {
+        "id": "bar-mak-kofe-po-vostochnomu-1eyy37",
+        "name": "Кофе По-Восточному",
+        "type": 2,
+        "priceParts": [
+          "400"
+        ],
+        "volume": "80мл",
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Горячие напитки",
+      "item": {
+        "id": "bar-mak-kakao-prianyi-q9ah8r",
+        "name": "Какао Пряный",
+        "type": 2,
+        "priceParts": [
+          "500"
+        ],
+        "volume": "300мл",
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Горячие напитки",
+      "item": {
+        "id": "bar-mak-smorodinovyi-glintvein-b-a-vhs1k3",
+        "name": "Смородиновый глинтвейн б/а",
+        "type": 2,
+        "priceParts": [
+          "900"
+        ],
+        "volume": "300мл",
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Горячие напитки",
+      "item": {
+        "id": "bar-mak-prianyi-iablochnyi-grog-b-a-aq6l6g",
+        "name": "Пряный Яблочный грог б/а",
+        "type": 2,
+        "priceParts": [
+          "900"
+        ],
+        "volume": "300мл",
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Орешки",
+      "item": {
+        "id": "bar-mak-fistashki-wtoobm",
+        "name": "Фисташки",
+        "type": 2,
+        "priceParts": [
+          "500"
+        ],
+        "volume": null,
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Орешки",
+      "item": {
+        "id": "bar-mak-mindal-v-spetsiiakh-zvrerw",
+        "name": "Миндаль в специях",
+        "type": 2,
+        "priceParts": [
+          "600"
+        ],
+        "volume": null,
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Лимонады",
+      "item": {
+        "id": "bar-mak-granat-i-klubnika-0yltz9",
+        "name": "Гранат и клубника",
+        "type": 2,
+        "priceParts": [
+          "400",
+          "850"
+        ],
+        "volume": null,
+        "description": "300мл/1л. Гранат, клубника, суданская роза, содовая",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Лимонады",
+      "item": {
+        "id": "bar-mak-ananas-i-shchavel-atsn1u",
+        "name": "Ананас и щавель",
+        "type": 2,
+        "priceParts": [
+          "400",
+          "850"
+        ],
+        "volume": null,
+        "description": "300мл/1л. Ананас, щавель, содовая",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Соки",
+      "item": {
+        "id": "bar-mak-sok-322n64",
+        "name": "Сок",
+        "type": 2,
+        "priceParts": [
+          "350"
+        ],
+        "volume": null,
+        "description": "200мл. Апельсин, яблоко, вишня, томат",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Вода с газом / без",
+      "item": {
+        "id": "bar-mak-borzhomi-kfs6vf",
+        "name": "Боржоми",
+        "type": 2,
+        "priceParts": [
+          "390"
+        ],
+        "volume": null,
+        "description": "330мл. С газом / без, стекло.",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Авторские чаи",
+      "item": {
+        "id": "bar-mak-granat-i-klubnika-ptomjb",
+        "name": "Гранат и клубника",
+        "type": 2,
+        "priceParts": [
+          "900"
+        ],
+        "volume": null,
+        "description": "800мл. Гранат, грейпфрут, клубника, суданская роза",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Авторские чаи",
+      "item": {
+        "id": "bar-mak-greipfrut-i-malina-cp4e30",
+        "name": "Грейпфрут и малина",
+        "type": 2,
+        "priceParts": [
+          "900"
+        ],
+        "volume": null,
+        "description": "800мл.  Грейпфрут, малина, суданская роза, лимон",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Чайные добавки",
+      "item": {
+        "id": "bar-mak-limon-my5zpj",
+        "name": "Лимон",
+        "type": 2,
+        "priceParts": [
+          "100"
+        ],
+        "volume": null,
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Чайные добавки",
+      "item": {
+        "id": "bar-mak-med-ag1ol7",
+        "name": "Мёд",
+        "type": 2,
+        "priceParts": [
+          "100"
+        ],
+        "volume": null,
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Кофе",
+      "item": {
+        "id": "bar-mak-kofe-po-turetski-3d9ph3",
+        "name": "Кофе По-Турецки",
+        "type": 2,
+        "priceParts": [
+          "350"
+        ],
+        "volume": "80мл",
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Добавки",
+      "item": {
+        "id": "bar-mak-sirop-i379u2",
+        "name": "Сироп",
+        "type": 2,
+        "priceParts": [
+          "150"
+        ],
+        "volume": null,
+        "description": "Ваниль, карамель, солёная карамель, миндаль, кокос, корица, клубника, малина",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Добавки",
+      "item": {
+        "id": "bar-mak-kokosovoe-moloko-6192k4",
+        "name": "Кокосовое молоко",
+        "type": 2,
+        "priceParts": [
+          "150"
+        ],
+        "volume": null,
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Добавки",
+      "item": {
+        "id": "bar-mak-mindalnoe-moloko-2qpr75",
+        "name": "Миндальное молоко",
+        "type": 2,
+        "priceParts": [
+          "150"
+        ],
+        "volume": null,
+        "description": null,
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Авторские коктейли",
+      "item": {
+        "id": "bar-mak-zhasminovyi-put-pr2esp",
+        "name": "Жасминовый путь",
+        "type": 2,
+        "priceParts": [
+          "700"
+        ],
+        "volume": null,
+        "description": "350мл. Б/а джин, б/а игристое вино, жасмин - гуава, зеленое яблоко",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Авторские коктейли",
+      "item": {
+        "id": "bar-mak-aperol-klubnika-rvu8fi",
+        "name": "Апероль Клубника",
+        "type": 2,
+        "priceParts": [
+          "700"
+        ],
+        "volume": null,
+        "description": "350мл. Б/а итальянский спритц, б/а игристое вино, клубника, бобы тонка, содовая, апельсин",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    },
+    {
+      "section": "Авторские коктейли",
+      "item": {
+        "id": "bar-mak-zhasmin-aloe-vinograd-spritts-joyjne",
+        "name": "Жасмин алоэ виноград Спритц",
+        "type": 2,
+        "priceParts": [
+          "700"
+        ],
+        "volume": null,
+        "description": "350мл. Жасмин, алоэ, виноград, б/а игристое вино",
+        "photo": null,
+        "is_available": true,
+        "is_archived": false
+      }
+    }
+  ]
+}
