@@ -1,0 +1,22 @@
+{
+  "note": "Ереван · при сверке с мастер-файлом «Wine list» вина с пометкой «GLASS / BOTTLE» были в файле двумя отдельными строками (цена бокала и цена бутылки) с абсолютно одинаковым названием и описанием. В миграции 2026-09-22-taskent-erevan-menu-file-sync их добавило как 14 отдельных позиций-дублей. Аудит нашёл: правильно — 7 позиций с двумя ценами (бокал/бутылка), как уже сделано у других мультиценовых напитков сети (priceParts: [цена1, цена2]).",
+  "location": "erevan",
+  "remove_ids": [
+    "bar-erv-zonin-plo320", "bar-erv-zonin-kniir1",
+    "bar-erv-zoe-drfcmz", "bar-erv-zoe-a1zh8l",
+    "bar-erv-martiros-white-i6g5kf", "bar-erv-martiros-white-gy452t",
+    "bar-erv-koor-white-u40i9g", "bar-erv-koor-white-b3xa6p",
+    "bar-erv-martiros-rose-0pybwc", "bar-erv-martiros-rose-15dpbf",
+    "bar-erv-martiros-red-08hhuc", "bar-erv-martiros-red-iabe2m",
+    "bar-erv-koor-red-bn0pyk", "bar-erv-koor-red-8uhmrf"
+  ],
+  "add": [
+    { "section": "Игристые и шампанские вина", "item": { "id": "bar-erv-zonin-merged1", "name": "ZONIN", "type": 1, "priceParts": ["2500", "14000"], "volume": null, "description": "Бокал / бутылка", "photo": null, "is_available": true, "is_archived": false } },
+    { "section": "Игристые и шампанские вина", "item": { "id": "bar-erv-zoe-merged1", "name": "ZOE", "type": 1, "priceParts": ["2800", "15000"], "volume": null, "description": "Бокал / бутылка", "photo": null, "is_available": true, "is_archived": false } },
+    { "section": "Белые вина", "item": { "id": "bar-erv-martiros-white-merged1", "name": "MARTIROS WHITE", "type": 1, "priceParts": ["2000", "11000"], "volume": null, "description": "Бокал / бутылка", "photo": null, "is_available": true, "is_archived": false } },
+    { "section": "Белые вина", "item": { "id": "bar-erv-koor-white-merged1", "name": "KOOR WHITE", "type": 1, "priceParts": ["2200", "12500"], "volume": null, "description": "Бокал / бутылка", "photo": null, "is_available": true, "is_archived": false } },
+    { "section": "Розовые вина", "item": { "id": "bar-erv-martiros-rose-merged1", "name": "MARTIROS ROSE", "type": 1, "priceParts": ["2000", "11000"], "volume": null, "description": "Бокал / бутылка", "photo": null, "is_available": true, "is_archived": false } },
+    { "section": "Красные вина", "item": { "id": "bar-erv-martiros-red-merged1", "name": "MARTIROS RED", "type": 1, "priceParts": ["2000", "11000"], "volume": null, "description": "Бокал / бутылка", "photo": null, "is_available": true, "is_archived": false } },
+    { "section": "Красные вина", "item": { "id": "bar-erv-koor-red-merged1", "name": "KOOR RED", "type": 1, "priceParts": ["2200", "12500"], "volume": null, "description": "Бокал / бутылка", "photo": null, "is_available": true, "is_archived": false } }
+  ]
+}
