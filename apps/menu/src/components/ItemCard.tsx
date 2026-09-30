@@ -56,7 +56,7 @@ export const ItemCard = memo(function ItemCard({ item, name, locationSlug }: Pro
 
           <div className="mt-auto flex items-center justify-between gap-2 pt-2.5">
             <span className="text-[13px] sm:text-[14px] font-semibold text-gold leading-none">
-              {formatPrice(item.price)}
+              {formatPrice(item.price, locationSlug)}
             </span>
             <AddToCartButton itemId={item.id} itemName={name} locationSlug={locationSlug} className="shrink-0" />
           </div>

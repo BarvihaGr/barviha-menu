@@ -199,7 +199,7 @@ export default async function ItemDetailPage({
           )}
 
           <div className="flex items-center justify-between gap-4 border-t border-[color:var(--border)] pt-5">
-            <div className="text-2xl sm:text-3xl text-gold font-medium">{formatPrice(item.price)}</div>
+            <div className="text-2xl sm:text-3xl text-gold font-medium">{formatPrice(item.price, locationSlug)}</div>
             <AddToCartButton itemId={item.id} itemName={name} locationSlug={locationSlug} />
           </div>
         </div>

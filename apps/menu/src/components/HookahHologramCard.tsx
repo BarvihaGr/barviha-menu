@@ -68,7 +68,7 @@ export function HookahHologramCard({ itemId, name, description, price, photo, lo
             <p className="text-sm leading-relaxed text-foreground/80 max-w-md">{description}</p>
           )}
           <div className="flex items-center gap-3 mt-2">
-            <span className="text-3xl text-gold font-medium">{formatPrice(price)}</span>
+            <span className="text-3xl text-gold font-medium">{formatPrice(price, locationSlug)}</span>
           </div>
           <div className="flex flex-wrap gap-3 mt-2">
             <AddToCartButton

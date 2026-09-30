@@ -141,7 +141,7 @@ export const FeaturedItemCard = memo(function FeaturedItemCard({ item, name, loc
               </p>
             )}
             <span className="mt-2 block text-[15px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
-              {formatPrice(item.price)}
+              {formatPrice(item.price, locationSlug)}
             </span>
           </div>
 

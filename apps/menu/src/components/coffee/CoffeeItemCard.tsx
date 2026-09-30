@@ -93,7 +93,7 @@ export const CoffeeItemCard = memo(function CoffeeItemCard({ item, name, locatio
                 {weightStr ?? ''}
               </span>
               <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
-                {formatPrice(item.price)}
+                {formatPrice(item.price, locationSlug)}
               </span>
             </div>
 

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BarCategoryOption, CatalogRealm } from '@barviha/db';
+import { currencySign } from '@barviha/db/currency';
 import { apiPath } from '@/lib/base-path';
 
 const REALM_LABEL: Record<CatalogRealm, string> = { kitchen: 'Кухня', hookah: 'Кальяны', bar: 'Бар' };
@@ -160,7 +161,7 @@ function CatalogForm({
         <textarea value={composition} onChange={(e) => setComposition(e.target.value)} rows={2} className="input" />
       </Field>
       <div className="flex gap-3">
-        <Field label="Цена, ₽">
+        <Field label={`Цена, ${currencySign(slug)}`}>
           <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} className="input" />
         </Field>
         <Field label={realm === 'bar' ? 'Объём, мл' : 'Грамовка, г'}>
@@ -354,7 +355,7 @@ function NewBarItemForm({
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} className="input" />
           </Field>
           <div className="flex gap-3">
-            <Field label="Цена(ы), ₽ — через /, если вариаций несколько">
+            <Field label={`Цена(ы), ${currencySign(slug)} — через /, если вариаций несколько`}>
               <input value={price} onChange={(e) => setPrice(e.target.value)} className="input" />
             </Field>
             <Field label="Объём — через /, синхронно с ценами">

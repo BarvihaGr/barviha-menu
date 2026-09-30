@@ -3,6 +3,7 @@
 import { memo, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { ArkaMenuEntry, ArkaMenuItem, PhotoEntry } from '@barviha/db';
+import { currencySign } from '@barviha/db/currency';
 import { apiPath } from '@/lib/base-path';
 import { PhotoUploader } from './PhotoUploader';
 import { GroupPhotoUploader } from './GroupPhotoUploader';
@@ -308,7 +309,7 @@ const BarItemRow = memo(function BarItemRow({
           </div>
           <div className="text-xs text-[color:var(--muted)]">{draft.volume ?? '—'}</div>
         </div>
-        <div className="shrink-0 text-sm text-[color:var(--text-soft)]">{draft.priceParts.join(' / ')} ₽</div>
+        <div className="shrink-0 text-sm text-[color:var(--text-soft)]">{draft.priceParts.join(' / ')} {currencySign(slug)}</div>
         <SavedBadge status={saveStatus} />
       </div>
 
@@ -326,7 +327,7 @@ const BarItemRow = memo(function BarItemRow({
             />
           </Field>
           <div className="flex gap-3">
-            <Field label="Цена(ы), ₽ — через /, если вариаций несколько">
+            <Field label={`Цена(ы), ${currencySign(slug)} — через /, если вариаций несколько`}>
               <input
                 defaultValue={draft.priceParts.join('/')}
                 onBlur={(e) => save({ priceParts: e.target.value.split('/').map((s) => s.trim()).filter(Boolean) })}

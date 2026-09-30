@@ -126,7 +126,7 @@ export function CoffeeItemDetail({
 
           <div className="flex items-center justify-between gap-4 border-t border-[var(--cm-border)] pt-5">
             <div className="text-[26px] font-semibold text-[var(--cm-text)] sm:text-[30px]">
-              {formatPrice(item.price)}
+              {formatPrice(item.price, locationSlug)}
             </div>
             <CoffeeAddButton
               itemId={item.id}

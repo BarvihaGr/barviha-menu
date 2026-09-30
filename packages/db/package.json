@@ -11,6 +11,7 @@
     "./arka-shared": "./src/arka-shared.ts",
     "./onboarding": "./src/onboarding.ts",
     "./catalog-shared": "./src/catalog-shared.ts",
+    "./currency": "./src/currency.ts",
     "./stats-flag": "./src/stats-flag.ts",
     "./accounts": "./src/accounts.ts",
     "./supabase-client": "./src/supabase-client.ts"

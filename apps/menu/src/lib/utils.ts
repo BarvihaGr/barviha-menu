@@ -1,12 +1,14 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { currencySign } from '@barviha/db/currency';
 
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }
 
-export function formatPrice(price: number, currency = '₽'): string {
-  return `${price.toLocaleString('ru-RU')} ${currency}`;
+/** Цена со знаком валюты локации (₽ по умолчанию, ֏ в Ереване, сум в Ташкенте). */
+export function formatPrice(price: number, locationSlug?: string): string {
+  return `${price.toLocaleString('ru-RU')} ${currencySign(locationSlug)}`;
 }
 
 export interface ParsedIngredient {

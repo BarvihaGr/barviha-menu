@@ -4,6 +4,7 @@ import { memo, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { CatalogItem, CatalogRealm, ItemLabel, MenuTag } from '@barviha/db';
 import { subLabel, subOrder } from '@barviha/db/catalog-shared';
+import { currencySign } from '@barviha/db/currency';
 import { apiPath } from '@/lib/base-path';
 import { menuAssetUrl } from '@/lib/menu-origin';
 import { PhotoGalleryEditor } from './PhotoGalleryEditor';
@@ -209,7 +210,7 @@ const CatalogItemRow = memo(function CatalogItemRow({
             </div>
           )}
         </div>
-        <div className="shrink-0 text-sm text-[color:var(--text-soft)]">{draft.price} ₽</div>
+        <div className="shrink-0 text-sm text-[color:var(--text-soft)]">{draft.price} {currencySign(slug)}</div>
         <SavedBadge status={saveStatus} />
       </div>
 
@@ -248,7 +249,7 @@ const CatalogItemRow = memo(function CatalogItemRow({
             />
           </Field>
           <div className="flex gap-3">
-            <Field label="Цена, ₽">
+            <Field label={`Цена, ${currencySign(slug)}`}>
               <input
                 type="number"
                 defaultValue={draft.price}

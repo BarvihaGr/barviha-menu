@@ -60,7 +60,7 @@ export function PromoCarousel({ items, locationSlug }: Props) {
                   <span className="text-sm text-white font-medium line-clamp-1 drop-shadow">
                     {pickItemName(item, locale)}
                   </span>
-                  <span className="shrink-0 text-sm gold-text font-semibold">{formatPrice(item.price)}</span>
+                  <span className="shrink-0 text-sm gold-text font-semibold">{formatPrice(item.price, locationSlug)}</span>
                 </div>
               </div>
             </Link>

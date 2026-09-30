@@ -29,6 +29,7 @@ import { useToast } from '@/store/toast';
 import { photoTransformCss, type PhotoTransform } from '@/lib/photo-transform';
 import { displayItemName } from '@/lib/utils';
 import { trackAdd } from '@/lib/stats';
+import { currencySign } from '@barviha/db/currency';
 import { pickItemName, pickItemDescription, pickVolumeLabel } from '@/lib/i18n-helpers';
 import type { Locale } from '@/i18n/routing';
 
@@ -126,7 +127,7 @@ function VariantRow({ variant, locationSlug, locale, name }: { variant: ArkaMenu
           <span className="text-[11px] text-[var(--cm-muted)]">{label}</span>
         )}
         <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
-          {formatRub(variant.price)} ₽
+          {formatRub(variant.price)} {currencySign(locationSlug)}
         </span>
       </Link>
       <AddButton variant={variant} locationSlug={locationSlug} name={name} />
@@ -149,7 +150,7 @@ function TimelessVariantLine({ variant, locationSlug, locale, name }: { variant:
             {label}
           </span>
         )}
-        <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatRub(variant.price)} ₽</span>
+        <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatRub(variant.price)} {currencySign(locationSlug)}</span>
       </Link>
       <AddButton variant={variant} locationSlug={locationSlug} name={name} />
     </div>

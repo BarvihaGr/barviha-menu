@@ -60,7 +60,7 @@ export function SearchBar({ items, locationSlug }: Props) {
                     {pickItemDescription(item, locale)}
                   </div>
                 </div>
-                <span className="shrink-0 text-sm text-gold">{formatPrice(item.price)}</span>
+                <span className="shrink-0 text-sm text-gold">{formatPrice(item.price, locationSlug)}</span>
               </Link>
             ))
           )}

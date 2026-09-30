@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import type { FlagListItem } from '@barviha/db';
 import { menuAssetUrl } from '@/lib/menu-origin';
+import { currencySign } from '@barviha/db/currency';
 import { apiPath } from '@/lib/base-path';
 
 const REALM_LABEL: Record<string, string> = { kitchen: 'Кухня', hookah: 'Кальяны', bar: 'Бар' };
@@ -55,7 +56,7 @@ export function FlagListEditor({
               <div className="truncate text-sm text-[color:var(--text)]">{item.name}</div>
               <div className="text-xs text-[color:var(--muted)]">{REALM_LABEL[item.realm] ?? item.realm}</div>
             </div>
-            <div className="shrink-0 text-sm text-[color:var(--text-soft)]">{item.price} ₽</div>
+            <div className="shrink-0 text-sm text-[color:var(--text-soft)]">{item.price} {currencySign(slug)}</div>
             <button
               type="button"
               onClick={() => restore(item)}

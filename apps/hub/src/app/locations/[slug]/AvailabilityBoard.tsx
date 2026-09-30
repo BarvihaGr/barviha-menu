@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import type { FlagListItem } from '@barviha/db';
 import { menuAssetUrl } from '@/lib/menu-origin';
+import { currencySign } from '@barviha/db/currency';
 import { apiPath } from '@/lib/base-path';
 
 type Realm = FlagListItem['realm'];
@@ -154,7 +155,7 @@ export function AvailabilityBoard({ slug, items }: { slug: string; items: FlagLi
                       {on ? 'В наличии' : 'В стоп-листе'}
                     </div>
                   </div>
-                  <div className="shrink-0 text-sm tabular-nums text-[color:var(--text-soft)]">{item.price} ₽</div>
+                  <div className="shrink-0 text-sm tabular-nums text-[color:var(--text-soft)]">{item.price} {currencySign(slug)}</div>
                   <Toggle on={on} busy={busy} label={item.name} onClick={() => toggle(item)} />
                 </div>
               );

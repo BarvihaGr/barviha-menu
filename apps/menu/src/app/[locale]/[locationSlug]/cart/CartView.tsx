@@ -122,7 +122,7 @@ export function CartView({ allItems, locationSlug }: Props) {
                       <div className="flex items-center justify-between mt-2">
                         <QtyControl itemId={entry.itemId} qty={entry.qty} compact />
                         <span className="text-sm font-medium text-gold tabular-nums">
-                          {formatPrice(lineTotal)}
+                          {formatPrice(lineTotal, locationSlug)}
                         </span>
                       </div>
                     </div>
@@ -136,14 +136,14 @@ export function CartView({ allItems, locationSlug }: Props) {
           <div className="mt-2 flex flex-col gap-3 pb-4">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs uppercase tracking-[0.2em] text-muted">{t('subtotal')}</span>
-              <span className="text-2xl text-gold font-medium tabular-nums">{formatPrice(total)}</span>
+              <span className="text-2xl text-gold font-medium tabular-nums">{formatPrice(total, locationSlug)}</span>
             </div>
 
             <button
               type="button"
               className="w-full rounded-2xl bg-gold py-4 text-sm font-semibold uppercase tracking-[0.15em] text-[#2A1B11] shadow-[0_4px_20px_rgba(196,146,98,0.35)] transition hover:brightness-110 active:scale-[0.98] cursor-pointer"
             >
-              {t('showWaiter')} · {formatPrice(total)}
+              {t('showWaiter')} · {formatPrice(total, locationSlug)}
             </button>
 
             <p className="text-center text-[10px] tracking-[0.15em] uppercase text-muted/60">
