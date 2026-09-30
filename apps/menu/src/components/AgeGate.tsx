@@ -56,7 +56,7 @@ export function AgeGate() {
           <Dialog.Title className="mt-4 text-base leading-snug text-cream">
             {denied ? t('deniedTitle') : t('title')}
           </Dialog.Title>
-          <Dialog.Description className="mt-2 text-xs leading-relaxed text-muted">
+          <Dialog.Description className="mt-2 text-[13px] leading-relaxed text-cream/75">
             {denied ? t('deniedBody') : t('body')}
           </Dialog.Description>
 
@@ -65,7 +65,7 @@ export function AgeGate() {
               <button
                 type="button"
                 onClick={() => setDenied(false)}
-                className="w-full rounded-sm border border-[color:var(--border)] py-3 text-xs uppercase tracking-[0.15em] text-muted transition hover:text-cream"
+                className="w-full rounded-sm border border-[color:var(--border)] py-3 text-xs uppercase tracking-[0.15em] text-cream/75 transition hover:text-cream"
               >
                 {t('back')}
               </button>
@@ -81,7 +81,7 @@ export function AgeGate() {
                 <button
                   type="button"
                   onClick={() => setDenied(true)}
-                  className="w-full rounded-sm border border-[color:var(--border)] py-3 text-xs uppercase tracking-[0.15em] text-muted transition hover:text-cream"
+                  className="w-full rounded-sm border border-[color:var(--border)] py-3 text-xs uppercase tracking-[0.15em] text-cream/75 transition hover:text-cream"
                 >
                   {t('no')}
                 </button>

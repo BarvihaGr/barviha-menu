@@ -20,12 +20,12 @@ export function LegalFooter({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        'mx-auto w-full max-w-[720px] border-t border-border px-2 pt-5 text-center text-[11px] leading-relaxed text-muted',
+        'mx-auto w-full max-w-[720px] border-t border-border px-2 pt-5 text-center text-xs leading-relaxed text-muted',
         className,
       )}
     >
       <div className="flex items-center justify-center gap-2">
-        <span className="rounded-full border border-border-strong px-1.5 py-px text-[10px] font-medium tracking-wide">
+        <span className="rounded-full border border-border-strong px-1.5 py-px text-xs font-medium tracking-wide">
           18+
         </span>
         <span>© {new Date().getFullYear()} Barvikha Lounge</span>
@@ -45,8 +45,8 @@ export function LegalFooter({ className }: { className?: string }) {
           </a>
         ))}
       </nav>
-      <p className="mt-3 text-muted-dim">{t('operator')}</p>
-      <a href="mailto:info@barvikhagroup.ru" className="mt-1 inline-block text-muted-dim transition hover:text-cream">
+      <p className="mt-3">{t('operator')}</p>
+      <a href="mailto:info@barvikhagroup.ru" className="mt-1 inline-block transition hover:text-cream">
         info@barvikhagroup.ru
       </a>
     </footer>
