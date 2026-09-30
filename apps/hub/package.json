@@ -6,17 +6,17 @@
   "scripts": {
     "dev": "next dev -p 3100",
     "build": "next build",
-    "start": "next start -p 3100",
+    "start": "next start -H 127.0.0.1 -p 3100",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@barviha/db": "workspace:*",
-    "next": "16.2.12",
+    "jose": "^5",
+    "next": "16.3.7",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "sharp": "^0.35.3",
-    "jose": "^5",
+    "sharp": "^0.35.5",
     "zod": "^3"
   },
   "devDependencies": {
@@ -25,7 +25,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.12",
+    "eslint-config-next": "16.3.7",
     "tailwindcss": "^4",
     "typescript": "^5.6.3"
   }

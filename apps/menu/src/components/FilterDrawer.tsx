@@ -42,6 +42,7 @@ export function FilterDrawer({ active, onChange, realm = 'kitchen', iconOnly, th
   const trigger = iconOnly ? (
     <button
       type="button"
+      aria-label={t('title')}
       className={cn(
         'relative flex aspect-square items-center justify-center self-stretch rounded-full transition cursor-pointer',
         count > 0 ? 'text-foreground' : 'text-muted hover:text-foreground',

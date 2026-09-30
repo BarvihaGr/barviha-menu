@@ -81,6 +81,10 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
               zIndex: 9999,
               background: '#DDD2C1',
               overflow: 'hidden',
+              // Под заставкой может быть открыто окно 18+ (Radix на время
+              // модалки ставит body pointer-events: none) — без явного auto
+              // заставку нельзя было бы пропустить тапом.
+              pointerEvents: 'auto',
             }}
             animate={{ opacity: fading ? 0 : 1 }}
             transition={{ duration: 0.7, ease: 'easeInOut' }}

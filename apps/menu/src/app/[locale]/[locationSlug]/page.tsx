@@ -16,6 +16,7 @@ import { CoffeeLuxHome } from '@/components/coffee/CoffeeLuxHome';
 import { isCoffeeDesign, coffeeHomeVariant } from '@/lib/coffee-design';
 import { getLocationAccent, pickLocationName, pickLocationCity } from '@/lib/location-theme';
 import { getBookingUrl } from '@/lib/booking';
+import { locationPageMetadata } from '@/lib/seo';
 
 /** Порядок слотов слева-направо: Кальяны | Кухня | Бар. */
 const HOME_CATEGORIES = ['hookah', 'kitchen', 'bar'] as const;
@@ -31,6 +32,15 @@ function getLuxHeroPaths(slug: string): { video: string; poster: string } {
   return { video: '/locations/arka/hero.mp4', poster: '/locations/arka/poster.jpg' };
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; locationSlug: string }>;
+}) {
+  const { locale, locationSlug } = await params;
+  return locationPageMetadata({ locale, locationSlug });
+}
+
 export default async function LocationHome({
   params,
 }: {
@@ -43,6 +53,9 @@ export default async function LocationHome({
   const db = getClient();
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) notFound();
+  // Локация выключена в бэк-офисе — заглушку рисует layout, а страница не
+  // должна отдавать каталог в RSC-ответе.
+  if (location.is_active === false) return null;
   const [categories, announcements, spotlights] = await Promise.all([
     db.getCategoriesForLocation(location.id),
     db.getAnnouncementsForLocation(location.id),

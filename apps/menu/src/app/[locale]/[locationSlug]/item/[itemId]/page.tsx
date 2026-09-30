@@ -15,6 +15,36 @@ import { CoffeeItemDetail } from '@/components/coffee/CoffeeItemDetail';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
 import { toResolvedArkaBarItems } from '@/lib/arka-bar-loader';
 import { decodeRouteParam } from '@/lib/decode-param';
+import { locationPageMetadata } from '@/lib/seo';
+
+// Позиции Бара (шаблон «Арка», см. arka-bar-loader) не заведены как
+// обычные ResolvedMenuItem в content-store — подставляем их напрямую по
+// id, не трогая обычный путь через getMenuItemById.
+function findArkaBarItem(locationSlug: string, itemId: string) {
+  return usesArkaBarLayout(locationSlug)
+    ? toResolvedArkaBarItems(locationSlug).find((i) => i.id === itemId)
+    : undefined;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; locationSlug: string; itemId: string }>;
+}) {
+  const { locale, locationSlug, itemId: rawItemId } = await params;
+  const itemId = decodeRouteParam(rawItemId);
+  const item =
+    findArkaBarItem(locationSlug, itemId) ?? (await getClient().getMenuItemById(itemId, locationSlug));
+  if (!item) return {};
+  return locationPageMetadata({
+    locale,
+    locationSlug,
+    subPath: `/item/${encodeURIComponent(item.id)}`,
+    section: pickItemName(item, locale as Locale),
+    description: pickItemDescription(item, locale as Locale),
+    image: item.photo,
+  });
+}
 
 export default async function ItemDetailPage({
   params,
@@ -26,14 +56,14 @@ export default async function ItemDetailPage({
   setRequestLocale(locale);
   const t = await getTranslations('item');
 
-  // Позиции Бара (шаблон «Арка», см. arka-bar-loader) не заведены как
-  // обычные ResolvedMenuItem в content-store — подставляем их напрямую по
-  // id, не трогая обычный путь через getMenuItemById.
-  const arkaBarItem = usesArkaBarLayout(locationSlug)
-    ? toResolvedArkaBarItems(locationSlug).find((i) => i.id === itemId)
-    : undefined;
-
   const db = getClient();
+  const location = await db.getLocationBySlug(locationSlug);
+  if (!location) notFound();
+  // Локация выключена в бэк-офисе — заглушку рисует layout, а страница не
+  // должна отдавать карточку в RSC-ответе.
+  if (location.is_active === false) return null;
+
+  const arkaBarItem = findArkaBarItem(locationSlug, itemId);
   const item = arkaBarItem ?? (await db.getMenuItemById(itemId, locationSlug));
   if (!item) notFound();
   // Заготовка счётчика просмотров (см. lib/stats.ts) — пока STATS_ENABLED
@@ -47,7 +77,7 @@ export default async function ItemDetailPage({
 
   // Соседи по категории — для боковой ленты «из этой же категории».
   // У тестовых позиций Арки категории нет (не заведены в БД) — лента пустая.
-  const loc = arkaBarItem ? null : await db.getLocationBySlug(locationSlug);
+  const loc = arkaBarItem ? null : location;
   const related: RelatedItem[] = loc
     ? (await db.getMenuItemsForLocation(loc.id))
         .filter((x) => x.id !== item.id && x.category_id === item.category_id && x.is_available)

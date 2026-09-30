@@ -162,6 +162,15 @@ function toResolved(it: GenItem, slug?: string): ResolvedMenuItem {
   };
 }
 
+/**
+ * Позиция видна гостю: не в стоп-листе, не в архиве и с проставленной ценой.
+ * «0 ₽» на витрине — это незаполненная карточка, а не бесплатное блюдо:
+ * прячем её, пока в бэк-офисе не введут цену.
+ */
+function isShownToGuest(i: { is_available: boolean; is_archived?: boolean; price: number }): boolean {
+  return i.is_available && !i.is_archived && i.price > 0;
+}
+
 function contentStoreRealmHasAvailableItems(slug: string, rm: Realm): boolean {
   if (rm === 'bar' && usesArkaBarLayout(slug)) {
     return getBarSections(slug).some(
@@ -169,7 +178,7 @@ function contentStoreRealmHasAvailableItems(slug: string, rm: Realm): boolean {
     );
   }
   if (rm === 'kitchen' || rm === 'hookah' || rm === 'bar') {
-    return getCatalogItems(slug, rm).some((i) => i.is_available && !i.is_archived);
+    return getCatalogItems(slug, rm).some(isShownToGuest);
   }
   return false;
 }
@@ -226,7 +235,7 @@ class MockBarvihaClient implements BarvihaClient {
         ? ['kitchen', 'hookah']
         : ['kitchen', 'hookah', 'bar'];
       return realms
-        .flatMap((realm) => getCatalogItems(loc.slug, realm).filter((i) => i.is_available && !i.is_archived))
+        .flatMap((realm) => getCatalogItems(loc.slug, realm).filter(isShownToGuest))
         .map(toResolvedCatalogItem)
         .sort((a, b) => subOrder(a.category_id!, a.sub) - subOrder(b.category_id!, b.sub) || hookahPriceOrder(a, b));
     }
@@ -252,7 +261,7 @@ class MockBarvihaClient implements BarvihaClient {
         : ['kitchen', 'hookah', 'bar'];
       for (const realm of realms) {
         const it = getCatalogItems(locationSlug, realm).find((i) => i.id === itemId);
-        if (it) return it.is_available && !it.is_archived ? toResolvedCatalogItem(it) : null;
+        if (it) return isShownToGuest(it) ? toResolvedCatalogItem(it) : null;
       }
       return null;
     }

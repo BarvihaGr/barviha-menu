@@ -1,36 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Tenor+Sans&family=Raleway:wght@300;400;500;600&family=Forum&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Cormorant+SC:wght@400;500;600;700&family=Prata&family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Armenian:wght@300;400;500&family=Noto+Serif+Armenian:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-@font-face {
-  font-family: 'Canela';
-  font-style: normal;
-  font-weight: 300;
-  font-display: swap;
-  src: local('Canela Light'), local('Canela-Light'),
-       url('/fonts/Canela-Light.woff2') format('woff2'),
-       url('/fonts/Canela-Light.woff') format('woff'),
-       url('/fonts/Canela-Light.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Canela';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: local('Canela'), local('Canela Regular'), local('Canela-Regular'),
-       url('/fonts/Canela-Regular.woff2') format('woff2'),
-       url('/fonts/Canela-Regular.woff') format('woff'),
-       url('/fonts/Canela-Regular.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Canela';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: local('Canela Medium'), local('Canela-Medium'),
-       url('/fonts/Canela-Medium.woff2') format('woff2'),
-       url('/fonts/Canela-Medium.woff') format('woff'),
-       url('/fonts/Canela-Medium.otf') format('opentype');
-}
+/* Шрифты — со своего домена (пакеты @fontsource, подключены в
+   app/[locale]/layout.tsx). Раньше здесь был @import с fonts.googleapis.com:
+   14 семейств одним блокирующим запросом, IP каждого гостя уходил в Google до
+   любого согласия (security-audit 30.09, M7). Оставлены только реально
+   используемые семейства. Китайский — системными шрифтами устройства
+   (PingFang / YaHei / Noto CJK): веб-шрифт CJK весит мегабайты. */
 
 :root {
   --header-h: 62px;
@@ -120,12 +95,12 @@ img {
   --color-gold-soft: var(--gold-soft);
   --color-gold-dark: var(--gold-dark);
   --color-gold-glow: var(--gold-glow);
-  --font-sans: 'Inter', 'Noto Sans Armenian', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: 'Cormorant SC', 'Cormorant Garamond', 'Raleway', 'Jost', 'Tenor Sans', 'Noto Sans Armenian', 'Noto Sans SC', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', sans-serif;
+  --font-display: 'Cormorant SC', 'Cormorant Garamond', 'Raleway Variable', 'Raleway', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-  --font-menu-title: 'Cormorant Garamond', 'Playfair Display', 'Didot', 'Bodoni MT', 'Bodoni 72', Georgia, 'Times New Roman', serif;
-  --cm-font-display: 'Raleway', 'Jost', 'Tenor Sans', 'Noto Sans Armenian', 'Noto Sans SC', system-ui, sans-serif;
-  --cm-font-body: 'Manrope', 'Inter', 'Noto Sans Armenian', 'Noto Sans SC', system-ui, Arial, sans-serif;
+  --font-menu-title: 'Cormorant Garamond', 'Didot', 'Bodoni MT', 'Bodoni 72', Georgia, 'Times New Roman', serif;
+  --cm-font-display: 'Raleway Variable', 'Raleway', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', sans-serif;
+  --cm-font-body: 'Manrope Variable', 'Manrope', 'Inter Variable', 'Inter', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', Arial, sans-serif;
 }
 
 * {

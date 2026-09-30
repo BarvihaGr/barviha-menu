@@ -5,9 +5,29 @@ import type { Metadata, Viewport } from 'next';
 import { routing } from '@/i18n/routing';
 import { SplashScreen } from '@/components/SplashScreen';
 import { ImageProtection } from '@/components/ImageProtection';
+import { AgeGate } from '@/components/AgeGate';
+import { SITE_URL } from '@/lib/seo';
+// Шрифты со своего домена (см. комментарий в globals.css). Файлы woff2 Next
+// кладёт в /_next/static/media; браузер качает только нужные подмножества
+// (латиница/кириллица/армянский) по unicode-range.
+import '@fontsource-variable/inter';
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/raleway';
+import '@fontsource-variable/noto-sans-armenian';
+import '@fontsource/cormorant-sc/400.css';
+import '@fontsource/cormorant-sc/500.css';
+import '@fontsource/cormorant-sc/600.css';
+import '@fontsource/cormorant-sc/700.css';
+import '@fontsource/cormorant-garamond/300.css';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/cormorant-garamond/700.css';
 import '../globals.css';
 
 export const metadata: Metadata = {
+  // База для canonical/hreflang/OG — все они заданы относительными путями.
+  metadataBase: new URL(SITE_URL),
   // Бренд-вордмарк — всегда латиницей на любом языке (см. not-found.tsx,
   // error.tsx — то же соглашение). Локализованный per-локация заголовок
   // задаёт [locationSlug]/layout.tsx generateMetadata; этот — фолбэк для
@@ -60,6 +80,7 @@ export default async function LocaleLayout({
       <body className="min-h-full flex flex-col text-foreground">
         <NextIntlClientProvider>
           <ImageProtection />
+          <AgeGate />
           <SplashScreen>{children}</SplashScreen>
         </NextIntlClientProvider>
       </body>

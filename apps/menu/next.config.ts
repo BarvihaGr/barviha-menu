@@ -34,11 +34,29 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
-  // Базовые security-заголовки — раньше их не было вообще ни на одном
-  // ответе. X-Frame-Options закрывает clickjacking (сайт в невидимом
-  // iframe поверх которого кликает жертва), остальные — стандартная
-  // гигиена, ничего не меняют в поведении самого приложения.
+  // Не раскрываем стек в заголовке X-Powered-By (security-audit 30.09, M15).
+  poweredByHeader: false,
+  // Security-заголовки. X-Frame-Options закрывает clickjacking, CSP — загрузку
+  // чужих скриптов/шрифтов/картинок (после переноса шрифтов на свой домен весь
+  // сайт ходит только к себе; единственное исключение — тайлы карты на
+  // «Контактах», и те грузятся только по нажатию гостя, см. LocationMap).
+  // CSP только в production: dev-сервер Next использует eval и websocket.
   async headers() {
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https://tile.openstreetmap.org",
+      "font-src 'self' data:",
+      "media-src 'self' blob:",
+      "connect-src 'self'",
+      "worker-src 'self' blob:",
+      "manifest-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'self'",
+    ].join('; ');
     return [
       {
         source: '/:path*',
@@ -47,7 +65,15 @@ const nextConfig: NextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
+          { key: 'Permissions-Policy', value: 'geolocation=(self), camera=(), microphone=(), payment=(), usb=()' },
+          ...(process.env.NODE_ENV === 'production' ? [{ key: 'Content-Security-Policy', value: csp }] : []),
         ],
+      },
+      // Песочницы дизайна и «Тест лок»-шаблоны открыты по прямой ссылке (ими
+      // пользуется владелец), но в поиске им делать нечего.
+      {
+        source: '/:locale/:service(board|buttons|concepts|arka-lab|arka-network|kievskaia-network)/:rest*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
       },
     ];
   },

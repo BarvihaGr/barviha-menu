@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import sharp from 'sharp';
-import { MENU_ORIGIN } from '@/lib/menu-origin';
+import { MENU_RELAY_ORIGIN } from '@/lib/menu-origin';
 import { UPLOAD_RELAY_SECRET } from '@/lib/upload-relay';
 import { invalidSlugResponse } from '@/lib/valid-slug';
 
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
 
   let relayRes: Response;
   try {
-    relayRes = await fetch(`${MENU_ORIGIN}/api/upload-asset`, {
+    relayRes = await fetch(`${MENU_RELAY_ORIGIN}/api/upload-asset`, {
       method: 'POST',
       headers: { 'x-upload-secret': UPLOAD_RELAY_SECRET },
       body: relayForm,

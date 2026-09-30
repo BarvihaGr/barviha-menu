@@ -84,7 +84,10 @@ function checkContent(root: string): HealthCheck {
   }
   let dirs: string[];
   try {
-    dirs = readdirSync(contentDir).filter((d) => statSync(join(contentDir, d)).isDirectory());
+    // Служебные папки (.migrations от deploy/content-migrations и любые другие
+    // с точкой) — не локации: из-за .migrations проверка была красной всегда
+    // и мониторинг стал бесполезным (security-audit 30.09, M13).
+    dirs = readdirSync(contentDir).filter((d) => !d.startsWith('.') && statSync(join(contentDir, d)).isDirectory());
   } catch (e) {
     return { name: 'content', status: 'fail', detail: `packages/db/content не читается: ${String(e)}` };
   }

@@ -10,6 +10,8 @@ import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
 import { ArkaMenuSections } from '@/components/coffee/ArkaMenuSections';
 import { loadArkaBarSections, loadArkaBarGroupPhotos } from '@/lib/arka-bar-loader';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
+import { pickLocationName } from '@/lib/location-theme';
+import { locationPageMetadata } from '@/lib/seo';
 
 // Бар (шаблон «Арка») рендерится своей вёрсткой (секции + type1/type2
 // карточки, см. ArkaMenuSections) вместо общего CoffeeMenuList — данные из
@@ -20,6 +22,22 @@ import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
 // У Киевской Бар — тоже content-store, но обычный CatalogItem (свой шаблон
 // не задет), поэтому она идёт через CoffeeMenuList, как и остальные разделы.
 const ARKA_TEST_CATEGORY = 'bar';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; locationSlug: string; categorySlug: string }>;
+}) {
+  const { locale, locationSlug, categorySlug } = await params;
+  const category = await getClient().getCategoryBySlug(categorySlug);
+  if (!category) return {};
+  return locationPageMetadata({
+    locale,
+    locationSlug,
+    subPath: `/${category.slug}`,
+    section: pickCategoryName(category, locale as Locale),
+  });
+}
 
 export default async function CategoryPage({
   params,
@@ -40,6 +58,9 @@ export default async function CategoryPage({
   ]);
   if (!location) notFound();
   if (!category) notFound();
+  // Локация выключена в бэк-офисе — заглушку рисует layout, а страница не
+  // должна отдавать каталог в RSC-ответе.
+  if (location.is_active === false) return null;
 
   const [allItems, categories] = await Promise.all([
     db.getMenuItemsForLocation(location.id),
@@ -56,6 +77,11 @@ export default async function CategoryPage({
         className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[var(--cm-bg)] text-[var(--cm-text)]"
         style={coffeeAccentStyle(locationSlug)}
       >
+        {/* Заголовок раздела для поисковиков и скринридеров — визуально его
+            роль играет навигация по категориям. */}
+        <h1 className="sr-only">
+          {pickCategoryName(category, locale as Locale)} — {pickLocationName(location, locale as Locale)}
+        </h1>
         <div className="mx-auto w-full max-w-[1200px] px-4 pb-32 sm:px-6 lg:pt-10">
           <div className="lg:grid lg:grid-cols-[200px_1fr] lg:gap-8">
             <CoffeeCategoryNav

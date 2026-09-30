@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
@@ -69,6 +68,8 @@ function haversineKm(a: { lat: number; lon: number }, b: { lat: number; lon: num
  * ТОЛЬКО если у текущей локации уже проставлены координаты в бэк-офисе
  * (Настройки → координаты) — так фича включается локация-за-локацией без
  * правок кода, пока проставлены только Киевская/Павелецкая/Менделеевская.
+ * Выключенные в бэк-офисе локации сюда не приходят (см. layout) — закрытое
+ * меню не предлагаем.
  * Ничего не решает за человека — только гейт-модалка-предложение, дальше
  * выбор его. Центрированная модалка (не баннер-полоска сверху) — чтобы
  * читалось как осознанный вопрос, а не фоновое уведомление о cookies.
@@ -77,37 +78,24 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
   const t = useTranslations('location.nearby');
   const locale = useLocale() as Locale;
   const [nearest, setNearest] = useState<LocPoint | null>(null);
-  // Временная диагностика вживую (?debugGeo=1) — на телефоне нет консоли
-  // разработчика под рукой, а логику «почему не сработало» (кэш/denied/
-  // дистанция) иначе не увидеть без физического доступа к устройству.
-  const debugOn = useSearchParams().get('debugGeo') === '1';
-  const [debug, setDebug] = useState<Record<string, string> | null>(null);
 
   useEffect(() => {
-    const dbg: Record<string, string> = {};
-    const finish = (reason: string) => {
-      if (debugOn) {
-        dbg.result = reason;
-        setDebug(dbg);
-      }
-    };
-
-    if (typeof window === 'undefined' || !navigator.geolocation) return finish('no geolocation API');
-    if (sessionStorage.getItem(DISMISS_KEY)) return finish('DISMISS_KEY set this tab — попап уже закрывали в этой вкладке');
+    if (typeof window === 'undefined' || !navigator.geolocation) return;
+    if (sessionStorage.getItem(DISMISS_KEY)) return;
 
     const current = locations.find((l) => l.slug === currentSlug);
-    dbg.currentSlug = `${currentSlug} (lat=${current?.latitude ?? '—'}, lon=${current?.longitude ?? '—'})`;
-    if (current?.latitude == null || current.longitude == null) return finish('текущая локация без координат');
+    if (current?.latitude == null || current.longitude == null) return;
 
+    // `locations` — только открытые онлайн локации (см. layout): закрытую не
+    // предлагаем. Если предлагать некого — геолокацию не трогаем вообще, гость
+    // не видит системный запрос доступа без повода.
     const others = locations.filter(
       (l): l is LocPoint & { latitude: number; longitude: number } =>
         l.slug !== currentSlug && l.latitude != null && l.longitude != null,
     );
-    dbg.othersWithCoords = String(others.length);
-    if (others.length === 0) return finish('нет других локаций с координатами');
+    if (others.length === 0) return;
 
-    function pickNearest(here: { lat: number; lon: number }, source: string) {
-      dbg.position = `${here.lat.toFixed(5)}, ${here.lon.toFixed(5)} (${source})`;
+    function pickNearest(here: { lat: number; lon: number }) {
       let best: LocPoint | null = null;
       let bestDist = Infinity;
       for (const c of others) {
@@ -117,15 +105,7 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
           best = c;
         }
       }
-      dbg.nearest = best ? `${best.name} (${best.slug})` : '—';
-      dbg.distanceKm = bestDist.toFixed(2);
-      dbg.radiusKm = String(NEARBY_RADIUS_KM);
-      if (best && bestDist <= NEARBY_RADIUS_KM) {
-        setNearest(best);
-        finish(`сработало — предложил ${best.name}`);
-      } else {
-        finish(`ближайшая ${dbg.nearest} в ${dbg.distanceKm} км — дальше радиуса ${NEARBY_RADIUS_KM} км`);
-      }
+      if (best && bestDist <= NEARBY_RADIUS_KM) setNearest(best);
     }
 
     // 1) Свежая кэшированная позиция — используем её, вообще не трогая
@@ -134,9 +114,8 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
     if (cachedRaw) {
       try {
         const cached = JSON.parse(cachedRaw) as { lat: number; lon: number; at: number };
-        const ageMin = (Date.now() - cached.at) / 60000;
         if (Date.now() - cached.at < POSITION_MAX_AGE_MS) {
-          pickNearest({ lat: cached.lat, lon: cached.lon }, `кэш, ${ageMin.toFixed(1)} мин назад`);
+          pickNearest({ lat: cached.lat, lon: cached.lon });
           return;
         }
       } catch {
@@ -146,33 +125,27 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
 
     // 2) Недавно явно отказали в доступе — не спрашиваем повторно раньше срока.
     const deniedAt = Number(localStorage.getItem(DENIED_KEY) ?? 0);
-    if (deniedAt && Date.now() - deniedAt < DENIED_RETRY_MS) {
-      return finish(`DENIED_KEY ещё активен (${(((DENIED_RETRY_MS - (Date.now() - deniedAt)) / 3600000)).toFixed(1)} ч осталось)`);
-    }
+    if (deniedAt && Date.now() - deniedAt < DENIED_RETRY_MS) return;
 
     // 2b) Недавняя неудачная попытка (таймаут и т.п.) — короткий кулдаун,
     // чтобы не повторять запрос на каждый следующий рефреш подряд.
     const lastAttempt = Number(localStorage.getItem(LAST_ATTEMPT_KEY) ?? 0);
-    if (lastAttempt && Date.now() - lastAttempt < ATTEMPT_RETRY_MS) {
-      return finish(`LAST_ATTEMPT_KEY кулдаун ещё активен (${(((ATTEMPT_RETRY_MS - (Date.now() - lastAttempt)) / 60000)).toFixed(1)} мин осталось)`);
-    }
+    if (lastAttempt && Date.now() - lastAttempt < ATTEMPT_RETRY_MS) return;
 
     function requestPosition() {
       localStorage.setItem(LAST_ATTEMPT_KEY, String(Date.now()));
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const here = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-          dbg.accuracyM = String(Math.round(pos.coords.accuracy));
           localStorage.setItem(POSITION_CACHE_KEY, JSON.stringify({ ...here, at: Date.now() }));
           localStorage.removeItem(DENIED_KEY);
           localStorage.removeItem(LAST_ATTEMPT_KEY);
-          pickNearest(here, `getCurrentPosition, точность ±${Math.round(pos.coords.accuracy)}м`);
+          pickNearest(here);
         },
         (err) => {
           // code 1 = PERMISSION_DENIED — запоминаем, чтобы не спрашивать
           // на каждой следующей сессии, пока не пройдут сутки.
           if (err.code === 1) localStorage.setItem(DENIED_KEY, String(Date.now()));
-          finish(`getCurrentPosition ошибка: code=${err.code} (${err.message})`);
         },
         // enableHighAccuracy:true (реальный GPS-чип) внутри помещения часто
         // не успевает получить фикс — запрос виснет до таймаута, ничего не
@@ -193,16 +166,13 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
       navigator.permissions
         .query({ name: 'geolocation' })
         .then((status) => {
-          dbg.permissionState = status.state;
-          if (status.state === 'denied') return finish('Permissions API: denied');
-          requestPosition();
+          if (status.state !== 'denied') requestPosition();
         })
         .catch(requestPosition);
     } else {
       requestPosition();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSlug, locations, debugOn]);
+  }, [currentSlug, locations]);
 
   function dismiss() {
     sessionStorage.setItem(DISMISS_KEY, '1');
@@ -211,16 +181,6 @@ export function NearbyLocationPrompt({ currentSlug, locations }: { currentSlug: 
 
   return (
     <>
-      {debugOn && debug && (
-        <div className="fixed bottom-2 left-2 right-2 z-[999] max-h-[45vh] overflow-y-auto rounded-lg border border-lime-400 bg-black/90 p-3 font-mono text-[10px] leading-relaxed text-lime-300">
-          <div className="mb-1 text-[9px] uppercase tracking-widest text-lime-500">geo debug</div>
-          {Object.entries(debug).map(([k, v]) => (
-            <div key={k}>
-              <span className="text-lime-500">{k}:</span> {v}
-            </div>
-          ))}
-        </div>
-      )}
       <Dialog.Root open={nearest != null} onOpenChange={(v) => !v && dismiss()}>
       <AnimatePresence>
         {nearest && (

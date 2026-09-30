@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n/routing';
 import {
+  pickCategoryName,
   pickItemDescription,
   pickItemName,
   pickMoodDescription,
@@ -15,6 +16,23 @@ import { HookahHologramCard } from '@/components/HookahHologramCard';
 import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
 import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
+import { pickLocationName } from '@/lib/location-theme';
+import { locationPageMetadata } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; locationSlug: string }>;
+}) {
+  const { locale, locationSlug } = await params;
+  const category = await getClient().getCategoryBySlug('hookah');
+  return locationPageMetadata({
+    locale,
+    locationSlug,
+    subPath: '/hookah',
+    section: category ? pickCategoryName(category, locale as Locale) : null,
+  });
+}
 
 export default async function HookahPage({
   params,
@@ -28,6 +46,9 @@ export default async function HookahPage({
   const db = getClient();
   const location = await db.getLocationBySlug(locationSlug);
   if (!location) notFound();
+  // Локация выключена в бэк-офисе — заглушку рисует layout, а страница не
+  // должна отдавать каталог в RSC-ответе.
+  if (location.is_active === false) return null;
 
   const [moods, items, categories] = await Promise.all([
     db.getHookahMoods(),
@@ -48,6 +69,9 @@ export default async function HookahPage({
         className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-2 min-h-screen bg-[var(--cm-bg)] text-[var(--cm-text)]"
         style={coffeeAccentStyle(locationSlug)}
       >
+        <h1 className="sr-only">
+          {pickCategoryName(hookahCategory, locale as Locale)} — {pickLocationName(location, locale as Locale)}
+        </h1>
         <div className="mx-auto w-full max-w-[1200px] px-4 pb-32 sm:px-6 lg:pt-10">
           <div className="lg:grid lg:grid-cols-[210px_1fr] lg:gap-10">
             <CoffeeCategoryNav

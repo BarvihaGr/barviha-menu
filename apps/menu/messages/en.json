@@ -188,7 +188,10 @@
     "contactsTitle": "Contacts",
     "sectionLabel": "Location",
     "paletteIvory": "Ivory",
-    "paletteArka": "Arka"
+    "paletteArka": "Arka",
+    "openNow": "Menus available now:",
+    "showMap": "Show map",
+    "mapNote": "The map is loaded from OpenStreetMap servers"
   },
   "search": {
     "noResults": "Nothing found",
@@ -227,5 +230,34 @@
   "palette": {
     "ivory": "Ivory",
     "arka": "Arka"
+  },
+  "picker": {
+    "title": "Choose a venue",
+    "subtitle": "Barvikha Lounge menus",
+    "mainSite": "Visit the main website"
+  },
+  "legal": {
+    "operator": "Sole proprietor Rasulov Dzhamil Rasulovich · OGRNIP 319583500006074 · INN 500717091485",
+    "notOffer": "This website is for information only and is not a public offer. Please check ingredients, portions and prices with the venue staff.",
+    "adults": "Information about alcohol, nicotine-containing products and hookahs is intended for persons over 18, is for reference only and is not advertising.",
+    "privacy": "Privacy policy",
+    "cookies": "Cookies",
+    "terms": "Terms of use",
+    "pdRequest": "Personal data request"
+  },
+  "age": {
+    "title": "Are you 18 or older?",
+    "body": "This website contains information about alcoholic beverages and hookahs. It is intended for adults only.",
+    "yes": "Yes, I am 18+",
+    "no": "No",
+    "deniedTitle": "Access restricted",
+    "deniedBody": "The menu is available to guests aged 18 and over only.",
+    "back": "Back"
+  },
+  "meta": {
+    "locationDescription": "Barvikha Lounge {name} menu: kitchen, bar and hookahs — ingredients, photos and current prices.",
+    "sectionDescription": "{section} — Barvikha Lounge {name} menu: ingredients, photos and current prices.",
+    "rootTitle": "Barvikha Lounge — Menu",
+    "rootDescription": "Digital menu of Barvikha Lounge restaurants and lounge bars: kitchen, bar, hookahs."
   }
 }

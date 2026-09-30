@@ -1,22 +1,10 @@
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import type { NextRequest, NextResponse } from 'next/server';
 import { WORKING_SLUGS } from '@barviha/db/onboarding';
 
 const intlMiddleware = createMiddleware(routing);
 const WORKING_SLUG_SET = new Set(WORKING_SLUGS);
-// Служебные пути + шаблоны («Тест лок» — Арка/Киевская) — не редиректим на Киевскую.
-const SERVICE_PATHS = new Set([
-  'kievskaia',
-  'kievskaia-network',
-  'arka',
-  'arka-network',
-  'arka-lab',
-  'board',
-  'buttons',
-  'concepts',
-]);
 
 /**
  * Сессионная cookie: slug последней открытой локации. По просьбе пользователя
@@ -42,20 +30,14 @@ export default function middleware(request: NextRequest) {
   // Паттерн: /{locale}/{locationSlug}/...  где locale = ru|en|zh|hy
   const locationMatch = pathname.match(/^\/(ru|en|zh|hy)\/([^/]+)(\/.*)?$/);
   if (locationMatch) {
-    const locale = locationMatch[1];
     const slug = locationMatch[2] ?? '';
     const isWorkingLocation = WORKING_SLUG_SET.has(slug);
 
-    // Любой slug, который не Киевская/Арка/служебный и не одна из 25 рабочих
-    // локаций — редиректим на /kievskaia (ещё не запущенные точки сети).
-    if (!SERVICE_PATHS.has(slug) && !isWorkingLocation) {
-      const rest = locationMatch[3] ?? '';
-      const url = request.nextUrl.clone();
-      url.pathname = `/${locale}/kievskaia${rest}`;
-      const res = NextResponse.redirect(url, { status: 302 });
-      setLastLoc(res, 'kievskaia');
-      return res;
-    }
+    // Несуществующий slug не редиректим (раньше уводили на /kievskaia — мусорные
+    // ссылки и сканеры получали 302 на живую страницу): он идёт дальше обычным
+    // путём, и [locationSlug]/layout.tsx отвечает настоящим 404. Rewrite на
+    // страницу 404 отсюда делать нельзя: сервер слушает 127.0.0.1, Next считает
+    // такой rewrite внешним и пытается проксировать запрос сам в себя.
 
     // Пароли на локациях (Арка + 25 рабочих клонов) убраны насовсем — все
     // локации открываются свободно, как раньше была только Киевская.
