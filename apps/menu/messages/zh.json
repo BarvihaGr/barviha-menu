@@ -189,9 +189,9 @@
     "sectionLabel": "門店",
     "paletteIvory": "象牙白",
     "paletteArka": "阿爾卡",
-    "openNow": "当前可查看的菜单：",
-    "showMap": "显示地图",
-    "mapNote": "地图由 OpenStreetMap 服务器加载"
+    "openNow": "目前可查看的菜單：",
+    "showMap": "顯示地圖",
+    "mapNote": "地圖由 OpenStreetMap 伺服器載入"
   },
   "search": {
     "noResults": "未找到匹配項",
@@ -232,32 +232,32 @@
     "arka": "阿尔卡"
   },
   "picker": {
-    "title": "选择门店",
-    "subtitle": "Barvikha Lounge 菜单",
-    "mainSite": "访问官方网站"
+    "title": "選擇門店",
+    "subtitle": "Barvikha Lounge 菜單",
+    "mainSite": "前往官方網站"
   },
   "legal": {
-    "operator": "个体经营者 Rasulov Dzhamil Rasulovich · OGRNIP 319583500006074 · INN 500717091485",
-    "notOffer": "本网站仅供参考，不构成公开要约。菜品成分、份量及价格请向门店工作人员确认。",
-    "adults": "有关酒精饮品、含尼古丁产品及水烟的信息仅面向年满18周岁的人士，仅供参考，不构成广告。",
-    "privacy": "隐私政策",
+    "operator": "個體經營者 Rasulov Dzhamil Rasulovich · OGRNIP 319583500006074 · INN 500717091485",
+    "notOffer": "本網站僅供參考，不構成公開要約。菜品成分、份量及價格請向門店工作人員確認。",
+    "adults": "有關酒精飲品、含尼古丁產品及水煙的資訊僅面向年滿18歲的人士，僅供參考，不構成廣告。",
+    "privacy": "隱私政策",
     "cookies": "Cookie 政策",
-    "terms": "用户协议",
-    "pdRequest": "个人数据请求"
+    "terms": "使用者協議",
+    "pdRequest": "個人資料請求"
   },
   "age": {
-    "title": "您是否已满18周岁？",
-    "body": "本网站包含酒精饮品和水烟的相关信息，仅面向成年人。",
-    "yes": "是，我已满18周岁",
+    "title": "您是否已滿18歲？",
+    "body": "本網站包含酒精飲品和水煙的相關資訊，僅面向成年人。",
+    "yes": "是，我已滿18歲",
     "no": "否",
-    "deniedTitle": "访问受限",
-    "deniedBody": "菜单仅向年满18周岁的客人开放。",
+    "deniedTitle": "存取受限",
+    "deniedBody": "菜單僅向年滿18歲的客人開放。",
     "back": "返回"
   },
   "meta": {
-    "locationDescription": "Barvikha Lounge {name} 菜单：厨房、酒吧和水烟 — 成分、图片和最新价格。",
-    "sectionDescription": "{section} — Barvikha Lounge {name} 菜单：成分、图片和最新价格。",
-    "rootTitle": "Barvikha Lounge — 菜单",
-    "rootDescription": "Barvikha Lounge 餐厅与休闲酒吧电子菜单：厨房、酒吧、水烟。"
+    "locationDescription": "Barvikha Lounge {name} 菜單：廚房、酒吧和水煙 — 成分、圖片和最新價格。",
+    "sectionDescription": "{section} — Barvikha Lounge {name} 菜單：成分、圖片和最新價格。",
+    "rootTitle": "Barvikha Lounge — 菜單",
+    "rootDescription": "Barvikha Lounge 餐廳與休閒酒吧電子菜單：廚房、酒吧、水煙。"
   }
 }
