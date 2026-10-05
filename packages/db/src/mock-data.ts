@@ -486,7 +486,7 @@ const AFISHA_BY_SLUG: Record<string, AfishaEvent[]> = {
       title_en: 'DJ Veronika — Deep Set',
       when: 'ПТ · 22:00',
       when_en: 'FRI · 22:00',
-      image: '/menu-photos/p3.webp',
+      image: '/menu-scans/skan-menu-kalyany-avtorskie.webp',
     },
     {
       id: 'af-dinner',
@@ -496,7 +496,7 @@ const AFISHA_BY_SLUG: Record<string, AfishaEvent[]> = {
       title_en: "Chef's tasting set",
       when: 'СБ · 20:00',
       when_en: 'SAT · 20:00',
-      image: '/menu-photos/p5.webp',
+      image: '/menu-scans/skan-menu-sezonnoe-i-pp.webp',
     },
     {
       id: 'af-lounge',
@@ -506,7 +506,7 @@ const AFISHA_BY_SLUG: Record<string, AfishaEvent[]> = {
       title_en: 'Old school: whisky & cigars',
       when: 'ВС · 19:00',
       when_en: 'SUN · 19:00',
-      image: '/menu-photos/p1.webp',
+      image: '/menu-scans/skan-menu-vino-i-krepkiy-alkogol.webp',
     },
   ],
 };

@@ -53,9 +53,9 @@ interface Ev {
   img: string;
 }
 const EVENTS: Ev[] = [
-  { eyebrow: 'СЕГОДНЯ', title: 'DJ Veronika — Deep Set', when: 'ПТ · 22:00', img: '/menu-photos/p3.webp' },
-  { eyebrow: 'УЖИН', title: 'Сет-дегустация шефа', when: 'СБ · 20:00', img: '/menu-photos/p5.webp' },
-  { eyebrow: 'ЛАУНЖ', title: 'Старая школа: виски & сигары', when: 'ВС · 19:00', img: '/menu-photos/p1.webp' },
+  { eyebrow: 'СЕГОДНЯ', title: 'DJ Veronika — Deep Set', when: 'ПТ · 22:00', img: '/menu-scans/skan-menu-kalyany-avtorskie.webp' },
+  { eyebrow: 'УЖИН', title: 'Сет-дегустация шефа', when: 'СБ · 20:00', img: '/menu-scans/skan-menu-sezonnoe-i-pp.webp' },
+  { eyebrow: 'ЛАУНЖ', title: 'Старая школа: виски & сигары', when: 'ВС · 19:00', img: '/menu-scans/skan-menu-vino-i-krepkiy-alkogol.webp' },
 ];
 
 // ── Каркас телефона ────────────────────────────────────────────

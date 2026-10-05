@@ -156,9 +156,9 @@ interface Slide {
 }
 // Афиши + спецпредложения + соцсети — всё в одной карусели.
 const CAROUSEL_SLIDES: Slide[] = [
-  { img: '/menu-photos/p3.webp', tag: 'Афиша', title: 'DJ-сет · Пятница 22:00' },
-  { img: '/menu-photos/p5.webp', tag: 'Спецпредложение', title: 'Сет шефа −20%' },
-  { img: '/menu-photos/p1.webp', tag: 'Соцсети', title: '@barvikha.lounge' },
+  { img: '/menu-scans/skan-menu-kalyany-avtorskie.webp', tag: 'Афиша', title: 'DJ-сет · Пятница 22:00' },
+  { img: '/menu-scans/skan-menu-sezonnoe-i-pp.webp', tag: 'Спецпредложение', title: 'Сет шефа −20%' },
+  { img: '/menu-scans/skan-menu-vino-i-krepkiy-alkogol.webp', tag: 'Соцсети', title: '@barvikha.lounge' },
 ];
 
 /** Что показать в модалке при тапе по плитке в режиме «Просмотр». */
