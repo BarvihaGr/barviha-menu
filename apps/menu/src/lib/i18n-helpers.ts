@@ -127,6 +127,9 @@ const SUB_LABEL_TR: Record<string, { en: string; zh: string; hy: string }> = {
   beer: { en: 'Beer & Cider', zh: '啤酒與蘋果酒', hy: 'Գարեջուր և սիդր' },
   hookah: { en: 'Hookah Menu', zh: '水煙菜單', hy: 'Կալյանի քարտ' },
   'summer-menu': { en: 'Summer Menu', zh: '夏季菜單', hy: 'Ամառային մենյու' },
+  'autumn-menu': { en: 'Autumn Specials', zh: '秋季特選', hy: 'Աշնանային առաջարկ' },
+  // Подраздел кальянной карты из мастер-файла (sub = русский текст, см. hookah-подразделы в catalog-shared).
+  'Специальное предложение': { en: 'Special Offer', zh: '特別推薦', hy: 'Հատուկ առաջարկ' },
   // Были без перевода — подпись раздела оставалась русской на всех языках.
   raw: { en: 'Raw', zh: '生食', hy: 'Raw' },
   'bread-sauces': { en: 'Bread', zh: '麵包', hy: 'Հաց' },
