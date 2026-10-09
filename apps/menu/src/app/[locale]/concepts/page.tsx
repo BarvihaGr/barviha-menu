@@ -13,7 +13,8 @@
  * чтобы оценивать визуал «как в бою», а не на заглушках.
  */
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, ChevronRight, Disc3, Flame, Sparkles } from 'lucide-react';
 
@@ -664,14 +665,13 @@ const CONCEPTS: ConceptMeta[] = [
 ];
 
 // ── Корневая витрина ───────────────────────────────────────────
-export default function ConceptsPage() {
-  const [active, setActive] = useState(0);
-  // Deep-link: /ru/concepts?c=3 открывает 4-й концепт (для шеринга/скринов).
-  useEffect(() => {
-    const p = new URLSearchParams(window.location.search).get('c');
-    const n = p ? Number(p) : NaN;
-    if (!Number.isNaN(n) && n >= 0 && n < CONCEPTS.length) setActive(n);
-  }, []);
+// Deep-link: /ru/concepts?c=3 открывает 4-й концепт (для шеринга/скринов).
+// useSearchParams требует Suspense-границы на статической странице — см. ConceptsPage.
+function ConceptsInner() {
+  const params = useSearchParams();
+  const fromUrl = Number(params.get('c'));
+  const initial = !Number.isNaN(fromUrl) && fromUrl >= 0 && fromUrl < CONCEPTS.length ? fromUrl : 0;
+  const [active, setActive] = useState(initial);
   const c = CONCEPTS[active]!;
   const Comp = c.Comp;
 
@@ -758,5 +758,13 @@ export default function ConceptsPage() {
         </motion.aside>
       </div>
     </div>
+  );
+}
+
+export default function ConceptsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ConceptsInner />
+    </Suspense>
   );
 }

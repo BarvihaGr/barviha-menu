@@ -14,7 +14,7 @@
  * прежде чем наполнять их реальным контентом.
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home,
@@ -63,6 +63,27 @@ const ROWS = 20; // каждый «этаж» 1..10 раздроблён по в
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G'] as const;
 const ASPECT = 800 / 390; // высота экрана / ширина
 const STORAGE_KEY = 'arca-board-v4'; // v4: пересборка по координатам владельца
+
+// Сохранённая раскладка — внешнее хранилище (localStorage): читаем через
+// useSyncExternalStore, а не setState в эффекте. На сервере — null.
+const noop = () => () => {};
+function readSavedRaw(): string | null {
+  try {
+    return localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+function mergeSaved(raw: string | null): Mod[] {
+  if (!raw) return DEFAULTS;
+  try {
+    const saved = JSON.parse(raw) as Mod[];
+    // мержим по id, чтобы новые дефолтные блоки не терялись
+    return DEFAULTS.map((d) => saved.find((s) => s.id === d.id) ?? d);
+  } catch {
+    return DEFAULTS;
+  }
+}
 
 /** Подпись ряда: внутренний индекс 0..19 → «1.1», «1.2», «2.1» … */
 const rowLabel = (r: number) => `${Math.floor(r / 2) + 1}.${(r % 2) + 1}`;
@@ -469,7 +490,16 @@ function PreviewModal({ data, onClose }: { data: PreviewModalData | null; onClos
 }
 
 export default function BoardPage() {
-  const [mods, setMods] = useState<Mod[]>(DEFAULTS);
+  // До первой правки раскладка берётся из сохранённой; правки — в локальном состоянии.
+  const savedRaw = useSyncExternalStore(noop, readSavedRaw, () => null);
+  const initialMods = useMemo(() => mergeSaved(savedRaw), [savedRaw]);
+  const [edited, setEdited] = useState<Mod[] | null>(null);
+  const mods = edited ?? initialMods;
+  const setMods = useCallback(
+    (next: Mod[] | ((ms: Mod[]) => Mod[])) =>
+      setEdited((prev) => (typeof next === 'function' ? next(prev ?? initialMods) : next)),
+    [initialMods],
+  );
   const [sel, setSel] = useState<string | null>(null);
   const [showGrid, setShowGrid] = useState(true);
   const [layering, setLayering] = useState(true); // разрешить наложение блоков друг на друга
@@ -490,20 +520,6 @@ export default function BoardPage() {
     w: number;
     h: number;
   }>(null);
-
-  // загрузка сохранённой раскладки
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const saved = JSON.parse(raw) as Mod[];
-        // мержим по id, чтобы новые дефолтные блоки не терялись
-        setMods(DEFAULTS.map((d) => saved.find((s) => s.id === d.id) ?? d));
-      }
-    } catch {
-      /* ignore */
-    }
-  }, []);
 
   // автосохранение
   useEffect(() => {

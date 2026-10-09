@@ -217,6 +217,10 @@ export function PositionEditor({
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const dragRef = useRef<{ startX: number; startY: number; offset: { x: number; y: number } } | null>(null);
   const [dragging, setDragging] = useState(false);
+  // Люфт при текущем зуме — в состоянии: читать ref-ы в рендере нельзя
+  // (react-hooks/refs), а превью считает позицию из него на каждом рендере.
+  // Обновляется там, где меняется картинка или зум.
+  const [maxOff, setMaxOff] = useState({ x: 0, y: 0 });
 
   function maxOffsetNow(zoom: number) {
     if (!containerRef.current || !imgSizeRef.current) return { x: 0, y: 0 };
@@ -266,6 +270,7 @@ export function PositionEditor({
       y: prevMax.y > 0 ? clamp((o.y / prevMax.y) * nextMax.y, -nextMax.y, nextMax.y) : 0,
     }));
     setTf((t) => ({ ...t, zoom: nextZoom }));
+    setMaxOff(nextMax);
   }
 
   // Проценты зума в UI — относительно MIN_ZOOM (та же «точка отсчёта 100%»,
@@ -303,6 +308,7 @@ export function PositionEditor({
   function reset() {
     setTf(DEFAULT_TRANSFORM);
     setOffset({ x: 0, y: 0 });
+    setMaxOff(maxOffsetNow(DEFAULT_TRANSFORM.zoom));
   }
 
   const NUDGE_STEP_PX = 18;
@@ -311,7 +317,7 @@ export function PositionEditor({
     setOffset((o) => ({ x: clamp(o.x + dx, -mo.x, mo.x), y: clamp(o.y + dy, -mo.y, mo.y) }));
   }
 
-  const mo = maxOffsetNow(tf.zoom);
+  const mo = maxOff;
   const pos = offsetToPos(offset, mo);
   const previewStyle: React.CSSProperties = {
     objectPosition: `${pos.x}% ${pos.y}%`,
@@ -352,6 +358,7 @@ export function PositionEditor({
             draggable={false}
             onLoad={(e) => {
               imgSizeRef.current = { w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight };
+              setMaxOff(maxOffsetNow(tf.zoom));
               initOffsetOnce();
             }}
             className="absolute inset-0 h-full w-full select-none object-cover"

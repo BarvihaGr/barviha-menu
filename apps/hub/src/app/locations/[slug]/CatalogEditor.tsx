@@ -13,6 +13,11 @@ import { SavedBadge, type SaveStatus } from './SavedBadge';
 import { TranslationFields } from './TranslationFields';
 
 /** Метки-бейджи (показываются на карточке блюда). */
+/** Отметка времени для бейджа «сохранено» — вне компонента, чтобы React Compiler не считал рендер нечистым. */
+function stamp(ok: boolean): SaveStatus {
+  return { at: Date.now(), ok };
+}
+
 const LABEL_OPTIONS: { key: ItemLabel; text: string }[] = [
   { key: 'spicy', text: 'Острое' },
   { key: 'vegan', text: 'Веган' },
@@ -135,7 +140,7 @@ const CatalogItemRow = memo(function CatalogItemRow({
     } catch {
       ok = false;
     }
-    setSaveStatus({ at: Date.now(), ok });
+    setSaveStatus(stamp(ok));
     if (!ok) {
       setDraft(prev);
       return;

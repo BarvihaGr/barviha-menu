@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 // Не sessionStorage — обычная module-переменная: сбрасывается при полной
@@ -8,12 +8,23 @@ import { AnimatePresence, motion } from 'framer-motion';
 // повторно проигрывать сплэш при обычной SPA-навигации между разделами.
 let splashShown = false;
 
+// Формат экрана (телефон/широкий) — внешнее состояние браузера: на сервере
+// неизвестен (null), на клиенте читается синхронно и без setState в эффекте.
+const MOBILE_QUERY = '(max-width: 767px)';
+function subscribeMobile(cb: () => void) {
+  const mql = window.matchMedia(MOBILE_QUERY);
+  mql.addEventListener('change', cb);
+  return () => mql.removeEventListener('change', cb);
+}
+const getMobile = () => window.matchMedia(MOBILE_QUERY).matches;
+const getMobileServer = () => null;
+
 export function SplashScreen({ children }: { children: React.ReactNode }) {
   const [visible, setVisible] = useState(!splashShown);
   const [fading, setFading] = useState(false);
-  // null, пока не определили формат экрана — рендерим видео только после
-  // этого, чтобы не подгружать/не мигать не тем форматом при гидрации.
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  // null, пока не определили формат экрана (на сервере) — видео рендерим
+  // только на клиенте, чтобы не подгружать/не мигать не тем форматом.
+  const isMobile = useSyncExternalStore<boolean | null>(subscribeMobile, getMobile, getMobileServer);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const dismiss = () => {
@@ -22,9 +33,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (splashShown) return;
     splashShown = true;
-    setIsMobile(window.matchMedia('(max-width: 767px)').matches);
   }, []);
 
   useEffect(() => {
