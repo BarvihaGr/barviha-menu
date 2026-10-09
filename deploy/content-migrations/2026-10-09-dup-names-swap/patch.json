@@ -1,0 +1,326 @@
+[
+ {
+  "location": "krasnaia-ploshchad",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-kp-myasnaya-tarelka-adb04c",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "kievskaia",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-kie-myasnaya-tarelka-122657",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "moskva-siti",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-sit-myasnaya-tarelka-dff4e4",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "paveletskaia",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-pav-myasnaya-tarelka-45ccc5",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "mendeleevskaia",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-men-myasnaya-tarelka-87bb92",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "mitino",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-mit-myasnaya-tarelka-ad15e1",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "marino",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-mar-myasnaya-tarelka-709eba",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "tepliy-stan",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-ts-myasnaya-tarelka-b1a199",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "otradnoe",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-otr-myasnaya-tarelka-914c96",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "iugo-zapadnaia",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-uz-myasnaya-tarelka-002796",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "baumanskaia",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-bau-myasnaya-tarelka-9e3e16",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "cska",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-csk-myasnaya-tarelka-5ede60",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "kolomenskaia",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-kol-myasnaya-tarelka-1b3c4e",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "seligerskaia",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-sel-myasnaya-tarelka-c8e1a7",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "barvixa-lounge-krylatskoe",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-kry-myasnaya-tarelka-9558b1",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "ramenki",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-ram-myasnaya-tarelka-a03daf",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "nevskii",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-cold-app-miasnaia-tarelka-33d521i",
+   "nowPrice": 2300,
+   "nowSub": "autumn-menu",
+   "price": 1700,
+   "sub": "cold-app"
+  },
+  "added": {
+   "id": "kitchen-nev-myasnaya-tarelka-c70306",
+   "nowPrice": 1700,
+   "nowSub": "cold-app",
+   "price": 2300,
+   "sub": "autumn-menu"
+  }
+ },
+ {
+  "location": "domodedovo",
+  "realm": "kitchen",
+  "existing": {
+   "id": "kitchen-pasta-penne-s-rostbifom-v-triuf-le0i22b",
+   "nowPrice": 810,
+   "nowSub": null,
+   "price": 1150,
+   "sub": null
+  },
+  "added": {
+   "id": "kitchen-dmd-penne-s-rostbifom-v-tryufelnom-souse-22f934",
+   "nowPrice": 1150,
+   "nowSub": "pasta",
+   "price": 810,
+   "sub": null
+  }
+ }
+]
