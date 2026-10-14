@@ -378,7 +378,8 @@ function makeReport() {
 }
 
 // ── main ─────────────────────────────────────────────────────────────────
-const startedAt = new Date().toISOString().replace('T', ' ').slice(0, 19);
+// время — московское, чтобы отчёт и лог читались так же, как часы на сервере
+const startedAt = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Moscow' }).slice(0, 19);
 const report = makeReport();
 const perLocation = new Map(); // slug → items[]
 const skipped = new Set();
