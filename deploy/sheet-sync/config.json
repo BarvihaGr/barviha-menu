@@ -1,0 +1,28 @@
+{
+  "spreadsheetId": "1hjJK79hyh4DAUy8rgyoWsn34Jx0r9rNQ6OVzs9gw0hI",
+  "_comment": "Какой лист Google Таблицы к каким локациям. gid — из адреса листа (#gid=...). extra: лист-добавка к основному (например гриль Киевской). Ташкент и Ереван в таблице помечены «старый» и не синхронизируются.",
+  "sheets": [
+    { "gid": "0", "title": "Меню Москва 1 (КП, СИТИ, ПВЛ, МНД, КИЕВ)", "locations": ["krasnaia-ploshchad", "moskva-siti", "paveletskaia", "mendeleevskaia", "kievskaia"] },
+    { "gid": "1901986996", "title": "Гриль Киевская", "locations": ["kievskaia"], "extra": true },
+    { "gid": "1538504884", "title": "Меню Москва 2 (БАУ, МИТ, МАР, ТС, ОТР, ЮЗ)", "locations": ["baumanskaia", "mitino", "marino", "tepliy-stan", "otradnoe", "iugo-zapadnaia"] },
+    { "gid": "1207045857", "title": "Меню Москва 3 (РАМЕНКИ, ЦСКА, КОЛОМ)", "locations": ["ramenki", "cska", "kolomenskaia"] },
+    { "gid": "267087463", "title": "Меню Москва 4 (Селигерская, Крылатское)", "locations": ["seligerskaia", "barvixa-lounge-krylatskoe"] },
+    { "gid": "1879656851", "title": "Невский", "locations": ["nevskii"] },
+    { "gid": "302536623", "title": "Рублёвка", "locations": ["rublevka"] },
+    { "gid": "1122864369", "title": "Махачкала", "locations": ["maxackala"] },
+    { "gid": "153126719", "title": "Пенза", "locations": ["penza"] },
+    { "gid": "1127778701", "title": "Нижний Новгород", "locations": ["niznii-novgorod"] },
+    { "gid": "1759359280", "title": "Домодедово", "locations": ["domodedovo"] },
+    { "gid": "1073119092", "title": "Тула, Арка", "locations": ["arka"] },
+    { "gid": "1016313224", "title": "Тула, Ликерка", "locations": ["likerka"] },
+    { "gid": "223641571", "title": "Саратов", "locations": ["barvixa-lounge-saratov"] }
+  ],
+  "flatBar": ["kievskaia", "kievskaia-network"],
+  "idPrefix": {
+    "krasnaia-ploshchad": "kp", "moskva-siti": "sit", "paveletskaia": "pav", "mendeleevskaia": "men", "kievskaia": "kie",
+    "baumanskaia": "bau", "mitino": "mit", "marino": "mar", "tepliy-stan": "ts", "otradnoe": "otr", "iugo-zapadnaia": "uz",
+    "ramenki": "ram", "cska": "csk", "kolomenskaia": "kol", "seligerskaia": "sel", "barvixa-lounge-krylatskoe": "kry",
+    "nevskii": "nev", "rublevka": "rub", "maxackala": "mah", "penza": "pnz", "niznii-novgorod": "nn", "domodedovo": "dmd",
+    "arka": "ark", "likerka": "lik", "barvixa-lounge-saratov": "sar"
+  }
+}
