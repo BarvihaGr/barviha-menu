@@ -6,6 +6,7 @@ import { pickCategoryName } from '@/lib/i18n-helpers';
 import { SectionTitle } from '@/components/SectionTitle';
 import { CategoryItemsList } from '@/components/CategoryItemsList';
 import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
+import { slimForList } from '@/lib/list-item';
 import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
 import { ArkaMenuSections } from '@/components/coffee/ArkaMenuSections';
 import { loadArkaBarSections, loadArkaBarGroupPhotos } from '@/lib/arka-bar-loader';
@@ -100,7 +101,7 @@ export default async function CategoryPage({
             ) : (
               <div className="min-w-0">
                 <CoffeeMenuList
-                  items={items}
+                  items={items.map(slimForList)}
                   locationSlug={locationSlug}
                   categorySlug={category.slug}
                   realm={realm}

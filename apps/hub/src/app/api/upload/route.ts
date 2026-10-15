@@ -96,30 +96,45 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: 'invalid image file' }, { status: 400 });
   }
 
-  const relayForm = new FormData();
-  relayForm.append('file', new Blob([new Uint8Array(outBuf)], { type: 'image/webp' }), filename);
-  relayForm.append('slug', slug);
-  relayForm.append('realm', realm);
-  relayForm.append('filename', filename);
-
-  let relayRes: Response;
+  // Превью для карточек списка (см. apps/menu/src/lib/thumb.ts): 720px по
+  // ширине, лежит рядом с оригиналом как `<имя>.webp.w720.webp`. Если не
+  // вышло — не страшно, nginx отдаст оригинал.
+  let thumbBuf: Buffer | null = null;
   try {
-    relayRes = await fetch(`${MENU_RELAY_ORIGIN}/api/upload-asset`, {
-      method: 'POST',
-      headers: { 'x-upload-secret': UPLOAD_RELAY_SECRET },
-      body: relayForm,
-    });
+    thumbBuf = await sharp(outBuf).resize({ width: 720, withoutEnlargement: true }).webp({ quality: 78 }).toBuffer();
   } catch {
-    return NextResponse.json({ ok: false, error: 'menu server unreachable' }, { status: 502 });
-  }
-  if (!relayRes.ok) {
-    const body = await relayRes.text().catch(() => '');
-    return NextResponse.json({ ok: false, error: `menu upload failed: ${relayRes.status} ${body}`.trim() }, { status: 502 });
-  }
-  const relayData = (await relayRes.json()) as { ok: boolean; path?: string };
-  if (!relayData.ok || !relayData.path) {
-    return NextResponse.json({ ok: false, error: 'menu upload rejected' }, { status: 502 });
+    thumbBuf = null;
   }
 
-  return NextResponse.json({ ok: true, path: relayData.path });
+  const relay = async (buf: Buffer, name: string): Promise<{ ok: boolean; path?: string; error?: string }> => {
+    const relayForm = new FormData();
+    relayForm.append('file', new Blob([new Uint8Array(buf)], { type: 'image/webp' }), name);
+    relayForm.append('slug', slug);
+    relayForm.append('realm', realm);
+    relayForm.append('filename', name);
+    let relayRes: Response;
+    try {
+      relayRes = await fetch(`${MENU_RELAY_ORIGIN}/api/upload-asset`, {
+        method: 'POST',
+        headers: { 'x-upload-secret': UPLOAD_RELAY_SECRET },
+        body: relayForm,
+      });
+    } catch {
+      return { ok: false, error: 'menu server unreachable' };
+    }
+    if (!relayRes.ok) {
+      const body = await relayRes.text().catch(() => '');
+      return { ok: false, error: `menu upload failed: ${relayRes.status} ${body}`.trim() };
+    }
+    const data = (await relayRes.json()) as { ok: boolean; path?: string };
+    return data.ok && data.path ? { ok: true, path: data.path } : { ok: false, error: 'menu upload rejected' };
+  };
+
+  const main = await relay(outBuf, filename);
+  if (!main.ok || !main.path) {
+    return NextResponse.json({ ok: false, error: main.error ?? 'menu upload rejected' }, { status: 502 });
+  }
+  if (thumbBuf) await relay(thumbBuf, `${filename}.w720.webp`); // ошибка превью не ломает загрузку
+
+  return NextResponse.json({ ok: true, path: main.path });
 }

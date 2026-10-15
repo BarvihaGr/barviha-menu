@@ -65,7 +65,9 @@ build_and_swap() {
   # подменять ими бой нельзя.
   rm -rf "$dir/.next-building"
 
-  if ! NEXT_DIST_DIR=.next-building pnpm --filter "$filter" build; then
+  # Сборка идёт на боевом сервере с двумя ядрами — с минимальным приоритетом
+  # CPU/диска, чтобы гости в это время не ловили лаги (15.10.2026).
+  if ! NEXT_DIST_DIR=.next-building nice -n 19 ionice -c3 pnpm --filter "$filter" build; then
     log "СБОРКА $filter упала (ненулевой код) — боевую .next не трогаю"
     rm -rf "$dir/.next-building"
     return 1

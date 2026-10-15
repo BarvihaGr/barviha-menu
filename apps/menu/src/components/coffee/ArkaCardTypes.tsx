@@ -60,7 +60,7 @@ function PhotoPlaceholder({
     >
       {src ? (
         <Image
-          src={src}
+          src={thumbUrl(src)!}
           alt=""
           fill
           sizes="(max-width: 640px) 50vw, 320px"

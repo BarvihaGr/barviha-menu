@@ -23,7 +23,7 @@ export function ArkaItemCard({ item, name, description, weightLabel }: Props) {
       <div className="relative aspect-square w-full overflow-hidden bg-[var(--arka-surface)]">
         {item.photo ? (
           <Image
-            src={item.photo}
+            src={thumbUrl(item.photo)!}
             alt={displayName}
             fill
             sizes="(max-width: 640px) 50vw, 33vw"

@@ -87,7 +87,7 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
                       <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[var(--cm-surface)]">
                         {item.photo ? (
                           <Image
-                            src={item.photo}
+                            src={thumbUrl(item.photo)!}
                             alt={name}
                             fill
                             sizes="64px"

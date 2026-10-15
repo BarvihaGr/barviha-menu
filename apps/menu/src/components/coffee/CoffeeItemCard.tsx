@@ -60,7 +60,7 @@ export const CoffeeItemCard = memo(function CoffeeItemCard({ item, name, locatio
         <div className="relative aspect-square w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
           {item.photo ? (
             <Image
-              src={item.photo}
+              src={thumbUrl(item.photo)!}
               alt={displayName}
               fill
               sizes="(max-width: 640px) 50vw, 33vw"

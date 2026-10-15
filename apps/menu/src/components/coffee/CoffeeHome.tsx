@@ -71,7 +71,7 @@ export function CoffeeHome({
                 >
                   {photo ? (
                     <Image
-                      src={photo}
+                      src={thumbUrl(photo)!}
                       alt={pickCategoryName(c, locale)}
                       fill
                       sizes="(max-width: 640px) 100vw, 360px"

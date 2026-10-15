@@ -14,6 +14,7 @@ import { HookahMoodCard } from '@/components/HookahMoodCard';
 import { ItemCard } from '@/components/ItemCard';
 import { HookahHologramCard } from '@/components/HookahHologramCard';
 import { CoffeeMenuList } from '@/components/coffee/CoffeeMenuList';
+import { slimForList } from '@/lib/list-item';
 import { CoffeeCategoryNav } from '@/components/coffee/CoffeeCategoryNav';
 import { isCoffeeDesign, coffeeAccentStyle } from '@/lib/coffee-design';
 import { pickLocationName } from '@/lib/location-theme';
@@ -82,7 +83,7 @@ export default async function HookahPage({
             />
             <div>
               <CoffeeMenuList
-                items={hookahs}
+                items={hookahs.map(slimForList)}
                 locationSlug={locationSlug}
                 categorySlug="hookah"
                 realm="hookah"
