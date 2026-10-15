@@ -246,7 +246,8 @@ function syncLocation(slug, sheetItemsIn, report) {
     const { raw, data } = readJson(file);
     const sheetR = sheetItems.filter((x) => x.realm === realm).map((x) => {
       if (realm === 'kitchen') { const k = kitchenSub(x); return { ...x, place: k.sub, placeExact: k.exact }; }
-      return { ...x, place: realm === 'hookah' ? hookahSub(x) : (FLAT_SUB[norm(x.cat)] ?? null), placeExact: realm === 'hookah' };
+      // у кальянов подраздел и порядок задаются в бэк-офисе — из листа берём только для новых
+      return { ...x, place: realm === 'hookah' ? hookahSub(x) : (FLAT_SUB[norm(x.cat)] ?? null), placeExact: false };
     });
     // в листе этого раздела нет вовсе (например, у Рублёвки нет кухни) — раздел не трогаем
     if (!sheetR.length) { if (data.some((x) => !x.is_archived)) L.notes.push(`${realm}: в листе нет такого раздела — на сайте оставлен как есть`); continue; }
