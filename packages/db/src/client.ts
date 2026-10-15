@@ -234,14 +234,10 @@ class MockBarvihaClient implements BarvihaClient {
       const realms: CatalogRealm[] = usesArkaBarLayout(loc.slug)
         ? ['kitchen', 'hookah']
         : ['kitchen', 'hookah', 'bar'];
-      // Внутри подраздела порядок — как в бэк-офисе (стрелки «вверх/вниз»
-      // в каталоге), в том числе у кальянов: с 15.10.2026 их не сортируем по
-      // цене, владелец расставляет сам (классика → электро → парфюм, потом
-      // «Специальное предложение» в своём порядке).
       return realms
         .flatMap((realm) => getCatalogItems(loc.slug, realm).filter(isShownToGuest))
         .map(toResolvedCatalogItem)
-        .sort((a, b) => subOrder(a.category_id!, a.sub) - subOrder(b.category_id!, b.sub));
+        .sort((a, b) => subOrder(a.category_id!, a.sub) - subOrder(b.category_id!, b.sub) || hookahPriceOrder(a, b));
     }
     const slug = effectiveSlug(loc?.slug);
     const base = slug
