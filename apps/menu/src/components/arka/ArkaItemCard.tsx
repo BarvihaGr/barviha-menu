@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { thumbUrl } from '@/lib/thumb';
 import type { ResolvedMenuItem } from '@barviha/db';
 import { formatPrice, capitalizeRu } from '@/lib/utils';
 import { photoTransformCss } from '@/lib/photo-transform';

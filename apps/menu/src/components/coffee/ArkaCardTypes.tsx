@@ -20,6 +20,7 @@
  */
 
 import Image from 'next/image';
+import { thumbUrl } from '@/lib/thumb';
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { getItemVariants, type ArkaMenuItem, type ArkaMenuVariant } from '@/lib/arka-menu-data';

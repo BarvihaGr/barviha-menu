@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { thumbUrl } from '@/lib/thumb';
 import { Plus } from 'lucide-react';
 import { memo, useState } from 'react';
 import { motion } from 'framer-motion';

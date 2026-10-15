@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { thumbUrl } from '@/lib/thumb';
 import type { Category } from '@barviha/db';
 import type { Locale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';

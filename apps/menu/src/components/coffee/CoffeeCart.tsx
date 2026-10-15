@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { thumbUrl } from '@/lib/thumb';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
