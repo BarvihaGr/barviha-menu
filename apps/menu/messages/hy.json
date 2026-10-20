@@ -95,7 +95,9 @@
     "viewPhoto": "Բացել լուսանկարը",
     "closePhoto": "Փակել",
     "grams": "գ",
-    "photoPending": "Լուսանկարը շուտով"
+    "photoPending": "Լուսանկարը շուտով",
+    "prevPhoto": "Նախորդ լուսանկարը",
+    "nextPhoto": "Հաջորդ լուսանկարը"
   },
   "cart": {
     "title": "Իմ սեղանը",
