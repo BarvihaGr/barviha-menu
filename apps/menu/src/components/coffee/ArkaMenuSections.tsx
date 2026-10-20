@@ -59,8 +59,12 @@ function CategoryBlock({
   groupPhotos: Record<string, PhotoEntry>;
   locale: Locale;
 }) {
-  const type1 = items.filter((i) => i.type === 1);
-  const type2 = items.filter((i) => i.type === 2);
+  // Полная карточка со своим фото — у позиций типа 1 и у любой позиции, которой
+  // в бэк-офисе загрузили фото (21.10.2026: осенние горячие напитки заведены
+  // типом 2, и загруженные фото на сайт не попадали). Без фото — строка в
+  // группе, как раньше.
+  const type1 = items.filter((i) => i.type === 1 || !!i.photo);
+  const type2 = items.filter((i) => i.type === 2 && !i.photo);
   const groupPhoto = groupPhotos[category];
 
   return (
