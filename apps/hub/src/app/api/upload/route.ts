@@ -96,14 +96,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: 'invalid image file' }, { status: 400 });
   }
 
-  // Превью для карточек списка (см. apps/menu/src/lib/thumb.ts): 720px по
-  // ширине, лежит рядом с оригиналом как `<имя>.webp.w720.webp`. Если не
-  // вышло — не страшно, nginx отдаст оригинал.
-  let thumbBuf: Buffer | null = null;
-  try {
-    thumbBuf = await sharp(outBuf).resize({ width: 720, withoutEnlargement: true }).webp({ quality: 78 }).toBuffer();
-  } catch {
-    thumbBuf = null;
+  // Уменьшенные копии (см. apps/menu/src/lib/thumb.ts): 720px для карточек и
+  // 1200px для галереи блюда, лежат рядом с оригиналом как `<имя>.webp.w720.webp`.
+  const variants: [string, Buffer][] = [];
+  for (const [width, suffix, quality] of [[720, '.w720.webp', 78], [1200, '.w1200.webp', 80]] as const) {
+    try {
+      variants.push([suffix, await sharp(outBuf).resize({ width, withoutEnlargement: true }).webp({ quality }).toBuffer()]);
+    } catch {
+      // без превью — не страшно, nginx отдаст оригинал
+    }
   }
 
   const relay = async (buf: Buffer, name: string): Promise<{ ok: boolean; path?: string; error?: string }> => {
@@ -134,7 +135,7 @@ export async function POST(request: NextRequest) {
   if (!main.ok || !main.path) {
     return NextResponse.json({ ok: false, error: main.error ?? 'menu upload rejected' }, { status: 502 });
   }
-  if (thumbBuf) await relay(thumbBuf, `${filename}.w720.webp`); // ошибка превью не ломает загрузку
+  for (const [suffix, buf] of variants) await relay(buf, `${filename}${suffix}`); // ошибка превью не ломает загрузку
 
   return NextResponse.json({ ok: true, path: main.path });
 }

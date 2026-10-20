@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
   // здесь не пересобираем (slugify() обрезает по 60 симв. и сломал бы имя
   // с таймстампом), а строго валидируем по белому списку символов.
   // `.webp.w720.webp` — превью для карточек (см. apps/menu/src/lib/thumb.ts).
-  const filenameOk = /^[a-z0-9-]{1,120}\.webp(\.w720\.webp)?$/.test(rawFilename);
+  const filenameOk = /^[a-z0-9-]{1,120}\.webp(\.w(720|1200)\.webp)?$/.test(rawFilename);
 
   if (!(file instanceof File) || !slug || !realm || !filenameOk) {
     return NextResponse.json({ ok: false, error: 'bad request' }, { status: 400 });

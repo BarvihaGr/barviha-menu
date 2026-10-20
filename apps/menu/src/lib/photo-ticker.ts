@@ -5,18 +5,34 @@ import { useSyncExternalStore } from 'react';
 /**
  * Один общий «тик» для всех каруселей фото в карточках списка: раз в
  * TICK_MS номер кадра растёт на единицу, и все карточки на экране
- * переключаются строго одновременно. Таймер один на страницу и живёт,
- * только пока есть хотя бы одна подписанная карточка.
+ * переключаются строго одновременно. Пока гость листает страницу, счётчик
+ * стоит (кадры не меняются под пальцем), через IDLE_MS после остановки —
+ * снова идёт. Таймер один на страницу и живёт, только пока есть хотя бы одна
+ * подписанная карточка.
  */
 export const TICK_MS = 2000;
+const IDLE_MS = 450;
 let tick = 0;
 let timer: ReturnType<typeof setInterval> | null = null;
+let moving = false;
+let idleTimer: ReturnType<typeof setTimeout> | null = null;
 const subs = new Set<() => void>();
+
+function onMove() {
+  moving = true;
+  if (idleTimer) clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    moving = false;
+  }, IDLE_MS);
+}
 
 function subscribe(cb: () => void) {
   subs.add(cb);
   if (!timer) {
+    window.addEventListener('scroll', onMove, { passive: true });
+    window.addEventListener('touchmove', onMove, { passive: true });
     timer = setInterval(() => {
+      if (moving) return;
       tick++;
       for (const s of subs) s();
     }, TICK_MS);
@@ -26,6 +42,8 @@ function subscribe(cb: () => void) {
     if (subs.size === 0 && timer) {
       clearInterval(timer);
       timer = null;
+      window.removeEventListener('scroll', onMove);
+      window.removeEventListener('touchmove', onMove);
     }
   };
 }

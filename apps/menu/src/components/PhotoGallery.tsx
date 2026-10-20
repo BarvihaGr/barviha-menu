@@ -7,6 +7,7 @@ import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Expand, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { PhotoEntry } from '@barviha/db';
+import { galleryUrl } from '@/lib/thumb';
 
 const SWIPE_THRESHOLD = 60;
 const AUTOPLAY_MS = 4200;
@@ -70,33 +71,29 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
         onDragEnd={onDragEnd}
         onClick={onFrameClick}
       >
-        {/* Кросс-фейд + очень медленное «дыхание» масштаба (Ken Burns) —
-         * мягкий переход между кадрами слайд-шоу, без резких сдвигов. Ключ
-         * на src, а не на index — работает одинаково и от автоплея, и от
-         * ручного свайпа. */}
-        <AnimatePresence mode="sync">
-          <motion.div
-            key={active.src}
+        {/* Все кадры лежат стопкой и загружены заранее (средний размер
+         * .w1200) — стрелки, свайп и автоплей переключают мгновенно, без
+         * ожидания загрузки. Переход — спокойный кросс-фейд по opacity, без
+         * движения и масштаба. Ключ на src — одинаково для автоплея и рук. */}
+        {photos.map((p, i) => (
+          <div
+            key={p.src}
             className="absolute inset-0"
-            initial={{ opacity: 0, scale: 1.035 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              opacity: { duration: 0.9, ease: 'easeInOut' },
-              scale: { duration: AUTOPLAY_MS / 1000 + 0.9, ease: 'easeOut' },
-            }}
+            style={{ opacity: i === activeIndex ? 1 : 0, zIndex: i === activeIndex ? 2 : 1, transition: 'opacity 900ms ease-in-out' }}
           >
             <Image
-              src={active.src}
-              alt={alt}
+              src={galleryUrl(p.src)!}
+              alt={i === activeIndex ? alt : ''}
               fill
               sizes="(max-width: 768px) 100vw, 768px"
-              priority={activeIndex === 0}
+              priority={i === 0}
+              loading={i === 0 ? undefined : 'eager'}
+              aria-hidden={i !== activeIndex}
               draggable={false}
               className="object-cover"
             />
-          </motion.div>
-        </AnimatePresence>
+          </div>
+        ))}
         <span className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/90 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition group-hover:bg-[var(--cm-surface-2)]">
           <Expand size={16} />
         </span>
