@@ -95,9 +95,7 @@
     "viewPhoto": "查看照片",
     "closePhoto": "关闭",
     "grams": "克",
-    "photoPending": "照片即将上线",
-    "prevPhoto": "上一张照片",
-    "nextPhoto": "下一张照片"
+    "photoPending": "照片即将上线"
   },
   "cart": {
     "title": "我的餐桌",

@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { thumbUrl } from '@/lib/thumb';
-import { CardPhotoCarousel } from './CardPhotoCarousel';
 import { Plus } from 'lucide-react';
 import { memo, useState } from 'react';
 import { motion } from 'framer-motion';
@@ -60,9 +59,7 @@ export const CoffeeItemCard = memo(function CoffeeItemCard({ item, name, locatio
       >
         {/* Квадратное фото */}
         <div className="relative aspect-square w-full overflow-hidden rounded-[var(--cm-card-radius,16px)] bg-[var(--cm-surface)]">
-          {item.photos && item.photos.length > 1 ? (
-            <CardPhotoCarousel photos={item.photos} alt={displayName} sizes="(max-width: 640px) 50vw, 33vw" />
-          ) : item.photo ? (
+          {item.photo ? (
             <Image
               src={thumbUrl(item.photo)!}
               alt={displayName}
