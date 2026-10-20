@@ -178,6 +178,8 @@ function kitchenSub(it) {
   const bySec = KITCHEN_SUB_BY_SECTION[norm(it.section)];
   if (bySec) return { sub: bySec, exact: true };
   const c = norm(it.cat);
+  // сезонный раздел без категории (так владелец добавил позиции 21.10) — в «Осеннее предложение»
+  if (!c && /сезон|осен|зимн|весен|летн/.test(norm(it.section))) return { sub: 'autumn-menu', exact: true };
   if (!c) return { sub: /хлеб|соус/i.test(it.name) ? 'bread-sauces' : null, exact: true };
   if (c in KITCHEN_SUB_BY_CAT) return { sub: KITCHEN_SUB_BY_CAT[c], exact: true };
   for (const [k, v] of Object.entries(KITCHEN_SUB_BY_CAT)) if (k && c.includes(k)) return { sub: v, exact: false };
