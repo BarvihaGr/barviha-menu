@@ -10,7 +10,7 @@ import { useSyncExternalStore } from 'react';
  * снова идёт. Таймер один на страницу и живёт, только пока есть хотя бы одна
  * подписанная карточка.
  */
-export const TICK_MS = 2000;
+export const TICK_MS = 4000;
 const IDLE_MS = 450;
 let tick = 0;
 let timer: ReturnType<typeof setInterval> | null = null;

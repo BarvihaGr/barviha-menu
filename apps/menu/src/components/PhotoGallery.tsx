@@ -20,6 +20,13 @@ const AUTOPLAY_MS = 4200;
  */
 export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: string }) {
   const [index, setIndex] = useState(0);
+  const [leavingIndex, setLeavingIndex] = useState<number | null>(null);
+  // любая смена кадра (автоплей, свайп, стрелка) запоминает уходящий кадр — он гаснет поверх нового
+  const goTo = (next: number) => {
+    if (next === index) return;
+    setLeavingIndex(index);
+    setIndex(next);
+  };
   const [open, setOpen] = useState(false);
   const t = useTranslations('item');
   const draggedRef = useRef(false);
@@ -32,7 +39,7 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
   // конкурирует с таймером.
   useEffect(() => {
     if (!canSwipe || open) return;
-    const id = setTimeout(() => setIndex((i) => (i + 1) % photos.length), AUTOPLAY_MS);
+    const id = setTimeout(() => goTo((index + 1) % photos.length), AUTOPLAY_MS);
     return () => clearTimeout(id);
   }, [index, canSwipe, open, photos.length]);
 
@@ -49,8 +56,8 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
 
   function onDragEnd(_: unknown, info: PanInfo) {
     if (Math.abs(info.offset.x) > 10) draggedRef.current = true;
-    if (info.offset.x < -SWIPE_THRESHOLD) setIndex((i) => Math.min(photos.length - 1, i + 1));
-    else if (info.offset.x > SWIPE_THRESHOLD) setIndex((i) => Math.max(0, i - 1));
+    if (info.offset.x < -SWIPE_THRESHOLD) goTo(Math.min(photos.length - 1, index + 1));
+    else if (info.offset.x > SWIPE_THRESHOLD) goTo(Math.max(0, index - 1));
   }
 
   function onFrameClick() {
@@ -75,25 +82,33 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
          * .w1200) — стрелки, свайп и автоплей переключают мгновенно, без
          * ожидания загрузки. Переход — спокойный кросс-фейд по opacity, без
          * движения и масштаба. Ключ на src — одинаково для автоплея и рук. */}
-        {photos.map((p, i) => (
-          <div
-            key={p.src}
-            className="absolute inset-0"
-            style={{ opacity: i === activeIndex ? 1 : 0, zIndex: i === activeIndex ? 2 : 1, transition: 'opacity 900ms ease-in-out' }}
-          >
-            <Image
-              src={galleryUrl(p.src)!}
-              alt={i === activeIndex ? alt : ''}
-              fill
-              sizes="(max-width: 768px) 100vw, 768px"
-              priority={i === 0}
-              loading={i === 0 ? undefined : 'eager'}
-              aria-hidden={i !== activeIndex}
-              draggable={false}
-              className="object-cover"
-            />
-          </div>
-        ))}
+        {photos.map((p, i) => {
+          const isActive = i === activeIndex;
+          const isLeaving = i === leavingIndex && !isActive;
+          return (
+            <div
+              key={p.src}
+              className="absolute inset-0"
+              style={{
+                zIndex: isLeaving ? 3 : isActive ? 2 : 1,
+                opacity: isLeaving ? 0 : 1,
+                transition: isLeaving ? 'opacity 1600ms ease-in-out' : 'none',
+              }}
+            >
+              <Image
+                src={galleryUrl(p.src)!}
+                alt={isActive ? alt : ''}
+                fill
+                sizes="(max-width: 768px) 100vw, 768px"
+                priority={i === 0}
+                loading={i === 0 ? undefined : 'eager'}
+                aria-hidden={!isActive}
+                draggable={false}
+                className="object-cover"
+              />
+            </div>
+          );
+        })}
         <span className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/90 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition group-hover:bg-[var(--cm-surface-2)]">
           <Expand size={16} />
         </span>
@@ -103,7 +118,7 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
             <button
               type="button"
               aria-label={t('prevPhoto')}
-              onClick={(e) => { e.stopPropagation(); setIndex((i) => (i - 1 + photos.length) % photos.length); }}
+              onClick={(e) => { e.stopPropagation(); goTo((index - 1 + photos.length) % photos.length); }}
               className="absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/85 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition hover:bg-[var(--cm-surface-2)] cursor-pointer"
             >
               <ChevronLeft size={18} />
@@ -111,7 +126,7 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
             <button
               type="button"
               aria-label={t('nextPhoto')}
-              onClick={(e) => { e.stopPropagation(); setIndex((i) => (i + 1) % photos.length); }}
+              onClick={(e) => { e.stopPropagation(); goTo((index + 1) % photos.length); }}
               className="absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/85 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition hover:bg-[var(--cm-surface-2)] cursor-pointer"
             >
               <ChevronRight size={18} />
@@ -187,8 +202,8 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.15}
                     onDragEnd={(_, info) => {
-                      if (info.offset.x < -SWIPE_THRESHOLD) setIndex((i) => Math.min(photos.length - 1, i + 1));
-                      else if (info.offset.x > SWIPE_THRESHOLD) setIndex((i) => Math.max(0, i - 1));
+                      if (info.offset.x < -SWIPE_THRESHOLD) goTo(Math.min(photos.length - 1, index + 1));
+                      else if (info.offset.x > SWIPE_THRESHOLD) goTo(Math.max(0, index - 1));
                     }}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element -- произвольное соотношение сторон, нужен natural-size */}
