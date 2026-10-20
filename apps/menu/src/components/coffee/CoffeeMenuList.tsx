@@ -49,6 +49,8 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
 
   const chipBarRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const jumpingRef = useRef(false);
+  const jumpTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const kievVariant = useKievTheme((s) => s.variant);
   const themeStyle = isKievskaiaStyle(locationSlug)
@@ -106,7 +108,9 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
             bestId = id;
           }
         }
-        if (bestId) setActiveSection(bestId);
+        // Пока страница едет к секции по тапу на чип — не перехватываем
+        // активный чип промежуточными секциями (см. jumpTo).
+        if (bestId && !jumpingRef.current) setActiveSection(bestId);
       },
       { rootMargin: '-10% 0px -60% 0px', threshold: [0, 0.1, 0.5] },
     );
@@ -121,10 +125,21 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
   // страницы из jumpTo(). На Android Chrome два параллельных smooth-скролла
   // конкурируют за один и тот же scroll-timeline и гасят друг друга — тап по
   // чипу подсвечивал его, но страница к разделу не ехала вообще.
+  //
+  // 21.10.2026: даже chip.scrollIntoView({block:'nearest'}) обрывал плавный
+  // вертикальный скролл страницы из jumpTo (Chrome прерывает текущую
+  // smooth-анимацию окна любым новым scrollIntoView, пусть и на 0 px) — чипы
+  // «Закуски»/«Супы» срабатывали со второго тапа. Ленту чипов двигаем сами и
+  // только по горизонтали, окно не трогаем.
   useEffect(() => {
-    if (!activeSection || !chipBarRef.current) return;
-    const chip = chipBarRef.current.querySelector<HTMLElement>(`[data-sec="${activeSection}"]`);
-    chip?.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
+    const bar = chipBarRef.current;
+    if (!activeSection || !bar) return;
+    const chip = bar.querySelector<HTMLElement>(`[data-sec="${activeSection}"]`);
+    if (!chip) return;
+    const barRect = bar.getBoundingClientRect();
+    const chipRect = chip.getBoundingClientRect();
+    const left = bar.scrollLeft + (chipRect.left - barRect.left) - (bar.clientWidth - chipRect.width) / 2;
+    bar.scrollTo({ left: Math.max(0, left), behavior: 'auto' });
   }, [activeSection]);
 
   // ── Тап по чипу — прыжок к секции ────────────────────────────────
@@ -139,7 +154,11 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
     if (!el) return;
     // Подсвечиваем нажатый чип сразу, не дожидаясь, пока IntersectionObserver
     // подтвердит секцию по факту скролла — иначе на время smooth-скролла
-    // мог светиться предыдущий активный чип.
+    // мог светиться предыдущий активный чип. И на время поездки (~1 с)
+    // запрещаем observer'у переключать чип на промежуточные секции.
+    jumpingRef.current = true;
+    if (jumpTimerRef.current) clearTimeout(jumpTimerRef.current);
+    jumpTimerRef.current = setTimeout(() => { jumpingRef.current = false; }, 1200);
     setActiveSection(id);
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };

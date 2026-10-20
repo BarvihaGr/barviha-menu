@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
-import { Expand, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Expand, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { PhotoEntry } from '@barviha/db';
 
@@ -100,6 +100,27 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
         <span className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/90 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition group-hover:bg-[var(--cm-surface-2)]">
           <Expand size={16} />
         </span>
+        {/* Стрелки — листать руками, не только свайпом; смена кадра сбрасывает отсчёт автоплея. */}
+        {canSwipe && (
+          <>
+            <button
+              type="button"
+              aria-label={t('prevPhoto')}
+              onClick={(e) => { e.stopPropagation(); setIndex((i) => (i - 1 + photos.length) % photos.length); }}
+              className="absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/85 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition hover:bg-[var(--cm-surface-2)] cursor-pointer"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              type="button"
+              aria-label={t('nextPhoto')}
+              onClick={(e) => { e.stopPropagation(); setIndex((i) => (i + 1) % photos.length); }}
+              className="absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--cm-surface-2)]/85 text-[var(--cm-text)] shadow-[0_1px_8px_rgba(0,0,0,0.1)] backdrop-blur transition hover:bg-[var(--cm-surface-2)] cursor-pointer"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </>
+        )}
         {canSwipe && (
           <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
             {photos.map((_, i) => {

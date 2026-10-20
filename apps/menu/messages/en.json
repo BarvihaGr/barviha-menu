@@ -95,7 +95,9 @@
     "viewPhoto": "View photo",
     "closePhoto": "Close",
     "grams": "g",
-    "photoPending": "Photo coming soon"
+    "photoPending": "Photo coming soon",
+    "prevPhoto": "Previous photo",
+    "nextPhoto": "Next photo"
   },
   "cart": {
     "title": "My table",

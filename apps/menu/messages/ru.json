@@ -95,7 +95,9 @@
     "viewPhoto": "Открыть фото",
     "closePhoto": "Закрыть",
     "grams": "г",
-    "photoPending": "Фото скоро"
+    "photoPending": "Фото скоро",
+    "prevPhoto": "Предыдущее фото",
+    "nextPhoto": "Следующее фото"
   },
   "cart": {
     "title": "Корзина",
