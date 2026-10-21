@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
@@ -10,7 +10,6 @@ import type { PhotoEntry } from '@barviha/db';
 import { galleryUrl } from '@/lib/thumb';
 
 const SWIPE_THRESHOLD = 60;
-const AUTOPLAY_MS = 4200;
 
 /**
  * Фото блюда в карточке товара — как CoffeePhotoViewer раньше (кроп-превью
@@ -33,15 +32,8 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
 
   const canSwipe = photos.length > 1;
 
-  // Мягкое автолистание — пока карточка открыта и не в полноэкранном зуме.
-  // setTimeout (не interval) перезапускается на каждую смену index, поэтому
-  // ручной свайп естественно сбрасывает отсчёт до следующего кадра, а не
-  // конкурирует с таймером.
-  useEffect(() => {
-    if (!canSwipe || open) return;
-    const id = setTimeout(() => goTo((index + 1) % photos.length), AUTOPLAY_MS);
-    return () => clearTimeout(id);
-  }, [index, canSwipe, open, photos.length]);
+  // Автолистания нет (21.10.2026, по решению владельца): кадры меняются только
+  // руками — стрелками или свайпом; все кадры загружены заранее, смена мгновенная.
 
   if (photos.length === 0) {
     return (
@@ -92,7 +84,7 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
               style={{
                 zIndex: isLeaving ? 3 : isActive ? 2 : 1,
                 opacity: isLeaving ? 0 : 1,
-                transition: isLeaving ? 'opacity 1600ms ease-in-out' : 'none',
+                transition: isLeaving ? 'opacity 450ms ease-in-out' : 'none',
               }}
             >
               <Image
@@ -135,26 +127,12 @@ export function PhotoGallery({ photos, alt }: { photos: PhotoEntry[]; alt: strin
         )}
         {canSwipe && (
           <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
-            {photos.map((_, i) => {
-              const isActive = i === activeIndex;
-              return (
-                <span
-                  key={i}
-                  className={`relative h-1.5 overflow-hidden rounded-full transition-[width] ${isActive ? 'w-4 bg-white/35' : 'w-1.5 bg-white/50'}`}
-                >
-                  {isActive && !open && (
-                    <motion.span
-                      key={activeIndex}
-                      className="absolute inset-y-0 left-0 rounded-full bg-white"
-                      initial={{ width: '0%' }}
-                      animate={{ width: '100%' }}
-                      transition={{ duration: AUTOPLAY_MS / 1000, ease: 'linear' }}
-                    />
-                  )}
-                  {isActive && open && <span className="absolute inset-0 rounded-full bg-white" />}
-                </span>
-              );
-            })}
+            {photos.map((_, i) => (
+              <span
+                key={i}
+                className={`h-1.5 rounded-full transition-all ${i === activeIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/50'}`}
+              />
+            ))}
           </div>
         )}
       </motion.div>
