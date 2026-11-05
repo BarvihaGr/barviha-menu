@@ -17,6 +17,9 @@
     { "gid": "1016313224", "title": "Тула, Ликерка", "locations": ["likerka"] },
     { "gid": "223641571", "title": "Саратов", "locations": ["barvixa-lounge-saratov"] }
   ],
+  "hidden": [
+    { "_comment": "05.11.2026 по просьбе владельца: соусы убраны из «Хлеб и соусы» и «Правильного питания» (в таблице остаются)", "realm": "kitchen", "names": ["Соусы", "Цацики", "Чесночный", "Сальса", "Томатный"], "locations": ["barvixa-lounge-krylatskoe", "baumanskaia", "cska", "iugo-zapadnaia", "kievskaia", "kolomenskaia", "krasnaia-ploshchad", "marino", "mendeleevskaia", "mitino", "moskva-siti", "nevskii", "otradnoe", "paveletskaia", "ramenki", "seligerskaia", "tepliy-stan"] }
+  ],
   "flatBar": ["kievskaia", "kievskaia-network"],
   "idPrefix": {
     "krasnaia-ploshchad": "kp", "moskva-siti": "sit", "paveletskaia": "pav", "mendeleevskaia": "men", "kievskaia": "kie",

@@ -221,6 +221,13 @@ function matchItems(sheetItems, siteItems, placeOf) {
 // ── обработка одной локации ──────────────────────────────────────────────
 function syncLocation(slug, sheetItemsIn, report) {
   let sheetItems = sheetItemsIn;
+  // Стоп-лист (config.hidden): позиции есть в таблице, но на сайте их быть не
+  // должно — выкидываем из листа, тогда синк сам уберёт их с сайта в архив и не вернёт.
+  for (const h of CONFIG.hidden ?? []) {
+    if (h.locations && !h.locations.includes(slug)) continue;
+    const names = new Set(h.names.map(norm));
+    sheetItems = sheetItems.filter((x) => !((!h.realm || x.realm === h.realm) && names.has(norm(x.name))));
+  }
   const dir = join(CONTENT, slug);
   if (!existsSync(join(dir, 'kitchen.json'))) { report.note(slug, `нет папки контента — пропущено`); return; }
   const flat = CONFIG.flatBar.includes(slug);
