@@ -44,8 +44,15 @@ const src = {};
 for (const realm of ['kitchen', 'hookah']) { const l = loadFlat(SRC, realm); src[realm] = l ? indexFlat(JSON.parse(l.raw)) : new Map(); }
 {
   const l = loadFlat(SRC, 'bar'); const b = l ? JSON.parse(l.raw) : null;
-  const items = b && !Array.isArray(b) ? b.sections.filter((s) => s.kind === 'category').flatMap((s) => s.items) : [];
-  src.bar = indexFlat(items);
+  const items = b && !Array.isArray(b) ? b.sections.filter((s) => s.kind === 'category').flatMap((s) => s.items.map((it) => ({ it, cat: s.category }))) : [];
+  // одноимённые позиции в разных разделах (чай и лимонад «Гранат и клубника»)
+  // сопоставляем по разделу+названию; по одному названию — только если оно уникально
+  src.bar = new Map(); const nameCount = new Map();
+  for (const { it } of items) if (!it.is_archived) nameCount.set(norm(it.name), (nameCount.get(norm(it.name)) ?? 0) + 1);
+  for (const { it, cat } of items) if (!it.is_archived) {
+    const k = `${norm(cat)}|${norm(it.name)}`; if (!src.bar.has(k)) src.bar.set(k, it);
+    if (nameCount.get(norm(it.name)) === 1 && !src.bar.has(norm(it.name))) src.bar.set(norm(it.name), it);
+  }
 }
 
 const stats = {};
@@ -85,10 +92,10 @@ for (const slug of readdirSync(contentDir)) {
   if (!REALMS.includes('bar')) continue;
   const l = loadFlat(slug, 'bar'); if (!l) continue;
   const b = JSON.parse(l.raw);
-  const items = Array.isArray(b) ? b : b.sections.filter((s) => s.kind === 'category').flatMap((s) => s.items);
-  for (const it of items) {
+  const items = Array.isArray(b) ? b.map((it) => ({ it, cat: null })) : b.sections.filter((s) => s.kind === 'category').flatMap((s) => s.items.map((it) => ({ it, cat: s.category })));
+  for (const { it, cat } of items) {
     if (it.is_archived) continue;
-    const from = src.bar.get(norm(it.name)); if (!from) continue;
+    const from = (cat && src.bar.get(`${norm(cat)}|${norm(it.name)}`)) ?? src.bar.get(norm(it.name)); if (!from) continue;
     bump(slug, 'bar: совпало');
     if (Array.isArray(b)) {
       // плоский бар Киевской: photos[]
