@@ -11,7 +11,8 @@ import {
   getSpotlightsForSlug,
 } from './mock-data';
 import { GEN_CATEGORIES, GEN_ITEMS } from './menu-generated';
-import { PHOTOS } from './menu-photos';
+// Старая фотобиблиотека (/menu/*) снята 10.11.2026 по просьбе владельца — только новые фото из бэк-офиса.
+const PHOTOS: Record<string, string> = {};
 import {
   getBarSections,
   getCatalogItems,

@@ -36,15 +36,15 @@ interface Cat {
   slice: string;
 }
 const CATS: Cat[] = [
-  { title: 'Кальянная', n: '01', count: 18, img: '/menu/hookah-hookah-old-money.webp', slice: '/wood/slice-3d-0.webp' },
+  { title: 'Кальянная', n: '01', count: 18, img: '/menu-admin/paveletskaia/hookah/hookah-hookah-kalian-na-chashe-2x5t24k-1784480704761.webp', slice: '/wood/slice-3d-0.webp' },
   {
     title: 'Кухня',
     n: '02',
     count: 64,
-    img: '/menu/kitchen-hot-goviazhi-rebra-kopchenye-s-sousom-iz-elovyh-shis.webp',
+    img: '/menu-admin/paveletskaia/kitchen/kitchen-steaks-steik-ribai-primebeef-bl-46c221t-1784683874896.webp',
     slice: '/wood/slice-3d-1.webp',
   },
-  { title: 'Бар', n: '03', count: 120, img: '/menu/bar-cocktails-old-fashioned.webp', slice: '/wood/slice-3d-2.webp' },
+  { title: 'Бар', n: '03', count: 120, img: '/menu-admin/paveletskaia/bar/arka-bar-0059-1784682042651.webp', slice: '/wood/slice-3d-2.webp' },
 ];
 
 interface Ev {
