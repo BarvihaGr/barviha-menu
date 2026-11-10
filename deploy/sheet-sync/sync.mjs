@@ -228,6 +228,21 @@ function syncLocation(slug, sheetItemsIn, report) {
     const names = new Set(h.names.map(norm));
     sheetItems = sheetItems.filter((x) => !((!h.realm || x.realm === h.realm) && names.has(norm(x.name))));
   }
+  // Поправки цен (config.priceOverrides): меню точки уже поменяли, а таблицу ещё нет.
+  // Срабатывает, только пока в таблице стоит старая цена `when` — обновят таблицу, поправка сама перестанет действовать.
+  for (const o of CONFIG.priceOverrides ?? []) {
+    if (o.locations && !o.locations.includes(slug)) continue;
+    const names = new Set(o.names.map(norm));
+    sheetItems = sheetItems.map((x) => ((!o.realm || x.realm === o.realm) && names.has(norm(x.name)) && same(x.parts, o.when.map(String))
+      ? { ...x, parts: o.set.map(String), price: Number(o.set[0]) } : x));
+  }
+  // Позиции, которых нет в таблице, но они есть в меню точки (config.extraItems): синк их не архивирует и вернёт из архива.
+  for (const e of CONFIG.extraItems ?? []) {
+    if (e.locations && !e.locations.includes(slug)) continue;
+    if (sheetItems.some((x) => norm(x.name) === norm(e.name))) continue;
+    const parts = String(e.price).split('/').map((p) => String(num(p)));
+    sheetItems.push({ realm: e.realm, section: e.section ?? null, cat: e.cat ?? '', name: e.name, price: Number(parts[0]), parts, desc: e.desc ?? '', row: 0 });
+  }
   const dir = join(CONTENT, slug);
   if (!existsSync(join(dir, 'kitchen.json'))) { report.note(slug, `нет папки контента — пропущено`); return; }
   const flat = CONFIG.flatBar.includes(slug);

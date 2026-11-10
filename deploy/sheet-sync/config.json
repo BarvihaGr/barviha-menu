@@ -20,6 +20,17 @@
   "hidden": [
     { "_comment": "05.11.2026 по просьбе владельца: соусы убраны из «Хлеб и соусы» и «Правильного питания» (в таблице остаются)", "realm": "kitchen", "names": ["Соусы", "Цацики", "Чесночный", "Сальса", "Томатный"], "locations": ["barvixa-lounge-krylatskoe", "baumanskaia", "cska", "iugo-zapadnaia", "kievskaia", "kolomenskaia", "krasnaia-ploshchad", "marino", "mendeleevskaia", "mitino", "moskva-siti", "nevskii", "otradnoe", "paveletskaia", "ramenki", "seligerskaia", "tepliy-stan"] }
   ],
+  "priceOverrides": [
+    { "_comment": "10.11.2026 Пенза: цены по бумажному меню (прислали в чате), таблица ещё старая. Действует, пока в таблице цена when", "locations": ["penza"], "realm": "hookah", "names": ["На электронной чаше"], "when": [2200], "set": [2400] },
+    { "locations": ["penza"], "realm": "bar", "names": ["Манго, маракуйя, кокос", "Апельсин, юдзу, миндаль", "Гранат и клубника", "Киви, крыжовник, фейхоа", "Ананас и щавель"], "when": [400, 780], "set": [450, 1000] },
+    { "locations": ["penza"], "realm": "bar", "names": ["Апероль Спритц"], "when": [600], "set": [700] },
+    { "locations": ["penza"], "realm": "bar", "names": ["Порнстар Мартини", "Лонг Айленд"], "when": [690], "set": [700] },
+    { "locations": ["penza"], "realm": "bar", "names": ["Рислинг \"Эрнст Людвиг\". Германия. Сух."], "when": [750, 3750], "set": [750, 3500] },
+    { "locations": ["penza"], "realm": "bar", "names": ["Мунрайз. Чили. Сух."], "when": [500, 2500], "set": [500, 2250] }
+  ],
+  "extraItems": [
+    { "_comment": "10.11.2026 Пенза: есть в меню, нет в таблице; цена как у остальных поке Пензы", "locations": ["penza"], "realm": "kitchen", "name": "Поке с лососем спайси", "cat": "Поке", "price": 890 }
+  ],
   "flatBar": ["kievskaia", "kievskaia-network"],
   "idPrefix": {
     "krasnaia-ploshchad": "kp", "moskva-siti": "sit", "paveletskaia": "pav", "mendeleevskaia": "men", "kievskaia": "kie",
