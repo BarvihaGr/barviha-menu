@@ -31,7 +31,7 @@
   "extraItems": [
     { "_comment": "10.11.2026 Пенза: есть в меню, нет в таблице; цена как у остальных поке Пензы", "locations": ["penza"], "realm": "kitchen", "name": "Поке с лососем спайси", "cat": "Поке", "price": 890 }
   ],
-  "flatBar": ["kievskaia", "kievskaia-network"],
+  "flatBar": [],
   "idPrefix": {
     "krasnaia-ploshchad": "kp", "moskva-siti": "sit", "paveletskaia": "pav", "mendeleevskaia": "men", "kievskaia": "kie",
     "baumanskaia": "bau", "mitino": "mit", "marino": "mar", "tepliy-stan": "ts", "otradnoe": "otr", "iugo-zapadnaia": "uz",

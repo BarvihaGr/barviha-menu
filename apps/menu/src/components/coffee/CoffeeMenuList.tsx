@@ -14,7 +14,7 @@ import { FilterDrawer } from '../FilterDrawer';
 import { coffeeAccentStyle, isKievskaiaStyle } from '@/lib/coffee-design';
 import { useKievTheme } from '@/store/kievTheme';
 import { KIEV_PALETTES } from './KievThemeProvider';
-import { CoffeeItemCard } from './CoffeeItemCard';
+import { CoffeeItemCard, CoffeeItemRow } from './CoffeeItemCard';
 import { FeaturedItemCard } from './FeaturedItemCard';
 
 interface SectionDef {
@@ -257,9 +257,10 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
                 </h2>
               )}
 
-              {/* Сетка карточек */}
+              {/* Сетка карточек — только позиции с фото; без фото — списком ниже */}
+              {s.items.some((item) => item.is_featured || item.photo) && (
               <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-8">
-                {s.items.map((item) =>
+                {s.items.filter((item) => item.is_featured || item.photo).map((item) =>
                   item.is_featured ? (
                     <FeaturedItemCard
                       key={item.id}
@@ -278,6 +279,17 @@ export function CoffeeMenuList({ items, locationSlug, categorySlug, realm = 'kit
                   ),
                 )}
               </div>
+              )}
+              {s.items.some((item) => item.is_featured || item.photo) && s.items.some((item) => !item.is_featured && !item.photo) && (
+                <div className="mt-6" />
+              )}
+              {s.items.some((item) => !item.is_featured && !item.photo) && (
+                <div className="grid grid-cols-1 gap-x-10 sm:grid-cols-2">
+                  {s.items.filter((item) => !item.is_featured && !item.photo).map((item) => (
+                    <CoffeeItemRow key={item.id} item={item} name={pickItemName(item, locale)} locationSlug={locationSlug} />
+                  ))}
+                </div>
+              )}
             </div>
           )
         ))

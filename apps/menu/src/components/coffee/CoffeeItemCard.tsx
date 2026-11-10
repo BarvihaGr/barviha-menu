@@ -116,6 +116,52 @@ export const CoffeeItemCard = memo(function CoffeeItemCard({ item, name, locatio
   );
 });
 
+/** Позиция кухни без фото — строкой (как «тип 2» в баре), а не квадратом
+ * с заглушкой: на точках со своей кухней наших фото нет, и сетка пустых
+ * плашек выглядела как «фото не грузится». */
+export const CoffeeItemRow = memo(function CoffeeItemRow({ item, name, locationSlug }: Omit<Props, 'description'>) {
+  const add = useCart((s) => s.add);
+  const push = useToast((s) => s.push);
+  const t = useTranslations();
+  const [bump, setBump] = useState(false);
+  const locale = useLocale();
+  const displayName = displayItemName(name, locale);
+  const weightStr = item.weight != null ? `${item.weight} ${t('item.grams')}` : null;
+
+  const addToCart = () => {
+    add(item.id, 1);
+    trackAdd(locationSlug, item.id);
+    push(t('toast.addedToCart'), 'success');
+    setBump(true);
+    setTimeout(() => setBump(false), 180);
+  };
+
+  return (
+    <div className="flex items-center justify-between gap-4 border-b border-[var(--cm-border)] py-4">
+      <Link href={`/${locationSlug}/item/${item.id}`} className="min-w-0 flex-1 focus:outline-none">
+        <h3 className="break-words text-[15px] font-medium leading-[1.3] text-[var(--cm-text)]">{displayName}</h3>
+        <div className="mt-1.5 flex items-baseline gap-3">
+          {weightStr && <span className="text-[11px] text-[var(--cm-muted)]">{weightStr}</span>}
+          <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
+            {formatPrice(item.price, locationSlug)}
+          </span>
+        </div>
+      </Link>
+      <button
+        type="button"
+        onClick={addToCart}
+        aria-label={`${t('item.addToCart')} ${displayName}`}
+        className={cnBump(
+          bump,
+          'shrink-0 grid h-8 w-8 place-items-center rounded-full bg-[var(--cm-accent)] text-[var(--cm-text)] shadow-sm transition-all duration-200 active:scale-90 cursor-pointer',
+        )}
+      >
+        <Plus className="h-4 w-4" strokeWidth={2.2} />
+      </button>
+    </div>
+  );
+});
+
 function cnBump(active: boolean, base: string): string {
   return active ? `${base} scale-90` : base;
 }

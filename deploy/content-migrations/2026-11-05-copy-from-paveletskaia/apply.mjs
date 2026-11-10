@@ -70,7 +70,9 @@ function copyText(from, to, slug) {
 for (const slug of readdirSync(contentDir)) {
   if (slug === SRC || slug.startsWith('.') || !existsSync(join(contentDir, slug, 'kitchen.json'))) continue;
   // кухня и кальяны
-  for (const realm of ['kitchen', 'hookah'].filter((r) => REALMS.includes(r))) {
+  // Точки со своей кухней (не наша) — фото кухни с Павелецкой туда не переносим (просьба владельца/руководителя 05–10.11)
+  const OWN_KITCHEN = ['domodedovo', 'maxackala'];
+  for (const realm of ['kitchen', 'hookah'].filter((r) => REALMS.includes(r) && !(r === 'kitchen' && OWN_KITCHEN.includes(slug)))) {
     const l = loadFlat(slug, realm); if (!l) continue;
     const data = JSON.parse(l.raw);
     for (const it of data) {
