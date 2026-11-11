@@ -243,6 +243,22 @@ function syncLocation(slug, sheetItemsIn, report) {
     const parts = String(e.price).split('/').map((p) => String(num(p)));
     sheetItems.push({ realm: e.realm, section: e.section ?? null, cat: e.cat ?? '', name: e.name, price: Number(parts[0]), parts, desc: e.desc ?? '', row: 0 });
   }
+  // Склейка строк (config.mergeRows): в таблице одна позиция записана несколькими строками
+  // с одним названием (свежевыжатый сок: «Апельсин / Грейпфрут / Яблоко» и «Ананас») — на сайте одна
+  // карточка: первая строка — основная цена, остальные — строки «вкус объём» под ней.
+  for (const m of CONFIG.mergeRows ?? []) {
+    if (m.locations && !m.locations.includes(slug)) continue;
+    const rows = sheetItems.filter((x) => (!m.realm || x.realm === m.realm) && norm(x.name) === norm(m.name));
+    if (rows.length < 2) continue;
+    const labels = rows.map((r, i) => {
+      const d = splitBarDesc(r.desc);
+      const label = i === 0 ? (d.volume ?? '') : [d.description, d.volume].filter(Boolean).join(' ');
+      return label.replace(/\s*\/\s*/g, ', ');
+    });
+    const merged = { ...rows[0], parts: rows.flatMap((r) => r.parts), mergedVolume: labels.join('/') };
+    const drop = new Set(rows.slice(1));
+    sheetItems = sheetItems.filter((x) => !drop.has(x)).map((x) => (x === rows[0] ? merged : x));
+  }
   const dir = join(CONTENT, slug);
   if (!existsSync(join(dir, 'kitchen.json'))) { report.note(slug, `нет папки контента — пропущено`); return; }
   const flat = CONFIG.flatBar.includes(slug);
@@ -292,7 +308,8 @@ function syncLocation(slug, sheetItemsIn, report) {
         if (sh.desc && !it.description) { it.description = clean(sh.desc); ch.push('описание (было пусто)'); }
       } else {
         const d = splitBarDesc(sh.desc);
-        if (d.volume && !it.volume) { it.volume = d.volume; ch.push(`объём ${d.volume}`); }
+        if (sh.mergedVolume) { if (it.volume !== sh.mergedVolume) { it.volume = sh.mergedVolume; ch.push(`строки цены ${sh.mergedVolume}`); } }
+        else if (d.volume && !it.volume) { it.volume = d.volume; ch.push(`объём ${d.volume}`); }
         if (d.description && !it.description) { it.description = d.description; ch.push('описание (было пусто)'); }
       }
       if (ch.length) L.updated.push(`${realm}: «${sh.name}»${how === 'fuzzy' ? ` (сопоставлено с «${oldName}» по близкому написанию)` : ''}: ${ch.join(', ')}`);
@@ -339,7 +356,8 @@ function syncLocation(slug, sheetItemsIn, report) {
     if (it.name !== sh.name) { if (norm(it.name) !== norm(sh.name)) for (const k of ['name_en', 'name_zh', 'name_hy']) if (it[k] != null) it[k] = null; ch.push(`название «${it.name}» → «${sh.name}»`); it.name = sh.name; }
     if (!same(it.priceParts, sh.parts)) { ch.push(`цена ${(it.priceParts ?? [it.price]).join('/')} → ${sh.parts.join('/')}`); it.priceParts = sh.parts; if ('price' in it) it.price = sh.price; }
     const d = splitBarDesc(sh.desc);
-    if (d.volume && !it.volume) { it.volume = d.volume; ch.push(`объём ${d.volume}`); }
+    if (sh.mergedVolume) { if (it.volume !== sh.mergedVolume) { it.volume = sh.mergedVolume; ch.push(`строки цены ${sh.mergedVolume}`); } }
+    else if (d.volume && !it.volume) { it.volume = d.volume; ch.push(`объём ${d.volume}`); }
     if (d.description && !it.description) { it.description = d.description; ch.push('описание (было пусто)'); }
     if (it.is_archived) { it.is_archived = false; ch.push('из архива'); }
     if (sh.place && s.section.category !== sh.place) {
