@@ -128,7 +128,7 @@ function VariantRow({ variant, locationSlug, locale, name }: { variant: ArkaMenu
           <span className="text-[11px] text-[var(--cm-muted)]">{label}</span>
         )}
         <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
-          {formatRub(variant.price)} {currencySign(locationSlug)}
+          {formatRub(variant.price)} {currencySign(locationSlug, locale)}
         </span>
       </Link>
       <AddButton variant={variant} locationSlug={locationSlug} name={name} />
@@ -151,7 +151,7 @@ function TimelessVariantLine({ variant, locationSlug, locale, name }: { variant:
             {label}
           </span>
         )}
-        <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatRub(variant.price)} {currencySign(locationSlug)}</span>
+        <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatRub(variant.price)} {currencySign(locationSlug, locale)}</span>
       </Link>
       <AddButton variant={variant} locationSlug={locationSlug} name={name} />
     </div>

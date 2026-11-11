@@ -9,6 +9,12 @@ const CURRENCY_BY_SLUG: Record<string, string> = {
   taskent: 'сум',
 };
 
-export function currencySign(locationSlug?: string | null): string {
+// На других языках «сум» по-русски непонятен — международный код валюты.
+const CURRENCY_FOREIGN_BY_SLUG: Record<string, string> = {
+  taskent: 'UZS',
+};
+
+export function currencySign(locationSlug?: string | null, locale?: string | null): string {
+  if (locationSlug && locale && locale !== 'ru' && CURRENCY_FOREIGN_BY_SLUG[locationSlug]) return CURRENCY_FOREIGN_BY_SLUG[locationSlug];
   return (locationSlug && CURRENCY_BY_SLUG[locationSlug]) || '₽';
 }

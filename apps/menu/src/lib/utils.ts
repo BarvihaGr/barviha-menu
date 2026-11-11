@@ -7,8 +7,8 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 /** Цена со знаком валюты локации (₽ по умолчанию, ֏ в Ереване, сум в Ташкенте). */
-export function formatPrice(price: number, locationSlug?: string): string {
-  return `${price.toLocaleString('ru-RU')} ${currencySign(locationSlug)}`;
+export function formatPrice(price: number, locationSlug?: string, locale?: string): string {
+  return `${price.toLocaleString('ru-RU')} ${currencySign(locationSlug, locale)}`;
 }
 
 export interface ParsedIngredient {

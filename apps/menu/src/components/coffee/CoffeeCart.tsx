@@ -102,7 +102,7 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="text-[15px] font-semibold leading-snug text-[var(--cm-text)]">{name}</div>
-                        <div className="mt-0.5 text-[14px] text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatPrice(item.price, locationSlug)}</div>
+                        <div className="mt-0.5 text-[14px] text-[var(--cm-accent-on-bg,var(--cm-accent))]">{formatPrice(item.price, locationSlug, locale)}</div>
                       </div>
                       <CoffeeQty itemId={entry.itemId} qty={entry.qty} />
                       <button
@@ -124,7 +124,7 @@ export function CoffeeCart({ allItems, locationSlug }: Props) {
                 <span className="text-[12px] uppercase tracking-[0.2em] text-[var(--cm-muted-dim)]">
                   {t('subtotal')}
                 </span>
-                <span className="text-[28px] font-semibold text-[var(--cm-text)]">{formatPrice(total, locationSlug)}</span>
+                <span className="text-[28px] font-semibold text-[var(--cm-text)]">{formatPrice(total, locationSlug, locale)}</span>
               </div>
               <p className="text-center text-[11px] uppercase leading-relaxed tracking-[0.15em] text-[var(--cm-muted-dim)]">
                 {t('submitDescription')}

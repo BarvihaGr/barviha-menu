@@ -94,7 +94,7 @@ export const CoffeeItemCard = memo(function CoffeeItemCard({ item, name, locatio
                 {weightStr ?? ''}
               </span>
               <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
-                {formatPrice(item.price, locationSlug)}
+                {formatPrice(item.price, locationSlug, locale)}
               </span>
             </div>
 
@@ -143,7 +143,7 @@ export const CoffeeItemRow = memo(function CoffeeItemRow({ item, name, locationS
         <div className="mt-1.5 flex items-baseline gap-3">
           {weightStr && <span className="text-[11px] text-[var(--cm-muted)]">{weightStr}</span>}
           <span className="text-[14px] font-semibold text-[var(--cm-accent-on-bg,var(--cm-accent))]">
-            {formatPrice(item.price, locationSlug)}
+            {formatPrice(item.price, locationSlug, locale)}
           </span>
         </div>
       </Link>

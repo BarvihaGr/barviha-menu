@@ -39,10 +39,21 @@ export function pickItemName(item: NamedTranslatable, locale: Locale): string {
 
 export function pickItemDescription(item: DescribedTranslatable, locale: Locale): string | null {
   const tr = ITEM_TRANSLATIONS[item.id];
-  if (locale === 'en') return item.description_en ?? tr?.description_en ?? item.description;
-  if (locale === 'zh') return item.description_zh ?? tr?.description_zh ?? item.description;
-  if (locale === 'hy') return item.description_hy ?? tr?.description_hy ?? item.description;
+  // Без перевода у напитков в описании часто только объём («50мл») — единицы переводим.
+  const fb = locale === 'ru' ? item.description : translateUnitsAfterDigits(item.description, locale);
+  if (locale === 'en') return item.description_en ?? tr?.description_en ?? fb;
+  if (locale === 'zh') return item.description_zh ?? tr?.description_zh ?? fb;
+  if (locale === 'hy') return item.description_hy ?? tr?.description_hy ?? fb;
   return item.description;
+}
+
+/** «50мл», «0.5 л», «100гр» → единицы на языке страницы; остальной текст не трогаем. */
+function translateUnitsAfterDigits(text: string | null, locale: Locale): string | null {
+  if (!text || locale === 'ru') return text;
+  return text.replace(/(\d)\s*(мл|кг|гр|шт|л|г)\.?(?![А-Яа-яЁё])/g, (_m, d: string, unit: string) => {
+    const t = UNIT_TR[unit];
+    return t ? `${d}${t[locale]}` : _m;
+  });
 }
 
 export function pickItemComposition(item: ComposedTranslatable, locale: Locale): string | null {
@@ -130,6 +141,7 @@ const SUB_LABEL_TR: Record<string, { en: string; zh: string; hy: string }> = {
   'autumn-menu': { en: 'Autumn Specials', zh: '秋季特選', hy: 'Աշնանային առաջարկ' },
   // Подраздел кальянной карты из мастер-файла (sub = русский текст, см. hookah-подразделы в catalog-shared).
   'Специальное предложение': { en: 'Special Offer', zh: '特別推薦', hy: 'Հատուկ առաջարկ' },
+  'Парфюмерная коллекция': { en: 'Perfume Collection', zh: '香氛系列', hy: 'Օծանելիքային հավաքածու' },
   // Были без перевода — подпись раздела оставалась русской на всех языках.
   raw: { en: 'Raw', zh: '生食', hy: 'Raw' },
   'bread-sauces': { en: 'Bread & Sauces', zh: '麵包與醬料', hy: 'Հաց և սոուսներ' },
@@ -342,8 +354,19 @@ const UNIT_TR: Record<string, { en: string; zh: string; hy: string }> = {
 };
 
 /** Подпись объёма/веса позиции Бара на языке страницы. */
+/** Вкусы в строках цены одной карточки («Ананас 300мл» у свежевыжатого сока). */
+const VOLUME_WORD_TR: Record<string, { en: string; zh: string; hy: string }> = {
+  Ананас: { en: 'Pineapple', zh: '菠萝', hy: 'Արքայախնձոր' },
+  Грейпфрут: { en: 'Grapefruit', zh: '西柚', hy: 'Գրեյպֆրուտ' },
+  Гранат: { en: 'Pomegranate', zh: '石榴', hy: 'Նուռ' },
+  Яблоко: { en: 'Apple', zh: '苹果', hy: 'Խնձոր' },
+  Апельсин: { en: 'Orange', zh: '橙子', hy: 'Նարինջ' },
+  Морковь: { en: 'Carrot', zh: '胡萝卜', hy: 'Գազար' },
+};
+
 export function pickVolumeLabel(label: string | null, locale: Locale): string | null {
   if (!label || locale === 'ru') return label;
+  label = label.replace(/[А-ЯЁ][а-яё]+/g, (w) => VOLUME_WORD_TR[w]?.[locale] ?? w);
   return label.replace(/(мл|кг|гр|шт|л|г)\.?/g, (match, unit: string) => {
     const tr = UNIT_TR[unit];
     return tr ? tr[locale] : match;
@@ -365,6 +388,9 @@ export function pickSubLabel(sub: string, fallback: string, locale: Locale): str
  */
 const BAR_CATEGORY_TR: Record<string, { en: string; zh: string; hy: string }> = {
   'Безалкогольная продукция': { en: 'Non-Alcoholic Beverages', zh: '無酒精飲品', hy: 'Ոչ ալկոհոլային ըմպելիքներ' },
+  'Безалкогольные напитки': { en: 'Non-Alcoholic Beverages', zh: '無酒精飲品', hy: 'Ոչ ալկոհոլային ըմպելիքներ' },
+  Орешки: { en: 'Nuts', zh: '堅果', hy: 'Ընկույզներ' },
+  'Б/а вино': { en: 'Non-Alcoholic Wine', zh: '無酒精葡萄酒', hy: 'Ոչ ալկոհոլային գինի' },
   Лимонады: { en: 'Lemonades', zh: '檸檬水', hy: 'Լիմոնադներ' },
   Смузи: { en: 'Smoothies', zh: '冰沙', hy: 'Սմուզի' },
   Милкшейки: { en: 'Milkshakes', zh: '奶昔', hy: 'Կաթնային կոկտեյլներ' },

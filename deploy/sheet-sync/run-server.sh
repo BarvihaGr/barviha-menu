@@ -20,3 +20,5 @@ if ! flock -n /tmp/barviha-deploy.lock -c true; then exit 0; fi
 cd "$APP" || exit 0
 PATH=/usr/local/bin:/usr/bin:/bin:$PATH
 node deploy/sheet-sync/sync.mjs --content "$CONTENT" --apply >>"$LOG" 2>&1
+# переводы en/zh/hy из общего словаря: синк обнуляет их при переименовании и не ставит новым позициям
+[ -f deploy/i18n/fill.mjs ] && node deploy/i18n/fill.mjs "$CONTENT" --apply >>"$LOG" 2>&1
