@@ -22,6 +22,12 @@ export interface ItemTr {
   composition_en?: string;
   composition_zh?: string;
   composition_hy?: string;
+  name_uz?: string;
+  name_ar?: string;
+  description_uz?: string;
+  description_ar?: string;
+  composition_uz?: string;
+  composition_ar?: string;
 }
 
 export const ITEM_TRANSLATIONS: Record<string, ItemTr> = {

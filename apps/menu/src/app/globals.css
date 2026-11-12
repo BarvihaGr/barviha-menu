@@ -95,12 +95,12 @@ img {
   --color-gold-soft: var(--gold-soft);
   --color-gold-dark: var(--gold-dark);
   --color-gold-glow: var(--gold-glow);
-  --font-sans: 'Inter Variable', 'Inter', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', sans-serif;
-  --font-display: 'Cormorant SC', 'Cormorant Garamond', 'Raleway Variable', 'Raleway', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', 'Noto Sans Arabic', 'Geeza Pro', 'Noto Naskh Arabic', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', sans-serif;
+  --font-display: 'Cormorant SC', 'Cormorant Garamond', 'Raleway Variable', 'Raleway', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', 'Noto Sans Arabic', 'Geeza Pro', 'Noto Naskh Arabic', system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
   --font-menu-title: 'Cormorant Garamond', 'Didot', 'Bodoni MT', 'Bodoni 72', Georgia, 'Times New Roman', serif;
-  --cm-font-display: 'Raleway Variable', 'Raleway', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', sans-serif;
-  --cm-font-body: 'Manrope Variable', 'Manrope', 'Inter Variable', 'Inter', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', Arial, sans-serif;
+  --cm-font-display: 'Raleway Variable', 'Raleway', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', 'Noto Sans Arabic', 'Geeza Pro', 'Noto Naskh Arabic', system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', sans-serif;
+  --cm-font-body: 'Manrope Variable', 'Manrope', 'Inter Variable', 'Inter', 'Noto Sans Armenian Variable', 'Noto Sans Armenian', 'Noto Sans Arabic', 'Geeza Pro', 'Noto Naskh Arabic', system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', Arial, sans-serif;
 }
 
 * {
@@ -124,6 +124,20 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   letter-spacing: 0.01em;
+}
+
+/* Арабский: у арабской вязи межбуквенный интервал ломает лигатуры — обнуляем
+   letter-spacing везде (в т.ч. в uppercase/tracking-* подписях), а для
+   заголовков берём Naskh — у Cormorant/Canela арабских глифов нет. */
+html[lang='ar'] body,
+html[lang='ar'] h1, html[lang='ar'] h2, html[lang='ar'] h3,
+html[lang='ar'] h4, html[lang='ar'] h5, html[lang='ar'] h6,
+html[lang='ar'] * {
+  letter-spacing: 0 !important;
+}
+html[lang='ar'] .menu-title,
+html[lang='ar'] h1, html[lang='ar'] h2, html[lang='ar'] h3 {
+  font-family: 'Noto Naskh Arabic', 'Noto Sans Arabic', var(--font-display);
 }
 
 h1, h2, h3, h4, h5, h6 {

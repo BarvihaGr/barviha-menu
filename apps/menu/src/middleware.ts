@@ -27,8 +27,8 @@ function setLastLoc(res: NextResponse, slug: string) {
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Паттерн: /{locale}/{locationSlug}/...  где locale = ru|en|zh|hy
-  const locationMatch = pathname.match(/^\/(ru|en|zh|hy)\/([^/]+)(\/.*)?$/);
+  // Паттерн: /{locale}/{locationSlug}/...  где locale = ru|en|zh|hy|uz|ar
+  const locationMatch = pathname.match(/^\/(ru|en|zh|hy|uz|ar)\/([^/]+)(\/.*)?$/);
   if (locationMatch) {
     const slug = locationMatch[2] ?? '';
     const isWorkingLocation = WORKING_SLUG_SET.has(slug);

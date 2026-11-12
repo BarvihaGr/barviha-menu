@@ -15,6 +15,7 @@ const CURRENCY_FOREIGN_BY_SLUG: Record<string, string> = {
 };
 
 export function currencySign(locationSlug?: string | null, locale?: string | null): string {
+  if (locationSlug === 'taskent' && locale === 'uz') return 'soʻm';
   if (locationSlug && locale && locale !== 'ru' && CURRENCY_FOREIGN_BY_SLUG[locationSlug]) return CURRENCY_FOREIGN_BY_SLUG[locationSlug];
   return (locationSlug && CURRENCY_BY_SLUG[locationSlug]) || '₽';
 }

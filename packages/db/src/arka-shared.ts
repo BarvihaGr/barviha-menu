@@ -15,6 +15,8 @@ export interface ArkaMenuItem {
   name_en?: string | null;
   name_zh?: string | null;
   name_hy?: string | null;
+  name_uz?: string | null;
+  name_ar?: string | null;
   type: 1 | 2;
   priceParts: string[];
   volume: string | null;
@@ -22,6 +24,8 @@ export interface ArkaMenuItem {
   description_en?: string | null;
   description_zh?: string | null;
   description_hy?: string | null;
+  description_uz?: string | null;
+  description_ar?: string | null;
   photo: string | null;
   /** Кадрирование фото в квадратной рамке карточки (0–100%, объектная позиция). Null/отсутствует — дефолт. */
   photo_position?: { x: number; y: number } | null;

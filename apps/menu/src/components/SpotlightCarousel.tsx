@@ -62,6 +62,8 @@ function pick<F extends 'title' | 'subtitle' | 'body' | 'badge' | 'when'>(
   if (locale === 'en') return s[`${field}_en`] ?? s[field];
   if (locale === 'zh') return s[`${field}_zh`] ?? s[field];
   if (locale === 'hy') return s[`${field}_hy`] ?? s[field];
+  if (locale === 'uz') return s[`${field}_uz`] ?? s[field];
+  if (locale === 'ar') return s[`${field}_ar`] ?? s[field];
   return s[field];
 }
 

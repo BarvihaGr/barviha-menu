@@ -25,6 +25,8 @@ const LANG_LABEL: Record<Locale, string> = {
   en: 'EN',
   zh: '中',
   hy: 'ՀԱ',
+  uz: 'UZ',
+  ar: 'AR',
 };
 
 interface Props {
@@ -86,7 +88,7 @@ export function HamburgerMenu({ locationSlug, locations, variant = 'dark', theme
     const matches = (l: Location) =>
       !(TEMPLATE_SLUGS as readonly string[]).includes(l.slug) &&
       (!query ||
-        [l.name, l.name_en, l.name_zh, l.name_hy, l.city]
+        [l.name, l.name_en, l.name_zh, l.name_hy, l.name_uz, l.name_ar, l.city]
           .filter(Boolean)
           .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query)));
     return buildLocationTree(LOCATION_GROUPS, bySlug, matches, locale);

@@ -54,7 +54,7 @@ export function LocationSwitcher({ locations, currentSlug }: Props) {
     const bySlug = new Map(locations.map((l) => [l.slug, l]));
     const matches = (l: Location) =>
       !query ||
-      [l.name, l.name_en, l.name_zh, l.name_hy, l.city]
+      [l.name, l.name_en, l.name_zh, l.name_hy, l.name_uz, l.name_ar, l.city]
         .filter(Boolean)
         .some((s) => s!.toLowerCase().replace(/ё/g, 'е').includes(query));
     return buildLocationTree(LOCATION_GROUPS, bySlug, matches, locale);

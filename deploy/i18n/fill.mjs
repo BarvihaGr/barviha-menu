@@ -1,5 +1,5 @@
-// Переводы меню из общего словаря (deploy/i18n/dict.json: «русский текст» → { en, zh, hy }).
-// Заполняет ТОЛЬКО пустые name_/description_/composition_ {en,zh,hy} у позиций кухни, бара и кальянов
+// Переводы меню из общего словаря (deploy/i18n/dict.json: «русский текст» → { en, zh, hy, uz, ar }).
+// Заполняет ТОЛЬКО пустые name_/description_/composition_ {en,zh,hy,uz,ar} у позиций кухни, бара и кальянов
 // всех локаций; уже заданные вручную переводы не трогает. Запускается кроном сразу после sheet-sync
 // (тот обнуляет переводы при переименовании и создаёт новые позиции без них) — так переводы не теряются.
 // usage: node fill.mjs <content dir> [--apply] [--missing <файл.json>]
@@ -18,7 +18,7 @@ const DICT = JSON.parse(readFileSync(join(here, 'dict.json'), 'utf-8'));
 const norm = (s) => String(s ?? '').replace(/\s+/g, ' ').trim();
 const byNorm = new Map(Object.entries(DICT).map(([k, v]) => [norm(k), v]));
 const CY = /[А-Яа-яЁё]/;
-const LANGS = ['en', 'zh', 'hy'];
+const LANGS = ['en', 'zh', 'hy', 'uz', 'ar'];
 const FIELDS = ['name', 'description', 'composition'];
 
 let filled = 0; let files = 0; const missing = new Map();
