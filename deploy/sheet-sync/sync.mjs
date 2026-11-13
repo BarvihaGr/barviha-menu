@@ -221,12 +221,21 @@ function matchItems(sheetItems, siteItems, placeOf) {
 // ── обработка одной локации ──────────────────────────────────────────────
 function syncLocation(slug, sheetItemsIn, report) {
   let sheetItems = sheetItemsIn;
+  // Переименования (config.renames): в таблице неверное название, а в меню точки — правильное.
+  // Срабатывает, только пока в таблице стоит старое название `from`.
+  for (const r of CONFIG.renames ?? []) {
+    if (r.locations && !r.locations.includes(slug)) continue;
+    sheetItems = sheetItems.map((x) => ((!r.realm || x.realm === r.realm) && norm(x.name) === norm(r.from)
+      && (!r.cat || norm(x.cat) === norm(r.cat)) ? { ...x, name: r.to } : x));
+  }
   // Стоп-лист (config.hidden): позиции есть в таблице, но на сайте их быть не
   // должно — выкидываем из листа, тогда синк сам уберёт их с сайта в архив и не вернёт.
+  // `price` — если в таблице несколько позиций с одним названием, убрать только ту, что с этой ценой.
   for (const h of CONFIG.hidden ?? []) {
     if (h.locations && !h.locations.includes(slug)) continue;
     const names = new Set(h.names.map(norm));
-    sheetItems = sheetItems.filter((x) => !((!h.realm || x.realm === h.realm) && names.has(norm(x.name))));
+    sheetItems = sheetItems.filter((x) => !((!h.realm || x.realm === h.realm) && names.has(norm(x.name))
+      && (h.price == null || Number(x.price) === Number(h.price))));
   }
   // Поправки цен (config.priceOverrides): меню точки уже поменяли, а таблицу ещё нет.
   // Срабатывает, только пока в таблице стоит старая цена `when` — обновят таблицу, поправка сама перестанет действовать.

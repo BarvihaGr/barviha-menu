@@ -18,7 +18,9 @@
     { "gid": "223641571", "title": "Саратов", "locations": ["barvixa-lounge-saratov"] }
   ],
   "hidden": [
-    { "_comment": "05.11.2026 по просьбе владельца: соусы убраны из «Хлеб и соусы» и «Правильного питания» (в таблице остаются)", "realm": "kitchen", "names": ["Соусы", "Цацики", "Чесночный", "Сальса", "Томатный"], "locations": ["barvixa-lounge-krylatskoe", "baumanskaia", "cska", "iugo-zapadnaia", "kievskaia", "kolomenskaia", "krasnaia-ploshchad", "marino", "mendeleevskaia", "mitino", "moskva-siti", "nevskii", "otradnoe", "paveletskaia", "ramenki", "seligerskaia", "tepliy-stan"] }
+    { "_comment": "05.11.2026 по просьбе владельца: соусы убраны из «Хлеб и соусы» и «Правильного питания» (в таблице остаются)", "realm": "kitchen", "names": ["Соусы", "Цацики", "Чесночный", "Сальса", "Томатный"], "locations": ["barvixa-lounge-krylatskoe", "baumanskaia", "cska", "iugo-zapadnaia", "kievskaia", "kolomenskaia", "krasnaia-ploshchad", "marino", "mendeleevskaia", "mitino", "moskva-siti", "nevskii", "otradnoe", "paveletskaia", "ramenki", "seligerskaia", "tepliy-stan"] },
+    { "_comment": "13.11.2026 Марьино (Трёбухова Алёна): в бумажном меню точки этих позиций нет", "realm": "kitchen", "names": ["Жульен с морепродуктами", "Цыплёнок на гриле с узбекскими томатами", "Бургер с рваной говядиной, манго и халапеньо"], "locations": ["marino"] },
+    { "_comment": "13.11.2026 Марьино: мясной тарелки 1700 ₽/180 г в меню нет; сезонная за 2300 ₽ остаётся", "realm": "kitchen", "names": ["Мясная тарелка"], "price": 1700, "locations": ["marino"] }
   ],
   "priceOverrides": [
     { "_comment": "10.11.2026 Пенза: цены по бумажному меню (прислали в чате), таблица ещё старая. Действует, пока в таблице цена when", "locations": ["penza"], "realm": "hookah", "names": ["На электронной чаше"], "when": [2200], "set": [2400] },
@@ -26,7 +28,11 @@
     { "locations": ["penza"], "realm": "bar", "names": ["Апероль Спритц"], "when": [600], "set": [700] },
     { "locations": ["penza"], "realm": "bar", "names": ["Порнстар Мартини", "Лонг Айленд"], "when": [690], "set": [700] },
     { "locations": ["penza"], "realm": "bar", "names": ["Рислинг \"Эрнст Людвиг\". Германия. Сух."], "when": [750, 3750], "set": [750, 3500] },
-    { "locations": ["penza"], "realm": "bar", "names": ["Мунрайз. Чили. Сух."], "when": [500, 2500], "set": [500, 2250] }
+    { "locations": ["penza"], "realm": "bar", "names": ["Мунрайз. Чили. Сух."], "when": [500, 2500], "set": [500, 2250] },
+    { "_comment": "13.11.2026 Марьино: цена по бумажному меню", "locations": ["marino"], "realm": "kitchen", "names": ["Барвиха"], "when": [1300], "set": [990] }
+  ],
+  "renames": [
+    { "_comment": "13.11.2026 Марьино: в таблице халяльный «Сырный» назван как обычный (категория «Бургеры халяль»)", "locations": ["marino"], "realm": "kitchen", "cat": "Бургеры халяль", "from": "Бургер \"Сырный\" с котлетой из мраморной говядины и яйцом", "to": "Халяль бургер \"Сырный\" с котлетой из мраморной говядины и яйцом" }
   ],
   "mergeRows": [
     { "_comment": "11.11.2026 главный бармен: свежевыжатый сок одной карточкой, ананас (и др. вкусы) строкой ниже со своей ценой", "realm": "bar", "name": "Сок свежевыжатый" }
