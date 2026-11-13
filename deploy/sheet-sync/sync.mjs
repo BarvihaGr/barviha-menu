@@ -99,7 +99,7 @@ const KITCHEN_SUB_BY_CAT = {
   римскаяпицца: 'pizza', пицца: 'pizza', супы: 'soups', гарниры: 'sides', десерты: 'desserts', десерт: 'desserts',
   завтраки: 'breakfast', снеки: 'snacks', гриль: 'hot', соусы: 'bread-sauces', хлеб: 'bread-sauces', '': 'bread-sauces',
 };
-const KITCHEN_SUB_BY_SECTION = { осеннеепредложениекухня: 'autumn-menu', правильноепитание: 'healthy', завтраки: 'breakfast' };
+const KITCHEN_SUB_BY_SECTION = { осеннеепредложениекухня: 'autumn-menu', сезонноепредложениекухня: 'autumn-menu', правильноепитание: 'healthy', завтраки: 'breakfast' };
 // Названия разделов бара в таблице ↔ как они называются на точках (старые имена не переименовываем).
 const BAR_SECTION_ALIASES = {
   молочныйкоктейль: ['Милкшейки', 'Молочный коктейль', 'Молочные коктейли'], сок: ['Соки', 'Сок'], вода: ['Вода и напитки', 'Вода с газом / без'],
@@ -379,11 +379,11 @@ function syncLocation(slug, sheetItemsIn, report) {
   for (const sh of toAdd) {
     let dst = findSection(sh.cat);
     if (!dst) {
-      // нового раздела нет — создаём: осенние — под заголовком «Осеннее предложение», остальные в конец
+      // нового раздела нет — создаём: сезонные — под заголовком «Сезонное предложение» (до 13.11 — «Осеннее»), остальные в конец
       const section = { kind: 'category', sheet: 'БА', category: sh.cat, items: [] };
-      if (norm(sh.section) === 'осеннеепредложениебар') {
-        let idx = data.sections.findIndex((x) => x.kind === 'header' && norm(x.title) === 'осеннеепредложение');
-        if (idx < 0) { data.sections.unshift({ kind: 'header', sheet: 'БА', title: 'Осеннее предложение' }); idx = 0; }
+      if (/^(осеннее|сезонное)предложениебар$/.test(norm(sh.section))) {
+        let idx = data.sections.findIndex((x) => x.kind === 'header' && ['сезонноепредложение', 'осеннеепредложение'].includes(norm(x.title)));
+        if (idx < 0) { data.sections.unshift({ kind: 'header', sheet: 'БА', title: 'Сезонное предложение' }); idx = 0; }
         let at = idx + 1; while (at < data.sections.length && data.sections[at].kind === 'category' && norm(data.sections[at].category).startsWith('горячие')) at++;
         data.sections.splice(at, 0, section);
       } else data.sections.push(section);

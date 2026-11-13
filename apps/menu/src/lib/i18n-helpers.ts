@@ -179,7 +179,7 @@ const SUB_LABEL_TR: Record<string, Tr> = {
   // Были без перевода — подпись раздела оставалась русской на всех языках.
   raw: { en: 'Raw', zh: '生食', hy: 'Raw', uz: 'Raw', ar: 'أطباق نيئة' },
   'bread-sauces': { en: 'Bread & Sauces', zh: '麵包與醬料', hy: 'Հաց և սոուսներ', uz: 'Non va souslar', ar: 'خبز وصلصات' },
-  'autumn-menu': { en: 'Autumn Specials', zh: '秋季特選', hy: 'Աշնանային առաջարկ', uz: 'Kuzgi taklif', ar: 'عرض الخريف' },
+  'autumn-menu': { en: 'Seasonal Specials', zh: '季節特選', hy: 'Սեզոնային առաջարկ', uz: 'Mavsumiy taklif', ar: 'العرض الموسمي' },
   // Подраздел кальянной карты из мастер-файла (sub = русский текст).
   'Специальное предложение': { en: 'Special Offer', zh: '特別推薦', hy: 'Հատուկ առաջարկ', uz: 'Maxsus taklif', ar: 'عرض خاص' },
   'Парфюмерная коллекция': { en: 'Perfume Collection', zh: '香氛系列', hy: 'Օծանելիքային հավաքածու', uz: 'Parfyum kolleksiyasi', ar: 'مجموعة العطور' },
@@ -601,6 +601,7 @@ const BAR_CATEGORY_TR: Record<string, Tr> = {
   Закуски: { en: 'Snacks', zh: '小食', hy: 'Խորտիկներ', uz: 'Gazaklar', ar: 'وجبات خفيفة' },
   Сладости: { en: 'Sweets', zh: '甜食', hy: 'Քաղցրավենիք', uz: 'Shirinliklar', ar: 'حلويات' },
   'Винная карта': { en: 'Wine List', zh: '酒單', hy: 'Գինու քարտ', uz: 'Vino kartasi', ar: 'قائمة النبيذ' },
+  'Сезонное предложение': { en: 'Seasonal Offer', zh: '季節特選', hy: 'Սեզոնային առաջարկ', uz: 'Mavsumiy taklif', ar: 'العرض الموسمي' },
   'Осеннее предложение': { en: 'Autumn Offer', zh: '秋季特選', hy: 'Աշնանային առաջարկ', uz: 'Kuzgi taklif', ar: 'عرض الخريف' },
   'Горячие напитки': { en: 'Hot Drinks', zh: '熱飲', hy: 'Տաք ըմպելիքներ', uz: 'Issiq ichimliklar', ar: 'مشروبات ساخنة' },
   'Горячие алкогольные напитки': {

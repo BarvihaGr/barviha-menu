@@ -33,7 +33,7 @@ const SUB_ORDER_OVERRIDE = new Map<string, number>([
   // «Летнее меню» — новый раздел (не из menu-generated.ts), ставим сразу
   // после «Завтраки» (order 8), чтобы был на виду в начале списка Кухни.
   ['kitchen/summer-menu', 9],
-  // «Осеннее предложение» — сезонный раздел осени-2026 из мастер-файла меню.
+  // «Сезонное предложение» (до 13.11.2026 — «Осеннее») — сезонный раздел из мастер-файла меню.
   ['kitchen/autumn-menu', 9],
 ]);
 
@@ -46,7 +46,7 @@ const SUB_ORDER_OVERRIDE = new Map<string, number>([
  */
 const SUB_LABEL_OVERRIDE = new Map<string, string>([
   ['kitchen/summer-menu', 'Летнее меню'],
-  ['kitchen/autumn-menu', 'Осеннее предложение'],
+  ['kitchen/autumn-menu', 'Сезонное предложение'], // до 13.11.2026 — «Осеннее предложение»
 ]);
 
 export function subLabel(realm: string, sub: string | undefined): string {

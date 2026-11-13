@@ -19,8 +19,8 @@
   ],
   "hidden": [
     { "_comment": "05.11.2026 по просьбе владельца: соусы убраны из «Хлеб и соусы» и «Правильного питания» (в таблице остаются)", "realm": "kitchen", "names": ["Соусы", "Цацики", "Чесночный", "Сальса", "Томатный"], "locations": ["barvixa-lounge-krylatskoe", "baumanskaia", "cska", "iugo-zapadnaia", "kievskaia", "kolomenskaia", "krasnaia-ploshchad", "marino", "mendeleevskaia", "mitino", "moskva-siti", "nevskii", "otradnoe", "paveletskaia", "ramenki", "seligerskaia", "tepliy-stan"] },
-    { "_comment": "13.11.2026 Марьино (Трёбухова Алёна): в бумажном меню точки этих позиций нет", "realm": "kitchen", "names": ["Жульен с морепродуктами", "Цыплёнок на гриле с узбекскими томатами", "Бургер с рваной говядиной, манго и халапеньо"], "locations": ["marino"] },
-    { "_comment": "13.11.2026 Марьино: мясной тарелки 1700 ₽/180 г в меню нет; сезонная за 2300 ₽ остаётся", "realm": "kitchen", "names": ["Мясная тарелка"], "price": 1700, "locations": ["marino"] }
+    { "_comment": "13.11.2026 убраны из меню Москвы (Марьино — Трёбухова Алёна, Павелецкая — владелец)", "realm": "kitchen", "names": ["Жульен с морепродуктами", "Цыплёнок на гриле с узбекскими томатами", "Бургер с рваной говядиной, манго и халапеньо"], "locations": ["krasnaia-ploshchad", "moskva-siti", "paveletskaia", "mendeleevskaia", "kievskaia", "baumanskaia", "mitino", "marino", "tepliy-stan", "otradnoe", "iugo-zapadnaia", "ramenki", "cska", "kolomenskaia", "seligerskaia", "barvixa-lounge-krylatskoe"] },
+    { "_comment": "13.11.2026 Москва: мясной тарелки 1700 ₽/180 г в меню нет; сезонная за 2300 ₽ остаётся", "realm": "kitchen", "names": ["Мясная тарелка"], "price": 1700, "locations": ["krasnaia-ploshchad", "moskva-siti", "paveletskaia", "mendeleevskaia", "kievskaia", "baumanskaia", "mitino", "marino", "tepliy-stan", "otradnoe", "iugo-zapadnaia", "ramenki", "cska", "kolomenskaia", "seligerskaia", "barvixa-lounge-krylatskoe"] }
   ],
   "priceOverrides": [
     { "_comment": "10.11.2026 Пенза: цены по бумажному меню (прислали в чате), таблица ещё старая. Действует, пока в таблице цена when", "locations": ["penza"], "realm": "hookah", "names": ["На электронной чаше"], "when": [2200], "set": [2400] },
@@ -38,7 +38,8 @@
     { "_comment": "11.11.2026 главный бармен: свежевыжатый сок одной карточкой, ананас (и др. вкусы) строкой ниже со своей ценой", "realm": "bar", "name": "Сок свежевыжатый" }
   ],
   "extraItems": [
-    { "_comment": "10.11.2026 Пенза: есть в меню, нет в таблице; цена как у остальных поке Пензы", "locations": ["penza"], "realm": "kitchen", "name": "Поке с лососем спайси", "cat": "Поке", "price": 890 }
+    { "_comment": "10.11.2026 Пенза: есть в меню, нет в таблице; цена как у остальных поке Пензы", "locations": ["penza"], "realm": "kitchen", "name": "Поке с лососем спайси", "cat": "Поке", "price": 890 },
+    { "_comment": "13.11.2026 владелец: салата нет в листах Москва 1/3/4, а в меню он есть; цена как в Москве 2 (салаты во всех листах по одной цене)", "locations": ["krasnaia-ploshchad", "moskva-siti", "paveletskaia", "mendeleevskaia", "kievskaia", "ramenki", "cska", "kolomenskaia", "seligerskaia", "barvixa-lounge-krylatskoe"], "realm": "kitchen", "name": "Салат по - деревенски с копчёной сметаной", "cat": "Салаты", "price": 550 }
   ],
   "flatBar": [],
   "idPrefix": {
